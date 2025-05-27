@@ -1,6 +1,5 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-
 import logger from "./logger";
 
 import { userApp } from "./routers/user.router";
