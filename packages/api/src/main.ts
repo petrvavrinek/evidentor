@@ -7,7 +7,14 @@ import logger from "./logger";
 import { userApp } from "./routers/user.router";
 import env from "./env";
 
-const app = new Hono().route("/user", userApp);
+import { type AuthType, auth } from "./auth";
+
+const app = new Hono<{ Bindings: AuthType }>().route("/user", userApp);
+
+// Bind auth routes
+app.on(["POST", "GET"], "/auth/*", (c) => {
+  return auth.handler(c.req.raw);
+});
 
 const server = serve(app, ({ address, port }) => {
   logger.info(`Server listening on ${address}:${port}`);
