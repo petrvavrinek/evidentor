@@ -1,0 +1,18 @@
+services:
+  # Local database for development
+  database:
+    image: postgres:17.5
+    env_file:
+      - .env
+      - .env.example
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASS
+      - POSTGRES_DB=$DB_NAME
+    volumes:
+      - database:/var/lib/postgresql/data
+    
+volumes:
+  database:
