@@ -2,11 +2,24 @@
   "name": "@evidentor/api",
   "version": "0.0.1",
   "description": "API for evidentor project",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
   "author": "Petr Vavřínek",
   "license": "ISC",
-  "packageManager": "pnpm@10.9.0"
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "keywords": [
+    "nodejs",
+    "api",
+    "backend"
+  ],
+  "packageManager": "pnpm@10.9.0",
+  "devDependencies": {
+    "esbuild": "0.25.5",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "pino": "^9.7.0",
+    "pino-pretty": "^13.0.0"
+  }
 }

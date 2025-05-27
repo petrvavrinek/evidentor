@@ -2,11 +2,21 @@
   "name": "evidentor",
   "version": "0.0.1",
   "description": "Evidentor monorepo contaning API service, frontend and more",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": ["nodejs", "node", "api", "monorepo"],
   "author": "Petr Vavřínek",
   "license": "ISC",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint"
+  },
+  "keywords": [
+    "nodejs",
+    "node",
+    "api",
+    "monorepo"
+  ],
+  "devDependencies": {
+    "turbo": "^2.5.3"
+  },
   "packageManager": "pnpm@10.9.0"
 }
