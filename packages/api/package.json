@@ -6,7 +6,8 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "dev": "tsx ./src/main.ts -w"
   },
   "keywords": [
     "nodejs",
@@ -16,9 +17,12 @@
   "packageManager": "pnpm@10.9.0",
   "devDependencies": {
     "esbuild": "0.25.5",
+    "tsx": "^4.19.4",
     "typescript": "5.8.3"
   },
   "dependencies": {
+    "@hono/node-server": "^1.14.3",
+    "hono": "4.7.10",
     "pino": "^9.7.0",
     "pino-pretty": "^13.0.0"
   }
