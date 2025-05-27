@@ -17,6 +17,9 @@ importers:
       '@hono/node-server':
         specifier: ^1.14.3
         version: 1.14.3(hono@4.7.10)
+      '@hono/swagger-ui':
+        specifier: ^0.5.1
+        version: 0.5.1(hono@4.7.10)
       '@sinclair/typebox':
         specifier: ^0.34.33
         version: 0.34.33
@@ -207,6 +210,11 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
+
+  '@hono/swagger-ui@0.5.1':
+    resolution: {integrity: sha512-XpUCfszLJ9b1rtFdzqOSHfdg9pfBiC2J5piEjuSanYpDDTIwpMz0ciiv5N3WWUaQpz9fEgH8lttQqL41vIFuDA==}
+    peerDependencies:
+      hono: '*'
 
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
@@ -523,6 +531,10 @@ snapshots:
     optional: true
 
   '@hono/node-server@1.14.3(hono@4.7.10)':
+    dependencies:
+      hono: 4.7.10
+
+  '@hono/swagger-ui@0.5.1(hono@4.7.10)':
     dependencies:
       hono: 4.7.10
 
