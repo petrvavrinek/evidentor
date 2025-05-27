@@ -1,11 +1,11 @@
 {
-  "name": "evidentor",
+  "name": "@evidentor/api",
   "version": "0.0.1",
-  "description": "Evidentor monorepo contaning API service, frontend and more",
+  "description": "API for evidentor project",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["nodejs", "node", "api", "monorepo"],
+  "keywords": [],
   "author": "Petr Vavřínek",
   "license": "ISC",
   "packageManager": "pnpm@10.9.0"
