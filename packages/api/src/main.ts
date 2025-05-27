@@ -1,59 +1,38 @@
-import { serve } from "@hono/node-server";
-import { swaggerUI } from "@hono/swagger-ui";
-import { Hono } from "hono";
-import { openAPISpecs } from "hono-openapi";
+import { Elysia } from "elysia";
+import { swagger } from "@elysiajs/swagger";
+
+import { OpenAPI } from "./auth.openapi";
 import logger from "./logger";
 
-import { userApp } from "./routers/user.router";
-import env from "./env";
+import { auth } from "./auth";
 
-import { type AuthType, auth } from "./auth";
-
-const app = new Hono<{ Bindings: AuthType }>().route("/user", userApp);
-
-// Bind auth routes
-app.on(["POST", "GET"], "/auth/*", (c) => {
-  return auth.handler(c.req.raw);
-});
-
-const server = serve(app, ({ address, port }) => {
-  logger.info(`Server listening on ${address}:${port}`);
-});
-
-if (env.IsDevelopment) {
-  app.use(
-    "/openapi",
-    openAPISpecs(app, {
+const app = new Elysia()
+  .mount(auth.handler)
+  .use(
+    swagger({
       documentation: {
-        info: {
-          title: "Evidentor API",
-          version: "0.0.1",
-        },
+        components: await OpenAPI.components,
+        paths: await OpenAPI.getPaths(),
       },
     })
-  );
-  logger.info("OpenAPI registered");
+  )
+  .get("/", (c) => {
+    return "OK";
+  })
+  .listen(3000);
 
-  app.use("/openapi/ui", swaggerUI({ url: "/openapi" }));
-  logger.info("Swagger endpoint registered");
-}
+logger.info("Server running at 3000");
 
 // According to docs: graceful shutdown
 // Source: https://hono.dev/docs/getting-started/nodejs
 process.on("SIGINT", () => {
   logger.info("Closing server");
-  server.close();
+  app.stop(true);
   process.exit(0);
 });
 process.on("SIGTERM", () => {
-  server.close((err) => {
-    logger.error(`Closing server due to error ${err}`);
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    process.exit(0);
-  });
+  app.stop(true);
+  process.exit(0);
 });
 
 export type AppType = typeof app;
