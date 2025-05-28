@@ -1,27 +1,29 @@
-import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
+import { Elysia } from "elysia";
+import pkg from "../package.json";
 
 import { OpenAPI } from "./auth.openapi";
+import env from "./env";
 import logger from "./logger";
-
-import { auth } from "./auth";
+import { timerRouter } from "./routers";
 
 const app = new Elysia()
-  .mount(auth.handler)
+  .use(timerRouter)
   .use(
     swagger({
       documentation: {
         components: await OpenAPI.components,
         paths: await OpenAPI.getPaths(),
+        info: {
+          title: "Evidentor API",
+          version: pkg.version,
+        },
       },
     })
   )
-  .get("/", (c) => {
-    return "OK";
-  })
-  .listen(3000);
+  .listen(env.PORT);
 
-logger.info("Server running at 3000");
+logger.info(`Server running at :${env.PORT}`);
 
 // According to docs: graceful shutdown
 // Source: https://hono.dev/docs/getting-started/nodejs

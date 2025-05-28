@@ -7,8 +7,8 @@
   "type": "module",
   "scripts": {
     "start": "bun ./src/main.ts",
-    "dev": "bun ./src/main.ts --watch",
-    "gen:authschema": "bun @better-auth/cli@latest generate --output ./src/db/auth.schema.ts",
+    "dev": "bun --watch ./src/main.ts",
+    "gen:authschema": "bun @better-auth/cli generate --output ./src/db/auth.schema.ts",
     "migration:generate": "drizzle-kit generate",
     "migration:apply": "drizzle-kit migrate"
   },
@@ -19,9 +19,10 @@
   ],
   "packageManager": "pnpm@10.9.0",
   "devDependencies": {
+    "@better-auth/cli": "^1.2.8",
     "@types/pg": "^8.15.2",
-    "drizzle-kit": "^0.31.1",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "drizzle-kit": "^0.31.1"
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.3.0",

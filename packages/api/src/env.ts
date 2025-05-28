@@ -7,6 +7,7 @@ const EnvSchema = Type.Object({
   IsDevelopment: Type.Boolean({
     default: process.env.NODE_ENV !== "production",
   }),
+  PORT: Type.Number({ default: process.env.PORT ?? 3000 }),
   DB_HOST: Type.String(),
   DB_PORT: Type.Number({ default: process.env.DB_PORT }),
   DB_USER: Type.String(),
