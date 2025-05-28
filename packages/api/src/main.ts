@@ -2,9 +2,10 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import pkg from "../package.json";
 
-import { OpenAPI } from "./auth.openapi";
+import { OpenAPI } from "./auth/auth.openapi";
 import env from "./env";
 import logger from "./logger";
+
 import { timerRouter } from "./routers";
 
 const app = new Elysia()

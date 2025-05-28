@@ -5,6 +5,7 @@ export const timeEntry = pgTable(
   "time_entry",
   {
     id: integer().generatedAlwaysAsIdentity().primaryKey(),
+    title: text(),
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),

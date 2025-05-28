@@ -29,6 +29,7 @@
     "better-auth": "^1.2.8",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
+    "drizzle-typebox": "^0.3.3",
     "elysia": "latest",
     "pg": "8.16.0",
     "pino": "^9.7.0",
