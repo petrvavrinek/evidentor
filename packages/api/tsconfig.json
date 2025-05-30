@@ -2,7 +2,7 @@
   "compilerOptions": {
     "alwaysStrict": true,
     "strict": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",

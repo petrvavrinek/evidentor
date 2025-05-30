@@ -1,5 +1,5 @@
 import { t } from "elysia";
-import { timeEntry } from "../db/schema";
+import { timeEntry } from "../../db/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 
 export const CreateTimeEntry = createInsertSchema(timeEntry, {

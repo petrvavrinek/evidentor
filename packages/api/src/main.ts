@@ -6,10 +6,10 @@ import { OpenAPI } from "./auth/auth.openapi";
 import env from "./env";
 import logger from "./logger";
 
-import { timerRouter } from "./routers";
+import { routers } from './routers';
 
 const app = new Elysia()
-  .use(timerRouter)
+  .use(...routers)
   .use(
     swagger({
       documentation: {

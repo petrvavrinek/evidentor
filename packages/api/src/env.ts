@@ -1,18 +1,22 @@
 import "dotenv/config";
 
-import { Type } from "@sinclair/typebox";
-import { Value } from "@sinclair/typebox/value";
+import { getSchemaValidator, t } from "elysia";
 
-const EnvSchema = Type.Object({
-  IsDevelopment: Type.Boolean({
-    default: process.env.NODE_ENV !== "production",
-  }),
-  PORT: Type.Number({ default: process.env.PORT ?? 3000 }),
-  DB_HOST: Type.String(),
-  DB_PORT: Type.Number({ default: process.env.DB_PORT }),
-  DB_USER: Type.String(),
-  DB_PASS: Type.String(),
-  DB_NAME: Type.String(),
+const IsDevelopmentMode = process.env.NODE_ENV !== "production";
+
+const EnvSchema = t.Object({
+  IsDevelopment: t.Optional(t.Boolean({ default: IsDevelopmentMode })),
+  PORT: t.Number(),
+  DB_HOST: t.String(),
+  DB_PORT: t.Number(),
+  DB_USER: t.String(),
+  DB_PASS: t.String(),
+  DB_NAME: t.String(),
 });
 
-export default Value.Parse(EnvSchema, process.env);
+const validator = getSchemaValidator(EnvSchema, {
+  additionalProperties: true,
+  coerce: true,
+});
+
+export default validator.Decode<typeof EnvSchema.static>(process.env);

@@ -1,14 +1,14 @@
-import { Elysia, status, t } from "elysia";
-import { betterAuth } from "../auth/auth.middleware";
-import { db } from "../database";
+import { and, eq } from "drizzle-orm";
+import { Elysia, status } from "elysia";
+
+import { betterAuth } from "../../auth/auth.middleware";
+import { db } from "../../database";
+import { timeEntry } from "../../db/schema";
 import {
   CreateTimeEntry,
   TimeEntryIdParam,
-  TimeEntryResponse,
   UpdateTimeEntry,
-} from "../dtos/timer.dtos";
-import { timeEntry } from "../db/schema";
-import { and, eq } from "drizzle-orm";
+} from "./time-entries.dto";
 
 export const timerRouter = new Elysia({
   prefix: "/v1/time-entry",
@@ -39,7 +39,7 @@ export const timerRouter = new Elysia({
           },
         },
       },
-      auth: true
+      auth: true,
     }
   )
   .get(
