@@ -23,6 +23,7 @@ export const timeEntry = pgTable(
 export const client = pgTable("client", {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),
   name: text(),
+  ownerId: text().references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at")
     .$defaultFn(() => new Date())
     .notNull(),
@@ -31,11 +32,22 @@ export const client = pgTable("client", {
 export const project = pgTable("project", {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),
   title: integer(),
+  ownerId: text().references(() => user.id, { onDelete: "cascade" }),
   clientId: integer().references(() => client.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
 });
 
 export const projectRelations = relations(project, ({ one }) => ({
-  client: one(project),
+  client: one(client, {
+    fields: [project.clientId],
+    references: [client.id],
+  }),
+  owner: one(user, {
+    fields: [project.ownerId],
+    references: [user.id]
+  }),
 }));
 
 export * from "./auth.schema";

@@ -36,6 +36,20 @@
       "when": 1748623444522,
       "tag": "0004_create_project_table",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1748623604645,
+      "tag": "0005_update_project_add_owner_ref",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1748623927210,
+      "tag": "0006_update_project_add_owner_ref",
+      "breakpoints": true
     }
   ]
 }
