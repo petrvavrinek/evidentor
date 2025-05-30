@@ -74,7 +74,6 @@ export const router = new Elysia({
     ":id",
     async ({ params, body, user }) => {
       const { id } = params;
-
       const updatedClient = await db
         .update(client)
         .set(body)

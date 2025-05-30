@@ -50,6 +50,13 @@
       "when": 1748623927210,
       "tag": "0006_update_project_add_owner_ref",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1748626103637,
+      "tag": "0007_update_project_set_title_text_type",
+      "breakpoints": true
     }
   ]
 }

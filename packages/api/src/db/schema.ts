@@ -31,7 +31,7 @@ export const client = pgTable("client", {
 
 export const project = pgTable("project", {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),
-  title: integer(),
+  title: text(),
   ownerId: text().references(() => user.id, { onDelete: "cascade" }),
   clientId: integer().references(() => client.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at")
