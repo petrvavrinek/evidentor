@@ -22,6 +22,20 @@
       "when": 1748445023859,
       "tag": "0002_update_time_entry_add_title",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1748623262430,
+      "tag": "0003_create_client_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1748623444522,
+      "tag": "0004_create_project_table",
+      "breakpoints": true
     }
   ]
 }
