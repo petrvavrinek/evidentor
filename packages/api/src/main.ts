@@ -6,23 +6,24 @@ import { OpenAPI } from "./auth/auth.openapi";
 import env from "./env";
 import logger from "./logger";
 
-import { routers } from './routers';
+import { routers } from "./routers";
 
-const app = new Elysia()
-  .use(...routers)
-  .use(
-    swagger({
-      documentation: {
-        components: await OpenAPI.components,
-        paths: await OpenAPI.getPaths(),
-        info: {
-          title: "Evidentor API",
-          version: pkg.version,
-        },
+const app = new Elysia().use(
+  swagger({
+    documentation: {
+      components: await OpenAPI.components,
+      paths: await OpenAPI.getPaths(),
+      info: {
+        title: "Evidentor API",
+        version: pkg.version,
       },
-    })
-  )
-  .listen(env.PORT);
+    },
+  })
+);
+
+for (const router of routers) app.use(router);
+
+app.listen(env.PORT);
 
 logger.info(`Server running at :${env.PORT}`);
 

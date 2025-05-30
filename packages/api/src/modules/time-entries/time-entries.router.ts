@@ -10,7 +10,7 @@ import {
   UpdateTimeEntry,
 } from "./time-entries.dto";
 
-export const timerRouter = new Elysia({
+export const router = new Elysia({
   prefix: "/v1/time-entry",
   detail: { tags: ["Timer"] },
 })
