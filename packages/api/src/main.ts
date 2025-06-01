@@ -1,6 +1,7 @@
+import pkg from "../package.json";
+
 import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
-import pkg from "../package.json";
 
 import { OpenAPI } from "./auth/auth.openapi";
 import env from "./env";

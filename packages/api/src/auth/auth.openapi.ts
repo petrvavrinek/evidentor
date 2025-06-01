@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { openAPI } from 'better-auth/plugins'
 import { auth } from '../auth'
-
 
 let _schema: ReturnType<typeof auth.api.generateOpenAPISchema>
 // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
