@@ -1,9 +1,8 @@
 import Elysia, { status } from "elysia";
-import { db } from "../../database";
+
 import { betterAuth } from "../../auth/index";
-import { client } from "../../db/schema";
-import { and, eq } from "drizzle-orm";
 import { ClientIdParam, CreateClient, UpdateClient } from "./clients.dto";
+import { ClientsService } from "./clients.service";
 
 export const router = new Elysia({
   prefix: "/v1/client",
@@ -13,10 +12,7 @@ export const router = new Elysia({
   .get(
     "",
     async ({ user }) => {
-      const clients = await db.query.client.findMany({
-        where: eq(client.ownerId, user.id),
-      });
-      return clients;
+      return ClientsService.findManyByUserId(user.id);
     },
     {
       auth: true,
@@ -28,19 +24,8 @@ export const router = new Elysia({
   .post(
     "",
     async (c) => {
-      const { name } = c.body;
-      const { user } = c;
-
-      const newClient = await db
-        .insert(client)
-        .values({
-          name,
-          ownerId: user.id,
-        })
-        .returning();
-
-      if (!newClient.length) return status(500, "Internal Server Error");
-      return newClient[0];
+      const { user, body } = c;
+      return ClientsService.create(user.id, body);
     },
     {
       auth: true,
@@ -55,9 +40,7 @@ export const router = new Elysia({
     async ({ params, user }) => {
       const { id } = params;
 
-      const foundClient = await db.query.client.findFirst({
-        where: and(eq(client.id, id), eq(client.ownerId, user.id)),
-      });
+      const foundClient = await ClientsService.findById(user.id, id);
 
       if (!foundClient) return status(404, "Client not found");
       return foundClient;
@@ -74,14 +57,11 @@ export const router = new Elysia({
     ":id",
     async ({ params, body, user }) => {
       const { id } = params;
-      const updatedClient = await db
-        .update(client)
-        .set(body)
-        .where(and(eq(client.id, id), eq(client.ownerId, user.id)))
-        .returning();
+
+      const updatedClient = await ClientsService.updateById(user.id, id, body);
 
       if (!updatedClient) return status(404, "Client not found");
-      return updatedClient[0];
+      return updatedClient;
     },
     {
       auth: true,
@@ -97,9 +77,7 @@ export const router = new Elysia({
     async ({ params, user }) => {
       const { id } = params;
 
-      await db
-        .delete(client)
-        .where(and(eq(client.id, id), eq(client.ownerId, user.id)));
+      await ClientsService.deleteById(user.id, id);
     },
     {
       auth: true,

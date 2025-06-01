@@ -1,9 +1,9 @@
-import { and, eq } from "drizzle-orm";
 import Elysia, { status } from "elysia";
 import { betterAuth } from "../../auth/index";
-import { db } from "../../database";
-import { project } from "../../db/schema";
 import { CreateProject, ProjectIdParam, UpdateProject } from "./projects.dto";
+
+import { ClientsService } from "../clients/clients.service";
+import { ProjectsService } from "./projects.service";
 
 export const router = new Elysia({
   prefix: "/v1/project",
@@ -13,10 +13,7 @@ export const router = new Elysia({
   .get(
     "",
     async ({ user }) => {
-      const projects = await db.query.project.findMany({
-        where: eq(project.ownerId, user.id),
-      });
-      return projects;
+      return ProjectsService.findManyByUserId(user.id);
     },
     {
       auth: true,
@@ -31,19 +28,11 @@ export const router = new Elysia({
       const { title, clientId } = c.body;
       const { user } = c;
 
-      // TODO: Client ID
+      // Check if client is user-defined client
+      const client = await ClientsService.findById(user.id, clientId);
+      if (!client) return status(400, "Client not found");
 
-      const newProject = await db
-        .insert(project)
-        .values({
-          title,
-          clientId,
-          ownerId: user.id,
-        })
-        .returning();
-
-      if (!newProject.length) return status(500, "Internal Server Error");
-      return newProject[0];
+      return ProjectsService.create(user.id, { title, clientId });
     },
     {
       auth: true,
@@ -58,9 +47,7 @@ export const router = new Elysia({
     async ({ params, user }) => {
       const { id } = params;
 
-      const foundProject = await db.query.project.findFirst({
-        where: and(eq(project.id, id), eq(project.ownerId, user.id)),
-      });
+      const foundProject = await ProjectsService.findById(user.id, id);
 
       if (!foundProject) return status(404, "Project not found");
       return foundProject;
@@ -77,14 +64,15 @@ export const router = new Elysia({
     ":id",
     async ({ params, body, user }) => {
       const { id } = params;
-      const updatedProject = await db
-        .update(project)
-        .set(body)
-        .where(and(eq(project.id, id), eq(project.ownerId, user.id)))
-        .returning();
 
-      if (!updatedProject.length) return status(404, "Project not found");
-      return updatedProject[0];
+      const updatedProject = await ProjectsService.updateById(
+        user.id,
+        id,
+        body
+      );
+
+      if (!updatedProject) return status(404, "Project not found");
+      return updatedProject;
     },
     {
       auth: true,
@@ -100,9 +88,7 @@ export const router = new Elysia({
     async ({ params, user }) => {
       const { id } = params;
 
-      await db
-        .delete(project)
-        .where(and(eq(project.id, id), eq(project.ownerId, user.id)));
+      await ProjectsService.deleteById(user.id, id);
     },
     {
       auth: true,

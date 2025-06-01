@@ -1,14 +1,11 @@
-import { and, eq } from "drizzle-orm";
 import { Elysia, status } from "elysia";
-
 import { betterAuth } from "../../auth/auth.middleware";
-import { db } from "../../database";
-import { timeEntry } from "../../db/schema";
 import {
   CreateTimeEntry,
   TimeEntryIdParam,
   UpdateTimeEntry,
 } from "./time-entries.dto";
+import { TimeEntriesService } from "./time-entries.service";
 
 export const router = new Elysia({
   prefix: "/v1/time-entry",
@@ -18,11 +15,7 @@ export const router = new Elysia({
   .get(
     "/active",
     async ({ user }) => {
-      const entry = await db.query.timeEntry.findFirst({
-        where: ({ userId, endAt }, { eq, isNull, and }) =>
-          and(eq(userId, user.id), isNull(endAt)),
-      });
-
+      const entry = await TimeEntriesService.getActiveByUserId(user.id);
       if (entry) return status(200, entry);
       return status(404);
     },
@@ -45,10 +38,7 @@ export const router = new Elysia({
   .get(
     ":id",
     async ({ user, params: { id } }) => {
-      const entry = await db.query.timeEntry.findFirst({
-        where: (schema, { eq, isNull, and }) =>
-          and(eq(schema.userId, user.id), eq(schema.id, id)),
-      });
+      const entry = await TimeEntriesService.findById(user.id, id);
 
       if (!entry) return status(404, "Time entry not found");
       return entry;
@@ -72,23 +62,7 @@ export const router = new Elysia({
   .post(
     "",
     async ({ user, body }) => {
-      if (!body.endAt) {
-        const entry = await db.query.timeEntry.findFirst({
-          where: ({ userId, endAt }, { eq, isNull, and }) =>
-            and(eq(userId, user.id), isNull(endAt)),
-        });
-        if (entry) return status(409, "Running time entry already exist");
-      }
-
-      const [entry] = await db
-        .insert(timeEntry)
-        .values({
-          userId: user.id,
-          endAt: body.endAt,
-          startAt: body.startAt,
-          title: body.title,
-        })
-        .returning();
+      const entry = await TimeEntriesService.create(user.id, body);
       return entry;
     },
     {
@@ -110,15 +84,9 @@ export const router = new Elysia({
   .patch(
     ":id",
     async ({ user, params: { id }, body }) => {
-      const entry = await db
-        .update(timeEntry)
-        .set(body)
-        .where(and(eq(timeEntry.id, id), eq(timeEntry.userId, user.id)))
-        .returning();
-
-      if (!entry.length) return status(404, "Time entry not found");
-
-      return entry[0];
+      const entry = await TimeEntriesService.updateById(user.id, id, body);
+      if (!entry) return status(404, "Time entry not found");
+      return entry;
     },
     {
       params: TimeEntryIdParam,
