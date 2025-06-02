@@ -6,6 +6,7 @@ export const CreateTimeEntry = createInsertSchema(timeEntry, {
   startAt: t.Date(),
   endAt: t.Nullable(t.Optional(t.Date())),
   title: t.String(),
+  projectId: t.Nullable(t.Optional(t.Number())),
 });
 
 export const UpdateTimeEntry = t.Partial(CreateTimeEntry);

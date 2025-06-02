@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../database";
-import { timeEntry } from "../../db/schema";
+import { timeEntry, user } from "../../db/schema";
+import { ProjectsService } from "../projects/projects.service";
 
 type TimeEntry = typeof timeEntry.$inferSelect;
 
@@ -72,6 +73,11 @@ export const TimeEntriesService = {
    * @throws User already has active time entry
    */
   async create(userId: string, data: Partial<TimeEntry>) {
+    if (data.projectId) {
+      const project = await ProjectsService.findById(userId, data.projectId);
+      if (!project) throw new Error("Project is not accessible by user");
+    }
+
     if (data.endAt) {
       const active = await this.getActiveByUserId(userId);
       if (!active) throw new Error("User already has active time entry");
