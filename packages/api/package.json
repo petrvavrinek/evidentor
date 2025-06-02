@@ -10,7 +10,8 @@
     "dev": "bun --watch ./src/main.ts",
     "gen:authschema": "bun @better-auth/cli generate --output ./src/db/auth.schema.ts",
     "migration:generate": "drizzle-kit generate",
-    "migration:apply": "drizzle-kit migrate"
+    "migration:apply": "drizzle-kit migrate",
+    "drizzle:studio": "drizzle-kit studio"
   },
   "keywords": [
     "nodejs",

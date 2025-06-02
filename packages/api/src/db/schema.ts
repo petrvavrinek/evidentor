@@ -7,24 +7,32 @@ export const timeEntry = pgTable(
   {
     id: integer().generatedAlwaysAsIdentity().primaryKey(),
     title: text(),
-    userId: text("user_id")
+    userId: text()
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    startAt: timestamp("start_at"),
-    endAt: timestamp("end_at"),
-    createdAt: timestamp("created_at")
+    projectId: integer().references(() => project.id, { onDelete: "set null" }),
+    startAt: timestamp(),
+    endAt: timestamp(),
+    createdAt: timestamp()
       .$defaultFn(() => new Date())
       .notNull(),
   },
   (t) => [index("timer_entry_user_idx").on(t.userId)]
 );
 
+export const timeEntryRelations = relations(timeEntry, ({ one }) => ({
+  project: one(project, {
+    fields: [timeEntry.projectId],
+    references: [project.id]
+  }),
+}));
+
 // Temp client data
 export const client = pgTable("client", {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),
   name: text(),
   ownerId: text().references(() => user.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at")
+  createdAt: timestamp()
     .$defaultFn(() => new Date())
     .notNull(),
 });
@@ -34,7 +42,7 @@ export const project = pgTable("project", {
   title: text(),
   ownerId: text().references(() => user.id, { onDelete: "cascade" }),
   clientId: integer().references(() => client.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at")
+  createdAt: timestamp()
     .$defaultFn(() => new Date())
     .notNull(),
 });
@@ -46,7 +54,7 @@ export const projectRelations = relations(project, ({ one }) => ({
   }),
   owner: one(user, {
     fields: [project.ownerId],
-    references: [user.id]
+    references: [user.id],
   }),
 }));
 

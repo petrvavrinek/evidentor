@@ -12,5 +12,6 @@ export default defineConfig({
     user: env.DB_USER,
     port: env.DB_PORT,
     ssl: false
-  }
+  },
+  casing: "snake_case"
 })
