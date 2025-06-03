@@ -1,5 +1,9 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import VersionTag from "@/components/version-tag";
 import config from "@/config/app";
 import type { Metadata } from "next";
@@ -20,9 +24,11 @@ export default function RootLayout({
       <body className="aliased">
         <SidebarProvider>
           <AppSidebar />
-          <main>
-            <SidebarTrigger className="m-2 size-10" />
-            {children}
+          <main className="w-full h-full">
+            <SidebarInset>
+              <SidebarTrigger className="m-2 size-10" />
+              {children}
+            </SidebarInset>
             <VersionTag />
           </main>
         </SidebarProvider>

@@ -1,6 +1,17 @@
 "use client";
 
 import {
+  Home,
+  Users,
+  FolderKanban,
+  Clock,
+  FileText,
+  BarChart3,
+  Calendar,
+  Settings,
+} from "lucide-react";
+
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -14,22 +25,48 @@ import config from "@/config/app";
 
 import { TypographyH1 } from "./ui/typography";
 import { NavUser } from "./nav-user";
-import { User } from "lucide-react";
 
 export function AppSidebar() {
+  const navigation = [
+    { name: "Dashboard", href: "/app", icon: Home, id: "dashboard" },
+    { name: "Clients", href: "/app/clients", icon: Users, id: "clients" },
+    {
+      name: "Projects",
+      href: "/app/projects",
+      icon: FolderKanban,
+      id: "projects",
+    },
+    {
+      name: "Time Tracker",
+      href: "/time-tracker",
+      icon: Clock,
+      id: "/app/time-tracker",
+    },
+    { name: "Invoices", href: "/app/invoices", icon: FileText, id: "invoices" },
+    { name: "Reports", href: "/app/reports", icon: BarChart3, id: "reports" },
+    { name: "Calendar", href: "/app#", icon: Calendar, id: "calendar" },
+    { name: "Settings", href: "/app/settings", icon: Settings, id: "settings" },
+  ];
+
   return (
-    <Sidebar>
+    <Sidebar variant="inset">
       <SidebarHeader>
-        <TypographyH1 className="mt-2">{config.AppName}</TypographyH1>
+        <TypographyH1 className="my-4">{config.AppName}</TypographyH1>
       </SidebarHeader>
       <SidebarSeparator />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
-            <SidebarMenuButton tooltip="Tooltip">
-              <User />
-              <span>Test user button</span>
-            </SidebarMenuButton>
+            {navigation.map((e) => (
+              <SidebarMenuButton
+                className="cursor-pointer"
+                key={e.id}
+                isActive={location.pathname == e.href}
+              >
+                <e.icon />
+                <span>{e.name}</span>
+              </SidebarMenuButton>
+            ))}
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup />
