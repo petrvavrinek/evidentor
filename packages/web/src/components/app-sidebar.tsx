@@ -50,7 +50,7 @@ export function AppSidebar() {
     },
     { name: "Invoices", href: "/app/invoices", icon: FileText, id: "invoices" },
     { name: "Reports", href: "/app/reports", icon: BarChart3, id: "reports" },
-    { name: "Calendar", href: "/app#", icon: Calendar, id: "calendar" },
+    { name: "Calendar", href: "/app/calendar", icon: Calendar, id: "calendar" },
     { name: "Settings", href: "/app/settings", icon: Settings, id: "settings" },
   ];
 
