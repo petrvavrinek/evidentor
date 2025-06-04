@@ -1,3 +1,5 @@
+"use client";
+
 import TestCard from "@/components/test-card";
 
 export default function Home() {

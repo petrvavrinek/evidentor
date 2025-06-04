@@ -56,7 +56,10 @@ export function AppSidebar() {
   return (
     <Sidebar variant="sidebar">
       <SidebarHeader>
-        <TypographyH1 className="my-4">{config.AppName}</TypographyH1>
+        <TypographyH1 className="my-4 flex justify-center items-center">
+          <Clock className="mr-2" size={32}/>
+          <span>{config.AppName}</span>
+        </TypographyH1>
       </SidebarHeader>
       <SidebarSeparator className="w-auto" />
       <SidebarContent>
