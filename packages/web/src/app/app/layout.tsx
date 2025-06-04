@@ -1,14 +1,10 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import VersionTag from "@/components/version-tag";
 import config from "@/config/app";
 import type { Metadata } from "next";
 import "../globals.css";
-import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
   title: `${config.AppName} | App`,

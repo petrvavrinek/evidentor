@@ -33,9 +33,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MoreHorizontal, Plus, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Sample client data
 const initialClients = [
@@ -136,7 +135,6 @@ const initialClients = [
 
 export default function ClientsPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState("");
 
   return (
     <div className="flex-1 p-4 md:p-6 md:ml-0">
@@ -258,6 +256,4 @@ export default function ClientsPage() {
       </Card>
     </div>
   );
-
-  return <div>Clients</div>;
 }
