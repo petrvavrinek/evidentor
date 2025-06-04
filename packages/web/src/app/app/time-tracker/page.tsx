@@ -1,5 +1,6 @@
 "use client";
 
+import TimeEntriesTable from "@/components/time-entries/time-entries-table";
 import ManualTimeEntry from "@/components/time-tracker/manual-time-entry";
 import Stopwatch from "@/components/time-tracker/stopwatch";
 import {
@@ -33,6 +34,20 @@ const loadTasks = async (project: Project): Promise<Task[]> => {
     { id: 3, title: "P2 Task 2", note: "Note 2" },
   ];
 };
+
+const timeEntries = [
+  {
+    project: {
+      id: 1,
+      title: "Project 1",
+    },
+    task: {
+      id: 1,
+      title: "Task 1",
+      note: "Task note",
+    },
+  },
+];
 
 export default function TimeTrackerPage() {
   const [currentTab, setCurrentTab] = useState("stopwatch");
@@ -74,7 +89,9 @@ export default function TimeTrackerPage() {
           <CardTitle>Recent Time Entries</CardTitle>
           <CardDescription>Your recent tracked time</CardDescription>
         </CardHeader>
-        <CardContent>Content</CardContent>
+        <CardContent>
+          <TimeEntriesTable timeEntries={timeEntries} />
+        </CardContent>
       </Card>
     </div>
   );

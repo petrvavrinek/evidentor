@@ -1,5 +1,9 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { Project } from "@/schemas/project.schema";
+import { Task } from "@/schemas/task.schema";
+import { format } from "date-fns";
 import { CalendarIcon, Clock } from "lucide-react";
 import { useMemo, useState } from "react";
 import { TimeInput } from "../time-input";
@@ -7,12 +11,6 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-
-import { cn } from "@/lib/utils";
-import { Project } from "@/schemas/project.schema";
-import { Task } from "@/schemas/task.schema";
-import { format } from "date-fns";
-import { ProjectSelect } from "../project-select";
 import { Textarea } from "../ui/textarea";
 import ProjectTaskSelect from "./project-task-select";
 
@@ -48,10 +46,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={cn(
-                "w-full justify-start text-left font-normal"
-                // errors.date && "border-destructive"
-              )}
+              className={cn("w-full justify-start text-left font-normal")}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {date ? format(date, "PPP") : <span>Pick a date</span>}
