@@ -40,18 +40,16 @@ export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
         />
       </div>
 
-      {selectedProject ? (
-        <div className="space-y-2">
-          <Label htmlFor="task">Task</Label>
-          <TaskSelect
-            disabled={props.disabled}
-            key={selectedProject.id}
-            id="task"
-            load={loadTasks}
-            onSelect={onTaskSelect}
-          />
-        </div>
-      ) : null}
+      <div className="space-y-2">
+        <Label htmlFor="task">Task</Label>
+        <TaskSelect
+          disabled={props.disabled || !selectedProject}
+          key={selectedProject?.id}
+          id="task"
+          load={loadTasks}
+          onSelect={onTaskSelect}
+        />
+      </div>
     </>
   );
 }

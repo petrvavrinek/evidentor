@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  Home,
-  Users,
-  FolderKanban,
-  Clock,
-  FileText,
   BarChart3,
   Calendar,
+  Clock,
+  FileText,
+  FolderKanban,
+  Home,
   Settings,
+  Users,
 } from "lucide-react";
 
 import {
@@ -20,17 +20,18 @@ import {
   SidebarHeader,
   SidebarMenuButton,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import config from "@/config/app";
 
-import { TypographyH1 } from "./ui/typography";
-import { NavUser } from "./nav-user";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { NavUser } from "./nav-user";
+import { TypographyH1 } from "./ui/typography";
 
 export function AppSidebar() {
   const currentPathname = usePathname();
+  const sidebar = useSidebar();
 
   const navigation = [
     { name: "Dashboard", href: "/app", icon: Home, id: "dashboard" },
@@ -57,7 +58,7 @@ export function AppSidebar() {
     <Sidebar variant="sidebar">
       <SidebarHeader>
         <TypographyH1 className="my-4 flex justify-center items-center">
-          <Clock className="mr-2" size={32}/>
+          <Clock className="mr-2" size={32} />
           <span>{config.AppName}</span>
         </TypographyH1>
       </SidebarHeader>
@@ -70,6 +71,7 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   className="cursor-pointer"
                   isActive={currentPathname == e.href}
+                  onClick={() => sidebar.setOpenMobile(false)}
                 >
                   <e.icon />
                   <span>{e.name}</span>
