@@ -1,7 +1,7 @@
 "use client";
 
-import ManualTimeEntry from "@/components/manual-time-entry";
-import Stopwatch from "@/components/stopwatch";
+import ManualTimeEntry from "@/components/time-tracker/manual-time-entry";
+import Stopwatch from "@/components/time-tracker/stopwatch";
 import {
   Card,
   CardContent,
@@ -11,8 +11,28 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Project } from "@/schemas/project.schema";
+import { Task } from "@/schemas/task.schema";
 import { Calendar, Clock } from "lucide-react";
 import { useState } from "react";
+
+const loadProjects = async (): Promise<Project[]> => {
+  await new Promise((res) => setTimeout(res, 500));
+  return [
+    { id: 1, title: "Project 1" },
+    { id: 2, title: "Project 2" },
+  ];
+};
+
+const loadTasks = async (project: Project): Promise<Task[]> => {
+  await new Promise((res) => setTimeout(res, 500));
+
+  if (project.id == 1) return [{ id: 1, title: "P1 Task", note: "Note" }];
+
+  return [
+    { id: 2, title: "P2 Task 1", note: "Note 1" },
+    { id: 3, title: "P2 Task 2", note: "Note 2" },
+  ];
+};
 
 export default function TimeTrackerPage() {
   const [currentTab, setCurrentTab] = useState("stopwatch");
@@ -37,29 +57,13 @@ export default function TimeTrackerPage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="stopwatch" className="mt-4">
-              <Stopwatch
-                loadProjects={async () => {
-                  await new Promise((res) => setTimeout(res, 500));
-                  return [
-                    { id: 1, title: "Project 1" },
-                    { id: 2, title: "Project 2" },
-                  ];
-                }}
-                loadTasks={async (project: Project) => {
-                  await new Promise((res) => setTimeout(res, 500));
-
-                  if(project.id == 1)
-                    return [{ id: 1, title: "P1 Task", note: "Note"}];
-
-                  return [
-                    { id: 2, title: "P2 Task 1", note: "Note 1" },
-                    { id: 3, title: "P2 Task 2", note: "Note 2" },
-                  ];
-                }}
-              />
+              <Stopwatch loadProjects={loadProjects} loadTasks={loadTasks} />
             </TabsContent>
             <TabsContent value="manual" className="mt-4">
-              <ManualTimeEntry />
+              <ManualTimeEntry
+                loadProjects={loadProjects}
+                loadTasks={loadTasks}
+              />
             </TabsContent>
           </Tabs>
         </CardContent>

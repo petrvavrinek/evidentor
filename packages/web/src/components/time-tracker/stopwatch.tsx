@@ -3,15 +3,14 @@
 import { formatTime } from "@/lib/format-time";
 import { Pause, Play, StopCircle } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Button } from "./ui/button";
-import { Card, CardContent } from "./ui/card";
-import { Label } from "./ui/label";
-import { Textarea } from "./ui/textarea";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 import { Project } from "@/schemas/project.schema";
 import { Task } from "@/schemas/task.schema";
-import { ProjectSelect } from "./project-select";
-import TaskSelect from "./task-select";
+import ProjectTaskSelect from "./project-task-select";
 
 interface StopwatchProps {
   loadProjects: () => Promise<Project[]>;
@@ -30,33 +29,19 @@ export default function Stopwatch(props: StopwatchProps) {
     [selectedProject, selectedTask]
   );
 
+  const onProjectTaskSelect = (project: Project, task: Task) => {
+    setSelectedProject(project);
+    setSelectedTask(task);
+  };
+
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="project">Project</Label>
-
-        <ProjectSelect
-          id="project"
-          load={props.loadProjects}
-          disabled={isRunning || isPaused}
-          onSelect={(project) => {
-            setSelectedProject(project);
-            setSelectedTask(undefined);
-          }}
-        />
-      </div>
-
-      {selectedProject ? (
-        <div className="space-y-2">
-          <Label htmlFor="task">Task {selectedProject.id}</Label>
-          <TaskSelect
-            key={selectedProject.id}
-            id="task"
-            load={() => props.loadTasks(selectedProject)}
-            onSelect={setSelectedTask}
-          />
-        </div>
-      ) : null}
+      <ProjectTaskSelect
+        disabled={isRunning || isPaused}
+        loadProjects={props.loadProjects}
+        loadTasks={props.loadTasks}
+        onSelect={onProjectTaskSelect}
+      />
 
       <div className="space-y-2">
         <Label htmlFor="notes">Notes</Label>

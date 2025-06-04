@@ -50,6 +50,10 @@ export default function TaskSelect(props: TaskSelectProps) {
       props.onSelect?.(data[selectedTaskIdx]);
   }, [selectedTaskIdx]);
 
+  useEffect(() => {
+    setSelectedTaskIdx(undefined);
+  }, [data]);
+
   if (loading) return <Skeleton className="rounded-md w-full h-[32px]" />;
 
   return (
