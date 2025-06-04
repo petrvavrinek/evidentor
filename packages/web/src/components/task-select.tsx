@@ -2,7 +2,7 @@
 
 import { useLoad } from "@/hooks/use-load";
 import { Task } from "@/schemas/task.schema";
-import { Key, useEffect, useState } from "react";
+import { Key, useCallback, useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -54,7 +54,7 @@ export default function TaskSelect(props: TaskSelectProps) {
     setSelectedTaskIdx(undefined);
   }, [data]);
 
-  if (loading) return <Skeleton className="rounded-md w-full h-[32px]" />;
+  if (loading) return <Skeleton className="rounded-md w-full h-[36px]" />;
 
   return (
     <Select
@@ -62,7 +62,7 @@ export default function TaskSelect(props: TaskSelectProps) {
       disabled={props.disabled || loading}
       onValueChange={(e) => setSelectedTaskIdx(Number.parseInt(e))}
     >
-      <SelectTrigger id={props.id ?? "task"} className="w-full">
+      <SelectTrigger id={props.id ?? "task"} className="w-full h-[36px]">
         <SelectValue placeholder="Select a task" />
       </SelectTrigger>
       <SelectContent>

@@ -54,7 +54,7 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
       props.onSelect?.(data[selectedProjectIdx]);
   }, [selectedProjectIdx]);
 
-  if (loading) return <Skeleton className="rounded-md w-full h-[32px]" />;
+  if (loading) return <Skeleton className="rounded-md w-full h-[36px]" />;
 
   return (
     <Select
@@ -64,7 +64,7 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
       disabled={props.disabled || loading}
       onValueChange={(e) => setSelectedProjectIdx(Number.parseInt(e))}
     >
-      <SelectTrigger id={props.id ?? "project"} className="w-full">
+      <SelectTrigger id={props.id ?? "project"} className="w-full h-[36px]">
         <SelectValue placeholder="Select a project" />
       </SelectTrigger>
       <SelectContent>
