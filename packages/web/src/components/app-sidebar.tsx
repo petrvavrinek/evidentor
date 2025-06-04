@@ -25,8 +25,13 @@ import config from "@/config/app";
 
 import { TypographyH1 } from "./ui/typography";
 import { NavUser } from "./nav-user";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar() {
+  const currentPathname = usePathname();
+
   const navigation = [
     { name: "Dashboard", href: "/app", icon: Home, id: "dashboard" },
     { name: "Clients", href: "/app/clients", icon: Users, id: "clients" },
@@ -38,9 +43,9 @@ export function AppSidebar() {
     },
     {
       name: "Time Tracker",
-      href: "/time-tracker",
+      href: "/app/time-tracker",
       icon: Clock,
-      id: "/app/time-tracker",
+      id: "time-tracker",
     },
     { name: "Invoices", href: "/app/invoices", icon: FileText, id: "invoices" },
     { name: "Reports", href: "/app/reports", icon: BarChart3, id: "reports" },
@@ -49,23 +54,24 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar variant="inset">
+    <Sidebar variant="sidebar">
       <SidebarHeader>
         <TypographyH1 className="my-4">{config.AppName}</TypographyH1>
       </SidebarHeader>
-      <SidebarSeparator />
+      <SidebarSeparator className="w-auto" />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
             {navigation.map((e) => (
-              <SidebarMenuButton
-                className="cursor-pointer"
-                key={e.id}
-                isActive={location.pathname == e.href}
-              >
-                <e.icon />
-                <span>{e.name}</span>
-              </SidebarMenuButton>
+              <Link href={e.href} key={e.id}>
+                <SidebarMenuButton
+                  className="cursor-pointer"
+                  isActive={currentPathname == e.href}
+                >
+                  <e.icon />
+                  <span>{e.name}</span>
+                </SidebarMenuButton>
+              </Link>
             ))}
           </SidebarGroupContent>
         </SidebarGroup>

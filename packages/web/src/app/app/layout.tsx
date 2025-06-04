@@ -8,6 +8,7 @@ import VersionTag from "@/components/version-tag";
 import config from "@/config/app";
 import type { Metadata } from "next";
 import "../globals.css";
+import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
   title: `${config.AppName} | App`,
@@ -22,15 +23,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="aliased">
-        <SidebarProvider>
+        <SidebarProvider
+          style={
+            {
+              "--sidebar-width": "calc(var(--spacing) * 72)",
+              "--header-height": "calc(var(--spacing) * 12)",
+            } as React.CSSProperties
+          }
+        >
           <AppSidebar />
-          <main className="w-full h-full">
-            <SidebarInset>
-              <SidebarTrigger className="m-2 size-10" />
-              {children}
-            </SidebarInset>
-            <VersionTag />
-          </main>
+          <SidebarInset>
+            <SiteHeader title="Test" />
+            <div className="p-2 h-full">{children}</div>
+          </SidebarInset>
+          <VersionTag />
         </SidebarProvider>
       </body>
     </html>

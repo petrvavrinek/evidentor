@@ -25,7 +25,7 @@ export function TypographyH2(props: HeadingProps) {
     <h2
       {...props}
       className={clsx(
-        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0",
         props.className
       )}
     >
