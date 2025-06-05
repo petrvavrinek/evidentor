@@ -69,7 +69,6 @@ export function AppSidebar() {
             {navigation.map((e) => (
               <Link href={e.href} key={e.id}>
                 <SidebarMenuButton
-                  className="cursor-pointer"
                   isActive={currentPathname == e.href}
                   onClick={() => sidebar.setOpenMobile(false)}
                 >

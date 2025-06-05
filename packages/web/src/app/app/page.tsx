@@ -1,8 +1,36 @@
 "use client";
 
+import SearchSuggest from "@/components/search-suggest";
 import TestCard from "@/components/test-card";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
+  const suggest = async (e: string) => {
+    await new Promise((res) => setTimeout(res, 100));
+
+    if(!e.trim().length)
+      return [];
+
+    if(e.length > 5) {
+      return [{
+        id: "id",
+        text: "Value!",
+      }]
+    }
+
+    return [
+      {
+        id: "id1",
+        text: "Value!",
+        subtext: "Value"
+      },
+      {
+        id: "id2",
+        text: "What?",
+      },
+    ];
+  };
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -13,6 +41,9 @@ export default function Home() {
             <TestCard />
             <TestCard />
           </div>
+
+          <SearchSuggest suggest={suggest} />
+          <Button>Test</Button>
         </div>
       </div>
     </div>
