@@ -102,13 +102,12 @@ export default function Calendar({ date, onDateSelect }: CalendarProps) {
 
         {Array.from({ length: daysInMonth }).map((_, index) => {
           const day = index + 1;
-          const dayEvents = [];
 
           return (
             <button
               key={day}
               className={cn(
-                "h-20 md:h-24 p-1 border rounded-lg hover:bg-muted/50 transition-colors flex flex-col",
+                "h-20 md:h-24 p-1 border rounded-lg hover:bg-muted/50 transition-colors flex flex-col !outline-none !focus:outline-0",
                 isToday(day) && "bg-primary/10 border-primary",
                 isSelected(day) && "bg-primary/30 border-primary",
                 "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
