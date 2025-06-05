@@ -6,7 +6,7 @@ interface EventProps {
   tag?: string;
 }
 
-export default function Event({ date, title, tag }: EventProps) {
+export default function EventRow({ date, title, tag }: EventProps) {
   return (
     <div
       key="event-id"

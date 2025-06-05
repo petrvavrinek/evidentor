@@ -1,5 +1,6 @@
 "use client";
 
+import PageHeader from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -137,32 +138,30 @@ export default function ClientsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="flex-1 p-4 md:p-6 md:ml-0">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Clients</h1>
-          <p className="text-muted-foreground">
-            Manage your client relationships
-          </p>
-        </div>
-        <Dialog open={false} onOpenChange={() => {}}>
-          <DialogTrigger asChild>
-            <Button className="mt-4 md:mt-0">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Client
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Add New Client</DialogTitle>
-              <DialogDescription>
-                Enter the details for the new client.
-              </DialogDescription>
-            </DialogHeader>
-            {/* <ClientForm onSubmit={handleAddClient} onCancel={() => setIsAddDialogOpen(false)} /> */}
-          </DialogContent>
-        </Dialog>
-      </div>
+    <>
+      <PageHeader
+        title="Clients"
+        subtitle="Manage your client relationships"
+        controls={
+          <Dialog open={false} onOpenChange={() => {}}>
+            <DialogTrigger asChild>
+              <Button className="mt-4 md:mt-0">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Client
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Add New Client</DialogTitle>
+                <DialogDescription>
+                  Enter the details for the new client.
+                </DialogDescription>
+              </DialogHeader>
+              {/* <ClientForm onSubmit={handleAddClient} onCancel={() => setIsAddDialogOpen(false)} /> */}
+            </DialogContent>
+          </Dialog>
+        }
+      />
 
       <div className="flex flex-col md:flex-row gap-4 my-5">
         <div className="relative flex-1">
@@ -254,6 +253,6 @@ export default function ClientsPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }

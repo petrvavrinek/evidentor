@@ -1,5 +1,4 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import VersionTag from "@/components/version-tag";
 import config from "@/config/app";
@@ -29,8 +28,9 @@ export default function RootLayout({
         >
           <AppSidebar />
           <SidebarInset>
-            <SiteHeader title="Test" />
-            <div className="p-2 h-full">{children}</div>
+            <div className="p-2 h-full">
+              <div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
+            </div>
           </SidebarInset>
           <VersionTag />
         </SidebarProvider>

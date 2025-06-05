@@ -10,6 +10,8 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
@@ -24,8 +26,6 @@ import {
 } from "@/components/ui/sidebar";
 import config from "@/config/app";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { NavUser } from "./nav-user";
 import { TypographyH1 } from "./ui/typography";
 

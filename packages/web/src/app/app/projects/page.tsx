@@ -1,5 +1,6 @@
 "use client";
 
+import PageHeader from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -40,31 +41,29 @@ export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="flex-1 p-4 md:p-6 md:ml-0">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Clients</h1>
-          <p className="text-muted-foreground">
-            Manage your projects and track progress
-          </p>
-        </div>
-        <Dialog open={false} onOpenChange={() => {}}>
-          <DialogTrigger asChild>
-            <Button className="mt-4 md:mt-0">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Project
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Add New Project</DialogTitle>
-              <DialogDescription>
-                Enter the details for new project.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      </div>
+    <>
+      <PageHeader
+        title="Projects"
+        subtitle="Manage your projects and track progress"
+        controls={
+          <Dialog open={false} onOpenChange={() => {}}>
+            <DialogTrigger asChild>
+              <Button className="mt-4 md:mt-0">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Project
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Add New Project</DialogTitle>
+                <DialogDescription>
+                  Enter the details for new project.
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        }
+      />
 
       <div className="flex flex-col md:flex-row gap-4 my-5">
         <div className="relative flex-1">
@@ -182,6 +181,6 @@ export default function ProjectsPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }

@@ -1,8 +1,9 @@
 "use client";
 
 import Calendar from "@/components/calendar";
-import Event from "@/components/calendar/event";
-import { Badge } from "@/components/ui/badge";
+import EventRow from "@/components/calendar/event-row";
+import PageHeader from "@/components/page-header";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -19,8 +20,10 @@ export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row gap-2">
+    <>
+      <PageHeader title="Calendar" subtitle="View and manage events" />
+
+      <div className="flex flex-col sm:flex-row gap-2 mb-4">
         <Dialog open={false}>
           <DialogTrigger asChild>
             <Button className="w-full sm:w-auto">
@@ -65,8 +68,16 @@ export default function CalendarPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Event title="Event title" date={currentDate} tag="No clue" />
-                <Event title="Event title 2" date={currentDate} tag="No clue" />
+                <EventRow
+                  title="Event title"
+                  date={currentDate}
+                  tag="No clue"
+                />
+                <EventRow
+                  title="Event title 2"
+                  date={currentDate}
+                  tag="No clue"
+                />
               </div>
             </CardContent>
           </Card>
@@ -77,13 +88,21 @@ export default function CalendarPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Event title="Event title" date={currentDate} tag="No clue" />
-                <Event title="Event title 2" date={currentDate} tag="No clue" />
+                <EventRow
+                  title="Event title"
+                  date={currentDate}
+                  tag="No clue"
+                />
+                <EventRow
+                  title="Event title 2"
+                  date={currentDate}
+                  tag="No clue"
+                />
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
+    </>
   );
 }
