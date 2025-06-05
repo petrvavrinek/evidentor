@@ -21,24 +21,27 @@ export default function CalendarPage() {
 
   return (
     <>
-      <PageHeader title="Calendar" subtitle="View and manage events" />
+      <PageHeader
+        title="Calendar"
+        subtitle="View and manage events"
+        controls={
+          <Dialog open={false}>
+            <DialogTrigger asChild>
+              <Button className="w-full sm:w-auto">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Event
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Add New Event</DialogTitle>
+              </DialogHeader>
+              {/* <EventForm onSubmit={handleAddEvent} selectedDate={selectedDate} /> */}
+            </DialogContent>
+          </Dialog>
+        }
+      />
 
-      <div className="flex flex-col sm:flex-row gap-2 mb-4">
-        <Dialog open={false}>
-          <DialogTrigger asChild>
-            <Button className="w-full sm:w-auto">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Event
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add New Event</DialogTitle>
-            </DialogHeader>
-            {/* <EventForm onSubmit={handleAddEvent} selectedDate={selectedDate} /> */}
-          </DialogContent>
-        </Dialog>
-      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Card>
