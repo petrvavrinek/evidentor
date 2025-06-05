@@ -1,12 +1,11 @@
 "use client";
 
-import { Search } from "lucide-react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import SearchInput from "./search-input";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface SearchSuggestionResult {
   id: string | number;

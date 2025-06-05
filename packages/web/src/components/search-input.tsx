@@ -4,6 +4,7 @@ import { Ref } from "react";
 
 type SearchInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   ref?: Ref<HTMLInputElement>;
+  containerClassName?: string;
 };
 
 /**
@@ -13,7 +14,7 @@ type SearchInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
  */
 export default function SearchInput(props: SearchInputProps) {
   return (
-    <div className="relative">
+    <div className={cn("relative", props.containerClassName)}>
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
       <input
         type="text"

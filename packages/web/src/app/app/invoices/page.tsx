@@ -1,4 +1,5 @@
 import PageHeader from "@/components/page-header";
+import SearchInput from "@/components/search-input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +12,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -20,26 +20,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MoreHorizontal, Search } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 export default function InvoicesPage() {
   return (
     <>
       <PageHeader title="Invoices" subtitle="Manage your invoices" />
-      <Card className="mb-6 w-full">
-        <CardContent className="p-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4" />
-              <Input
-                type="search"
-                placeholder="Search invoices..."
-                className="pl-8 w-full"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
+      <div className="flex flex-col md:flex-row gap-4 my-5">
+        <SearchInput
+          placeholder="Search invoices..."
+          className="pl-8 w-full"
+          containerClassName="flex-1"
+        />
+      </div>
 
       <Card>
         <CardHeader className="px-6">
