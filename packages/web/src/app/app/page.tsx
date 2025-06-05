@@ -1,6 +1,7 @@
 "use client";
 
-import SearchSuggest from "@/components/search-suggest";
+import SearchInput from "@/components/search-input";
+import SearchSuggestInput from "@/components/search-suggest-input";
 import TestCard from "@/components/test-card";
 import { Button } from "@/components/ui/button";
 
@@ -8,21 +9,22 @@ export default function Home() {
   const suggest = async (e: string) => {
     await new Promise((res) => setTimeout(res, 100));
 
-    if(!e.trim().length)
-      return [];
+    if (!e.trim().length) return [];
 
-    if(e.length > 5) {
-      return [{
-        id: "id",
-        text: "Value!",
-      }]
+    if (e.length > 5) {
+      return [
+        {
+          id: "id",
+          text: "Value!",
+        },
+      ];
     }
 
     return [
       {
         id: "id1",
         text: "Value!",
-        subtext: "Value"
+        subtext: "Value",
       },
       {
         id: "id2",
@@ -42,7 +44,8 @@ export default function Home() {
             <TestCard />
           </div>
 
-          <SearchSuggest suggest={suggest} />
+          <SearchInput />
+          <SearchSuggestInput suggest={suggest} />
           <Button>Test</Button>
         </div>
       </div>

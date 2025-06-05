@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import SearchInput from "./search-input";
 
 interface SearchSuggestionResult {
   id: string | number;
@@ -22,8 +23,8 @@ interface SearchSuggestProps {
 
 /**
  * Search component that allows suggestions
- * @param props 
- * @returns 
+ * @param props
+ * @returns
  */
 export default function SearchSuggest(props: SearchSuggestProps) {
   const [value, setValue] = useState("");
@@ -105,19 +106,14 @@ export default function SearchSuggest(props: SearchSuggestProps) {
 
   return (
     <Popover open={shouldShowPopover} onOpenChange={setOpened}>
-      <PopoverTrigger asChild>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={value}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            placeholder={props.placeholder}
-            className="flex h-10 w-full rounded-lg border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:min-w-[450px]"
-          />
-        </div>
+      <PopoverTrigger>
+        <SearchInput
+          ref={inputRef}
+          value={value}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder={props.placeholder}
+        />
       </PopoverTrigger>
 
       <PopoverContent
