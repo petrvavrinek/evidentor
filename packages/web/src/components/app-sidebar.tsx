@@ -7,7 +7,9 @@ import {
   FileText,
   FolderKanban,
   Home,
+  LucideIcon,
   Settings,
+  User,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -20,39 +22,122 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
+  SidebarMenu,
   SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
 import config from "@/config/app";
 
 import { NavUser } from "./nav-user";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./ui/collapsible";
 import { TypographyH1 } from "./ui/typography";
+
+type MenuItem = {
+  name: string;
+  icon?: LucideIcon;
+  id: string;
+} & ({ href: string } | { items: MenuItem[]; defaultOpen?: boolean });
+
+const navigation: MenuItem[] = [
+  { name: "Dashboard", href: "/app", icon: Home, id: "dashboard" },
+  { name: "Clients", href: "/app/clients", icon: Users, id: "clients" },
+  {
+    name: "Projects",
+    href: "/app/projects",
+    icon: FolderKanban,
+    id: "projects",
+  },
+  {
+    name: "Time Tracker",
+    href: "/app/time-tracker",
+    icon: Clock,
+    id: "time-tracker",
+  },
+  { name: "Invoices", href: "/app/invoices", icon: FileText, id: "invoices" },
+  { name: "Reports", href: "/app/reports", icon: BarChart3, id: "reports" },
+  { name: "Calendar", href: "/app/calendar", icon: Calendar, id: "calendar" },
+  {
+    name: "Settings",
+    icon: Settings,
+    id: "settings",
+    items: [
+      {
+        name: "User",
+        href: "/app/settings/user",
+        id: "settings/user",
+        icon: User,
+      },
+    ],
+    defaultOpen: false,
+  },
+];
+
+interface SidebarItemProps {
+  item: MenuItem;
+  onClick: () => void;
+  isActive: (item: MenuItem) => boolean;
+}
+
+function SidebarItem(props: SidebarItemProps) {
+  const { item } = props;
+
+  if ("href" in item) {
+    return (
+      <Link href={item.href} key={item.id}>
+        <SidebarMenuButton
+          isActive={props.isActive(item)}
+          onClick={props.onClick}
+        >
+          {item.icon && <item.icon />}
+          <span>{item.name}</span>
+        </SidebarMenuButton>
+      </Link>
+    );
+  }
+
+  return (
+    <SidebarMenu>
+      <Collapsible defaultOpen={item.defaultOpen} className="group/collapsible">
+        <SidebarMenuItem>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton>
+              {item.icon && <item.icon />}
+              <span>{item.name}</span>
+            </SidebarMenuButton>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <SidebarMenuSub>
+              {item.items.map((e) => (
+                <SidebarItem
+                  item={e}
+                  isActive={props.isActive}
+                  onClick={props.onClick}
+                  key={e.id}
+                />
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    </SidebarMenu>
+  );
+}
 
 export function AppSidebar() {
   const currentPathname = usePathname();
   const sidebar = useSidebar();
 
-  const navigation = [
-    { name: "Dashboard", href: "/app", icon: Home, id: "dashboard" },
-    { name: "Clients", href: "/app/clients", icon: Users, id: "clients" },
-    {
-      name: "Projects",
-      href: "/app/projects",
-      icon: FolderKanban,
-      id: "projects",
-    },
-    {
-      name: "Time Tracker",
-      href: "/app/time-tracker",
-      icon: Clock,
-      id: "time-tracker",
-    },
-    { name: "Invoices", href: "/app/invoices", icon: FileText, id: "invoices" },
-    { name: "Reports", href: "/app/reports", icon: BarChart3, id: "reports" },
-    { name: "Calendar", href: "/app/calendar", icon: Calendar, id: "calendar" },
-    { name: "Settings", href: "/app/settings", icon: Settings, id: "settings" },
-  ];
+  const onItemClick = () => sidebar.setOpenMobile(false);
+
+  const isActive = (item: MenuItem) =>
+    "href" in item ? item.href === currentPathname : false;
 
   return (
     <Sidebar variant="sidebar">
@@ -67,20 +152,15 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
             {navigation.map((e) => (
-              <Link href={e.href} key={e.id}>
-                <SidebarMenuButton
-                  isActive={currentPathname == e.href}
-                  onClick={() => sidebar.setOpenMobile(false)}
-                >
-                  <e.icon />
-                  <span>{e.name}</span>
-                </SidebarMenuButton>
-              </Link>
+              <SidebarItem
+                isActive={isActive}
+                item={e}
+                onClick={onItemClick}
+                key={e.id}
+              />
             ))}
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup />
-        <SidebarGroup />
       </SidebarContent>
       <SidebarFooter>
         <NavUser
