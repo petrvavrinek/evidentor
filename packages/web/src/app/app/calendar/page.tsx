@@ -13,8 +13,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Event } from "@/schemas/event.schema";
 import { CalendarIcon, Plus } from "lucide-react";
 import { useState } from "react";
+
+const dot = new Date();
+dot.setHours(dot.getHours() - 1);
+
+const ev: Event[] = [
+  {
+    id: 1,
+    dateFrom: dot,
+    title: "Event title",
+    note: "Note",
+  },
+  {
+    id: 1,
+    dateFrom: dot,
+    title: "Event title",
+    note: "Note",
+  },
+  {
+    id: 1,
+    dateFrom: dot,
+    title: "Event title",
+    note: "Note",
+  },
+];
 
 export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -52,7 +77,7 @@ export default function CalendarPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Calendar date={currentDate} onDateSelect={setCurrentDate} />
+              <Calendar date={currentDate} onDateSelect={setCurrentDate} events={ev} onMonthViewChange={(a, b) => console.log(a, b)} />
             </CardContent>
           </Card>
         </div>

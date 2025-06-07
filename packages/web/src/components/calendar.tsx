@@ -1,17 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDayNames, getMonthNames } from "@/lib/dates";
+import { Event } from "@/schemas/event.schema";
 
 interface CalendarProps {
   date: Date;
   onDateSelect: (date: Date) => void;
+  onMonthViewChange?: (startDate: Date, endDate: Date) => void;
+  events?: Event[];
 }
 
-export default function Calendar({ date, onDateSelect }: CalendarProps) {
+export default function Calendar({
+  date,
+  onDateSelect,
+  onMonthViewChange,
+  events,
+}: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(date.getMonth());
   const [currentYear, setCurrentYear] = useState(date.getFullYear());
   const monthNames = getMonthNames("long");
@@ -42,6 +50,36 @@ export default function Calendar({ date, onDateSelect }: CalendarProps) {
     );
   };
 
+  const getEventsForDate = (day: number) => {
+    if (!events) return [];
+
+    const date = new Date(currentYear, currentMonth, day);
+    return events.filter(
+      (event) => event.dateFrom.toDateString() === date.toDateString()
+    );
+  };
+
+  const getEventDisplayInfo = (event: Event, day: number) => {
+    const eventStart = new Date(event.dateFrom);
+    const eventEnd = event.dateTo
+      ? new Date(event.dateTo)
+      : new Date(event.dateFrom);
+    const currentDate = new Date(currentYear, currentMonth, day);
+
+    const isStartDay = eventStart.toDateString() === currentDate.toDateString();
+    const isEndDay = eventEnd.toDateString() === currentDate.toDateString();
+    const isMiddleDay = !isStartDay && !isEndDay;
+    const isSingleDay = eventStart.toDateString() === eventEnd.toDateString();
+
+    return {
+      isStartDay,
+      isEndDay,
+      isMiddleDay,
+      isSingleDay,
+      showTime: isStartDay || isSingleDay,
+    };
+  };
+
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);
   const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
 
@@ -62,6 +100,29 @@ export default function Calendar({ date, onDateSelect }: CalendarProps) {
       setCurrentMonth(currentMonth + 1);
     }
   };
+
+  useEffect(() => {
+    const start = new Date(
+      currentYear,
+      currentMonth - 1,
+      firstDayOfMonth + 1,
+      0,
+      0,
+      0,
+      0
+    );
+    const end = new Date(
+      start.getFullYear(),
+      start.getMonth() + 1,
+      start.getDate() - 1,
+      23,
+      59,
+      59,
+      9999
+    );
+
+    onMonthViewChange?.(start, end);
+  }, [currentMonth, currentYear]);
 
   const handleDateClick = (day: number) => {
     const newDate = new Date(currentYear, currentMonth, day);
@@ -102,12 +163,13 @@ export default function Calendar({ date, onDateSelect }: CalendarProps) {
 
         {Array.from({ length: daysInMonth }).map((_, index) => {
           const day = index + 1;
+          const dayEvents = getEventsForDate(day);
 
           return (
             <button
               key={day}
               className={cn(
-                "h-20 md:h-24 p-1 border rounded-lg hover:bg-muted/50 transition-colors flex flex-col !outline-none !focus:outline-0",
+                "h-30 md:h-30 p-1 border rounded-lg hover:bg-muted/50 transition-colors flex flex-col !outline-none !focus:outline-0",
                 isToday(day) && "bg-primary/10 border-primary",
                 isSelected(day) && "bg-primary/30 border-primary",
                 "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
@@ -122,6 +184,40 @@ export default function Calendar({ date, onDateSelect }: CalendarProps) {
               >
                 {day}
               </span>
+
+              <div className="flex-1 overflow-hidden">
+                {dayEvents.slice(0, 2).map((event) => {
+                  const displayInfo = getEventDisplayInfo(event, day);
+                  return (
+                    <div
+                      key={event.id}
+                      className={cn(
+                        "text-xs p-1 mb-1 rounded truncate cursor-pointer",
+                        "text-white",
+                        displayInfo.isSingleDay
+                          ? "bg-blue-500"
+                          : displayInfo.isStartDay
+                            ? "bg-blue-500 rounded-r-none"
+                            : displayInfo.isEndDay
+                              ? "bg-blue-400 rounded-l-none"
+                              : displayInfo.isMiddleDay
+                                ? "bg-blue-300 rounded-none"
+                                : "bg-blue-500"
+                      )}
+                      title={
+                        event.title + (event.note ? ` - ${event.note}` : "")
+                      }
+                    >
+                      {event.title}
+                    </div>
+                  );
+                })}
+                {dayEvents.length > 3 && (
+                  <div className="text-xs text-muted-foreground">
+                    +{dayEvents.length - 3} more
+                  </div>
+                )}
+              </div>
             </button>
           );
         })}
