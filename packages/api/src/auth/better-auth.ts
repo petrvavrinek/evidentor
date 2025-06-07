@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI } from "better-auth/plugins";
@@ -6,7 +8,7 @@ import { db } from "../database";
 import * as authSchema from "../db/auth.schema";
 
 export const auth = betterAuth({
-  basePath: "/auth",
+  basePath: "/api/auth",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,
@@ -34,7 +36,13 @@ export const auth = betterAuth({
       enabled: false,
     },
   },
-  
+  socialProviders: {
+    google: {
+      prompt: "select_account",
+      clientId: Bun.env.GOOGLE_CLIENT_ID,
+      clientSecret: Bun.env.GOOGLE_CLIENT_SECRET,
+    },
+  },
 });
 
 export type AuthType = {

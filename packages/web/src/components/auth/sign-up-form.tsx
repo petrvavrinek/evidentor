@@ -13,8 +13,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
+import LoadableButton from "../ui/loadable-button";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+
+import { User } from "better-auth";
+
 interface RegisterFormProps {
-  onSubmit?: (data: FormData) => void;
   className?: React.ComponentProps<"div">["className"];
   children?: React.ComponentProps<"div">["children"];
 }
@@ -27,22 +33,41 @@ const FormSchema = z.object({
 
 type FormData = z.infer<typeof FormSchema>;
 
-export function SignUpForm({
-  className,
-  onSubmit,
-  children,
-}: RegisterFormProps) {
+export function SignUpForm({ className, children }: RegisterFormProps) {
+  const [loading, setLoading] = useState(false);
+  const [createdUser, setCreatedUser] = useState<User | undefined>();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {},
   });
 
-  const onSubmitComponent = (e: FormData) => {
-    onSubmit?.(e);
+  const onSubmitComponent = async (e: FormData) => {
+    setLoading(true);
+    const result = await authClient.signUp.email({
+      email: e.email,
+      name: e.fullName,
+      password: e.password,
+    });
+
+    try {
+      if (result.error?.message) return setErrorMessage(result.error.message);
+
+      setCreatedUser(result?.data?.user);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className={cn("flex flex-col gap-6", className)}>
+      {errorMessage && (
+        <Alert variant="destructive">
+          <AlertTitle>Sign-up error</AlertTitle>
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitComponent)}>
           <div className="flex flex-col gap-6">
@@ -54,7 +79,7 @@ export function SignUpForm({
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -68,7 +93,7 @@ export function SignUpForm({
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input placeholder="email@example.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -80,18 +105,22 @@ export function SignUpForm({
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} type="password" />
+                      <Input placeholder="..." {...field} type="password" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <Button type="submit" className="w-full">
+              <LoadableButton
+                loading={loading}
+                type="submit"
+                className="w-full"
+              >
                 Sign up with Email
-              </Button>
+              </LoadableButton>
             </div>
           </div>
         </form>

@@ -16,13 +16,6 @@ export default function AuthPage() {
     if (session.data) return redirect("/app");
   }, [session]);
 
-  const onLoginSubmit = async (data: SignInAuthData) => {
-    const result = await authClient.signIn.email({
-      email: data.email,
-      password: data.password,
-    });
-  };
-
   const onRegisterSubmit = async (data: SignUpAuthData) => {
     const result = await authClient.signUp.email({
       name: data.fullName,
@@ -34,7 +27,7 @@ export default function AuthPage() {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
       <TabsContent value="signin">
-        <SignInForm onSubmit={onLoginSubmit}>
+        <SignInForm>
           <div className="text-center text-sm">
             Don&apos;t have an account?{" "}
             <a

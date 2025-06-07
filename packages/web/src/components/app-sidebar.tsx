@@ -182,7 +182,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <NavUser
           user={{
-            avatar: "",
+            avatar: user.image,
             email: user.email,
             name: user.name,
           }}

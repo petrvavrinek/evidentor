@@ -8,6 +8,8 @@ declare global {
       DB_USER: string;
       DB_PASS: string;
       DB_NAME: string;
+      GOOGLE_CLIENT_ID: string;
+      GOOGLE_CLIENT_SECRET: string;
     }
   }
 }

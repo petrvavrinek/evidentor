@@ -11,13 +11,15 @@ import logger from "./logger";
 import { auth } from "./auth";
 import { routers } from "./routers";
 
+
+
 const app = new Elysia()
   .use(cors())
   .use(
     swagger({
       documentation: {
         components: await OpenAPI.components,
-        paths: await OpenAPI.getPaths(),
+        paths: await OpenAPI.getPaths("/api/auth"),
         info: {
           title: "Evidentor API",
           version: pkg.version,
@@ -25,6 +27,9 @@ const app = new Elysia()
       },
     })
   )
+  .onRequest(handler => {
+    console.log(handler.path);
+  })
   .mount(auth.handler);
 
 for (const router of routers) app.use(router);
