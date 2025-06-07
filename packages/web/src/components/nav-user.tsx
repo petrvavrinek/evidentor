@@ -1,6 +1,6 @@
 "use client";
 
-import { User, LogOut, Bell, Ellipsis } from "lucide-react";
+import { Bell, Ellipsis, LogOut, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -21,15 +21,25 @@ import {
 
 export function NavUser({
   user,
+  onSignout,
 }: {
   user: {
     name: string;
     email: string;
     avatar: string;
   };
+  onSignout?: () => void;
 }) {
-  const { isMobile } = useSidebar();
+  const getAvatarFallback = () => {
+    const nameParts = user.name.split(" ");
 
+    if (nameParts.length > 1)
+      return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+
+    return user.name.substring(0, 2).toUpperCase();
+  };
+
+  const { isMobile } = useSidebar();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -41,7 +51,9 @@ export function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {getAvatarFallback()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -62,7 +74,9 @@ export function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {getAvatarFallback()}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -84,7 +98,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={onSignout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

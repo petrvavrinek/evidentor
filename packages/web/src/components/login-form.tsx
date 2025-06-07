@@ -10,9 +10,16 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ children, className, onSubmit }: LoginFormProps) {
+  async function onAction(formData: FormData) {
+    onSubmit?.(
+      formData.get("email")?.toString() ?? "",
+      formData.get("password")?.toString() ?? ""
+    );
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)}>
-      <form>
+      <form action={onAction}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-6">
             <div className="grid gap-3">
@@ -23,6 +30,10 @@ export function LoginForm({ children, className, onSubmit }: LoginFormProps) {
                 placeholder="m@example.com"
                 required
               />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" placeholder="" required />
             </div>
             <Button type="submit" className="w-full">
               Login

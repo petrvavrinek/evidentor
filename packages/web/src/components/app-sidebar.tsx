@@ -40,6 +40,7 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible";
 import { TypographyH1 } from "./ui/typography";
+import { authClient } from "@/lib/auth-client";
 
 type MenuItem = {
   name: string;
@@ -147,6 +148,8 @@ function SidebarItem(props: SidebarItemProps) {
 export function AppSidebar() {
   const currentPathname = usePathname();
   const sidebar = useSidebar();
+  const session = authClient.useSession();
+  const user = session.data?.user!;
 
   const onItemClick = () => sidebar.setOpenMobile(false);
 
@@ -180,9 +183,10 @@ export function AppSidebar() {
         <NavUser
           user={{
             avatar: "",
-            email: "test@test.cz",
-            name: "Test test",
+            email: user.email,
+            name: user.name,
           }}
+          onSignout={() => authClient.signOut()}
         />
       </SidebarFooter>
     </Sidebar>

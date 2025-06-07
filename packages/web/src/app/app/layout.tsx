@@ -1,10 +1,12 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import { ThemeProvider } from "@/components/theme-proivider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import VersionTag from "@/components/version-tag";
 import config from "@/config/app";
 import type { Metadata } from "next";
+
 import "../globals.css";
-import { ThemeProvider } from "@/components/theme-proivider";
+import AuthProtect from "@/components/auth/auth-redirect";
 
 export const metadata: Metadata = {
   title: `${config.AppName} | App`,
@@ -20,22 +22,24 @@ export default function RootLayout({
     <html lang="en">
       <body className="aliased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SidebarProvider
-            style={
-              {
-                "--sidebar-width": "calc(var(--spacing) * 72)",
-                "--header-height": "calc(var(--spacing) * 12)",
-              } as React.CSSProperties
-            }
-          >
-            <AppSidebar />
-            <SidebarInset>
-              <div className="p-2 h-full">
-                <div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
-              </div>
-            </SidebarInset>
-            <VersionTag />
-          </SidebarProvider>
+          <AuthProtect>
+            <SidebarProvider
+              style={
+                {
+                  "--sidebar-width": "calc(var(--spacing) * 72)",
+                  "--header-height": "calc(var(--spacing) * 12)",
+                } as React.CSSProperties
+              }
+            >
+              <AppSidebar />
+              <SidebarInset>
+                <div className="p-2 h-full">
+                  <div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
+                </div>
+              </SidebarInset>
+              <VersionTag />
+            </SidebarProvider>
+          </AuthProtect>
         </ThemeProvider>
       </body>
     </html>
