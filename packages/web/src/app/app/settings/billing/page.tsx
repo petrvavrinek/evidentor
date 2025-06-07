@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, Star, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 export default function SettingsBillingPage() {
   return (

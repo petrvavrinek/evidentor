@@ -5,12 +5,14 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { TypographyH3 } from "@/components/ui/typography";
 
-import { Sun, Moon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function PageAppearance() {
-  const handleThemeChange = (value: "dark" | "light") => {
-    document.documentElement.classList.toggle("dark", value === "dark");
-  };
+  const theme = useTheme();
+
+  const handleThemeChange = (value: "dark" | "light") => theme.setTheme(value);
+
   return (
     <>
       <PageHeader
@@ -22,8 +24,9 @@ export default function PageAppearance() {
         <TypographyH3>Theme</TypographyH3>
 
         <RadioGroup
-          className="grid grid-cols-2 gap-4"
+          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
           onValueChange={handleThemeChange}
+          value={theme.theme}
         >
           <div>
             <RadioGroupItem value="light" id="light" className="sr-only peer" />
