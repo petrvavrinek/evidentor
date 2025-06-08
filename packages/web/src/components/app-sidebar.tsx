@@ -1,19 +1,5 @@
 "use client";
 
-import {
-  BarChart3,
-  Calendar,
-  Clock,
-  DollarSign,
-  FileText,
-  FolderKanban,
-  Home,
-  LucideIcon,
-  Palette,
-  Settings,
-  User,
-  Users,
-} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -32,6 +18,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import config from "@/config/app";
+import { appRoutes, type RouteItem } from "@/config/app-routes";
+import { Clock } from "lucide-react";
 
 import { NavUser } from "./nav-user";
 import {
@@ -42,62 +30,10 @@ import {
 import { TypographyH1 } from "./ui/typography";
 import { authClient } from "@/lib/auth-client";
 
-type MenuItem = {
-  name: string;
-  icon?: LucideIcon;
-  id: string;
-} & ({ href: string } | { items: MenuItem[]; defaultOpen?: boolean });
-
-const navigation: MenuItem[] = [
-  { name: "Dashboard", href: "/app", icon: Home, id: "dashboard" },
-  { name: "Clients", href: "/app/clients", icon: Users, id: "clients" },
-  {
-    name: "Projects",
-    href: "/app/projects",
-    icon: FolderKanban,
-    id: "projects",
-  },
-  {
-    name: "Time Tracker",
-    href: "/app/time-tracker",
-    icon: Clock,
-    id: "time-tracker",
-  },
-  { name: "Invoices", href: "/app/invoices", icon: FileText, id: "invoices" },
-  { name: "Reports", href: "/app/reports", icon: BarChart3, id: "reports" },
-  { name: "Calendar", href: "/app/calendar", icon: Calendar, id: "calendar" },
-  {
-    name: "Settings",
-    icon: Settings,
-    id: "settings",
-    items: [
-      {
-        name: "User",
-        href: "/app/settings/user",
-        id: "settings/user",
-        icon: User,
-      },
-      {
-        name: "Billing",
-        href: "/app/settings/billing",
-        id: "settings/billing",
-        icon: DollarSign,
-      },
-      {
-        name: "Appearance",
-        href: "/app/settings/appearance",
-        id: "settings/appearance",
-        icon: Palette,
-      },
-    ],
-    defaultOpen: false,
-  },
-];
-
 interface SidebarItemProps {
-  item: MenuItem;
+  item: RouteItem;
   onClick: () => void;
-  isActive: (item: MenuItem) => boolean;
+  isActive: (item: RouteItem) => boolean;
 }
 
 function SidebarItem(props: SidebarItemProps) {
@@ -153,7 +89,7 @@ export function AppSidebar() {
 
   const onItemClick = () => sidebar.setOpenMobile(false);
 
-  const isActive = (item: MenuItem) =>
+  const isActive = (item: RouteItem) =>
     "href" in item ? item.href === currentPathname : false;
 
   return (
@@ -168,7 +104,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
-            {navigation.map((e) => (
+            {appRoutes.map((e) => (
               <SidebarItem
                 isActive={isActive}
                 item={e}
