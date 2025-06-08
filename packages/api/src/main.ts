@@ -1,38 +1,24 @@
 import pkg from "../package.json";
 
 import { cors } from "@elysiajs/cors";
-import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 
-import { OpenAPI } from "./auth/auth.openapi";
 import env from "./env";
 import logger from "./logger";
 
-import { auth } from "./auth";
-import { routers } from "./routers";
-
-
+import { auth, OpenAPI } from "./auth";
+import * as routers from "./routers";
+import { swagger } from "@elysiajs/swagger";
 
 const app = new Elysia()
   .use(cors())
-  .use(
-    swagger({
-      documentation: {
-        components: await OpenAPI.components,
-        paths: await OpenAPI.getPaths("/api/auth"),
-        info: {
-          title: "Evidentor API",
-          version: pkg.version,
-        },
-      },
-    })
-  )
   .onRequest(handler => {
-    console.log(handler.path);
+    console.log(handler.request.url);
   })
-  .mount(auth.handler);
-
-for (const router of routers) app.use(router);
+  .mount("/api/auth", auth.handler)
+  .use(routers.clientRouter)
+  .use(routers.projectRouter)
+  .use(routers.timeEntryRouter);
 
 app.listen(env.PORT);
 
@@ -52,4 +38,4 @@ process.on("SIGTERM", () => {
   process.exit(0);
 });
 
-export type AppType = typeof app;
+export type App = typeof app;

@@ -35,8 +35,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useApiClient } from "@/hooks/use-api-client";
 import { MoreHorizontal, Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Sample client data
 const initialClients = [
@@ -137,6 +138,16 @@ const initialClients = [
 
 export default function ClientsPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const apiClient = useApiClient();
+
+  // If I remove this line, it works
+  // console.log(apiClient.v1);
+
+  useEffect(() => {
+    apiClient.v1.client.get().then(e => {
+      console.log(e?.data?.map(e => e.name))
+    });
+  }, []);
 
   return (
     <>

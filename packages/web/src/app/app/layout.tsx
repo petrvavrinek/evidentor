@@ -7,6 +7,8 @@ import type { Metadata } from "next";
 
 import "../globals.css";
 import AuthProtect from "@/components/auth/auth-redirect";
+import ApiClientProvider from "@/contexts/api-client.context";
+import dynamic from "next/dynamic";
 
 export const metadata: Metadata = {
   title: `${config.AppName} | App`,
@@ -23,22 +25,24 @@ export default function RootLayout({
       <body className="aliased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProtect>
-            <SidebarProvider
-              style={
-                {
-                  "--sidebar-width": "calc(var(--spacing) * 72)",
-                  "--header-height": "calc(var(--spacing) * 12)",
-                } as React.CSSProperties
-              }
-            >
-              <AppSidebar />
-              <SidebarInset>
-                <div className="p-2 h-full">
-                  <div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
-                </div>
-              </SidebarInset>
-              <VersionTag />
-            </SidebarProvider>
+            <ApiClientProvider>
+              <SidebarProvider
+                style={
+                  {
+                    "--sidebar-width": "calc(var(--spacing) * 72)",
+                    "--header-height": "calc(var(--spacing) * 12)",
+                  } as React.CSSProperties
+                }
+              >
+                <AppSidebar />
+                <SidebarInset>
+                  <div className="p-2 h-full">
+                    <div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
+                  </div>
+                </SidebarInset>
+                <VersionTag />
+              </SidebarProvider>
+            </ApiClientProvider>
           </AuthProtect>
         </ThemeProvider>
       </body>
