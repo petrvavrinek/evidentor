@@ -5,10 +5,9 @@ import VersionTag from "@/components/version-tag";
 import config from "@/config/app";
 import type { Metadata } from "next";
 
-import "../globals.css";
 import AuthProtect from "@/components/auth/auth-redirect";
 import ApiClientProvider from "@/contexts/api-client.context";
-import dynamic from "next/dynamic";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: `${config.AppName} | App`,
