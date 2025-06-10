@@ -1,21 +1,34 @@
-import pkg from "../package.json";
-
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 
 import env from "./env";
 import logger from "./logger";
 
+import { swagger } from "@elysiajs/swagger";
 import { auth, OpenAPI } from "./auth";
 import * as routers from "./routers";
-import { swagger } from "@elysiajs/swagger";
 
 const app = new Elysia()
-  .use(cors())
-  .onRequest(handler => {
+  .use(
+    cors({
+      origin: "http://localhost:3001",
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  )
+  .use(
+    swagger({
+      documentation: {
+        components: await OpenAPI.components as never,
+        paths: await OpenAPI.getPaths("/auth/api") as never,
+      },
+    })
+  )
+  .onRequest((handler) => {
     console.log(handler.request.url);
   })
-  .mount("/api/auth", auth.handler)
+  .mount(auth.handler)
   .use(routers.clientRouter)
   .use(routers.projectRouter)
   .use(routers.timeEntryRouter);

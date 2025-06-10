@@ -46,6 +46,7 @@ export default function ApiClientProvider(props: ApiClientProviderProps) {
         )
           delete options.body;
 
+
         return fetch(url, options);
       },
     });

@@ -8,7 +8,7 @@ import { db } from "../database";
 import * as authSchema from "../db/auth.schema";
 
 export const auth = betterAuth({
-  basePath: "/",
+  basePath: "/api/auth",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,
@@ -31,6 +31,11 @@ export const auth = betterAuth({
     //   },
     // }),
   ],
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true,
+    },
+  },
   user: {
     changeEmail: {
       enabled: false,

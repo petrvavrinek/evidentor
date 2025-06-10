@@ -15,7 +15,7 @@ export default function LandingPageLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="aliased">{children}</body>
+      {children}
     </html>
   );
 }
