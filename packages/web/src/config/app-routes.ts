@@ -18,6 +18,7 @@ export type RouteItem = {
   icon?: LucideIcon;
   id: string;
   description?: string;
+  hidden?: boolean; // Added hidden property
 } & ({ href: string } | { items: RouteItem[]; defaultOpen?: boolean });
 
 export const appRoutes: RouteItem[] = [
@@ -89,6 +90,12 @@ export const appRoutes: RouteItem[] = [
             id: "settings/user/connections",
             description: "Connect and manage third-party integrations.",
           },
+          {
+            name: "Active sessions",
+            href: "/app/settings/user/sessions",
+            id: "settings/user/sessions",
+            description: "Manage active sessions",
+          },
         ],
       },
       {
@@ -118,15 +125,15 @@ export function findRouteByPath(path: string): RouteItem | undefined {
   // Search function
   function search(routes: RouteItem[]): RouteItem | undefined {
     for (const route of routes) {
-      // Check if this route matches
-      if ("href" in route && route.href === normalizedPath) {
-        return route;
-      }
-
       // Check nested routes
       if ("items" in route && route.items) {
         const found = search(route.items);
         if (found) return found;
+      }
+
+      // Check if this route matches
+      if ("href" in route && route.href === normalizedPath) {
+        return route;
       }
     }
     return undefined;
@@ -135,58 +142,70 @@ export function findRouteByPath(path: string): RouteItem | undefined {
   return search(appRoutes);
 }
 
-// Helper function to get breadcrumb path
-export function getBreadcrumbPath(path: string): RouteItem[] {
-  // Normalize path
-  const normalizedPath = path.endsWith("/") ? path.slice(0, -1) : path;
+export function getBreadcrumbPath(pathname: string): RouteItem[] {
+  const segments = pathname.split("/").filter(Boolean); // e.g., ["app", "settings", "user", "connections"]
+
+  const pathSoFar: string[] = [];
   const result: RouteItem[] = [];
 
-  // Build all possible parent paths
-  const segments = normalizedPath.split("/").filter(Boolean);
-  const currentPath = "";
-
-  // Start with dashboard if we're in the app
-  if (segments[0] === "app") {
-    const dashboardRoute = appRoutes.find(
-      (route) => "href" in route && route.href === "/app"
-    );
-    if (dashboardRoute) result.push(dashboardRoute);
-  }
-
-  // Function to find a route by segments
-  function findRouteBySegments(
-    routes: RouteItem[],
-    segmentIndex: number,
-    parentPath: string
-  ): boolean {
-    if (segmentIndex >= segments.length) return true;
-
+  function traverse(routes: RouteItem[], depth = 0): boolean {
     for (const route of routes) {
+      // Skip hidden routes
+      if (route.hidden) continue;
+
+      const isGroup = "items" in route;
+      const isMatch = "href" in route && pathname === route.href; // Exact match (for leaf nodes)
+
+      // Check path progression for partial matches
       if ("href" in route) {
         const routeSegments = route.href.split("/").filter(Boolean);
-        if (routeSegments[segmentIndex] === segments[segmentIndex]) {
+
+        // Ensure the route href is a prefix of the current pathname
+        const isPrefix = routeSegments.every(
+          (seg, idx) => segments[idx] === seg
+        );
+
+        if (isPrefix) {
+          pathSoFar.push(route.href);
           result.push(route);
-          return true;
+
+          if (isMatch) return true; // Fully matched
         }
+      } else {
+        result.push(route);
       }
 
-      if ("items" in route && route.items) {
-        if (findRouteBySegments(route.items, segmentIndex, parentPath)) {
-          if (!result.includes(route)) {
-            result.splice(result.length - 1, 0, route);
-          }
-          return true;
-        }
+      if (isGroup && traverse(route.items, depth + 1)) {
+        return true;
+      }
+
+      // If not matched in this path, backtrack
+      if (
+        !isMatch &&
+        result.length > 0 &&
+        result[result.length - 1] === route
+      ) {
+        result.pop();
       }
     }
-
     return false;
   }
 
-  // Start search from the second segment (after 'app')
-  if (segments.length > 1) {
-    findRouteBySegments(appRoutes, 1, "/app");
-  }
-
+  traverse(appRoutes);
   return result;
+}
+
+// Helper function to get visible routes (non-hidden)
+export function getVisibleRoutes(routes: RouteItem[]): RouteItem[] {
+  return routes
+    .filter((route) => !route.hidden)
+    .map((route) => {
+      if ("items" in route) {
+        return {
+          ...route,
+          items: getVisibleRoutes(route.items),
+        };
+      }
+      return route;
+    });
 }

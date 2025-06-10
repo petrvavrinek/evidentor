@@ -4,6 +4,7 @@ import { authClient } from "@/lib/auth-client";
 import { LoaderIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
+import { Skeleton } from "../ui/skeleton";
 
 interface AuthProtectProps {
   children?: React.ReactNode;
@@ -11,7 +12,7 @@ interface AuthProtectProps {
 
 export default function AuthProtect(props: AuthProtectProps) {
   const session = authClient.useSession();
-  if (session.isPending) return <LoaderIcon className="animate-spin" />;
+  if (session.isPending) return <Skeleton className="w-full h-1.5" />;
 
   if (!session.data) {
     redirect("/auth");

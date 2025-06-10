@@ -7,12 +7,23 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { TypographyH3 } from "@/components/ui/typography";
+import { authClient } from "@/lib/auth-client";
 import { Upload, User } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function SettingsUserPage() {
-  const [activeTab, setActiveTab] = useState("personal");
+  const { data } = authClient.useSession();
+
+  if (!data?.user) return;
+
+  const { user } = data;
 
   return (
     <>
@@ -30,7 +41,7 @@ export default function SettingsUserPage() {
             <div>
               <Label htmlFor="image">Profile image</Label>
               <Avatar id="image" className="w-50 h-50 p-4 cursor-pointer">
-                <AvatarImage src="" />
+                <AvatarImage src={user.image ?? ""} />
                 <AvatarFallback>
                   <Upload />
                 </AvatarFallback>
@@ -51,7 +62,12 @@ export default function SettingsUserPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" name="email" type="email" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={user.email}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
@@ -121,7 +137,33 @@ export default function SettingsUserPage() {
         </Card>
       </div>
 
-      <div className="w-full p-4 flex justify-end">
+      <div className="w-full py-4 flex justify-between">
+        <div className="gap-2 flex">
+          <Tooltip>
+            <TooltipTrigger>
+              <Button>
+                <Link href="/app/settings/user/sessions">Active sessions</Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>View and manage active sessions</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button>
+                <Link href="/app/settings/user/connections">
+                  Manage connections
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>View and manage app connections</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
         <Button>Save</Button>
       </div>
     </>

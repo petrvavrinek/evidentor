@@ -18,7 +18,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import config from "@/config/app";
-import { appRoutes, type RouteItem } from "@/config/app-routes";
+import {
+  appRoutes,
+  getVisibleRoutes,
+  type RouteItem,
+} from "@/config/app-routes";
 import { Clock } from "lucide-react";
 
 import { NavUser } from "./nav-user";
@@ -39,6 +43,11 @@ interface SidebarItemProps {
 function SidebarItem(props: SidebarItemProps) {
   const { item } = props;
 
+  // Skip rendering hidden items
+  if (item.hidden) {
+    return null;
+  }
+
   if ("href" in item) {
     return (
       <Link href={item.href} key={item.id}>
@@ -53,6 +62,11 @@ function SidebarItem(props: SidebarItemProps) {
     );
   }
 
+  // If all child items are hidden, don't render this parent item
+  if ("items" in item && item.items.every((child) => child.hidden)) {
+    return null;
+  }
+
   return (
     <SidebarMenu>
       <Collapsible defaultOpen={item.defaultOpen} className="group/collapsible">
@@ -65,14 +79,16 @@ function SidebarItem(props: SidebarItemProps) {
           </CollapsibleTrigger>
           <CollapsibleContent>
             <SidebarMenuSub>
-              {item.items.map((e) => (
-                <SidebarItem
-                  item={e}
-                  isActive={props.isActive}
-                  onClick={props.onClick}
-                  key={e.id}
-                />
-              ))}
+              {item.items
+                .filter((child) => !child.hidden) // Filter out hidden items
+                .map((e) => (
+                  <SidebarItem
+                    item={e}
+                    isActive={props.isActive}
+                    onClick={props.onClick}
+                    key={e.id}
+                  />
+                ))}
             </SidebarMenuSub>
           </CollapsibleContent>
         </SidebarMenuItem>
@@ -92,6 +108,9 @@ export function AppSidebar() {
   const isActive = (item: RouteItem) =>
     "href" in item ? item.href === currentPathname : false;
 
+  // Get only visible routes for the sidebar
+  const visibleRoutes = getVisibleRoutes(appRoutes);
+
   return (
     <Sidebar variant="sidebar">
       <SidebarHeader>
@@ -104,7 +123,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
-            {appRoutes.map((e) => (
+            {visibleRoutes.map((e) => (
               <SidebarItem
                 isActive={isActive}
                 item={e}
