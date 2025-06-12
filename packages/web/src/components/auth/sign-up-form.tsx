@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,10 +14,8 @@ import { z } from "zod";
 
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import LoadableButton from "../ui/loadable-button";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-
-import { User } from "better-auth";
+import LoadableButton from "../ui/loadable-button";
 
 interface RegisterFormProps {
   className?: React.ComponentProps<"div">["className"];
@@ -35,7 +32,7 @@ type FormData = z.infer<typeof FormSchema>;
 
 export function SignUpForm({ className, children }: RegisterFormProps) {
   const [loading, setLoading] = useState(false);
-  const [createdUser, setCreatedUser] = useState<User | undefined>();
+  // const [createdUser, setCreatedUser] = useState<User | undefined>();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const form = useForm<FormData>({
@@ -54,7 +51,7 @@ export function SignUpForm({ className, children }: RegisterFormProps) {
     try {
       if (result.error?.message) return setErrorMessage(result.error.message);
 
-      setCreatedUser(result?.data?.user);
+      // setCreatedUser(result?.data?.user);
     } finally {
       setLoading(false);
     }

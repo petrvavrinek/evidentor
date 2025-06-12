@@ -23,7 +23,7 @@ const app = new Elysia()
         components: await OpenAPI.components as never,
         paths: await OpenAPI.getPaths("/auth/api") as never,
       },
-    })
+    }) as never
   )
   .onRequest((handler) => {
     console.log(handler.request.url);

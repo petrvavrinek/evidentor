@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { Loader } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface ConnectionItemProps {
   icon?: string;
@@ -21,7 +22,7 @@ const ConnectionItem = (props: ConnectionItemProps) => {
       <CardTitle className="px-6 flex items-center">
         {props.icon && (
           <div className="pr-2">
-            <img src={props.icon} className="w-5 h-5" />
+            <Image src={props.icon} alt={props.title} className="w-5 h-5" />
           </div>
         )}
         {props.title}

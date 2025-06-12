@@ -25,6 +25,7 @@ import {
 } from "@/config/app-routes";
 import { Clock } from "lucide-react";
 
+import { authClient } from "@/lib/auth-client";
 import { NavUser } from "./nav-user";
 import {
   Collapsible,
@@ -32,7 +33,6 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible";
 import { TypographyH1 } from "./ui/typography";
-import { authClient } from "@/lib/auth-client";
 
 interface SidebarItemProps {
   item: RouteItem;
@@ -101,7 +101,7 @@ export function AppSidebar() {
   const currentPathname = usePathname();
   const sidebar = useSidebar();
   const session = authClient.useSession();
-  const user = session.data?.user!;
+  const user = session.data?.user;
 
   const onItemClick = () => sidebar.setOpenMobile(false);
 
@@ -110,6 +110,8 @@ export function AppSidebar() {
 
   // Get only visible routes for the sidebar
   const visibleRoutes = getVisibleRoutes(appRoutes);
+
+  if (!user) return <></>;
 
   return (
     <Sidebar variant="sidebar">

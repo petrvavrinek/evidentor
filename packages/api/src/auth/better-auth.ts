@@ -6,6 +6,7 @@ import { openAPI } from "better-auth/plugins";
 
 import { db } from "../database";
 import * as authSchema from "../db/auth.schema";
+import env from "../env";
 
 export const auth = betterAuth({
   basePath: "/api/auth",
@@ -44,8 +45,8 @@ export const auth = betterAuth({
   socialProviders: {
     google: {
       prompt: "select_account",
-      clientId: Bun.env.GOOGLE_CLIENT_ID,
-      clientSecret: Bun.env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
 });

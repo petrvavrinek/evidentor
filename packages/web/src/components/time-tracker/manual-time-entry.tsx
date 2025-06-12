@@ -26,7 +26,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
   const today = new Date();
   today.setSeconds(0, 0); // Reset seconds and milliseconds
 
-  const [date, setDate] = useState(today);
+  const [date] = useState(today);
 
   const canAddTimeEntry = useMemo(
     () => selectedProject && selectedTask,

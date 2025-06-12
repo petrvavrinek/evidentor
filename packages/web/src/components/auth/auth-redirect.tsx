@@ -1,7 +1,6 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { LoaderIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 import { Skeleton } from "../ui/skeleton";

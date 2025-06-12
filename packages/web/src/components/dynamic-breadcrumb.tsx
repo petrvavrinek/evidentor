@@ -60,8 +60,8 @@ export function DynamicBreadcrumb({
 
     breadcrumbItems = [
       firstItem,
-      // @ts-ignore
-      { id: "ellipsis", name: "..." },
+      // @typescript-eslint/ban-ts-comment
+      { id: "ellipsis", name: "...", href: "#", items: [], },
       ...lastItems,
     ];
   }

@@ -1,7 +1,11 @@
 import { auth } from "../auth";
 
+
+// @ts-ignore
 let _schema: ReturnType<typeof auth.api.generateOpenAPISchema>;
 // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+
+// @ts-ignore
 const getSchema = async () => (_schema ??= auth.api.generateOpenAPISchema());
 
 export const OpenAPI = {

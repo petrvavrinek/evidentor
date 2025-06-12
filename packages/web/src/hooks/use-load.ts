@@ -9,7 +9,7 @@ type UseLoadReturnType<T> = {
 
 export const useLoad = <T>(
   func: () => T | Promise<T>,
-  dependencies: any[] = [] // 👈 Optional dependencies
+  dependencies: unknown[] = []
 ): UseLoadReturnType<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,6 +31,8 @@ export const useLoad = <T>(
       .finally(() => {
         setLoading(false);
       });
+    // To disable warning since depencencies are not "verifiable" due to "unknown" type
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [func, ...dependencies]); // 👈 Triggers reload when any dependency changes
 
   useEffect(() => {

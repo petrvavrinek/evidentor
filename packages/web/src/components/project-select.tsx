@@ -1,6 +1,8 @@
 "use client";
 
+import { useLoad } from "@/hooks/use-load";
 import { Project } from "@/schemas/project.schema";
+import { Key, useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -8,9 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useLoad } from "@/hooks/use-load";
 import { Skeleton } from "./ui/skeleton";
-import { Key, useEffect, useState } from "react";
 
 interface ProjectSelectProps {
   /**
@@ -52,15 +52,13 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
   useEffect(() => {
     if (selectedProjectIdx !== undefined && data)
       props.onSelect?.(data[selectedProjectIdx]);
-  }, [selectedProjectIdx]);
+  }, [selectedProjectIdx, data, props]);
 
   if (loading) return <Skeleton className="rounded-md w-full h-[36px]" />;
 
   return (
     <Select
-      value={
-        selectedProjectIdx !== undefined ? `${selectedProjectIdx}` : ""
-      }
+      value={selectedProjectIdx !== undefined ? `${selectedProjectIdx}` : ""}
       disabled={props.disabled || loading}
       onValueChange={(e) => setSelectedProjectIdx(Number.parseInt(e))}
     >

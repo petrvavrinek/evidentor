@@ -1,6 +1,5 @@
 import { Separator } from "@radix-ui/react-separator";
 import { SidebarTrigger } from "./ui/sidebar";
-import { Button } from "./ui/button";
 
 interface SiteHeaderProps {
   title: string;

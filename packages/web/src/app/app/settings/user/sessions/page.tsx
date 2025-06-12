@@ -7,9 +7,9 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { Session } from "better-auth";
 import { Loader } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { UAParser } from "ua-parser-js";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { UAParser } from "ua-parser-js";
 
 interface SessionItemProps {
   ipAddress?: string | null;
@@ -76,6 +76,7 @@ export default function SessionsPage() {
         <div className="space-y-2">
           {sessions.map((e) => (
             <SessionItem
+              key={e.id}
               userAgent={e.userAgent}
               ipAddress={e.ipAddress}
               current={sessionData?.session.id === e.id}

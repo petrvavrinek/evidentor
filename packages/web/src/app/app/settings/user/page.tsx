@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -14,9 +13,8 @@ import {
 } from "@/components/ui/tooltip";
 import { TypographyH3 } from "@/components/ui/typography";
 import { authClient } from "@/lib/auth-client";
-import { Upload, User } from "lucide-react";
+import { Upload } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function SettingsUserPage() {
   const { data } = authClient.useSession();

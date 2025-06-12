@@ -1,3 +1,4 @@
+import { TrendingUp } from "lucide-react";
 import {
   Card,
   CardAction,
@@ -6,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { TrendingUp } from "lucide-react";
 
 export default function TestCard() {
   return (

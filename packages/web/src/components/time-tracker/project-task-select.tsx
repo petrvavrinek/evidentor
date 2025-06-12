@@ -20,7 +20,7 @@ export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
       return props.loadTasks(selectedProject);
     }
     return Promise.resolve([]);
-  }, [selectedProject, props.loadTasks]);
+  }, [selectedProject, props]);
 
   const onTaskSelect = (task: Task) => {
     if (selectedProject && task) props.onSelect?.(selectedProject, task);

@@ -3,8 +3,8 @@
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 
-import { SignInAuthData, SignInForm } from "@/components/auth/sign-in-form";
-import { SignUpAuthData, SignUpForm } from "@/components/auth/sign-up-form";
+import { SignInForm } from "@/components/auth/sign-in-form";
+import { SignUpForm } from "@/components/auth/sign-up-form";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 
@@ -16,13 +16,13 @@ export default function AuthPage() {
     if (session.data) return redirect("/app");
   }, [session]);
 
-  const onRegisterSubmit = async (data: SignUpAuthData) => {
-    const result = await authClient.signUp.email({
-      name: data.fullName,
-      email: data.email,
-      password: data.password,
-    });
-  };
+  // const onRegisterSubmit = async (data: SignUpAuthData) => {
+  //   const result = await authClient.signUp.email({
+  //     name: data.fullName,
+  //     email: data.email,
+  //     password: data.password,
+  //   });
+  // };
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -42,7 +42,7 @@ export default function AuthPage() {
       </TabsContent>
 
       <TabsContent value="signup">
-        <SignUpForm onSubmit={onRegisterSubmit}>
+        <SignUpForm>
           <div className="text-center text-sm">
             Already have an account?{" "}
             <a

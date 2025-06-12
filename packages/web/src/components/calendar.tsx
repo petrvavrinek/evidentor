@@ -1,11 +1,11 @@
 "use client";
 
+import { getDayNames, getMonthNames } from "@/lib/dates";
+import { cn } from "@/lib/utils";
+import { Event } from "@/schemas/event.schema";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight, Dot } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getDayNames, getMonthNames } from "@/lib/dates";
-import { Event } from "@/schemas/event.schema";
 
 interface CalendarProps {
   date: Date;
@@ -122,7 +122,7 @@ export default function Calendar({
     );
 
     onMonthViewChange?.(start, end);
-  }, [currentMonth, currentYear]);
+  }, [currentMonth, currentYear, onMonthViewChange, firstDayOfMonth]);
 
   const handleDateClick = (day: number) => {
     const newDate = new Date(currentYear, currentMonth, day);

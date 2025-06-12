@@ -24,7 +24,7 @@ export function TimeInput({ value, onChange }: TimeInputProps) {
   }, [value]);
 
   const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
+    const val = e.target.value;
     if (val === "") {
       setHours("");
       return;
@@ -41,7 +41,7 @@ export function TimeInput({ value, onChange }: TimeInputProps) {
   };
 
   const handleMinutesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value;
+    const val = e.target.value;
     if (val === "") {
       setMinutes("");
       return;

@@ -2,7 +2,7 @@
 
 import { useLoad } from "@/hooks/use-load";
 import { Task } from "@/schemas/task.schema";
-import { Key, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -48,7 +48,7 @@ export default function TaskSelect(props: TaskSelectProps) {
   useEffect(() => {
     if (selectedTaskIdx !== undefined && data)
       props.onSelect?.(data[selectedTaskIdx]);
-  }, [selectedTaskIdx]);
+  }, [selectedTaskIdx, data, props]);
 
   useEffect(() => {
     setSelectedTaskIdx(undefined);

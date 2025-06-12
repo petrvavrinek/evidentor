@@ -12,6 +12,8 @@ const EnvSchema = t.Object({
   DB_USER: t.String(),
   DB_PASS: t.String(),
   DB_NAME: t.String(),
+  GOOGLE_CLIENT_ID: t.String(),
+  GOOGLE_CLIENT_SECRET: t.String()
 });
 
 const validator = getSchemaValidator(EnvSchema, {

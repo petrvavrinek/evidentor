@@ -18,8 +18,8 @@ interface StopwatchProps {
 }
 
 export default function Stopwatch(props: StopwatchProps) {
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isRunning] = useState(false);
+  const [isPaused] = useState(false);
 
   const [selectedProject, setSelectedProject] = useState<Project | undefined>();
   const [selectedTask, setSelectedTask] = useState<Task | undefined>();

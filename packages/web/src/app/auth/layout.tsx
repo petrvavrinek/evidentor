@@ -1,5 +1,5 @@
-import app from "@/config/app";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import app from "@/config/app";
 import "../globals.css";
 
 export default function AuthRootLayout({
@@ -7,9 +7,6 @@ export default function AuthRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
-
-
   return (
     <html lang="en">
       <body className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10 antialiased">

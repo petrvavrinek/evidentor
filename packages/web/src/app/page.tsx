@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import {
-  Layers,
   ArrowRight,
-  Clock,
-  Users,
-  FileText,
-  CreditCard,
   BarChart3,
+  Clock,
+  CreditCard,
+  FileText,
+  Layers,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -277,7 +277,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" className="px-8">
-                    <Link href="/auth">Get Started - It's Free!</Link>
+                    <Link href="/auth">{"Get Started - It's Free!"}</Link>
                   </Button>
                   <Button size="lg" variant="outline">
                     Learn More
