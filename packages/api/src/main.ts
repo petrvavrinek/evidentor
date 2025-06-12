@@ -1,30 +1,41 @@
-import pkg from "../package.json";
-
-import { swagger } from "@elysiajs/swagger";
+import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 
-import { OpenAPI } from "./auth/auth.openapi";
 import env from "./env";
 import logger from "./logger";
 
-import { routers } from "./routers";
+import { swagger } from "@elysiajs/swagger";
+import { auth, OpenAPI } from "./auth";
+import * as routers from "./routers";
 
-const app = new Elysia().use(
-  swagger({
-    documentation: {
-      components: await OpenAPI.components,
-      paths: await OpenAPI.getPaths(),
-      info: {
-        title: "Evidentor API",
-        version: pkg.version,
+const app = new Elysia()
+  .use(
+    cors({
+      origin: "http://localhost:3001",
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  )
+  .use(
+    swagger({
+      documentation: {
+        components: await OpenAPI.components as never,
+        paths: await OpenAPI.getPaths("/auth/api") as never,
       },
-    },
+    }) as never
+  )
+  .onRequest((handler) => {
+    console.log(handler.request.url);
   })
-);
-
-for (const router of routers) app.use(router);
+  .mount(auth.handler)
+  .use(routers.clientRouter)
+  .use(routers.projectRouter)
+  .use(routers.timeEntryRouter);
 
 app.listen(env.PORT);
+
+console.log(app.routes.map((e) => e.path));
 
 logger.info(`Server running at :${env.PORT}`);
 
@@ -40,4 +51,4 @@ process.on("SIGTERM", () => {
   process.exit(0);
 });
 
-export type AppType = typeof app;
+export type App = typeof app;
