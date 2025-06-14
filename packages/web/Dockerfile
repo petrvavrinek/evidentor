@@ -25,6 +25,12 @@ RUN bun run build
 
 FROM base AS runner
 
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_API_URL
+
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
@@ -40,7 +46,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 ENV HOSTNAME=0.0.0.0
 
-ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 
 CMD ["bun", "server.js"]
