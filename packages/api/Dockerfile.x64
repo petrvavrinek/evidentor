@@ -1,7 +1,10 @@
 FROM oven/bun:canary-debian AS build
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # /app workdir
 WORKDIR /app
+
 
 # Install Python, make, compiler and musl headers for building native modules
 RUN apt-get update && \

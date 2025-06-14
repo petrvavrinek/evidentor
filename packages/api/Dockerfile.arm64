@@ -1,5 +1,7 @@
 FROM oven/bun:canary-debian AS build
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # /app workdir
 WORKDIR /app
 
