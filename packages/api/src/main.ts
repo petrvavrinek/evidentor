@@ -31,7 +31,10 @@ const app = new Elysia()
   .mount(auth.handler)
   .use(routers.clientRouter)
   .use(routers.projectRouter)
-  .use(routers.timeEntryRouter);
+  .use(routers.timeEntryRouter)
+  .get("/status", () => {
+    return "ok";
+  });
 
 app.listen(env.PORT);
 
