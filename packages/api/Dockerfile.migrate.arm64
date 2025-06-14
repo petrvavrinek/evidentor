@@ -1,0 +1,41 @@
+FROM oven/bun:canary-debian AS build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# /app workdir
+
+WORKDIR /app
+# Install Python, make, compiler and musl headers for building native modules
+RUN apt-get update && \
+  apt-get install -y python3 make gcc g++
+
+# Copy all files into image
+COPY . .
+
+# Install all packages
+RUN bun install
+
+
+# Build application
+RUN bun build \
+  --compile \
+  --minify \
+  --target bun-linux-arm64 \
+  --outfile migrator \
+  ./scripts/migrate.ts
+
+# Run migrations
+CMD [ "bun", "run", "migration:apply" ]
+
+FROM arm64v8/debian:bookworm-slim
+
+WORKDIR /app
+
+# Copy built server
+COPY --from=build /app/migrator migrator
+
+COPY ./drizzle ./drizzle
+
+ENV NODE_ENV=production
+
+CMD ["./migrator"]

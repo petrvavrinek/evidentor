@@ -1,11 +1,12 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./db/schema";
-import env from "./env";
+
+const { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } = process.env;
 
 export const db = drizzle(
-  `postgresql://${env.DB_USER}:${env.DB_PASS}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}`,
+  `postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
   {
     schema,
-    casing: "snake_case"
+    casing: "snake_case",
   }
 );
