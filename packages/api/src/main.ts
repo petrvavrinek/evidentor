@@ -8,10 +8,11 @@ import { swagger } from "@elysiajs/swagger";
 import { auth, OpenAPI } from "./auth";
 import * as routers from "./routers";
 
+console.log(env);
 const app = new Elysia()
   .use(
     cors({
-      origin: "http://localhost:3001",
+      origin: env.CORS_ORIGINS ?? true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
@@ -20,13 +21,14 @@ const app = new Elysia()
   .use(
     swagger({
       documentation: {
-        components: await OpenAPI.components as never,
-        paths: await OpenAPI.getPaths("/auth/api") as never,
+        components: (await OpenAPI.components) as never,
+        paths: (await OpenAPI.getPaths("/auth/api")) as never,
       },
     }) as never
   )
   .onRequest((handler) => {
-    console.log(handler.request.url);
+    // Print method as well
+    logger.info(handler.request.url);
   })
   .mount(auth.handler)
   .use(routers.clientRouter)
@@ -37,8 +39,6 @@ const app = new Elysia()
   });
 
 app.listen(env.PORT);
-
-console.log(app.routes.map((e) => e.path));
 
 logger.info(`Server running at :${env.PORT}`);
 
