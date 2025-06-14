@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import LoadableButton from "../ui/loadable-button";
 
+import apiConfig from "@/config/api";
 import publicConfig from "@/config/public";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
@@ -78,6 +79,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitComponent)}>
           <div className="flex flex-col gap-6">
+            <div>Debug API url: {apiConfig.ApiUrl}</div>
             <div className="flex flex-col gap-6">
               <FormField
                 control={form.control}

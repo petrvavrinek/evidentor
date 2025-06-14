@@ -40,4 +40,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 ENV HOSTNAME=0.0.0.0
 
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 CMD ["bun", "server.js"]
