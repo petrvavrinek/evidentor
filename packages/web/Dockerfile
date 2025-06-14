@@ -17,6 +17,9 @@ COPY ./next.config.ts .
 COPY ./tsconfig.json .
 COPY ./postcss.config.mjs .
 
+# Debug build
+ENV DEBUG=*
+
 # Build application
 RUN bun run build
 
