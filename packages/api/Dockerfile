@@ -1,0 +1,42 @@
+FROM oven/bun:canary-debian AS build
+
+# /app workdir
+WORKDIR /app
+
+# Install Python, make, compiler and musl headers for building native modules
+RUN apt-get update && \
+    apt-get install -y python3 make gcc g++
+
+# Copy everything into image
+COPY . .
+
+# Install all packages
+RUN bun install 
+
+ENV NODE_ENV=production
+
+# Build application
+RUN bun build \
+    --compile \
+    --minify \
+    --target bun-linux-x64 \
+    --outfile server \
+    ./src/main.ts
+
+RUN echo "Build stage" ; ls -l
+
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+# Copy built server
+COPY --from=build /app/server server
+
+RUN echo "Run stage" ; ls -l
+
+ENV NODE_ENV=production
+
+CMD ["./server"]
+
+# Expose port 3000
+EXPOSE 3000
