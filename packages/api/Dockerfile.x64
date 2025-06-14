@@ -1,6 +1,6 @@
 FROM oven/bun:canary-debian AS build
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # /app workdir
 WORKDIR /app
@@ -29,6 +29,11 @@ RUN bun build \
 RUN echo "Build stage" ; ls -l
 
 FROM debian:bookworm-slim
+
+# Install curl
+RUN apt-get update && \
+    apt-get install -y curl \
+    apt-get autoremove
 
 WORKDIR /app
 
