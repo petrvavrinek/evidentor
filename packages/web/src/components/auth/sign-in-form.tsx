@@ -79,7 +79,6 @@ export function SignInForm({ children, className }: LoginFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitComponent)}>
           <div className="flex flex-col gap-6">
-            <div>Debug API url: {apiConfig.ApiUrl}</div>
             <div className="flex flex-col gap-6">
               <FormField
                 control={form.control}

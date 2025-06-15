@@ -14,11 +14,14 @@ export default defineConfig({
     {
       name: "@hey-api/sdk",
       validator: true,
+      exportFromIndex: true,
     },
     {
       enums: "javascript",
       name: "@hey-api/typescript",
     },
-    "@tanstack/react-query",
+    {
+      name: "@tanstack/react-query",
+    },
   ],
 });

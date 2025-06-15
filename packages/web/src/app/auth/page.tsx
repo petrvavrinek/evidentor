@@ -16,14 +16,6 @@ export default function AuthPage() {
     if (session.data) return redirect("/app");
   }, [session]);
 
-  // const onRegisterSubmit = async (data: SignUpAuthData) => {
-  //   const result = await authClient.signUp.email({
-  //     name: data.fullName,
-  //     email: data.email,
-  //     password: data.password,
-  //   });
-  // };
-
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
       <TabsContent value="signin">
