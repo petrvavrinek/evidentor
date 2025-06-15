@@ -7,6 +7,8 @@ export default function AuthRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isProd = process.env.NODE_ENV === "production";
+
   return (
     <html lang="en">
       <body className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10 antialiased">
@@ -21,7 +23,15 @@ export default function AuthRootLayout({
 
           {/* Form Container */}
           <Card className="shadow-lg">
-            <CardHeader className="pb-4">{children}</CardHeader>
+            <CardHeader className="pb-4">
+              {isProd ? (
+                <div className="text-center w-full py-3">
+                  Login and registration is closed at the moment
+                </div>
+              ) : (
+                children
+              )}
+            </CardHeader>
             <CardFooter className="flex justify-center text-sm text-gray-500 pt-6">
               <div className="text-center">
                 Protected by our{" "}

@@ -45,7 +45,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 ENV HOSTNAME=0.0.0.0
-
-
+ENV NODE_ENV=production
 
 CMD ["bun", "server.js"]
