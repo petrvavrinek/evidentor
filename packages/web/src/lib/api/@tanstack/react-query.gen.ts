@@ -2,20 +2,20 @@
 
 import {
   type Options,
-  getV1Client,
-  postV1Client,
-  deleteV1ClientById,
-  getV1ClientById,
-  patchV1ClientById,
-  getV1Project,
-  postV1Project,
-  deleteV1ProjectById,
-  getV1ProjectById,
-  patchV1ProjectById,
-  getV1TimeEntryActive,
-  getV1TimeEntryById,
-  patchV1TimeEntryById,
-  postV1TimeEntry,
+  getClient,
+  postClient,
+  deleteClientById,
+  getClientById,
+  patchClientById,
+  getProject,
+  postProject,
+  deleteProjectById,
+  getProjectById,
+  patchProjectById,
+  getTimeEntryActive,
+  getTimeEntryById,
+  patchTimeEntryById,
+  postTimeEntry,
   getStatus,
   socialSignIn,
   getAuthApiGetSession,
@@ -52,20 +52,20 @@ import {
   type DefaultError,
 } from "@tanstack/react-query";
 import type {
-  GetV1ClientData,
-  PostV1ClientData,
-  DeleteV1ClientByIdData,
-  GetV1ClientByIdData,
-  PatchV1ClientByIdData,
-  GetV1ProjectData,
-  PostV1ProjectData,
-  DeleteV1ProjectByIdData,
-  GetV1ProjectByIdData,
-  PatchV1ProjectByIdData,
-  GetV1TimeEntryActiveData,
-  GetV1TimeEntryByIdData,
-  PatchV1TimeEntryByIdData,
-  PostV1TimeEntryData,
+  GetClientData,
+  PostClientData,
+  DeleteClientByIdData,
+  GetClientByIdData,
+  PatchClientByIdData,
+  GetProjectData,
+  PostProjectData,
+  DeleteProjectByIdData,
+  GetProjectByIdData,
+  PatchProjectByIdData,
+  GetTimeEntryActiveData,
+  GetTimeEntryByIdData,
+  PatchTimeEntryByIdData,
+  PostTimeEntryData,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
@@ -172,16 +172,16 @@ const createQueryKey = <TOptions extends Options>(
   return [params];
 };
 
-export const getV1ClientQueryKey = (options?: Options<GetV1ClientData>) =>
-  createQueryKey("getV1Client", options);
+export const getClientQueryKey = (options?: Options<GetClientData>) =>
+  createQueryKey("getClient", options);
 
 /**
  * Get all user-defined clients
  */
-export const getV1ClientOptions = (options?: Options<GetV1ClientData>) => {
+export const getClientOptions = (options?: Options<GetClientData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1Client({
+      const { data } = await getClient({
         ...options,
         ...queryKey[0],
         signal,
@@ -189,20 +189,20 @@ export const getV1ClientOptions = (options?: Options<GetV1ClientData>) => {
       });
       return data;
     },
-    queryKey: getV1ClientQueryKey(options),
+    queryKey: getClientQueryKey(options),
   });
 };
 
-export const postV1ClientQueryKey = (options: Options<PostV1ClientData>) =>
-  createQueryKey("postV1Client", options);
+export const postClientQueryKey = (options: Options<PostClientData>) =>
+  createQueryKey("postClient", options);
 
 /**
  * Create new user-defined client
  */
-export const postV1ClientOptions = (options: Options<PostV1ClientData>) => {
+export const postClientOptions = (options: Options<PostClientData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postV1Client({
+      const { data } = await postClient({
         ...options,
         ...queryKey[0],
         signal,
@@ -210,23 +210,23 @@ export const postV1ClientOptions = (options: Options<PostV1ClientData>) => {
       });
       return data;
     },
-    queryKey: postV1ClientQueryKey(options),
+    queryKey: postClientQueryKey(options),
   });
 };
 
 /**
  * Create new user-defined client
  */
-export const postV1ClientMutation = (
-  options?: Partial<Options<PostV1ClientData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostV1ClientData>> => {
+export const postClientMutation = (
+  options?: Partial<Options<PostClientData>>,
+): UseMutationOptions<unknown, DefaultError, Options<PostClientData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PostV1ClientData>
+    Options<PostClientData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postV1Client({
+      const { data } = await postClient({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -240,20 +240,16 @@ export const postV1ClientMutation = (
 /**
  * Delete user-defined client, all projects containing this client will be unset
  */
-export const deleteV1ClientByIdMutation = (
-  options?: Partial<Options<DeleteV1ClientByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<DeleteV1ClientByIdData>
-> => {
+export const deleteClientByIdMutation = (
+  options?: Partial<Options<DeleteClientByIdData>>,
+): UseMutationOptions<unknown, DefaultError, Options<DeleteClientByIdData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<DeleteV1ClientByIdData>
+    Options<DeleteClientByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteV1ClientById({
+      const { data } = await deleteClientById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -264,19 +260,16 @@ export const deleteV1ClientByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1ClientByIdQueryKey = (
-  options: Options<GetV1ClientByIdData>,
-) => createQueryKey("getV1ClientById", options);
+export const getClientByIdQueryKey = (options: Options<GetClientByIdData>) =>
+  createQueryKey("getClientById", options);
 
 /**
  * Get user-defined client by ID
  */
-export const getV1ClientByIdOptions = (
-  options: Options<GetV1ClientByIdData>,
-) => {
+export const getClientByIdOptions = (options: Options<GetClientByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1ClientById({
+      const { data } = await getClientById({
         ...options,
         ...queryKey[0],
         signal,
@@ -284,27 +277,23 @@ export const getV1ClientByIdOptions = (
       });
       return data;
     },
-    queryKey: getV1ClientByIdQueryKey(options),
+    queryKey: getClientByIdQueryKey(options),
   });
 };
 
 /**
  * Update user-defined client data
  */
-export const patchV1ClientByIdMutation = (
-  options?: Partial<Options<PatchV1ClientByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<PatchV1ClientByIdData>
-> => {
+export const patchClientByIdMutation = (
+  options?: Partial<Options<PatchClientByIdData>>,
+): UseMutationOptions<unknown, DefaultError, Options<PatchClientByIdData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PatchV1ClientByIdData>
+    Options<PatchClientByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchV1ClientById({
+      const { data } = await patchClientById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -315,16 +304,16 @@ export const patchV1ClientByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1ProjectQueryKey = (options?: Options<GetV1ProjectData>) =>
-  createQueryKey("getV1Project", options);
+export const getProjectQueryKey = (options?: Options<GetProjectData>) =>
+  createQueryKey("getProject", options);
 
 /**
  * Get all user projects
  */
-export const getV1ProjectOptions = (options?: Options<GetV1ProjectData>) => {
+export const getProjectOptions = (options?: Options<GetProjectData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1Project({
+      const { data } = await getProject({
         ...options,
         ...queryKey[0],
         signal,
@@ -332,20 +321,20 @@ export const getV1ProjectOptions = (options?: Options<GetV1ProjectData>) => {
       });
       return data;
     },
-    queryKey: getV1ProjectQueryKey(options),
+    queryKey: getProjectQueryKey(options),
   });
 };
 
-export const postV1ProjectQueryKey = (options: Options<PostV1ProjectData>) =>
-  createQueryKey("postV1Project", options);
+export const postProjectQueryKey = (options: Options<PostProjectData>) =>
+  createQueryKey("postProject", options);
 
 /**
  * Create new user project
  */
-export const postV1ProjectOptions = (options: Options<PostV1ProjectData>) => {
+export const postProjectOptions = (options: Options<PostProjectData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postV1Project({
+      const { data } = await postProject({
         ...options,
         ...queryKey[0],
         signal,
@@ -353,23 +342,23 @@ export const postV1ProjectOptions = (options: Options<PostV1ProjectData>) => {
       });
       return data;
     },
-    queryKey: postV1ProjectQueryKey(options),
+    queryKey: postProjectQueryKey(options),
   });
 };
 
 /**
  * Create new user project
  */
-export const postV1ProjectMutation = (
-  options?: Partial<Options<PostV1ProjectData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostV1ProjectData>> => {
+export const postProjectMutation = (
+  options?: Partial<Options<PostProjectData>>,
+): UseMutationOptions<unknown, DefaultError, Options<PostProjectData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PostV1ProjectData>
+    Options<PostProjectData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postV1Project({
+      const { data } = await postProject({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -383,20 +372,20 @@ export const postV1ProjectMutation = (
 /**
  * Delete user project, all time entries will be removed
  */
-export const deleteV1ProjectByIdMutation = (
-  options?: Partial<Options<DeleteV1ProjectByIdData>>,
+export const deleteProjectByIdMutation = (
+  options?: Partial<Options<DeleteProjectByIdData>>,
 ): UseMutationOptions<
   unknown,
   DefaultError,
-  Options<DeleteV1ProjectByIdData>
+  Options<DeleteProjectByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<DeleteV1ProjectByIdData>
+    Options<DeleteProjectByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteV1ProjectById({
+      const { data } = await deleteProjectById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -407,19 +396,16 @@ export const deleteV1ProjectByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1ProjectByIdQueryKey = (
-  options: Options<GetV1ProjectByIdData>,
-) => createQueryKey("getV1ProjectById", options);
+export const getProjectByIdQueryKey = (options: Options<GetProjectByIdData>) =>
+  createQueryKey("getProjectById", options);
 
 /**
  * Get user project by ID
  */
-export const getV1ProjectByIdOptions = (
-  options: Options<GetV1ProjectByIdData>,
-) => {
+export const getProjectByIdOptions = (options: Options<GetProjectByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1ProjectById({
+      const { data } = await getProjectById({
         ...options,
         ...queryKey[0],
         signal,
@@ -427,27 +413,23 @@ export const getV1ProjectByIdOptions = (
       });
       return data;
     },
-    queryKey: getV1ProjectByIdQueryKey(options),
+    queryKey: getProjectByIdQueryKey(options),
   });
 };
 
 /**
  * Update user project data
  */
-export const patchV1ProjectByIdMutation = (
-  options?: Partial<Options<PatchV1ProjectByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<PatchV1ProjectByIdData>
-> => {
+export const patchProjectByIdMutation = (
+  options?: Partial<Options<PatchProjectByIdData>>,
+): UseMutationOptions<unknown, DefaultError, Options<PatchProjectByIdData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PatchV1ProjectByIdData>
+    Options<PatchProjectByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchV1ProjectById({
+      const { data } = await patchProjectById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -458,19 +440,19 @@ export const patchV1ProjectByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1TimeEntryActiveQueryKey = (
-  options?: Options<GetV1TimeEntryActiveData>,
-) => createQueryKey("getV1TimeEntryActive", options);
+export const getTimeEntryActiveQueryKey = (
+  options?: Options<GetTimeEntryActiveData>,
+) => createQueryKey("getTimeEntryActive", options);
 
 /**
  * Test description
  */
-export const getV1TimeEntryActiveOptions = (
-  options?: Options<GetV1TimeEntryActiveData>,
+export const getTimeEntryActiveOptions = (
+  options?: Options<GetTimeEntryActiveData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1TimeEntryActive({
+      const { data } = await getTimeEntryActive({
         ...options,
         ...queryKey[0],
         signal,
@@ -478,23 +460,23 @@ export const getV1TimeEntryActiveOptions = (
       });
       return data;
     },
-    queryKey: getV1TimeEntryActiveQueryKey(options),
+    queryKey: getTimeEntryActiveQueryKey(options),
   });
 };
 
-export const getV1TimeEntryByIdQueryKey = (
-  options: Options<GetV1TimeEntryByIdData>,
-) => createQueryKey("getV1TimeEntryById", options);
+export const getTimeEntryByIdQueryKey = (
+  options: Options<GetTimeEntryByIdData>,
+) => createQueryKey("getTimeEntryById", options);
 
 /**
  * Return time entry by ID
  */
-export const getV1TimeEntryByIdOptions = (
-  options: Options<GetV1TimeEntryByIdData>,
+export const getTimeEntryByIdOptions = (
+  options: Options<GetTimeEntryByIdData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1TimeEntryById({
+      const { data } = await getTimeEntryById({
         ...options,
         ...queryKey[0],
         signal,
@@ -502,27 +484,27 @@ export const getV1TimeEntryByIdOptions = (
       });
       return data;
     },
-    queryKey: getV1TimeEntryByIdQueryKey(options),
+    queryKey: getTimeEntryByIdQueryKey(options),
   });
 };
 
 /**
  * Update existing time entry
  */
-export const patchV1TimeEntryByIdMutation = (
-  options?: Partial<Options<PatchV1TimeEntryByIdData>>,
+export const patchTimeEntryByIdMutation = (
+  options?: Partial<Options<PatchTimeEntryByIdData>>,
 ): UseMutationOptions<
   unknown,
   DefaultError,
-  Options<PatchV1TimeEntryByIdData>
+  Options<PatchTimeEntryByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PatchV1TimeEntryByIdData>
+    Options<PatchTimeEntryByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchV1TimeEntryById({
+      const { data } = await patchTimeEntryById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -533,19 +515,16 @@ export const patchV1TimeEntryByIdMutation = (
   return mutationOptions;
 };
 
-export const postV1TimeEntryQueryKey = (
-  options: Options<PostV1TimeEntryData>,
-) => createQueryKey("postV1TimeEntry", options);
+export const postTimeEntryQueryKey = (options: Options<PostTimeEntryData>) =>
+  createQueryKey("postTimeEntry", options);
 
 /**
  * Create new time entry
  */
-export const postV1TimeEntryOptions = (
-  options: Options<PostV1TimeEntryData>,
-) => {
+export const postTimeEntryOptions = (options: Options<PostTimeEntryData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postV1TimeEntry({
+      const { data } = await postTimeEntry({
         ...options,
         ...queryKey[0],
         signal,
@@ -553,23 +532,23 @@ export const postV1TimeEntryOptions = (
       });
       return data;
     },
-    queryKey: postV1TimeEntryQueryKey(options),
+    queryKey: postTimeEntryQueryKey(options),
   });
 };
 
 /**
  * Create new time entry
  */
-export const postV1TimeEntryMutation = (
-  options?: Partial<Options<PostV1TimeEntryData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostV1TimeEntryData>> => {
+export const postTimeEntryMutation = (
+  options?: Partial<Options<PostTimeEntryData>>,
+): UseMutationOptions<unknown, DefaultError, Options<PostTimeEntryData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PostV1TimeEntryData>
+    Options<PostTimeEntryData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postV1TimeEntry({
+      const { data } = await postTimeEntry({
         ...options,
         ...localOptions,
         throwOnError: true,

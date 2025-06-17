@@ -8,11 +8,10 @@ import { swagger } from "@elysiajs/swagger";
 import { auth, OpenAPI } from "./auth";
 import * as routers from "./routers";
 
-console.log(env);
 const app = new Elysia()
   .use(
     cors({
-      origin: env.CORS_ORIGINS ?? true,
+      origin: env.CORS_ORIGINS ?? "*",
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       credentials: true,
       allowedHeaders: ["Content-Type", "Authorization"],
@@ -37,6 +36,14 @@ const app = new Elysia()
   .get("/status", () => {
     return "ok";
   });
+
+// Quick overview about routes
+logger.info("Defined routes:");
+
+for (const route of app.routes) {
+  const method = `[${route.method}]`.padEnd(8);
+  logger.info(`\t${method} ${route.path}`);
+}
 
 app.listen(env.PORT);
 

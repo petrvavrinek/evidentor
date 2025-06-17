@@ -2,38 +2,38 @@
 
 import type { Options as ClientOptions, TDataShape, Client } from "./client";
 import type {
-  GetV1ClientData,
-  GetV1ClientResponses,
-  PostV1ClientData,
-  PostV1ClientResponses,
-  DeleteV1ClientByIdData,
-  DeleteV1ClientByIdResponses,
-  GetV1ClientByIdData,
-  GetV1ClientByIdResponses,
-  PatchV1ClientByIdData,
-  PatchV1ClientByIdResponses,
-  GetV1ProjectData,
-  GetV1ProjectResponses,
-  PostV1ProjectData,
-  PostV1ProjectResponses,
-  DeleteV1ProjectByIdData,
-  DeleteV1ProjectByIdResponses,
-  GetV1ProjectByIdData,
-  GetV1ProjectByIdResponses,
-  PatchV1ProjectByIdData,
-  PatchV1ProjectByIdResponses,
-  GetV1TimeEntryActiveData,
-  GetV1TimeEntryActiveResponses,
-  GetV1TimeEntryActiveErrors,
-  GetV1TimeEntryByIdData,
-  GetV1TimeEntryByIdResponses,
-  GetV1TimeEntryByIdErrors,
-  PatchV1TimeEntryByIdData,
-  PatchV1TimeEntryByIdResponses,
-  PatchV1TimeEntryByIdErrors,
-  PostV1TimeEntryData,
-  PostV1TimeEntryResponses,
-  PostV1TimeEntryErrors,
+  GetClientData,
+  GetClientResponses,
+  PostClientData,
+  PostClientResponses,
+  DeleteClientByIdData,
+  DeleteClientByIdResponses,
+  GetClientByIdData,
+  GetClientByIdResponses,
+  PatchClientByIdData,
+  PatchClientByIdResponses,
+  GetProjectData,
+  GetProjectResponses,
+  PostProjectData,
+  PostProjectResponses,
+  DeleteProjectByIdData,
+  DeleteProjectByIdResponses,
+  GetProjectByIdData,
+  GetProjectByIdResponses,
+  PatchProjectByIdData,
+  PatchProjectByIdResponses,
+  GetTimeEntryActiveData,
+  GetTimeEntryActiveResponses,
+  GetTimeEntryActiveErrors,
+  GetTimeEntryByIdData,
+  GetTimeEntryByIdResponses,
+  GetTimeEntryByIdErrors,
+  PatchTimeEntryByIdData,
+  PatchTimeEntryByIdResponses,
+  PatchTimeEntryByIdErrors,
+  PostTimeEntryData,
+  PostTimeEntryResponses,
+  PostTimeEntryErrors,
   GetStatusData,
   GetStatusResponses,
   SocialSignInData,
@@ -121,8 +121,8 @@ import type {
   GetAuthApiErrorResponses,
   GetAuthApiErrorErrors,
 } from "./types.gen";
-import { client as _heyApiClient } from "./client.gen";
 import {
+  zGetClientResponse,
   zSocialSignInResponse,
   zGetAuthApiGetSessionResponse,
   zPostAuthApiSignOutResponse,
@@ -152,6 +152,7 @@ import {
   zGetAuthApiOkResponse,
   zGetAuthApiErrorResponse,
 } from "./zod.gen";
+import { client as _heyApiClient } from "./client.gen";
 
 export type Options<
   TData extends TDataShape = TDataShape,
@@ -173,15 +174,18 @@ export type Options<
 /**
  * Get all user-defined clients
  */
-export const getV1Client = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1ClientData, ThrowOnError>,
+export const getClient = <ThrowOnError extends boolean = false>(
+  options?: Options<GetClientData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetV1ClientResponses,
+    GetClientResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client",
+    responseValidator: async (data) => {
+      return await zGetClientResponse.parseAsync(data);
+    },
+    url: "/client",
     ...options,
   });
 };
@@ -189,15 +193,15 @@ export const getV1Client = <ThrowOnError extends boolean = false>(
 /**
  * Create new user-defined client
  */
-export const postV1Client = <ThrowOnError extends boolean = false>(
-  options: Options<PostV1ClientData, ThrowOnError>,
+export const postClient = <ThrowOnError extends boolean = false>(
+  options: Options<PostClientData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostV1ClientResponses,
+    PostClientResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client",
+    url: "/client",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -209,15 +213,15 @@ export const postV1Client = <ThrowOnError extends boolean = false>(
 /**
  * Delete user-defined client, all projects containing this client will be unset
  */
-export const deleteV1ClientById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteV1ClientByIdData, ThrowOnError>,
+export const deleteClientById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteClientByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteV1ClientByIdResponses,
+    DeleteClientByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client/{id}",
+    url: "/client/{id}",
     ...options,
   });
 };
@@ -225,15 +229,15 @@ export const deleteV1ClientById = <ThrowOnError extends boolean = false>(
 /**
  * Get user-defined client by ID
  */
-export const getV1ClientById = <ThrowOnError extends boolean = false>(
-  options: Options<GetV1ClientByIdData, ThrowOnError>,
+export const getClientById = <ThrowOnError extends boolean = false>(
+  options: Options<GetClientByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetV1ClientByIdResponses,
+    GetClientByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client/{id}",
+    url: "/client/{id}",
     ...options,
   });
 };
@@ -241,15 +245,15 @@ export const getV1ClientById = <ThrowOnError extends boolean = false>(
 /**
  * Update user-defined client data
  */
-export const patchV1ClientById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchV1ClientByIdData, ThrowOnError>,
+export const patchClientById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchClientByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchV1ClientByIdResponses,
+    PatchClientByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client/{id}",
+    url: "/client/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -261,15 +265,15 @@ export const patchV1ClientById = <ThrowOnError extends boolean = false>(
 /**
  * Get all user projects
  */
-export const getV1Project = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1ProjectData, ThrowOnError>,
+export const getProject = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetV1ProjectResponses,
+    GetProjectResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project",
+    url: "/project",
     ...options,
   });
 };
@@ -277,15 +281,15 @@ export const getV1Project = <ThrowOnError extends boolean = false>(
 /**
  * Create new user project
  */
-export const postV1Project = <ThrowOnError extends boolean = false>(
-  options: Options<PostV1ProjectData, ThrowOnError>,
+export const postProject = <ThrowOnError extends boolean = false>(
+  options: Options<PostProjectData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostV1ProjectResponses,
+    PostProjectResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project",
+    url: "/project",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -297,15 +301,15 @@ export const postV1Project = <ThrowOnError extends boolean = false>(
 /**
  * Delete user project, all time entries will be removed
  */
-export const deleteV1ProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteV1ProjectByIdData, ThrowOnError>,
+export const deleteProjectById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteProjectByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteV1ProjectByIdResponses,
+    DeleteProjectByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project/{id}",
+    url: "/project/{id}",
     ...options,
   });
 };
@@ -313,15 +317,15 @@ export const deleteV1ProjectById = <ThrowOnError extends boolean = false>(
 /**
  * Get user project by ID
  */
-export const getV1ProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<GetV1ProjectByIdData, ThrowOnError>,
+export const getProjectById = <ThrowOnError extends boolean = false>(
+  options: Options<GetProjectByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetV1ProjectByIdResponses,
+    GetProjectByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project/{id}",
+    url: "/project/{id}",
     ...options,
   });
 };
@@ -329,15 +333,15 @@ export const getV1ProjectById = <ThrowOnError extends boolean = false>(
 /**
  * Update user project data
  */
-export const patchV1ProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchV1ProjectByIdData, ThrowOnError>,
+export const patchProjectById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchProjectByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchV1ProjectByIdResponses,
+    PatchProjectByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project/{id}",
+    url: "/project/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -349,15 +353,15 @@ export const patchV1ProjectById = <ThrowOnError extends boolean = false>(
 /**
  * Test description
  */
-export const getV1TimeEntryActive = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1TimeEntryActiveData, ThrowOnError>,
+export const getTimeEntryActive = <ThrowOnError extends boolean = false>(
+  options?: Options<GetTimeEntryActiveData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetV1TimeEntryActiveResponses,
-    GetV1TimeEntryActiveErrors,
+    GetTimeEntryActiveResponses,
+    GetTimeEntryActiveErrors,
     ThrowOnError
   >({
-    url: "/v1/time-entry/active",
+    url: "/time-entry/active",
     ...options,
   });
 };
@@ -365,15 +369,15 @@ export const getV1TimeEntryActive = <ThrowOnError extends boolean = false>(
 /**
  * Return time entry by ID
  */
-export const getV1TimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<GetV1TimeEntryByIdData, ThrowOnError>,
+export const getTimeEntryById = <ThrowOnError extends boolean = false>(
+  options: Options<GetTimeEntryByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetV1TimeEntryByIdResponses,
-    GetV1TimeEntryByIdErrors,
+    GetTimeEntryByIdResponses,
+    GetTimeEntryByIdErrors,
     ThrowOnError
   >({
-    url: "/v1/time-entry/{id}",
+    url: "/time-entry/{id}",
     ...options,
   });
 };
@@ -381,15 +385,15 @@ export const getV1TimeEntryById = <ThrowOnError extends boolean = false>(
 /**
  * Update existing time entry
  */
-export const patchV1TimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchV1TimeEntryByIdData, ThrowOnError>,
+export const patchTimeEntryById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchTimeEntryByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchV1TimeEntryByIdResponses,
-    PatchV1TimeEntryByIdErrors,
+    PatchTimeEntryByIdResponses,
+    PatchTimeEntryByIdErrors,
     ThrowOnError
   >({
-    url: "/v1/time-entry/{id}",
+    url: "/time-entry/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -401,15 +405,15 @@ export const patchV1TimeEntryById = <ThrowOnError extends boolean = false>(
 /**
  * Create new time entry
  */
-export const postV1TimeEntry = <ThrowOnError extends boolean = false>(
-  options: Options<PostV1TimeEntryData, ThrowOnError>,
+export const postTimeEntry = <ThrowOnError extends boolean = false>(
+  options: Options<PostTimeEntryData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostV1TimeEntryResponses,
-    PostV1TimeEntryErrors,
+    PostTimeEntryResponses,
+    PostTimeEntryErrors,
     ThrowOnError
   >({
-    url: "/v1/time-entry",
+    url: "/time-entry",
     ...options,
     headers: {
       "Content-Type": "application/json",

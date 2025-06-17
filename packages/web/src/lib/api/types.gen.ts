@@ -46,123 +46,134 @@ export type Verification = {
   updatedAt?: unknown;
 };
 
-export type GetV1ClientData = {
+export type GetClientData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/v1/client";
+  url: "/client";
 };
 
-export type GetV1ClientResponses = {
-  200: unknown;
+export type GetClientResponses = {
+  200: Array<{
+    id: number;
+    companyName: string;
+    contactName: string;
+    email: string | unknown;
+    ownerId: string | unknown;
+    createdAt: unknown;
+  }>;
 };
 
-export type PostV1ClientData = {
+export type GetClientResponse = GetClientResponses[keyof GetClientResponses];
+
+export type PostClientData = {
   body: {
-    name: string;
+    companyName: string;
+    contactName: string;
   };
   path?: never;
   query?: never;
-  url: "/v1/client";
+  url: "/client";
 };
 
-export type PostV1ClientResponses = {
+export type PostClientResponses = {
   200: unknown;
 };
 
-export type DeleteV1ClientByIdData = {
+export type DeleteClientByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/v1/client/{id}";
+  url: "/client/{id}";
 };
 
-export type DeleteV1ClientByIdResponses = {
+export type DeleteClientByIdResponses = {
   200: unknown;
 };
 
-export type GetV1ClientByIdData = {
+export type GetClientByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/v1/client/{id}";
+  url: "/client/{id}";
 };
 
-export type GetV1ClientByIdResponses = {
+export type GetClientByIdResponses = {
   200: unknown;
 };
 
-export type PatchV1ClientByIdData = {
+export type PatchClientByIdData = {
   body: {
-    name?: string;
+    companyName?: string;
+    contactName?: string;
   };
   path: {
     id: number;
   };
   query?: never;
-  url: "/v1/client/{id}";
+  url: "/client/{id}";
 };
 
-export type PatchV1ClientByIdResponses = {
+export type PatchClientByIdResponses = {
   200: unknown;
 };
 
-export type GetV1ProjectData = {
+export type GetProjectData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/v1/project";
+  url: "/project";
 };
 
-export type GetV1ProjectResponses = {
+export type GetProjectResponses = {
   200: unknown;
 };
 
-export type PostV1ProjectData = {
+export type PostProjectData = {
   body: {
     title: string;
     clientId: number;
   };
   path?: never;
   query?: never;
-  url: "/v1/project";
+  url: "/project";
 };
 
-export type PostV1ProjectResponses = {
+export type PostProjectResponses = {
   200: unknown;
 };
 
-export type DeleteV1ProjectByIdData = {
+export type DeleteProjectByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/v1/project/{id}";
+  url: "/project/{id}";
 };
 
-export type DeleteV1ProjectByIdResponses = {
+export type DeleteProjectByIdResponses = {
   200: unknown;
 };
 
-export type GetV1ProjectByIdData = {
+export type GetProjectByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/v1/project/{id}";
+  url: "/project/{id}";
 };
 
-export type GetV1ProjectByIdResponses = {
+export type GetProjectByIdResponses = {
   200: unknown;
 };
 
-export type PatchV1ProjectByIdData = {
+export type PatchProjectByIdData = {
   body: {
     title?: string;
     clientId?: number;
@@ -171,58 +182,58 @@ export type PatchV1ProjectByIdData = {
     id: number;
   };
   query?: never;
-  url: "/v1/project/{id}";
+  url: "/project/{id}";
 };
 
-export type PatchV1ProjectByIdResponses = {
+export type PatchProjectByIdResponses = {
   200: unknown;
 };
 
-export type GetV1TimeEntryActiveData = {
+export type GetTimeEntryActiveData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/v1/time-entry/active";
+  url: "/time-entry/active";
 };
 
-export type GetV1TimeEntryActiveErrors = {
+export type GetTimeEntryActiveErrors = {
   /**
    * Active time entry does not exist
    */
   404: unknown;
 };
 
-export type GetV1TimeEntryActiveResponses = {
+export type GetTimeEntryActiveResponses = {
   /**
    * Active time entry found
    */
   200: unknown;
 };
 
-export type GetV1TimeEntryByIdData = {
+export type GetTimeEntryByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/v1/time-entry/{id}";
+  url: "/time-entry/{id}";
 };
 
-export type GetV1TimeEntryByIdErrors = {
+export type GetTimeEntryByIdErrors = {
   /**
    * Time entry not found
    */
   404: unknown;
 };
 
-export type GetV1TimeEntryByIdResponses = {
+export type GetTimeEntryByIdResponses = {
   /**
    * Time entry found and returned
    */
   200: unknown;
 };
 
-export type PatchV1TimeEntryByIdData = {
+export type PatchTimeEntryByIdData = {
   body: {
     title?: string;
     userId?: string;
@@ -235,24 +246,24 @@ export type PatchV1TimeEntryByIdData = {
     id: number;
   };
   query?: never;
-  url: "/v1/time-entry/{id}";
+  url: "/time-entry/{id}";
 };
 
-export type PatchV1TimeEntryByIdErrors = {
+export type PatchTimeEntryByIdErrors = {
   /**
    * Time entry not found
    */
   404: unknown;
 };
 
-export type PatchV1TimeEntryByIdResponses = {
+export type PatchTimeEntryByIdResponses = {
   /**
    * Time entry updated
    */
   200: unknown;
 };
 
-export type PostV1TimeEntryData = {
+export type PostTimeEntryData = {
   body: {
     title: string;
     userId: string;
@@ -263,17 +274,17 @@ export type PostV1TimeEntryData = {
   };
   path?: never;
   query?: never;
-  url: "/v1/time-entry";
+  url: "/time-entry";
 };
 
-export type PostV1TimeEntryErrors = {
+export type PostTimeEntryErrors = {
   /**
    * Running time entry already exist
    */
   409: unknown;
 };
 
-export type PostV1TimeEntryResponses = {
+export type PostTimeEntryResponses = {
   /**
    * Time entry created
    */

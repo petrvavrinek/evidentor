@@ -1,5 +1,10 @@
 "use client";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { MoreHorizontal, Plus } from "lucide-react";
+import { useState } from "react";
+
+import { ClientForm } from "@/components/clients/client-form";
 import PageHeader from "@/components/page-header";
 import SearchInput from "@/components/search-input";
 import { Button } from "@/components/ui/button";
@@ -34,108 +39,42 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MoreHorizontal, Plus } from "lucide-react";
-import { useState } from "react";
-
-// Sample client data
-const initialClients = [
-  {
-    id: "1",
-    name: "Acme Inc",
-    contactName: "John Smith",
-    email: "john@acmeinc.com",
-    phone: "(555) 123-4567",
-    address: "123 Business Ave, New York, NY 10001",
-    tags: ["regular"],
-    projects: [
-      {
-        id: "p1",
-        name: "Website Redesign",
-        status: "In Progress",
-        date: "2025-04-15",
-      },
-      {
-        id: "p2",
-        name: "SEO Optimization",
-        status: "Completed",
-        date: "2025-03-10",
-      },
-    ],
-    invoices: [
-      { id: "i1", amount: 5000, status: "Paid", date: "2025-03-15" },
-      { id: "i2", amount: 3500, status: "Pending", date: "2025-04-20" },
-    ],
-  },
-  {
-    id: "2",
-    name: "TechStart",
-    contactName: "Sarah Johnson",
-    email: "sarah@techstart.io",
-    phone: "(555) 987-6543",
-    address: "456 Innovation Blvd, San Francisco, CA 94107",
-    tags: ["vip"],
-    projects: [
-      {
-        id: "p3",
-        name: "Mobile App Development",
-        status: "In Progress",
-        date: "2025-04-01",
-      },
-      {
-        id: "p4",
-        name: "Cloud Migration",
-        status: "Planning",
-        date: "2025-05-01",
-      },
-    ],
-    invoices: [
-      { id: "i3", amount: 12000, status: "Paid", date: "2025-03-30" },
-      { id: "i4", amount: 8000, status: "Pending", date: "2025-05-15" },
-    ],
-  },
-  {
-    id: "3",
-    name: "GreenGrow",
-    contactName: "Michael Chen",
-    email: "michael@greengrow.com",
-    phone: "(555) 456-7890",
-    address: "789 Eco Street, Portland, OR 97201",
-    tags: ["regular"],
-    projects: [
-      {
-        id: "p5",
-        name: "Brand Identity",
-        status: "In Progress",
-        date: "2025-04-10",
-      },
-    ],
-    invoices: [{ id: "i5", amount: 4500, status: "Paid", date: "2025-04-05" }],
-  },
-  {
-    id: "4",
-    name: "ShopEasy",
-    contactName: "Lisa Brown",
-    email: "lisa@shopeasy.com",
-    phone: "(555) 789-0123",
-    address: "321 Commerce Road, Chicago, IL 60607",
-    tags: ["risky"],
-    projects: [
-      {
-        id: "p6",
-        name: "E-commerce Platform",
-        status: "In Progress",
-        date: "2025-03-20",
-      },
-    ],
-    invoices: [
-      { id: "i6", amount: 7500, status: "Overdue", date: "2025-03-25" },
-      { id: "i7", amount: 2500, status: "Overdue", date: "2025-04-10" },
-    ],
-  },
-];
+import { getClient } from "@/lib/api";
+import {
+  deleteClientByIdMutation,
+  getClientQueryKey,
+  postClientMutation,
+} from "@/lib/api/@tanstack/react-query.gen";
 
 export default function ClientsPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+  const {
+    data: { data: clients },
+    isLoading,
+    refetch,
+  } = useQuery({
+    initialData: [] as never,
+    queryKey: getClientQueryKey(),
+    queryFn: () => getClient(),
+  });
+
+  const createClientMutation = useMutation({
+    ...postClientMutation(),
+    onSuccess: (data, variables, context) => {
+      refetch();
+    },
+  });
+
+  const deleteClientMutation = useMutation({
+    ...deleteClientByIdMutation(),
+    onSuccess: (data) => {
+      refetch();
+    },
+  });
+
+  if (isLoading || !clients) return <>Loading...</>;
 
   return (
     <>
@@ -145,7 +84,10 @@ export default function ClientsPage() {
         controls={
           <Dialog open={false} onOpenChange={() => {}}>
             <DialogTrigger asChild>
-              <Button className="mt-4 md:mt-0">
+              <Button
+                className="mt-4 md:mt-0"
+                onClick={() => setIsCreateDialogOpen(true)}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Client
               </Button>
@@ -177,8 +119,7 @@ export default function ClientsPage() {
         <CardHeader className="px-6">
           <CardTitle>Client List</CardTitle>
           <CardDescription>
-            {initialClients.length}{" "}
-            {initialClients.length === 1 ? "client" : "clients"} found
+            {clients.length} {clients.length === 1 ? "client" : "clients"} found
           </CardDescription>
         </CardHeader>
         <CardContent className="px-6">
@@ -194,7 +135,7 @@ export default function ClientsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {initialClients.length === 0 ? (
+                {clients.length === 0 ? (
                   <TableRow>
                     <TableCell
                       colSpan={6}
@@ -204,17 +145,17 @@ export default function ClientsPage() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  initialClients.map((client) => (
+                  clients.map((client) => (
                     <TableRow key={client.id}>
                       <TableCell className="font-medium">
-                        {client.name}
+                        {client.companyName}
                       </TableCell>
                       <TableCell>{client.contactName}</TableCell>
                       <TableCell className="hidden md:table-cell">
-                        {client.email}
+                        {client.email ? <>{client.email}</> : "-"}
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
-                        {client.phone}
+                        phone
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>
@@ -235,7 +176,11 @@ export default function ClientsPage() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               className="text-destructive focus:text-destructive"
-                              onClick={() => {}}
+                              onClick={() => {
+                                deleteClientMutation.mutateAsync({
+                                  path: { id: client.id },
+                                });
+                              }}
                             >
                               Delete
                             </DropdownMenuItem>
@@ -250,6 +195,29 @@ export default function ClientsPage() {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create new client</DialogTitle>
+          </DialogHeader>
+
+          <ClientForm
+            onCancel={() => setIsCreateDialogOpen(false)}
+            onSubmit={(e) => {
+              createClientMutation.mutate(
+                {
+                  body: {
+                    companyName: e.contactName,
+                    contactName: e.contactName,
+                  },
+                },
+                { onSuccess: () => setIsCreateDialogOpen(false) }
+              );
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

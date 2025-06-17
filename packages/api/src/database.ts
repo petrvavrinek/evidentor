@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./db/schema";
 
+// TODO: Create own validation env schema for this file only (used in migrate dockerfile)
 const { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } = process.env;
 
 export const db = drizzle(

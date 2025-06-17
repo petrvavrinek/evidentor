@@ -6,7 +6,7 @@ import { ClientsService } from "../clients/clients.service";
 import { ProjectsService } from "./projects.service";
 
 export const router = new Elysia({
-  prefix: "/v1/project",
+  prefix: "/project",
   detail: { tags: ["Project"] },
 })
   .use(betterAuth)

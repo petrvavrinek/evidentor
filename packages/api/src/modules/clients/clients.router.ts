@@ -1,11 +1,16 @@
 import Elysia, { status } from "elysia";
 
 import { betterAuth } from "../../auth/index";
-import { ClientIdParam, CreateClient, UpdateClient } from "./clients.dto";
+import {
+  ClientIdParam,
+  ClientsResponse,
+  CreateClient,
+  UpdateClient,
+} from "./clients.dto";
 import { ClientsService } from "./clients.service";
 
 export const router = new Elysia({
-  prefix: "/v1/client",
+  prefix: "/client",
   detail: { tags: ["Client"] },
 })
   .use(betterAuth)
@@ -19,6 +24,7 @@ export const router = new Elysia({
       detail: {
         description: "Get all user-defined clients",
       },
+      response: ClientsResponse,
     }
   )
   .post(
@@ -39,9 +45,7 @@ export const router = new Elysia({
     ":id",
     async ({ params, user }) => {
       const { id } = params;
-
       const foundClient = await ClientsService.findById(user.id, id);
-
       if (!foundClient) return status(404, "Client not found");
       return foundClient;
     },

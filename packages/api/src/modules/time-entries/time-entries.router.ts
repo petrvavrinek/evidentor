@@ -8,7 +8,7 @@ import {
 import { TimeEntriesService } from "./time-entries.service";
 
 export const router = new Elysia({
-  prefix: "/v1/time-entry",
+  prefix: "/time-entry",
   detail: { tags: ["Timer"] },
 })
   .use(betterAuth)

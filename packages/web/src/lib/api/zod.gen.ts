@@ -48,39 +48,52 @@ export const zVerification = z.object({
   updatedAt: z.unknown().optional(),
 });
 
-export const zPostV1ClientData = z.object({
-  name: z.string(),
+export const zGetClientResponse = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    companyName: z.string(),
+    contactName: z.string(),
+    email: z.union([z.string(), z.unknown()]),
+    ownerId: z.union([z.string(), z.unknown()]),
+    createdAt: z.unknown(),
+  }),
+);
+
+export const zPostClientData = z.object({
+  companyName: z.string(),
+  contactName: z.string(),
 });
 
-export const zDeleteV1ClientByIdParameterId = z.number();
+export const zDeleteClientByIdParameterId = z.number();
 
-export const zGetV1ClientByIdParameterId = z.number();
+export const zGetClientByIdParameterId = z.number();
 
-export const zPatchV1ClientByIdData = z.object({
-  name: z.string().optional(),
+export const zPatchClientByIdData = z.object({
+  companyName: z.string().optional(),
+  contactName: z.string().optional(),
 });
 
-export const zPatchV1ClientByIdParameterId = z.number();
+export const zPatchClientByIdParameterId = z.number();
 
-export const zPostV1ProjectData = z.object({
+export const zPostProjectData = z.object({
   title: z.string(),
   clientId: z.number(),
 });
 
-export const zDeleteV1ProjectByIdParameterId = z.number();
+export const zDeleteProjectByIdParameterId = z.number();
 
-export const zGetV1ProjectByIdParameterId = z.number();
+export const zGetProjectByIdParameterId = z.number();
 
-export const zPatchV1ProjectByIdData = z.object({
+export const zPatchProjectByIdData = z.object({
   title: z.string().optional(),
   clientId: z.number().optional(),
 });
 
-export const zPatchV1ProjectByIdParameterId = z.number();
+export const zPatchProjectByIdParameterId = z.number();
 
-export const zGetV1TimeEntryByIdParameterId = z.number();
+export const zGetTimeEntryByIdParameterId = z.number();
 
-export const zPatchV1TimeEntryByIdData = z.object({
+export const zPatchTimeEntryByIdData = z.object({
   title: z.string().optional(),
   userId: z.string().optional(),
   projectId: z.union([z.number(), z.unknown()]).optional(),
@@ -94,9 +107,9 @@ export const zPatchV1TimeEntryByIdData = z.object({
   createdAt: z.unknown().optional(),
 });
 
-export const zPatchV1TimeEntryByIdParameterId = z.number();
+export const zPatchTimeEntryByIdParameterId = z.number();
 
-export const zPostV1TimeEntryData = z.object({
+export const zPostTimeEntryData = z.object({
   title: z.string(),
   userId: z.string(),
   projectId: z.union([z.number(), z.unknown()]),

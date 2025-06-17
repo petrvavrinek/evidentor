@@ -87,7 +87,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -101,7 +101,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} type="password" />
+                      <Input {...field} type="password" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

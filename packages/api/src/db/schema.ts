@@ -23,14 +23,16 @@ export const timeEntry = pgTable(
 export const timeEntryRelations = relations(timeEntry, ({ one }) => ({
   project: one(project, {
     fields: [timeEntry.projectId],
-    references: [project.id]
+    references: [project.id],
   }),
 }));
 
 // Temp client data
 export const client = pgTable("client", {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),
-  name: text(),
+  companyName: text().notNull(),
+  contactName: text().notNull(),
+  email: text(),
   ownerId: text().references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp()
     .$defaultFn(() => new Date())
