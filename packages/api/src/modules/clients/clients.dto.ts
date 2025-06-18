@@ -1,17 +1,44 @@
-import { createSelectSchema } from "drizzle-typebox";
+import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t } from "elysia";
-import { client } from "../../db/schema";
 
-export const CreateClient = t.Object({
-  companyName: t.String(),
-  contactName: t.String(),
-});
+import { client } from "@/db/schema";
+
+const InsertClient = createInsertSchema(client);
+
+/**
+ * Create client schema
+ */
+export const CreateClient = t.Pick(InsertClient, [
+  "companyName",
+  "contactName",
+  "email"
+]);
+
+/**
+ * Update client schema
+ */
 export const UpdateClient = t.Partial(CreateClient);
+
+/**
+ * Client ID parameter
+ */
 export const ClientIdParam = t.Object({
   id: t.Number(),
 });
 
-export const ClientResponse = createSelectSchema(client);
-export const ClientsResponse = t.Array(ClientResponse);
+/**
+ * Select client schema
+ */
+const SelectClient = t.Object({
+  ...createSelectSchema(client).properties,
+});
 
-//export const TimeEntryResponse = createSelectSchema(timeEntry);
+/**
+ * Client response
+ */
+export const ClientResponse = t.Omit(SelectClient, ["ownerId"]);
+
+/**
+ * Clients response
+ */
+export const ClientsResponse = t.Array(ClientResponse);

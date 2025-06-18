@@ -1,6 +1,8 @@
 import { and, eq } from "drizzle-orm";
+
+import { timeEntry } from "@/db/schema";
+
 import { db } from "../../database";
-import { timeEntry, user } from "../../db/schema";
 import { ProjectsService } from "../projects/projects.service";
 
 type TimeEntry = typeof timeEntry.$inferSelect;
@@ -15,9 +17,33 @@ export const TimeEntriesService = {
     return db.query.timeEntry.findFirst({
       where: (entry, { and, eq, isNull }) =>
         and(eq(entry.userId, userId), isNull(entry.endAt)),
+      with: {
+        project: {
+          with: {
+            client: true,
+          },
+        },
+      },
     });
   },
 
+  /**
+   * Return user time entries
+   * @param userId User ID
+   * @returns Array of entries
+   */
+  findByUserId(userId: string) {
+    return db.query.timeEntry.findMany({
+      where: (entry, { eq }) => eq(entry.userId, userId),
+      with: {
+        project: {
+          with: {
+            client: true,
+          },
+        },
+      },
+    });
+  },
   /**
    * Find time entry by ID and user ID
    * @param userId User ID
@@ -28,6 +54,13 @@ export const TimeEntriesService = {
     return db.query.timeEntry.findFirst({
       where: (entry, { and, eq }) =>
         and(eq(entry.userId, userId), eq(entry.id, id)),
+      with: {
+        project: {
+          with: {
+            client: true,
+          },
+        },
+      },
     });
   },
 
@@ -75,7 +108,8 @@ export const TimeEntriesService = {
   async create(userId: string, data: Partial<TimeEntry>) {
     if (data.projectId) {
       const project = await ProjectsService.findById(userId, data.projectId);
-      if (!project) throw new Error("Project is not accessible by user");
+      if (!project)
+        throw new Error("Project is not found or not accessible to user");
     }
 
     if (data.endAt) {

@@ -1,8 +1,10 @@
 import Elysia, { status } from "elysia";
 
 import { betterAuth } from "../../auth/index";
+
 import {
   ClientIdParam,
+  ClientResponse,
   ClientsResponse,
   CreateClient,
   UpdateClient,
@@ -14,6 +16,8 @@ export const router = new Elysia({
   detail: { tags: ["Client"] },
 })
   .use(betterAuth)
+  .model("Client", ClientResponse)
+  .model("Client[]", ClientsResponse)
   .get(
     "",
     async ({ user }) => {
@@ -24,7 +28,7 @@ export const router = new Elysia({
       detail: {
         description: "Get all user-defined clients",
       },
-      response: ClientsResponse,
+      response: "Client[]",
     }
   )
   .post(
@@ -39,6 +43,7 @@ export const router = new Elysia({
       detail: {
         description: "Create new user-defined client",
       },
+      response: "Client",
     }
   )
   .get(
@@ -46,7 +51,7 @@ export const router = new Elysia({
     async ({ params, user }) => {
       const { id } = params;
       const foundClient = await ClientsService.findById(user.id, id);
-      if (!foundClient) return status(404, "Client not found");
+      if (!foundClient) throw status(404, "Client not found");
       return foundClient;
     },
     {
@@ -55,6 +60,7 @@ export const router = new Elysia({
       detail: {
         description: "Get user-defined client by ID",
       },
+      response: "Client",
     }
   )
   .patch(
@@ -64,7 +70,7 @@ export const router = new Elysia({
 
       const updatedClient = await ClientsService.updateById(user.id, id, body);
 
-      if (!updatedClient) return status(404, "Client not found");
+      if (!updatedClient) throw status(404, "Client not found");
       return updatedClient;
     },
     {
@@ -74,6 +80,7 @@ export const router = new Elysia({
       detail: {
         description: "Update user-defined client data",
       },
+      response: "Client",
     }
   )
   .delete(

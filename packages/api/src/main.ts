@@ -22,6 +22,7 @@ const app = new Elysia()
       documentation: {
         components: (await OpenAPI.components) as never,
         paths: (await OpenAPI.getPaths("/auth/api")) as never,
+        openapi: "3.1.0",
       },
     }) as never
   )

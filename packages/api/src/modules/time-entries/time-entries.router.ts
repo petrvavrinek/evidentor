@@ -2,7 +2,9 @@ import { Elysia, status } from "elysia";
 import { betterAuth } from "../../auth/auth.middleware";
 import {
   CreateTimeEntry,
+  TimeEntriesResponse,
   TimeEntryIdParam,
+  TimeEntryResponse,
   UpdateTimeEntry,
 } from "./time-entries.dto";
 import { TimeEntriesService } from "./time-entries.service";
@@ -12,27 +14,22 @@ export const router = new Elysia({
   detail: { tags: ["Timer"] },
 })
   .use(betterAuth)
+  .model("TimeEntry", TimeEntryResponse)
+  .model("TimeEntry[]", TimeEntriesResponse)
   .get(
     "/active",
     async ({ user }) => {
       const entry = await TimeEntriesService.getActiveByUserId(user.id);
-      if (entry) return status(200, entry);
-      return status(404);
+      if (!entry) throw status(404);
+
+      return entry;
     },
     {
-      detail: {
-        description: "Test description",
-        hide: false,
-        responses: {
-          200: {
-            description: "Active time entry found",
-          },
-          404: {
-            description: "Active time entry does not exist",
-          },
-        },
-      },
       auth: true,
+      response: "TimeEntry",
+      detail: {
+        description: "Get active time entry",
+      },
     }
   )
   .get(
@@ -40,45 +37,51 @@ export const router = new Elysia({
     async ({ user, params: { id } }) => {
       const entry = await TimeEntriesService.findById(user.id, id);
 
-      if (!entry) return status(404, "Time entry not found");
+      if (!entry) throw status(404, "Time entry not found");
+
       return entry;
     },
     {
-      params: TimeEntryIdParam,
       auth: true,
+      params: TimeEntryIdParam,
       detail: {
         description: "Return time entry by ID",
-        responses: {
-          200: {
-            description: "Time entry found and returned",
-          },
-          404: {
-            description: "Time entry not found",
-          },
-        },
       },
+      response: "TimeEntry",
+    }
+  )
+  .get(
+    "",
+    async ({ user }) => {
+      return await TimeEntriesService.findByUserId(user.id);
+    },
+    {
+      auth: true,
+      response: "TimeEntry[]",
     }
   )
   .post(
     "",
     async ({ user, body }) => {
-      const entry = await TimeEntriesService.create(user.id, body);
-      return entry;
+      const createdTimeEntry = await TimeEntriesService.create(user.id, body);
+      if (!createdTimeEntry) throw status(500, "Could not create time entry");
+      return (await TimeEntriesService.findById(user.id, createdTimeEntry.id))!;
     },
     {
       body: CreateTimeEntry,
       auth: true,
       detail: {
         description: "Create new time entry",
-        responses: {
-          409: {
-            description: "Running time entry already exist",
-          },
-          201: {
-            description: "Time entry created",
-          },
-        },
+        // responses: {
+        //   409: {
+        //     description: "Running time entry already exist",
+        //   },
+        //   201: {
+        //     description: "Time entry created",
+        //   },
+        // },
       },
+      response: "TimeEntry",
     }
   )
   .patch(
