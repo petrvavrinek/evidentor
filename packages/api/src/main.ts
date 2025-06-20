@@ -30,10 +30,15 @@ const app = new Elysia()
     // Print method as well
     logger.info(handler.request.url);
   })
-  .mount(auth.handler)
+  .all("/api/auth/*", (context) => {
+    if (["POST", "GET"].includes(context.request.method))
+      return auth.handler(context.request);
+    context.status(405);
+  })
   .use(routers.clientRouter)
   .use(routers.projectRouter)
   .use(routers.timeEntryRouter)
+  .use(routers.projectTasksRouter)
   .get("/status", () => {
     return "ok";
   });

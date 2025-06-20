@@ -21,6 +21,7 @@
   "packageManager": "pnpm@10.9.0",
   "devDependencies": {
     "@better-auth/cli": "^1.2.9",
+    "@biomejs/biome": "^2.0.2",
     "@types/bun": "^1.2.16",
     "@types/pg": "^8.15.4",
     "bun-types": "^1.2.16",

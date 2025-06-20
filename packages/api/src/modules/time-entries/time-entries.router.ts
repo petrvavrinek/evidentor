@@ -47,7 +47,9 @@ export const router = new Elysia({
       detail: {
         description: "Return time entry by ID",
       },
-      response: "TimeEntry",
+      response: {
+        200: "TimeEntry",
+      },
     }
   )
   .get(

@@ -71,6 +71,13 @@
       "when": 1750176654606,
       "tag": "0009_update_client_add_details",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1750270434222,
+      "tag": "0010_create_project_task_table",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { drizzle } from "drizzle-orm/node-postgres";
+import { drizzle } from 'drizzle-orm/bun-sql';
 import * as schema from "./db/schema";
 
 // TODO: Create own validation env schema for this file only (used in migrate dockerfile)
