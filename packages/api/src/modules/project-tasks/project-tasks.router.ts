@@ -1,19 +1,78 @@
-import Elysia from "elysia";
+import Elysia, { status } from "elysia";
 import { betterAuth } from "../../auth";
-import { ProjectTaskResponse, ProjectTasksResponse } from "./project-tasks.dto";
+import { ProjectIdParam } from "../projects/projects.dto";
+import {
+	CreateProjectTask,
+	ProjectTaskIdParam,
+	ProjectTaskResponse,
+	ProjectTasksResponse,
+	UpdateProjectTask,
+} from "./project-tasks.dto";
 import { ProjectTasksService } from "./project-tasks.service";
 
 export const router = new Elysia({
-  prefix: "/project-task",
-  detail: { tags: ["ProjectTask"] },
+	prefix: "/project-task",
+	detail: { tags: ["ProjectTask"] },
 })
-  .use(betterAuth)
-  .model("ProjectTask", ProjectTaskResponse)
-  .model("ProjectTask[]", ProjectTasksResponse)
-  .get(
-    "",
-    async ({ user }) => {
-      return ProjectTasksService.findAllByUserId(user.id);
-    },
-    { auth: true, response: "ProjectTask[]" }
-  );
+	.use(betterAuth)
+	.model("ProjectTask", ProjectTaskResponse)
+	.model("ProjectTask[]", ProjectTasksResponse)
+	.get(
+		"",
+		async ({ user }) => {
+			const task = await ProjectTasksService.findAllByUserId(user.id);
+
+			return task;
+		},
+		{ auth: true, response: "ProjectTask[]" },
+	)
+	.post(
+		":id",
+		async ({ user, body, params }) => {
+			const { title, description } = body;
+			const { id } = params;
+
+			const task = await ProjectTasksService.create(
+				user.id,
+				id,
+				title,
+				description,
+			);
+
+			// This will always be non-nullable
+			return (await ProjectTasksService.findByTaskId(task.id, user.id))!;
+		},
+		{
+			params: ProjectIdParam,
+			auth: true,
+			body: CreateProjectTask,
+			detail: {
+				description: "Create new project task",
+			},
+			response: "ProjectTask",
+		},
+	)
+	.patch(":id", async ({ user, params, body }) => {
+		// TODO
+	}, {
+		auth: true,
+		params: ProjectTaskIdParam,
+		body: UpdateProjectTask,
+	})
+	.delete(
+		":id",
+		async ({ user, params }) => {
+			const task = await ProjectTasksService.findByTaskId(params.id, user.id);
+			// Not found
+			if (!task) throw status(404);
+
+			// Deleted
+			await ProjectTasksService.deleteTaskById(task.id);
+			status(200);
+		},
+		{
+			auth: true,
+			detail: { description: "Delete project task by ID" },
+			params: ProjectTaskIdParam,
+		},
+	);

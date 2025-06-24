@@ -67,7 +67,7 @@ export const router = new Elysia({
     async ({ user, body }) => {
       const createdTimeEntry = await TimeEntriesService.create(user.id, body);
       if (!createdTimeEntry) throw status(500, "Could not create time entry");
-      return (await TimeEntriesService.findById(user.id, createdTimeEntry.id))!;
+      return await TimeEntriesService.findById(user.id, createdTimeEntry.id);
     },
     {
       body: CreateTimeEntry,
