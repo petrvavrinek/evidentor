@@ -3,7 +3,7 @@ import apiConfig from "@/config/api";
 
 export const authClient = createAuthClient({
   baseURL: apiConfig.ApiUrl,
-  basePath: "/api/auth",
+  basePath: "/auth",
 
   fetchOptions: {
     onRequest(context) {

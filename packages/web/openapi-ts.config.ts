@@ -1,5 +1,15 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
+// A robust recursive walker
+function walk(node: any, callback: (n: any) => void) {
+  callback(node);
+  if (node && typeof node === "object") {
+    for (const key in node) {
+      walk(node[key], callback);
+    }
+  }
+}
+
 export default defineConfig({
   input: "http://localhost:3000/swagger/json",
   output: {
