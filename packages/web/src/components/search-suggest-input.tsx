@@ -14,7 +14,8 @@ interface SearchSuggestionResult {
 }
 
 interface SearchSuggestProps {
-  onChange?: (value: string) => void;
+  value: string;
+  onValueChange: (value: string) => void;
   suggest: (value: string) => Promise<SearchSuggestionResult[]>;
   onSuggestSelect?: (suggestion: SearchSuggestionResult) => void;
   placeholder?: string;
@@ -26,8 +27,9 @@ interface SearchSuggestProps {
  * @returns
  */
 export default function SearchSuggest(props: SearchSuggestProps) {
-  const [value, setValue] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const { value, onValueChange } = props;
+  const [searchTerm, setSearchTerm] = useState(value);
+
   const [debouncedSearchTerm] = useDebounce(searchTerm, 300);
 
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,10 @@ export default function SearchSuggest(props: SearchSuggestProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setSearchTerm(value);
+  }, [value]);
 
   useEffect(() => {
     if (debouncedSearchTerm.trim().length === 0) {
@@ -60,14 +66,11 @@ export default function SearchSuggest(props: SearchSuggestProps) {
   }, [debouncedSearchTerm, props]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    setSearchTerm(newValue);
-    props.onChange?.(newValue);
+    onValueChange(e.target.value);
   };
 
   const handleSuggestionSelect = (suggestion: SearchSuggestionResult) => {
-    setValue(suggestion.text);
+    onValueChange(suggestion.text);
     setSuggestions([]);
     setOpened(false);
     props.onSuggestSelect?.(suggestion);
