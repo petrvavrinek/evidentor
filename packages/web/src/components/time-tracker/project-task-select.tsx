@@ -1,55 +1,47 @@
-import { Project } from "@/schemas/project.schema";
-import { Task } from "@/schemas/task.schema";
-import { useCallback, useState } from "react";
+"use client";
+
+import { useState } from "react";
+
+import type { Project, ProjectTask } from "@/lib/api";
+
 import { ProjectSelect } from "../project-select";
 import TaskSelect from "../task-select";
 import { Label } from "../ui/label";
 
 interface ProjectTaskSelectProps {
-  loadProjects: () => Promise<Project[]>;
-  loadTasks: (project: Project) => Promise<Task[]>;
-  onSelect?: (project: Project, task: Task) => void;
-  disabled?: boolean;
+	onSelect?: (project: Project, task: ProjectTask) => void;
+	disabled?: boolean;
 }
 
 export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
+	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 
-  const loadTasks = useCallback(() => {
-    if (selectedProject) {
-      return props.loadTasks(selectedProject);
-    }
-    return Promise.resolve([]);
-  }, [selectedProject, props]);
+	const onTaskSelect = (task: ProjectTask) => {
+		if (selectedProject && task) props.onSelect?.(selectedProject, task);
+	};
 
-  const onTaskSelect = (task: Task) => {
-    if (selectedProject && task) props.onSelect?.(selectedProject, task);
-  };
+	return (
+		<>
+			<div className="space-y-2">
+				<Label htmlFor="project">Project</Label>
+				<ProjectSelect
+					disabled={props.disabled}
+					onSelect={(project) => {
+						setSelectedProject(project);
+						console.log(project);
+					}}
+				/>
+			</div>
 
-  return (
-    <>
-      <div className="space-y-2">
-        <Label htmlFor="project">Project</Label>
-        <ProjectSelect
-          id="project"
-          disabled={props.disabled}
-          load={props.loadProjects}
-          onSelect={(project) => {
-            setSelectedProject(project);
-          }}
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="task">Task</Label>
-        <TaskSelect
-          disabled={props.disabled || !selectedProject}
-          key={selectedProject?.id}
-          id="task"
-          load={loadTasks}
-          onSelect={onTaskSelect}
-        />
-      </div>
-    </>
-  );
+			<div className="space-y-2">
+				<Label htmlFor="task">Task</Label>
+				<TaskSelect
+					project={selectedProject}
+					disabled={props.disabled || !selectedProject}
+					key={selectedProject?.id}
+					onSelect={onTaskSelect}
+				/>
+			</div>
+		</>
+	);
 }

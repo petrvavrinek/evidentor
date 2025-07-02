@@ -310,6 +310,8 @@ export const zPostTimeEntryData = z.object({
 
 export const zPostTimeEntryResponse = zTimeEntry;
 
+export const zGetProjectTaskParameterProject = z.number();
+
 export const zGetProjectTaskResponse = zProjectTask2;
 
 export const zDeleteProjectTaskByIdParameterId = z.number();

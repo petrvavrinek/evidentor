@@ -428,7 +428,9 @@ export type PostTimeEntryResponse =
 export type GetProjectTaskData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    project?: number;
+  };
   url: "/project-task";
 };
 

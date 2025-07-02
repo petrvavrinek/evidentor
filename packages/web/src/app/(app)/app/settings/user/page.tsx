@@ -15,13 +15,17 @@ import { TypographyH3 } from "@/components/ui/typography";
 import { authClient } from "@/lib/auth-client";
 import { Upload } from "lucide-react";
 import Link from "next/link";
+import { useId } from "react";
 
 export default function SettingsUserPage() {
+  const avatarId = useId();
   const { data } = authClient.useSession();
 
   if (!data?.user) return;
 
   const { user } = data;
+
+
 
   return (
     <>
@@ -38,7 +42,7 @@ export default function SettingsUserPage() {
           <CardContent className="space-y-4">
             <div>
               <Label htmlFor="image">Profile image</Label>
-              <Avatar id="image" className="w-50 h-50 p-4 cursor-pointer">
+              <Avatar id={avatarId} className="w-50 h-50 p-4 cursor-pointer">
                 <AvatarImage src={user.image ?? ""} />
                 <AvatarFallback>
                   <Upload />

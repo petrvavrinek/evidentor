@@ -1,6 +1,6 @@
 import Elysia, { status } from "elysia";
 
-import { betterAuth } from "../../auth/index";
+import { betterAuth } from "../../auth";
 
 import {
   ClientIdParam,

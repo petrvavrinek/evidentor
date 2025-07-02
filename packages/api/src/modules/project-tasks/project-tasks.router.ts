@@ -4,6 +4,7 @@ import { ProjectIdParam } from "../projects/projects.dto";
 import {
 	CreateProjectTask,
 	ProjectTaskIdParam,
+	ProjectTaskQueryFilter,
 	ProjectTaskResponse,
 	ProjectTasksResponse,
 	UpdateProjectTask,
@@ -19,12 +20,11 @@ export const router = new Elysia({
 	.model("ProjectTask[]", ProjectTasksResponse)
 	.get(
 		"",
-		async ({ user }) => {
-			const task = await ProjectTasksService.findAllByUserId(user.id);
-
+		async ({ user, query }) => {
+			const task = await ProjectTasksService.findAllByUserId(user.id, query);
 			return task;
 		},
-		{ auth: true, response: "ProjectTask[]" },
+		{ auth: true, response: "ProjectTask[]", query: ProjectTaskQueryFilter },
 	)
 	.post(
 		":id",
@@ -52,13 +52,17 @@ export const router = new Elysia({
 			response: "ProjectTask",
 		},
 	)
-	.patch(":id", async ({ user, params, body }) => {
-		// TODO
-	}, {
-		auth: true,
-		params: ProjectTaskIdParam,
-		body: UpdateProjectTask,
-	})
+	.patch(
+		":id",
+		async ({ user, params, body }) => {
+			// TODO
+		},
+		{
+			auth: true,
+			params: ProjectTaskIdParam,
+			body: UpdateProjectTask,
+		},
+	)
 	.delete(
 		":id",
 		async ({ user, params }) => {

@@ -1,4 +1,5 @@
 import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +26,15 @@ export default function ProjectTableRow({
 }: ProjectTableRowProps) {
   return (
     <TableRow>
-      <TableCell>{project.title || "Untitled Project"}</TableCell>
+      <TableCell>
+        <Link
+          href={`/app/projects/${project.id}`}
+          className="text-blue-600 hover:underline"
+          prefetch={false}
+        >
+          {project.title || "Untitled Project"}
+        </Link>
+      </TableCell>
       <TableCell>{project.client?.companyName || "-"}</TableCell>
       <TableCell>-</TableCell> {/* Status placeholder */}
       <TableCell className="hidden md:table-cell">-</TableCell> {/* Priority placeholder */}

@@ -3,7 +3,7 @@ import { eq, getTableColumns } from "drizzle-orm";
 import { client, project, projectTask } from "@/db/schema";
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
-import type { ProjectTaskResponseType } from "./project-tasks.dto";
+import type { ProjectTaskFilter, ProjectTaskResponseType } from "./project-tasks.dto";
 
 export const ProjectTasksService = {
 	/**
@@ -34,9 +34,13 @@ export const ProjectTasksService = {
 	 * @param userId
 	 * @returns
 	 */
-	async findAllByUserId(userId: string): Promise<ProjectTaskResponseType[]> {
-		const tasks = await this.getSelectQueryBuilder(userId);
-		return tasks as ProjectTaskResponseType[];
+	async findAllByUserId(userId: string, filter?: ProjectTaskFilter): Promise<ProjectTaskResponseType[]> {
+		let query = this.getSelectQueryBuilder(userId);
+
+		if(filter?.project)
+			query = query.where(eq(projectTask.projectId, filter.project));
+
+		return await query as ProjectTaskResponseType[];
 	},
 
 	/**
