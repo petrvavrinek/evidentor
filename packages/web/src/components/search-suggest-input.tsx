@@ -113,7 +113,7 @@ export default function SearchSuggest({
 	};
 
 	return (
-		<Popover open={showSuggestions}>
+		<Popover open={showSuggestions && suggestions.length > 0}>
 			<PopoverTrigger asChild>
 				<div>
 					<SearchInput
