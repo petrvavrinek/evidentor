@@ -4,7 +4,6 @@ import {
 	CreateTimeEntry,
 	TimeEntriesResponse,
 	TimeEntryIdParam,
-	TimeEntryQuery,
 	TimeEntryResponse,
 	UpdateTimeEntry,
 } from "./time-entries.dto";
@@ -101,7 +100,7 @@ export const router = new Elysia({
 			detail: {
 				description: "Update existing time entry",
 			},
-			response: "TimeEntry"
+			response: "TimeEntry",
 		},
 	)
 	.delete(
