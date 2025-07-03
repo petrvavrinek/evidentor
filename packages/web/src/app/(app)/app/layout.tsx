@@ -7,7 +7,7 @@ import "../../globals.css";
 
 // Must be set manually
 client.setConfig({
-	baseUrl: import.meta.env.NEXT_PUBLIC_API_URL,
+	baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });
 
 export default function AppLayout({
