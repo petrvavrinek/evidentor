@@ -1,5 +1,8 @@
 "use client";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+
 import {
 	Dialog,
 	DialogContent,
@@ -13,7 +16,7 @@ import type {
 	PostProjectResponse,
 	Project,
 } from "@/lib/api/types.gen";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import NewProjectForm from "./new-project-form";
 
 interface NewProjectModalProps {
@@ -42,12 +45,11 @@ export default function NewProjectModal({
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: getProjectQueryKey() });
+			toast.info("Project addded");
 			onClose();
 		},
-		onError: (error) => {
-			// You can add more robust error handling here, like showing a toast notification.
-			console.error("Failed to create project:", error);
-			alert(`Failed to create project: ${error.message}`);
+		onError: () => {
+			toast.error("Could not create new project");
 		},
 	});
 

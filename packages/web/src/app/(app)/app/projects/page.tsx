@@ -25,12 +25,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
 	Table,
 	TableBody,
 	TableCell,
@@ -41,8 +35,9 @@ import {
 import { deleteProjectById, getProject, type Project } from "@/lib/api";
 import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Filter, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ProjectsPage() {
 	const { data, isLoading, error } = useQuery({
@@ -61,11 +56,10 @@ export default function ProjectsPage() {
 		mutationFn: (id: number) => deleteProjectById({ path: { id } }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: getProjectQueryKey() });
+			toast.info("Project deleted");
 		},
-		onError: (error) => {
-			// TODO: Add toast notification
-			console.error("Failed to delete project", error);
-			alert("Failed to delete project.");
+		onError: () => {
+			toast.error("Failed to delete project");
 		},
 	});
 
@@ -104,38 +98,6 @@ export default function ProjectsPage() {
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
 				/>
-
-				<div className="flex flex-col sm:flex-row gap-2">
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" className="w-full sm:w-auto">
-								<Filter className="mr-2 h-4 w-4" />
-								Status: All
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuItem>All</DropdownMenuItem>
-							<DropdownMenuItem>Planned</DropdownMenuItem>
-							<DropdownMenuItem>In Progress</DropdownMenuItem>
-							<DropdownMenuItem>Completed</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" className="w-full sm:w-auto">
-								<Filter className="mr-2 h-4 w-4" />
-								Priority: All
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuItem>All</DropdownMenuItem>
-							<DropdownMenuItem>High</DropdownMenuItem>
-							<DropdownMenuItem>Medium</DropdownMenuItem>
-							<DropdownMenuItem>Low</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
 			</div>
 
 			{isLoading && <ProjectsOverviewLoading />}
