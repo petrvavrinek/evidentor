@@ -9,49 +9,53 @@ import * as authSchema from "../db/auth.schema";
 import env from "../env";
 
 export const auth = betterAuth({
-  basePath: "/auth",
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: authSchema,
-  }),
-  emailAndPassword: {
-    enabled: true,
-  },
-  trustedOrigins: ["*"],
-  plugins: [
-    openAPI(),
-    // organization({
-    //   // Enable teams with 1 default
-    //   teams: {
-    //     enabled: true,
-    //     maximumTeams: 1,
-    //     allowRemovingAllTeams: false,
-    //     defaultTeam: {
-    //       enabled: true,
-    //     },
-    //   },
-    // }),
-  ],
-  advanced: {
-    crossSubDomainCookies: {
-      enabled: true,
-    },
-  },
-  user: {
-    changeEmail: {
-      enabled: false,
-    },
-  },
-  socialProviders: {
-    google: {
-      prompt: "select_account",
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    },
-  },
+	basePath: "/auth",
+	database: drizzleAdapter(db, {
+		provider: "pg",
+		schema: authSchema,
+	}),
+	emailAndPassword: {
+		enabled: true,
+	},
+	trustedOrigins: ["*"],
+
+	plugins: [
+		openAPI(),
+		// organization({
+		//   // Enable teams with 1 default
+		//   teams: {
+		//     enabled: true,
+		//     maximumTeams: 1,
+		//     allowRemovingAllTeams: false,
+		//     defaultTeam: {
+		//       enabled: true,
+		//     },
+		//   },
+		// }),
+	],
+	advanced: {
+		crossSubDomainCookies: {
+			enabled: true,
+		},
+		ipAddress: {
+			ipAddressHeaders: ["cf-connecting-ip", "x-forwarded-for", "x-real-ip"],
+		},
+	},
+	user: {
+		changeEmail: {
+			enabled: false,
+		},
+	},
+	socialProviders: {
+		google: {
+			prompt: "select_account",
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
+		},
+	},
 });
 
 export type AuthType = {
-  user: typeof auth.$Infer.Session.user | null;
-  session: typeof auth.$Infer.Session.session | null;
+	user: typeof auth.$Infer.Session.user | null;
+	session: typeof auth.$Infer.Session.session | null;
 };
