@@ -1,10 +1,11 @@
 import { cors } from "@elysiajs/cors";
+import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
+import { ip } from "elysia-ip";
 
 import env from "./env";
 import logger from "./logger";
 
-import { swagger } from "@elysiajs/swagger";
 import { auth, OpenAPI } from "./auth";
 import * as routers from "./routers";
 
@@ -26,6 +27,7 @@ const app = new Elysia()
 			},
 		}) as never,
 	)
+	.use(ip())
 	.onRequest((handler) => {
 		logger.info(`[${handler.request.method}] ${handler.request.url}`);
 	})
@@ -40,6 +42,10 @@ const app = new Elysia()
 	.use(routers.projectTasksRouter)
 	.get("/status", () => {
 		return "ok";
+	})
+	.get("/debug", ({ request }) => {
+		console.log(request);
+		return Object.fromEntries(request.headers.entries());
 	});
 
 // Quick overview about routes
