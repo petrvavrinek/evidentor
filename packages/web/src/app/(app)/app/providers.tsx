@@ -1,10 +1,11 @@
 "use client";
 
-import ActiveTimeEntryContainer from "@/components/time-entries/active-time-entry-container";
 import { AppSidebar } from "@/components/app-sidebar";
 import AuthProtect from "@/components/auth/auth-redirect";
 import { ThemeProvider } from "@/components/theme-provider";
+import ActiveTimeEntryContainer from "@/components/time-entries/active-time-entry-container";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import VersionTag from "@/components/version-tag";
 import ActiveTimeEntryProvider from "@/providers/active-time-entry-provider";
 
@@ -38,6 +39,7 @@ export default function Providers({
 						</SidebarInset>
 						<ActiveTimeEntryContainer />
 						<VersionTag />
+						<Toaster />
 					</ActiveTimeEntryProvider>
 				</SidebarProvider>
 			</AuthProtect>
