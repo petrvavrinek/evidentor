@@ -15,7 +15,10 @@ COPY . .
 # Env to debug node-gyp build processes
 ENV npm_config_loglevel=silly
 ENV npm_config_verbose=true
-ENV DEBUG=node-gyp*
+ENV DEBUG=node-gyp
+ENV V=1
+ENV CXXFLAGS="-v"
+ENV MAKEFLAGS="--debug=v"
 
 # Install all packages
 RUN bun install
