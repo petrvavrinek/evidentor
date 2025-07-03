@@ -144,12 +144,12 @@ export default function SearchSuggest({
 
 					{!loading && suggestions.length > 0 && (
 						<div>
-							{suggestions.map((suggestion) => (
+							{suggestions.map((suggestion, index) => (
 								<button
 									type="button"
 									key={suggestion.id}
 									className={`px-2.5 py-2.5 block w-full text-left cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground border-b border-border/50 last:border-b-0 ${
-										suggestion.id === selectedSuggestion?.id
+										highlightedIndex === index
 											? "bg-accent text-accent-foreground"
 											: ""
 									}`}
