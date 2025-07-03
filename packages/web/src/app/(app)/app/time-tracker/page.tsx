@@ -66,6 +66,13 @@ export default function TimeTrackerPage() {
 		);
 	}, [createdTimeEntries, fetchedTimeEntreis]);
 
+	const getGrouppedTimeEntriesSorted = () => {
+		const keys = Object.keys(grouppedTimeEntries);
+		return keys.toSorted(
+			(a, b) => new Date(b).getTime() - new Date(a).getTime(),
+		);
+	};
+
 	const formatDate = (date: Date) => dateFormatter.format(date);
 
 	const onTimeEntryDelete = async (timeEntry: TimeEntry) => {
@@ -128,7 +135,7 @@ export default function TimeTrackerPage() {
 					<CardContent>
 						{(!data || isLoading) && <Loader />}
 
-						{Object.keys(grouppedTimeEntries).map((d) => (
+						{getGrouppedTimeEntriesSorted().map((d) => (
 							<div key={d} className="space-y-2 py-2">
 								<div className="flex items-center gap-2">
 									<Calendar className="w-4 h-4 text-muted-foreground" />

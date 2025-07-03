@@ -77,11 +77,17 @@ export default function TaskSelect(props: TaskSelectProps) {
 	return (
 		<Select
 			value={selectedTaskIdx !== undefined ? `${selectedTaskIdx}` : ""}
-			disabled={props.disabled || isLoading}
+			disabled={props.disabled || isLoading || tasks.data.length === 0}
 			onValueChange={(e) => setSelectedTaskIdx(Number.parseInt(e))}
 		>
 			<SelectTrigger id={props.id ?? "task"} className="w-full h-[36px]">
-				<SelectValue placeholder="Select a task" />
+				<SelectValue
+					placeholder={
+						(!isLoading && !tasks.data.length)
+							? "No project tasks"
+							: "Select a task"
+					}
+				/>
 			</SelectTrigger>
 			<SelectContent>
 				{tasks.data.map((e, i) => (
