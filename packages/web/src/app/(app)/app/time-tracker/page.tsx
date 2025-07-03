@@ -96,7 +96,7 @@ export default function TimeTrackerPage() {
 				subtitle="Track your time and manage time entries"
 			/>
 			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-				<Card className="xl:col-span-1">
+				<Card className="xl:col-span-1 h-fit">
 					<CardHeader>
 						<CardTitle>Time Entry</CardTitle>
 						<CardDescription>Track your working hours</CardDescription>
