@@ -33,7 +33,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 
 	const [date, setDate] = useState<Date | undefined>(today);
 
-	const canAddTimeEntry = useMemo(() => selectedProject, [selectedProject]);
+	const canAddTimeEntry = useMemo(() => title.length > 0, [title]);
 
 	const createTimeEntry = useMutation({
 		...postTimeEntryMutation(),
@@ -50,8 +50,6 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	};
 
 	const handleCreate = () => {
-		if (!selectedProject) return;
-
 		const startAt = new Date(today);
 		startAt.setHours(startTime.hours);
 		startAt.setMinutes(startTime.minutes);
@@ -65,8 +63,8 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 				startAt,
 				endAt,
 				title,
-				projectId: selectedProject?.id,
-				projectTaskId: selectedTask?.id,
+				projectId: selectedProject?.id ?? null,
+				projectTaskId: selectedTask?.id ?? null,
 			},
 		});
 	};
