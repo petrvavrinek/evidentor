@@ -2,49 +2,55 @@
 
 import {
   type Options,
-  getV1Client,
-  postV1Client,
-  deleteV1ClientById,
-  getV1ClientById,
-  patchV1ClientById,
-  getV1Project,
-  postV1Project,
-  deleteV1ProjectById,
-  getV1ProjectById,
-  patchV1ProjectById,
-  getV1TimeEntryActive,
-  getV1TimeEntryById,
-  patchV1TimeEntryById,
-  postV1TimeEntry,
+  getClient,
+  postClient,
+  deleteClientById,
+  getClientById,
+  patchClientById,
+  getProject,
+  postProject,
+  deleteProjectById,
+  getProjectById,
+  patchProjectById,
+  getTimeEntryActive,
+  deleteTimeEntryById,
+  getTimeEntryById,
+  patchTimeEntryById,
+  getTimeEntry,
+  postTimeEntry,
+  getProjectTask,
+  deleteProjectTaskById,
+  patchProjectTaskById,
+  postProjectTaskById,
   getStatus,
   socialSignIn,
-  getAuthApiGetSession,
-  postAuthApiSignOut,
-  postAuthApiSignUpEmail,
-  postAuthApiSignInEmail,
-  postAuthApiForgetPassword,
-  postAuthApiResetPassword,
-  getAuthApiVerifyEmail,
-  postAuthApiSendVerificationEmail,
-  postAuthApiChangeEmail,
-  postAuthApiChangePassword,
-  postAuthApiUpdateUser,
-  postAuthApiDeleteUser,
-  getAuthApiResetPasswordByToken,
-  postAuthApiRequestPasswordReset,
-  getAuthApiListSessions,
-  postAuthApiRevokeSession,
-  postAuthApiRevokeSessions,
-  postAuthApiRevokeOtherSessions,
-  postAuthApiLinkSocial,
-  getAuthApiListAccounts,
-  getAuthApiDeleteUserCallback,
-  postAuthApiUnlinkAccount,
-  postAuthApiRefreshToken,
-  postAuthApiGetAccessToken,
-  postAuthApiAccountInfo,
-  getAuthApiOk,
-  getAuthApiError,
+  getAuthGetSession,
+  postAuthSignOut,
+  postAuthSignUpEmail,
+  postAuthSignInEmail,
+  postAuthForgetPassword,
+  postAuthResetPassword,
+  getAuthVerifyEmail,
+  postAuthSendVerificationEmail,
+  postAuthChangeEmail,
+  postAuthChangePassword,
+  postAuthUpdateUser,
+  postAuthDeleteUser,
+  getAuthResetPasswordByToken,
+  postAuthRequestPasswordReset,
+  getAuthListSessions,
+  postAuthRevokeSession,
+  postAuthRevokeSessions,
+  postAuthRevokeOtherSessions,
+  postAuthLinkSocial,
+  getAuthListAccounts,
+  getAuthDeleteUserCallback,
+  postAuthUnlinkAccount,
+  postAuthRefreshToken,
+  postAuthGetAccessToken,
+  postAuthAccountInfo,
+  getAuthOk,
+  getAuthError,
 } from "../sdk.gen";
 import {
   queryOptions,
@@ -52,89 +58,101 @@ import {
   type DefaultError,
 } from "@tanstack/react-query";
 import type {
-  GetV1ClientData,
-  PostV1ClientData,
-  DeleteV1ClientByIdData,
-  GetV1ClientByIdData,
-  PatchV1ClientByIdData,
-  GetV1ProjectData,
-  PostV1ProjectData,
-  DeleteV1ProjectByIdData,
-  GetV1ProjectByIdData,
-  PatchV1ProjectByIdData,
-  GetV1TimeEntryActiveData,
-  GetV1TimeEntryByIdData,
-  PatchV1TimeEntryByIdData,
-  PostV1TimeEntryData,
+  GetClientData,
+  PostClientData,
+  PostClientResponse,
+  DeleteClientByIdData,
+  GetClientByIdData,
+  PatchClientByIdData,
+  PatchClientByIdResponse,
+  GetProjectData,
+  PostProjectData,
+  PostProjectResponse,
+  DeleteProjectByIdData,
+  GetProjectByIdData,
+  PatchProjectByIdData,
+  GetTimeEntryActiveData,
+  DeleteTimeEntryByIdData,
+  GetTimeEntryByIdData,
+  PatchTimeEntryByIdData,
+  PatchTimeEntryByIdResponse,
+  GetTimeEntryData,
+  PostTimeEntryData,
+  PostTimeEntryResponse,
+  GetProjectTaskData,
+  DeleteProjectTaskByIdData,
+  PatchProjectTaskByIdData,
+  PostProjectTaskByIdData,
+  PostProjectTaskByIdResponse,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
   SocialSignInResponse,
-  GetAuthApiGetSessionData,
-  PostAuthApiSignOutData,
-  PostAuthApiSignOutError,
-  PostAuthApiSignOutResponse,
-  PostAuthApiSignUpEmailData,
-  PostAuthApiSignUpEmailError,
-  PostAuthApiSignUpEmailResponse,
-  PostAuthApiSignInEmailData,
-  PostAuthApiSignInEmailError,
-  PostAuthApiSignInEmailResponse,
-  PostAuthApiForgetPasswordData,
-  PostAuthApiForgetPasswordError,
-  PostAuthApiForgetPasswordResponse,
-  PostAuthApiResetPasswordData,
-  PostAuthApiResetPasswordError,
-  PostAuthApiResetPasswordResponse,
-  GetAuthApiVerifyEmailData,
-  PostAuthApiSendVerificationEmailData,
-  PostAuthApiSendVerificationEmailError,
-  PostAuthApiSendVerificationEmailResponse,
-  PostAuthApiChangeEmailData,
-  PostAuthApiChangeEmailError,
-  PostAuthApiChangeEmailResponse,
-  PostAuthApiChangePasswordData,
-  PostAuthApiChangePasswordError,
-  PostAuthApiChangePasswordResponse,
-  PostAuthApiUpdateUserData,
-  PostAuthApiUpdateUserError,
-  PostAuthApiUpdateUserResponse,
-  PostAuthApiDeleteUserData,
-  PostAuthApiDeleteUserError,
-  PostAuthApiDeleteUserResponse,
-  GetAuthApiResetPasswordByTokenData,
-  PostAuthApiRequestPasswordResetData,
-  PostAuthApiRequestPasswordResetError,
-  PostAuthApiRequestPasswordResetResponse,
-  GetAuthApiListSessionsData,
-  PostAuthApiRevokeSessionData,
-  PostAuthApiRevokeSessionError,
-  PostAuthApiRevokeSessionResponse,
-  PostAuthApiRevokeSessionsData,
-  PostAuthApiRevokeSessionsError,
-  PostAuthApiRevokeSessionsResponse,
-  PostAuthApiRevokeOtherSessionsData,
-  PostAuthApiRevokeOtherSessionsError,
-  PostAuthApiRevokeOtherSessionsResponse,
-  PostAuthApiLinkSocialData,
-  PostAuthApiLinkSocialError,
-  PostAuthApiLinkSocialResponse,
-  GetAuthApiListAccountsData,
-  GetAuthApiDeleteUserCallbackData,
-  PostAuthApiUnlinkAccountData,
-  PostAuthApiUnlinkAccountError,
-  PostAuthApiUnlinkAccountResponse,
-  PostAuthApiRefreshTokenData,
-  PostAuthApiRefreshTokenError,
-  PostAuthApiRefreshTokenResponse,
-  PostAuthApiGetAccessTokenData,
-  PostAuthApiGetAccessTokenError,
-  PostAuthApiGetAccessTokenResponse,
-  PostAuthApiAccountInfoData,
-  PostAuthApiAccountInfoError,
-  PostAuthApiAccountInfoResponse,
-  GetAuthApiOkData,
-  GetAuthApiErrorData,
+  GetAuthGetSessionData,
+  PostAuthSignOutData,
+  PostAuthSignOutError,
+  PostAuthSignOutResponse,
+  PostAuthSignUpEmailData,
+  PostAuthSignUpEmailError,
+  PostAuthSignUpEmailResponse,
+  PostAuthSignInEmailData,
+  PostAuthSignInEmailError,
+  PostAuthSignInEmailResponse,
+  PostAuthForgetPasswordData,
+  PostAuthForgetPasswordError,
+  PostAuthForgetPasswordResponse,
+  PostAuthResetPasswordData,
+  PostAuthResetPasswordError,
+  PostAuthResetPasswordResponse,
+  GetAuthVerifyEmailData,
+  PostAuthSendVerificationEmailData,
+  PostAuthSendVerificationEmailError,
+  PostAuthSendVerificationEmailResponse,
+  PostAuthChangeEmailData,
+  PostAuthChangeEmailError,
+  PostAuthChangeEmailResponse,
+  PostAuthChangePasswordData,
+  PostAuthChangePasswordError,
+  PostAuthChangePasswordResponse,
+  PostAuthUpdateUserData,
+  PostAuthUpdateUserError,
+  PostAuthUpdateUserResponse,
+  PostAuthDeleteUserData,
+  PostAuthDeleteUserError,
+  PostAuthDeleteUserResponse,
+  GetAuthResetPasswordByTokenData,
+  PostAuthRequestPasswordResetData,
+  PostAuthRequestPasswordResetError,
+  PostAuthRequestPasswordResetResponse,
+  GetAuthListSessionsData,
+  PostAuthRevokeSessionData,
+  PostAuthRevokeSessionError,
+  PostAuthRevokeSessionResponse,
+  PostAuthRevokeSessionsData,
+  PostAuthRevokeSessionsError,
+  PostAuthRevokeSessionsResponse,
+  PostAuthRevokeOtherSessionsData,
+  PostAuthRevokeOtherSessionsError,
+  PostAuthRevokeOtherSessionsResponse,
+  PostAuthLinkSocialData,
+  PostAuthLinkSocialError,
+  PostAuthLinkSocialResponse,
+  GetAuthListAccountsData,
+  GetAuthDeleteUserCallbackData,
+  PostAuthUnlinkAccountData,
+  PostAuthUnlinkAccountError,
+  PostAuthUnlinkAccountResponse,
+  PostAuthRefreshTokenData,
+  PostAuthRefreshTokenError,
+  PostAuthRefreshTokenResponse,
+  PostAuthGetAccessTokenData,
+  PostAuthGetAccessTokenError,
+  PostAuthGetAccessTokenResponse,
+  PostAuthAccountInfoData,
+  PostAuthAccountInfoError,
+  PostAuthAccountInfoResponse,
+  GetAuthOkData,
+  GetAuthErrorData,
 } from "../types.gen";
 import { client as _heyApiClient } from "../client.gen";
 
@@ -172,16 +190,16 @@ const createQueryKey = <TOptions extends Options>(
   return [params];
 };
 
-export const getV1ClientQueryKey = (options?: Options<GetV1ClientData>) =>
-  createQueryKey("getV1Client", options);
+export const getClientQueryKey = (options?: Options<GetClientData>) =>
+  createQueryKey("getClient", options);
 
 /**
  * Get all user-defined clients
  */
-export const getV1ClientOptions = (options?: Options<GetV1ClientData>) => {
+export const getClientOptions = (options?: Options<GetClientData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1Client({
+      const { data } = await getClient({
         ...options,
         ...queryKey[0],
         signal,
@@ -189,20 +207,20 @@ export const getV1ClientOptions = (options?: Options<GetV1ClientData>) => {
       });
       return data;
     },
-    queryKey: getV1ClientQueryKey(options),
+    queryKey: getClientQueryKey(options),
   });
 };
 
-export const postV1ClientQueryKey = (options: Options<PostV1ClientData>) =>
-  createQueryKey("postV1Client", options);
+export const postClientQueryKey = (options: Options<PostClientData>) =>
+  createQueryKey("postClient", options);
 
 /**
  * Create new user-defined client
  */
-export const postV1ClientOptions = (options: Options<PostV1ClientData>) => {
+export const postClientOptions = (options: Options<PostClientData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postV1Client({
+      const { data } = await postClient({
         ...options,
         ...queryKey[0],
         signal,
@@ -210,23 +228,27 @@ export const postV1ClientOptions = (options: Options<PostV1ClientData>) => {
       });
       return data;
     },
-    queryKey: postV1ClientQueryKey(options),
+    queryKey: postClientQueryKey(options),
   });
 };
 
 /**
  * Create new user-defined client
  */
-export const postV1ClientMutation = (
-  options?: Partial<Options<PostV1ClientData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostV1ClientData>> => {
+export const postClientMutation = (
+  options?: Partial<Options<PostClientData>>,
+): UseMutationOptions<
+  PostClientResponse,
+  DefaultError,
+  Options<PostClientData>
+> => {
   const mutationOptions: UseMutationOptions<
-    unknown,
+    PostClientResponse,
     DefaultError,
-    Options<PostV1ClientData>
+    Options<PostClientData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postV1Client({
+      const { data } = await postClient({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -240,20 +262,16 @@ export const postV1ClientMutation = (
 /**
  * Delete user-defined client, all projects containing this client will be unset
  */
-export const deleteV1ClientByIdMutation = (
-  options?: Partial<Options<DeleteV1ClientByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<DeleteV1ClientByIdData>
-> => {
+export const deleteClientByIdMutation = (
+  options?: Partial<Options<DeleteClientByIdData>>,
+): UseMutationOptions<unknown, DefaultError, Options<DeleteClientByIdData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<DeleteV1ClientByIdData>
+    Options<DeleteClientByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteV1ClientById({
+      const { data } = await deleteClientById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -264,19 +282,16 @@ export const deleteV1ClientByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1ClientByIdQueryKey = (
-  options: Options<GetV1ClientByIdData>,
-) => createQueryKey("getV1ClientById", options);
+export const getClientByIdQueryKey = (options: Options<GetClientByIdData>) =>
+  createQueryKey("getClientById", options);
 
 /**
  * Get user-defined client by ID
  */
-export const getV1ClientByIdOptions = (
-  options: Options<GetV1ClientByIdData>,
-) => {
+export const getClientByIdOptions = (options: Options<GetClientByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1ClientById({
+      const { data } = await getClientById({
         ...options,
         ...queryKey[0],
         signal,
@@ -284,27 +299,27 @@ export const getV1ClientByIdOptions = (
       });
       return data;
     },
-    queryKey: getV1ClientByIdQueryKey(options),
+    queryKey: getClientByIdQueryKey(options),
   });
 };
 
 /**
  * Update user-defined client data
  */
-export const patchV1ClientByIdMutation = (
-  options?: Partial<Options<PatchV1ClientByIdData>>,
+export const patchClientByIdMutation = (
+  options?: Partial<Options<PatchClientByIdData>>,
 ): UseMutationOptions<
-  unknown,
+  PatchClientByIdResponse,
   DefaultError,
-  Options<PatchV1ClientByIdData>
+  Options<PatchClientByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
-    unknown,
+    PatchClientByIdResponse,
     DefaultError,
-    Options<PatchV1ClientByIdData>
+    Options<PatchClientByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchV1ClientById({
+      const { data } = await patchClientById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -315,16 +330,16 @@ export const patchV1ClientByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1ProjectQueryKey = (options?: Options<GetV1ProjectData>) =>
-  createQueryKey("getV1Project", options);
+export const getProjectQueryKey = (options?: Options<GetProjectData>) =>
+  createQueryKey("getProject", options);
 
 /**
  * Get all user projects
  */
-export const getV1ProjectOptions = (options?: Options<GetV1ProjectData>) => {
+export const getProjectOptions = (options?: Options<GetProjectData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1Project({
+      const { data } = await getProject({
         ...options,
         ...queryKey[0],
         signal,
@@ -332,20 +347,20 @@ export const getV1ProjectOptions = (options?: Options<GetV1ProjectData>) => {
       });
       return data;
     },
-    queryKey: getV1ProjectQueryKey(options),
+    queryKey: getProjectQueryKey(options),
   });
 };
 
-export const postV1ProjectQueryKey = (options: Options<PostV1ProjectData>) =>
-  createQueryKey("postV1Project", options);
+export const postProjectQueryKey = (options: Options<PostProjectData>) =>
+  createQueryKey("postProject", options);
 
 /**
  * Create new user project
  */
-export const postV1ProjectOptions = (options: Options<PostV1ProjectData>) => {
+export const postProjectOptions = (options: Options<PostProjectData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postV1Project({
+      const { data } = await postProject({
         ...options,
         ...queryKey[0],
         signal,
@@ -353,23 +368,27 @@ export const postV1ProjectOptions = (options: Options<PostV1ProjectData>) => {
       });
       return data;
     },
-    queryKey: postV1ProjectQueryKey(options),
+    queryKey: postProjectQueryKey(options),
   });
 };
 
 /**
  * Create new user project
  */
-export const postV1ProjectMutation = (
-  options?: Partial<Options<PostV1ProjectData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostV1ProjectData>> => {
+export const postProjectMutation = (
+  options?: Partial<Options<PostProjectData>>,
+): UseMutationOptions<
+  PostProjectResponse,
+  DefaultError,
+  Options<PostProjectData>
+> => {
   const mutationOptions: UseMutationOptions<
-    unknown,
+    PostProjectResponse,
     DefaultError,
-    Options<PostV1ProjectData>
+    Options<PostProjectData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postV1Project({
+      const { data } = await postProject({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -383,20 +402,20 @@ export const postV1ProjectMutation = (
 /**
  * Delete user project, all time entries will be removed
  */
-export const deleteV1ProjectByIdMutation = (
-  options?: Partial<Options<DeleteV1ProjectByIdData>>,
+export const deleteProjectByIdMutation = (
+  options?: Partial<Options<DeleteProjectByIdData>>,
 ): UseMutationOptions<
   unknown,
   DefaultError,
-  Options<DeleteV1ProjectByIdData>
+  Options<DeleteProjectByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<DeleteV1ProjectByIdData>
+    Options<DeleteProjectByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteV1ProjectById({
+      const { data } = await deleteProjectById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -407,19 +426,16 @@ export const deleteV1ProjectByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1ProjectByIdQueryKey = (
-  options: Options<GetV1ProjectByIdData>,
-) => createQueryKey("getV1ProjectById", options);
+export const getProjectByIdQueryKey = (options: Options<GetProjectByIdData>) =>
+  createQueryKey("getProjectById", options);
 
 /**
  * Get user project by ID
  */
-export const getV1ProjectByIdOptions = (
-  options: Options<GetV1ProjectByIdData>,
-) => {
+export const getProjectByIdOptions = (options: Options<GetProjectByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1ProjectById({
+      const { data } = await getProjectById({
         ...options,
         ...queryKey[0],
         signal,
@@ -427,27 +443,23 @@ export const getV1ProjectByIdOptions = (
       });
       return data;
     },
-    queryKey: getV1ProjectByIdQueryKey(options),
+    queryKey: getProjectByIdQueryKey(options),
   });
 };
 
 /**
  * Update user project data
  */
-export const patchV1ProjectByIdMutation = (
-  options?: Partial<Options<PatchV1ProjectByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<PatchV1ProjectByIdData>
-> => {
+export const patchProjectByIdMutation = (
+  options?: Partial<Options<PatchProjectByIdData>>,
+): UseMutationOptions<unknown, DefaultError, Options<PatchProjectByIdData>> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PatchV1ProjectByIdData>
+    Options<PatchProjectByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchV1ProjectById({
+      const { data } = await patchProjectById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -458,19 +470,19 @@ export const patchV1ProjectByIdMutation = (
   return mutationOptions;
 };
 
-export const getV1TimeEntryActiveQueryKey = (
-  options?: Options<GetV1TimeEntryActiveData>,
-) => createQueryKey("getV1TimeEntryActive", options);
+export const getTimeEntryActiveQueryKey = (
+  options?: Options<GetTimeEntryActiveData>,
+) => createQueryKey("getTimeEntryActive", options);
 
 /**
- * Test description
+ * Get active time entry
  */
-export const getV1TimeEntryActiveOptions = (
-  options?: Options<GetV1TimeEntryActiveData>,
+export const getTimeEntryActiveOptions = (
+  options?: Options<GetTimeEntryActiveData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1TimeEntryActive({
+      const { data } = await getTimeEntryActive({
         ...options,
         ...queryKey[0],
         signal,
@@ -478,23 +490,50 @@ export const getV1TimeEntryActiveOptions = (
       });
       return data;
     },
-    queryKey: getV1TimeEntryActiveQueryKey(options),
+    queryKey: getTimeEntryActiveQueryKey(options),
   });
 };
 
-export const getV1TimeEntryByIdQueryKey = (
-  options: Options<GetV1TimeEntryByIdData>,
-) => createQueryKey("getV1TimeEntryById", options);
+/**
+ * Delete time entry
+ */
+export const deleteTimeEntryByIdMutation = (
+  options?: Partial<Options<DeleteTimeEntryByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteTimeEntryByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<DeleteTimeEntryByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteTimeEntryById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getTimeEntryByIdQueryKey = (
+  options: Options<GetTimeEntryByIdData>,
+) => createQueryKey("getTimeEntryById", options);
 
 /**
  * Return time entry by ID
  */
-export const getV1TimeEntryByIdOptions = (
-  options: Options<GetV1TimeEntryByIdData>,
+export const getTimeEntryByIdOptions = (
+  options: Options<GetTimeEntryByIdData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getV1TimeEntryById({
+      const { data } = await getTimeEntryById({
         ...options,
         ...queryKey[0],
         signal,
@@ -502,27 +541,27 @@ export const getV1TimeEntryByIdOptions = (
       });
       return data;
     },
-    queryKey: getV1TimeEntryByIdQueryKey(options),
+    queryKey: getTimeEntryByIdQueryKey(options),
   });
 };
 
 /**
  * Update existing time entry
  */
-export const patchV1TimeEntryByIdMutation = (
-  options?: Partial<Options<PatchV1TimeEntryByIdData>>,
+export const patchTimeEntryByIdMutation = (
+  options?: Partial<Options<PatchTimeEntryByIdData>>,
 ): UseMutationOptions<
-  unknown,
+  PatchTimeEntryByIdResponse,
   DefaultError,
-  Options<PatchV1TimeEntryByIdData>
+  Options<PatchTimeEntryByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
-    unknown,
+    PatchTimeEntryByIdResponse,
     DefaultError,
-    Options<PatchV1TimeEntryByIdData>
+    Options<PatchTimeEntryByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchV1TimeEntryById({
+      const { data } = await patchTimeEntryById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -533,19 +572,13 @@ export const patchV1TimeEntryByIdMutation = (
   return mutationOptions;
 };
 
-export const postV1TimeEntryQueryKey = (
-  options: Options<PostV1TimeEntryData>,
-) => createQueryKey("postV1TimeEntry", options);
+export const getTimeEntryQueryKey = (options?: Options<GetTimeEntryData>) =>
+  createQueryKey("getTimeEntry", options);
 
-/**
- * Create new time entry
- */
-export const postV1TimeEntryOptions = (
-  options: Options<PostV1TimeEntryData>,
-) => {
+export const getTimeEntryOptions = (options?: Options<GetTimeEntryData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postV1TimeEntry({
+      const { data } = await getTimeEntry({
         ...options,
         ...queryKey[0],
         signal,
@@ -553,23 +586,170 @@ export const postV1TimeEntryOptions = (
       });
       return data;
     },
-    queryKey: postV1TimeEntryQueryKey(options),
+    queryKey: getTimeEntryQueryKey(options),
+  });
+};
+
+export const postTimeEntryQueryKey = (options: Options<PostTimeEntryData>) =>
+  createQueryKey("postTimeEntry", options);
+
+/**
+ * Create new time entry
+ */
+export const postTimeEntryOptions = (options: Options<PostTimeEntryData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postTimeEntry({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postTimeEntryQueryKey(options),
   });
 };
 
 /**
  * Create new time entry
  */
-export const postV1TimeEntryMutation = (
-  options?: Partial<Options<PostV1TimeEntryData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostV1TimeEntryData>> => {
+export const postTimeEntryMutation = (
+  options?: Partial<Options<PostTimeEntryData>>,
+): UseMutationOptions<
+  PostTimeEntryResponse,
+  DefaultError,
+  Options<PostTimeEntryData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostTimeEntryResponse,
+    DefaultError,
+    Options<PostTimeEntryData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postTimeEntry({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getProjectTaskQueryKey = (options?: Options<GetProjectTaskData>) =>
+  createQueryKey("getProjectTask", options);
+
+export const getProjectTaskOptions = (
+  options?: Options<GetProjectTaskData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectTask({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectTaskQueryKey(options),
+  });
+};
+
+/**
+ * Delete project task by ID
+ */
+export const deleteProjectTaskByIdMutation = (
+  options?: Partial<Options<DeleteProjectTaskByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteProjectTaskByIdData>
+> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<PostV1TimeEntryData>
+    Options<DeleteProjectTaskByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postV1TimeEntry({
+      const { data } = await deleteProjectTaskById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const patchProjectTaskByIdMutation = (
+  options?: Partial<Options<PatchProjectTaskByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<PatchProjectTaskByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<PatchProjectTaskByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchProjectTaskById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postProjectTaskByIdQueryKey = (
+  options: Options<PostProjectTaskByIdData>,
+) => createQueryKey("postProjectTaskById", options);
+
+/**
+ * Create new project task
+ */
+export const postProjectTaskByIdOptions = (
+  options: Options<PostProjectTaskByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postProjectTaskById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postProjectTaskByIdQueryKey(options),
+  });
+};
+
+/**
+ * Create new project task
+ */
+export const postProjectTaskByIdMutation = (
+  options?: Partial<Options<PostProjectTaskByIdData>>,
+): UseMutationOptions<
+  PostProjectTaskByIdResponse,
+  DefaultError,
+  Options<PostProjectTaskByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostProjectTaskByIdResponse,
+    DefaultError,
+    Options<PostProjectTaskByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postProjectTaskById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -646,19 +826,19 @@ export const socialSignInMutation = (
   return mutationOptions;
 };
 
-export const getAuthApiGetSessionQueryKey = (
-  options?: Options<GetAuthApiGetSessionData>,
-) => createQueryKey("getAuthApiGetSession", options);
+export const getAuthGetSessionQueryKey = (
+  options?: Options<GetAuthGetSessionData>,
+) => createQueryKey("getAuthGetSession", options);
 
 /**
  * Get the current session
  */
-export const getAuthApiGetSessionOptions = (
-  options?: Options<GetAuthApiGetSessionData>,
+export const getAuthGetSessionOptions = (
+  options?: Options<GetAuthGetSessionData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiGetSession({
+      const { data } = await getAuthGetSession({
         ...options,
         ...queryKey[0],
         signal,
@@ -666,23 +846,23 @@ export const getAuthApiGetSessionOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiGetSessionQueryKey(options),
+    queryKey: getAuthGetSessionQueryKey(options),
   });
 };
 
-export const postAuthApiSignOutQueryKey = (
-  options?: Options<PostAuthApiSignOutData>,
-) => createQueryKey("postAuthApiSignOut", options);
+export const postAuthSignOutQueryKey = (
+  options?: Options<PostAuthSignOutData>,
+) => createQueryKey("postAuthSignOut", options);
 
 /**
  * Sign out the current user
  */
-export const postAuthApiSignOutOptions = (
-  options?: Options<PostAuthApiSignOutData>,
+export const postAuthSignOutOptions = (
+  options?: Options<PostAuthSignOutData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiSignOut({
+      const { data } = await postAuthSignOut({
         ...options,
         ...queryKey[0],
         signal,
@@ -690,27 +870,27 @@ export const postAuthApiSignOutOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiSignOutQueryKey(options),
+    queryKey: postAuthSignOutQueryKey(options),
   });
 };
 
 /**
  * Sign out the current user
  */
-export const postAuthApiSignOutMutation = (
-  options?: Partial<Options<PostAuthApiSignOutData>>,
+export const postAuthSignOutMutation = (
+  options?: Partial<Options<PostAuthSignOutData>>,
 ): UseMutationOptions<
-  PostAuthApiSignOutResponse,
-  PostAuthApiSignOutError,
-  Options<PostAuthApiSignOutData>
+  PostAuthSignOutResponse,
+  PostAuthSignOutError,
+  Options<PostAuthSignOutData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiSignOutResponse,
-    PostAuthApiSignOutError,
-    Options<PostAuthApiSignOutData>
+    PostAuthSignOutResponse,
+    PostAuthSignOutError,
+    Options<PostAuthSignOutData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiSignOut({
+      const { data } = await postAuthSignOut({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -721,19 +901,19 @@ export const postAuthApiSignOutMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiSignUpEmailQueryKey = (
-  options?: Options<PostAuthApiSignUpEmailData>,
-) => createQueryKey("postAuthApiSignUpEmail", options);
+export const postAuthSignUpEmailQueryKey = (
+  options?: Options<PostAuthSignUpEmailData>,
+) => createQueryKey("postAuthSignUpEmail", options);
 
 /**
  * Sign up a user using email and password
  */
-export const postAuthApiSignUpEmailOptions = (
-  options?: Options<PostAuthApiSignUpEmailData>,
+export const postAuthSignUpEmailOptions = (
+  options?: Options<PostAuthSignUpEmailData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiSignUpEmail({
+      const { data } = await postAuthSignUpEmail({
         ...options,
         ...queryKey[0],
         signal,
@@ -741,27 +921,27 @@ export const postAuthApiSignUpEmailOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiSignUpEmailQueryKey(options),
+    queryKey: postAuthSignUpEmailQueryKey(options),
   });
 };
 
 /**
  * Sign up a user using email and password
  */
-export const postAuthApiSignUpEmailMutation = (
-  options?: Partial<Options<PostAuthApiSignUpEmailData>>,
+export const postAuthSignUpEmailMutation = (
+  options?: Partial<Options<PostAuthSignUpEmailData>>,
 ): UseMutationOptions<
-  PostAuthApiSignUpEmailResponse,
-  PostAuthApiSignUpEmailError,
-  Options<PostAuthApiSignUpEmailData>
+  PostAuthSignUpEmailResponse,
+  PostAuthSignUpEmailError,
+  Options<PostAuthSignUpEmailData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiSignUpEmailResponse,
-    PostAuthApiSignUpEmailError,
-    Options<PostAuthApiSignUpEmailData>
+    PostAuthSignUpEmailResponse,
+    PostAuthSignUpEmailError,
+    Options<PostAuthSignUpEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiSignUpEmail({
+      const { data } = await postAuthSignUpEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -772,19 +952,19 @@ export const postAuthApiSignUpEmailMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiSignInEmailQueryKey = (
-  options: Options<PostAuthApiSignInEmailData>,
-) => createQueryKey("postAuthApiSignInEmail", options);
+export const postAuthSignInEmailQueryKey = (
+  options: Options<PostAuthSignInEmailData>,
+) => createQueryKey("postAuthSignInEmail", options);
 
 /**
  * Sign in with email and password
  */
-export const postAuthApiSignInEmailOptions = (
-  options: Options<PostAuthApiSignInEmailData>,
+export const postAuthSignInEmailOptions = (
+  options: Options<PostAuthSignInEmailData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiSignInEmail({
+      const { data } = await postAuthSignInEmail({
         ...options,
         ...queryKey[0],
         signal,
@@ -792,27 +972,27 @@ export const postAuthApiSignInEmailOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiSignInEmailQueryKey(options),
+    queryKey: postAuthSignInEmailQueryKey(options),
   });
 };
 
 /**
  * Sign in with email and password
  */
-export const postAuthApiSignInEmailMutation = (
-  options?: Partial<Options<PostAuthApiSignInEmailData>>,
+export const postAuthSignInEmailMutation = (
+  options?: Partial<Options<PostAuthSignInEmailData>>,
 ): UseMutationOptions<
-  PostAuthApiSignInEmailResponse,
-  PostAuthApiSignInEmailError,
-  Options<PostAuthApiSignInEmailData>
+  PostAuthSignInEmailResponse,
+  PostAuthSignInEmailError,
+  Options<PostAuthSignInEmailData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiSignInEmailResponse,
-    PostAuthApiSignInEmailError,
-    Options<PostAuthApiSignInEmailData>
+    PostAuthSignInEmailResponse,
+    PostAuthSignInEmailError,
+    Options<PostAuthSignInEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiSignInEmail({
+      const { data } = await postAuthSignInEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -823,19 +1003,19 @@ export const postAuthApiSignInEmailMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiForgetPasswordQueryKey = (
-  options: Options<PostAuthApiForgetPasswordData>,
-) => createQueryKey("postAuthApiForgetPassword", options);
+export const postAuthForgetPasswordQueryKey = (
+  options: Options<PostAuthForgetPasswordData>,
+) => createQueryKey("postAuthForgetPassword", options);
 
 /**
  * Send a password reset email to the user
  */
-export const postAuthApiForgetPasswordOptions = (
-  options: Options<PostAuthApiForgetPasswordData>,
+export const postAuthForgetPasswordOptions = (
+  options: Options<PostAuthForgetPasswordData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiForgetPassword({
+      const { data } = await postAuthForgetPassword({
         ...options,
         ...queryKey[0],
         signal,
@@ -843,27 +1023,27 @@ export const postAuthApiForgetPasswordOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiForgetPasswordQueryKey(options),
+    queryKey: postAuthForgetPasswordQueryKey(options),
   });
 };
 
 /**
  * Send a password reset email to the user
  */
-export const postAuthApiForgetPasswordMutation = (
-  options?: Partial<Options<PostAuthApiForgetPasswordData>>,
+export const postAuthForgetPasswordMutation = (
+  options?: Partial<Options<PostAuthForgetPasswordData>>,
 ): UseMutationOptions<
-  PostAuthApiForgetPasswordResponse,
-  PostAuthApiForgetPasswordError,
-  Options<PostAuthApiForgetPasswordData>
+  PostAuthForgetPasswordResponse,
+  PostAuthForgetPasswordError,
+  Options<PostAuthForgetPasswordData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiForgetPasswordResponse,
-    PostAuthApiForgetPasswordError,
-    Options<PostAuthApiForgetPasswordData>
+    PostAuthForgetPasswordResponse,
+    PostAuthForgetPasswordError,
+    Options<PostAuthForgetPasswordData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiForgetPassword({
+      const { data } = await postAuthForgetPassword({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -874,19 +1054,19 @@ export const postAuthApiForgetPasswordMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiResetPasswordQueryKey = (
-  options: Options<PostAuthApiResetPasswordData>,
-) => createQueryKey("postAuthApiResetPassword", options);
+export const postAuthResetPasswordQueryKey = (
+  options: Options<PostAuthResetPasswordData>,
+) => createQueryKey("postAuthResetPassword", options);
 
 /**
  * Reset the password for a user
  */
-export const postAuthApiResetPasswordOptions = (
-  options: Options<PostAuthApiResetPasswordData>,
+export const postAuthResetPasswordOptions = (
+  options: Options<PostAuthResetPasswordData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiResetPassword({
+      const { data } = await postAuthResetPassword({
         ...options,
         ...queryKey[0],
         signal,
@@ -894,27 +1074,27 @@ export const postAuthApiResetPasswordOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiResetPasswordQueryKey(options),
+    queryKey: postAuthResetPasswordQueryKey(options),
   });
 };
 
 /**
  * Reset the password for a user
  */
-export const postAuthApiResetPasswordMutation = (
-  options?: Partial<Options<PostAuthApiResetPasswordData>>,
+export const postAuthResetPasswordMutation = (
+  options?: Partial<Options<PostAuthResetPasswordData>>,
 ): UseMutationOptions<
-  PostAuthApiResetPasswordResponse,
-  PostAuthApiResetPasswordError,
-  Options<PostAuthApiResetPasswordData>
+  PostAuthResetPasswordResponse,
+  PostAuthResetPasswordError,
+  Options<PostAuthResetPasswordData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiResetPasswordResponse,
-    PostAuthApiResetPasswordError,
-    Options<PostAuthApiResetPasswordData>
+    PostAuthResetPasswordResponse,
+    PostAuthResetPasswordError,
+    Options<PostAuthResetPasswordData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiResetPassword({
+      const { data } = await postAuthResetPassword({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -925,19 +1105,19 @@ export const postAuthApiResetPasswordMutation = (
   return mutationOptions;
 };
 
-export const getAuthApiVerifyEmailQueryKey = (
-  options: Options<GetAuthApiVerifyEmailData>,
-) => createQueryKey("getAuthApiVerifyEmail", options);
+export const getAuthVerifyEmailQueryKey = (
+  options: Options<GetAuthVerifyEmailData>,
+) => createQueryKey("getAuthVerifyEmail", options);
 
 /**
  * Verify the email of the user
  */
-export const getAuthApiVerifyEmailOptions = (
-  options: Options<GetAuthApiVerifyEmailData>,
+export const getAuthVerifyEmailOptions = (
+  options: Options<GetAuthVerifyEmailData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiVerifyEmail({
+      const { data } = await getAuthVerifyEmail({
         ...options,
         ...queryKey[0],
         signal,
@@ -945,23 +1125,23 @@ export const getAuthApiVerifyEmailOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiVerifyEmailQueryKey(options),
+    queryKey: getAuthVerifyEmailQueryKey(options),
   });
 };
 
-export const postAuthApiSendVerificationEmailQueryKey = (
-  options?: Options<PostAuthApiSendVerificationEmailData>,
-) => createQueryKey("postAuthApiSendVerificationEmail", options);
+export const postAuthSendVerificationEmailQueryKey = (
+  options?: Options<PostAuthSendVerificationEmailData>,
+) => createQueryKey("postAuthSendVerificationEmail", options);
 
 /**
  * Send a verification email to the user
  */
-export const postAuthApiSendVerificationEmailOptions = (
-  options?: Options<PostAuthApiSendVerificationEmailData>,
+export const postAuthSendVerificationEmailOptions = (
+  options?: Options<PostAuthSendVerificationEmailData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiSendVerificationEmail({
+      const { data } = await postAuthSendVerificationEmail({
         ...options,
         ...queryKey[0],
         signal,
@@ -969,27 +1149,27 @@ export const postAuthApiSendVerificationEmailOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiSendVerificationEmailQueryKey(options),
+    queryKey: postAuthSendVerificationEmailQueryKey(options),
   });
 };
 
 /**
  * Send a verification email to the user
  */
-export const postAuthApiSendVerificationEmailMutation = (
-  options?: Partial<Options<PostAuthApiSendVerificationEmailData>>,
+export const postAuthSendVerificationEmailMutation = (
+  options?: Partial<Options<PostAuthSendVerificationEmailData>>,
 ): UseMutationOptions<
-  PostAuthApiSendVerificationEmailResponse,
-  PostAuthApiSendVerificationEmailError,
-  Options<PostAuthApiSendVerificationEmailData>
+  PostAuthSendVerificationEmailResponse,
+  PostAuthSendVerificationEmailError,
+  Options<PostAuthSendVerificationEmailData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiSendVerificationEmailResponse,
-    PostAuthApiSendVerificationEmailError,
-    Options<PostAuthApiSendVerificationEmailData>
+    PostAuthSendVerificationEmailResponse,
+    PostAuthSendVerificationEmailError,
+    Options<PostAuthSendVerificationEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiSendVerificationEmail({
+      const { data } = await postAuthSendVerificationEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1000,16 +1180,16 @@ export const postAuthApiSendVerificationEmailMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiChangeEmailQueryKey = (
-  options: Options<PostAuthApiChangeEmailData>,
-) => createQueryKey("postAuthApiChangeEmail", options);
+export const postAuthChangeEmailQueryKey = (
+  options: Options<PostAuthChangeEmailData>,
+) => createQueryKey("postAuthChangeEmail", options);
 
-export const postAuthApiChangeEmailOptions = (
-  options: Options<PostAuthApiChangeEmailData>,
+export const postAuthChangeEmailOptions = (
+  options: Options<PostAuthChangeEmailData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiChangeEmail({
+      const { data } = await postAuthChangeEmail({
         ...options,
         ...queryKey[0],
         signal,
@@ -1017,24 +1197,24 @@ export const postAuthApiChangeEmailOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiChangeEmailQueryKey(options),
+    queryKey: postAuthChangeEmailQueryKey(options),
   });
 };
 
-export const postAuthApiChangeEmailMutation = (
-  options?: Partial<Options<PostAuthApiChangeEmailData>>,
+export const postAuthChangeEmailMutation = (
+  options?: Partial<Options<PostAuthChangeEmailData>>,
 ): UseMutationOptions<
-  PostAuthApiChangeEmailResponse,
-  PostAuthApiChangeEmailError,
-  Options<PostAuthApiChangeEmailData>
+  PostAuthChangeEmailResponse,
+  PostAuthChangeEmailError,
+  Options<PostAuthChangeEmailData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiChangeEmailResponse,
-    PostAuthApiChangeEmailError,
-    Options<PostAuthApiChangeEmailData>
+    PostAuthChangeEmailResponse,
+    PostAuthChangeEmailError,
+    Options<PostAuthChangeEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiChangeEmail({
+      const { data } = await postAuthChangeEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1045,19 +1225,19 @@ export const postAuthApiChangeEmailMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiChangePasswordQueryKey = (
-  options: Options<PostAuthApiChangePasswordData>,
-) => createQueryKey("postAuthApiChangePassword", options);
+export const postAuthChangePasswordQueryKey = (
+  options: Options<PostAuthChangePasswordData>,
+) => createQueryKey("postAuthChangePassword", options);
 
 /**
  * Change the password of the user
  */
-export const postAuthApiChangePasswordOptions = (
-  options: Options<PostAuthApiChangePasswordData>,
+export const postAuthChangePasswordOptions = (
+  options: Options<PostAuthChangePasswordData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiChangePassword({
+      const { data } = await postAuthChangePassword({
         ...options,
         ...queryKey[0],
         signal,
@@ -1065,27 +1245,27 @@ export const postAuthApiChangePasswordOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiChangePasswordQueryKey(options),
+    queryKey: postAuthChangePasswordQueryKey(options),
   });
 };
 
 /**
  * Change the password of the user
  */
-export const postAuthApiChangePasswordMutation = (
-  options?: Partial<Options<PostAuthApiChangePasswordData>>,
+export const postAuthChangePasswordMutation = (
+  options?: Partial<Options<PostAuthChangePasswordData>>,
 ): UseMutationOptions<
-  PostAuthApiChangePasswordResponse,
-  PostAuthApiChangePasswordError,
-  Options<PostAuthApiChangePasswordData>
+  PostAuthChangePasswordResponse,
+  PostAuthChangePasswordError,
+  Options<PostAuthChangePasswordData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiChangePasswordResponse,
-    PostAuthApiChangePasswordError,
-    Options<PostAuthApiChangePasswordData>
+    PostAuthChangePasswordResponse,
+    PostAuthChangePasswordError,
+    Options<PostAuthChangePasswordData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiChangePassword({
+      const { data } = await postAuthChangePassword({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1096,19 +1276,19 @@ export const postAuthApiChangePasswordMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiUpdateUserQueryKey = (
-  options?: Options<PostAuthApiUpdateUserData>,
-) => createQueryKey("postAuthApiUpdateUser", options);
+export const postAuthUpdateUserQueryKey = (
+  options?: Options<PostAuthUpdateUserData>,
+) => createQueryKey("postAuthUpdateUser", options);
 
 /**
  * Update the current user
  */
-export const postAuthApiUpdateUserOptions = (
-  options?: Options<PostAuthApiUpdateUserData>,
+export const postAuthUpdateUserOptions = (
+  options?: Options<PostAuthUpdateUserData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiUpdateUser({
+      const { data } = await postAuthUpdateUser({
         ...options,
         ...queryKey[0],
         signal,
@@ -1116,27 +1296,27 @@ export const postAuthApiUpdateUserOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiUpdateUserQueryKey(options),
+    queryKey: postAuthUpdateUserQueryKey(options),
   });
 };
 
 /**
  * Update the current user
  */
-export const postAuthApiUpdateUserMutation = (
-  options?: Partial<Options<PostAuthApiUpdateUserData>>,
+export const postAuthUpdateUserMutation = (
+  options?: Partial<Options<PostAuthUpdateUserData>>,
 ): UseMutationOptions<
-  PostAuthApiUpdateUserResponse,
-  PostAuthApiUpdateUserError,
-  Options<PostAuthApiUpdateUserData>
+  PostAuthUpdateUserResponse,
+  PostAuthUpdateUserError,
+  Options<PostAuthUpdateUserData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiUpdateUserResponse,
-    PostAuthApiUpdateUserError,
-    Options<PostAuthApiUpdateUserData>
+    PostAuthUpdateUserResponse,
+    PostAuthUpdateUserError,
+    Options<PostAuthUpdateUserData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiUpdateUser({
+      const { data } = await postAuthUpdateUser({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1147,19 +1327,19 @@ export const postAuthApiUpdateUserMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiDeleteUserQueryKey = (
-  options: Options<PostAuthApiDeleteUserData>,
-) => createQueryKey("postAuthApiDeleteUser", options);
+export const postAuthDeleteUserQueryKey = (
+  options: Options<PostAuthDeleteUserData>,
+) => createQueryKey("postAuthDeleteUser", options);
 
 /**
  * Delete the user
  */
-export const postAuthApiDeleteUserOptions = (
-  options: Options<PostAuthApiDeleteUserData>,
+export const postAuthDeleteUserOptions = (
+  options: Options<PostAuthDeleteUserData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiDeleteUser({
+      const { data } = await postAuthDeleteUser({
         ...options,
         ...queryKey[0],
         signal,
@@ -1167,27 +1347,27 @@ export const postAuthApiDeleteUserOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiDeleteUserQueryKey(options),
+    queryKey: postAuthDeleteUserQueryKey(options),
   });
 };
 
 /**
  * Delete the user
  */
-export const postAuthApiDeleteUserMutation = (
-  options?: Partial<Options<PostAuthApiDeleteUserData>>,
+export const postAuthDeleteUserMutation = (
+  options?: Partial<Options<PostAuthDeleteUserData>>,
 ): UseMutationOptions<
-  PostAuthApiDeleteUserResponse,
-  PostAuthApiDeleteUserError,
-  Options<PostAuthApiDeleteUserData>
+  PostAuthDeleteUserResponse,
+  PostAuthDeleteUserError,
+  Options<PostAuthDeleteUserData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiDeleteUserResponse,
-    PostAuthApiDeleteUserError,
-    Options<PostAuthApiDeleteUserData>
+    PostAuthDeleteUserResponse,
+    PostAuthDeleteUserError,
+    Options<PostAuthDeleteUserData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiDeleteUser({
+      const { data } = await postAuthDeleteUser({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1198,19 +1378,19 @@ export const postAuthApiDeleteUserMutation = (
   return mutationOptions;
 };
 
-export const getAuthApiResetPasswordByTokenQueryKey = (
-  options?: Options<GetAuthApiResetPasswordByTokenData>,
-) => createQueryKey("getAuthApiResetPasswordByToken", options);
+export const getAuthResetPasswordByTokenQueryKey = (
+  options?: Options<GetAuthResetPasswordByTokenData>,
+) => createQueryKey("getAuthResetPasswordByToken", options);
 
 /**
  * Redirects the user to the callback URL with the token
  */
-export const getAuthApiResetPasswordByTokenOptions = (
-  options?: Options<GetAuthApiResetPasswordByTokenData>,
+export const getAuthResetPasswordByTokenOptions = (
+  options?: Options<GetAuthResetPasswordByTokenData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiResetPasswordByToken({
+      const { data } = await getAuthResetPasswordByToken({
         ...options,
         ...queryKey[0],
         signal,
@@ -1218,23 +1398,23 @@ export const getAuthApiResetPasswordByTokenOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiResetPasswordByTokenQueryKey(options),
+    queryKey: getAuthResetPasswordByTokenQueryKey(options),
   });
 };
 
-export const postAuthApiRequestPasswordResetQueryKey = (
-  options: Options<PostAuthApiRequestPasswordResetData>,
-) => createQueryKey("postAuthApiRequestPasswordReset", options);
+export const postAuthRequestPasswordResetQueryKey = (
+  options: Options<PostAuthRequestPasswordResetData>,
+) => createQueryKey("postAuthRequestPasswordReset", options);
 
 /**
  * Send a password reset email to the user
  */
-export const postAuthApiRequestPasswordResetOptions = (
-  options: Options<PostAuthApiRequestPasswordResetData>,
+export const postAuthRequestPasswordResetOptions = (
+  options: Options<PostAuthRequestPasswordResetData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiRequestPasswordReset({
+      const { data } = await postAuthRequestPasswordReset({
         ...options,
         ...queryKey[0],
         signal,
@@ -1242,27 +1422,27 @@ export const postAuthApiRequestPasswordResetOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiRequestPasswordResetQueryKey(options),
+    queryKey: postAuthRequestPasswordResetQueryKey(options),
   });
 };
 
 /**
  * Send a password reset email to the user
  */
-export const postAuthApiRequestPasswordResetMutation = (
-  options?: Partial<Options<PostAuthApiRequestPasswordResetData>>,
+export const postAuthRequestPasswordResetMutation = (
+  options?: Partial<Options<PostAuthRequestPasswordResetData>>,
 ): UseMutationOptions<
-  PostAuthApiRequestPasswordResetResponse,
-  PostAuthApiRequestPasswordResetError,
-  Options<PostAuthApiRequestPasswordResetData>
+  PostAuthRequestPasswordResetResponse,
+  PostAuthRequestPasswordResetError,
+  Options<PostAuthRequestPasswordResetData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiRequestPasswordResetResponse,
-    PostAuthApiRequestPasswordResetError,
-    Options<PostAuthApiRequestPasswordResetData>
+    PostAuthRequestPasswordResetResponse,
+    PostAuthRequestPasswordResetError,
+    Options<PostAuthRequestPasswordResetData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiRequestPasswordReset({
+      const { data } = await postAuthRequestPasswordReset({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1273,19 +1453,19 @@ export const postAuthApiRequestPasswordResetMutation = (
   return mutationOptions;
 };
 
-export const getAuthApiListSessionsQueryKey = (
-  options?: Options<GetAuthApiListSessionsData>,
-) => createQueryKey("getAuthApiListSessions", options);
+export const getAuthListSessionsQueryKey = (
+  options?: Options<GetAuthListSessionsData>,
+) => createQueryKey("getAuthListSessions", options);
 
 /**
  * List all active sessions for the user
  */
-export const getAuthApiListSessionsOptions = (
-  options?: Options<GetAuthApiListSessionsData>,
+export const getAuthListSessionsOptions = (
+  options?: Options<GetAuthListSessionsData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiListSessions({
+      const { data } = await getAuthListSessions({
         ...options,
         ...queryKey[0],
         signal,
@@ -1293,23 +1473,23 @@ export const getAuthApiListSessionsOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiListSessionsQueryKey(options),
+    queryKey: getAuthListSessionsQueryKey(options),
   });
 };
 
-export const postAuthApiRevokeSessionQueryKey = (
-  options?: Options<PostAuthApiRevokeSessionData>,
-) => createQueryKey("postAuthApiRevokeSession", options);
+export const postAuthRevokeSessionQueryKey = (
+  options?: Options<PostAuthRevokeSessionData>,
+) => createQueryKey("postAuthRevokeSession", options);
 
 /**
  * Revoke a single session
  */
-export const postAuthApiRevokeSessionOptions = (
-  options?: Options<PostAuthApiRevokeSessionData>,
+export const postAuthRevokeSessionOptions = (
+  options?: Options<PostAuthRevokeSessionData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiRevokeSession({
+      const { data } = await postAuthRevokeSession({
         ...options,
         ...queryKey[0],
         signal,
@@ -1317,27 +1497,27 @@ export const postAuthApiRevokeSessionOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiRevokeSessionQueryKey(options),
+    queryKey: postAuthRevokeSessionQueryKey(options),
   });
 };
 
 /**
  * Revoke a single session
  */
-export const postAuthApiRevokeSessionMutation = (
-  options?: Partial<Options<PostAuthApiRevokeSessionData>>,
+export const postAuthRevokeSessionMutation = (
+  options?: Partial<Options<PostAuthRevokeSessionData>>,
 ): UseMutationOptions<
-  PostAuthApiRevokeSessionResponse,
-  PostAuthApiRevokeSessionError,
-  Options<PostAuthApiRevokeSessionData>
+  PostAuthRevokeSessionResponse,
+  PostAuthRevokeSessionError,
+  Options<PostAuthRevokeSessionData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiRevokeSessionResponse,
-    PostAuthApiRevokeSessionError,
-    Options<PostAuthApiRevokeSessionData>
+    PostAuthRevokeSessionResponse,
+    PostAuthRevokeSessionError,
+    Options<PostAuthRevokeSessionData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiRevokeSession({
+      const { data } = await postAuthRevokeSession({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1348,19 +1528,19 @@ export const postAuthApiRevokeSessionMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiRevokeSessionsQueryKey = (
-  options?: Options<PostAuthApiRevokeSessionsData>,
-) => createQueryKey("postAuthApiRevokeSessions", options);
+export const postAuthRevokeSessionsQueryKey = (
+  options?: Options<PostAuthRevokeSessionsData>,
+) => createQueryKey("postAuthRevokeSessions", options);
 
 /**
  * Revoke all sessions for the user
  */
-export const postAuthApiRevokeSessionsOptions = (
-  options?: Options<PostAuthApiRevokeSessionsData>,
+export const postAuthRevokeSessionsOptions = (
+  options?: Options<PostAuthRevokeSessionsData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiRevokeSessions({
+      const { data } = await postAuthRevokeSessions({
         ...options,
         ...queryKey[0],
         signal,
@@ -1368,27 +1548,27 @@ export const postAuthApiRevokeSessionsOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiRevokeSessionsQueryKey(options),
+    queryKey: postAuthRevokeSessionsQueryKey(options),
   });
 };
 
 /**
  * Revoke all sessions for the user
  */
-export const postAuthApiRevokeSessionsMutation = (
-  options?: Partial<Options<PostAuthApiRevokeSessionsData>>,
+export const postAuthRevokeSessionsMutation = (
+  options?: Partial<Options<PostAuthRevokeSessionsData>>,
 ): UseMutationOptions<
-  PostAuthApiRevokeSessionsResponse,
-  PostAuthApiRevokeSessionsError,
-  Options<PostAuthApiRevokeSessionsData>
+  PostAuthRevokeSessionsResponse,
+  PostAuthRevokeSessionsError,
+  Options<PostAuthRevokeSessionsData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiRevokeSessionsResponse,
-    PostAuthApiRevokeSessionsError,
-    Options<PostAuthApiRevokeSessionsData>
+    PostAuthRevokeSessionsResponse,
+    PostAuthRevokeSessionsError,
+    Options<PostAuthRevokeSessionsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiRevokeSessions({
+      const { data } = await postAuthRevokeSessions({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1399,19 +1579,19 @@ export const postAuthApiRevokeSessionsMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiRevokeOtherSessionsQueryKey = (
-  options?: Options<PostAuthApiRevokeOtherSessionsData>,
-) => createQueryKey("postAuthApiRevokeOtherSessions", options);
+export const postAuthRevokeOtherSessionsQueryKey = (
+  options?: Options<PostAuthRevokeOtherSessionsData>,
+) => createQueryKey("postAuthRevokeOtherSessions", options);
 
 /**
  * Revoke all other sessions for the user except the current one
  */
-export const postAuthApiRevokeOtherSessionsOptions = (
-  options?: Options<PostAuthApiRevokeOtherSessionsData>,
+export const postAuthRevokeOtherSessionsOptions = (
+  options?: Options<PostAuthRevokeOtherSessionsData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiRevokeOtherSessions({
+      const { data } = await postAuthRevokeOtherSessions({
         ...options,
         ...queryKey[0],
         signal,
@@ -1419,27 +1599,27 @@ export const postAuthApiRevokeOtherSessionsOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiRevokeOtherSessionsQueryKey(options),
+    queryKey: postAuthRevokeOtherSessionsQueryKey(options),
   });
 };
 
 /**
  * Revoke all other sessions for the user except the current one
  */
-export const postAuthApiRevokeOtherSessionsMutation = (
-  options?: Partial<Options<PostAuthApiRevokeOtherSessionsData>>,
+export const postAuthRevokeOtherSessionsMutation = (
+  options?: Partial<Options<PostAuthRevokeOtherSessionsData>>,
 ): UseMutationOptions<
-  PostAuthApiRevokeOtherSessionsResponse,
-  PostAuthApiRevokeOtherSessionsError,
-  Options<PostAuthApiRevokeOtherSessionsData>
+  PostAuthRevokeOtherSessionsResponse,
+  PostAuthRevokeOtherSessionsError,
+  Options<PostAuthRevokeOtherSessionsData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiRevokeOtherSessionsResponse,
-    PostAuthApiRevokeOtherSessionsError,
-    Options<PostAuthApiRevokeOtherSessionsData>
+    PostAuthRevokeOtherSessionsResponse,
+    PostAuthRevokeOtherSessionsError,
+    Options<PostAuthRevokeOtherSessionsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiRevokeOtherSessions({
+      const { data } = await postAuthRevokeOtherSessions({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1450,19 +1630,19 @@ export const postAuthApiRevokeOtherSessionsMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiLinkSocialQueryKey = (
-  options: Options<PostAuthApiLinkSocialData>,
-) => createQueryKey("postAuthApiLinkSocial", options);
+export const postAuthLinkSocialQueryKey = (
+  options: Options<PostAuthLinkSocialData>,
+) => createQueryKey("postAuthLinkSocial", options);
 
 /**
  * Link a social account to the user
  */
-export const postAuthApiLinkSocialOptions = (
-  options: Options<PostAuthApiLinkSocialData>,
+export const postAuthLinkSocialOptions = (
+  options: Options<PostAuthLinkSocialData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiLinkSocial({
+      const { data } = await postAuthLinkSocial({
         ...options,
         ...queryKey[0],
         signal,
@@ -1470,27 +1650,27 @@ export const postAuthApiLinkSocialOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiLinkSocialQueryKey(options),
+    queryKey: postAuthLinkSocialQueryKey(options),
   });
 };
 
 /**
  * Link a social account to the user
  */
-export const postAuthApiLinkSocialMutation = (
-  options?: Partial<Options<PostAuthApiLinkSocialData>>,
+export const postAuthLinkSocialMutation = (
+  options?: Partial<Options<PostAuthLinkSocialData>>,
 ): UseMutationOptions<
-  PostAuthApiLinkSocialResponse,
-  PostAuthApiLinkSocialError,
-  Options<PostAuthApiLinkSocialData>
+  PostAuthLinkSocialResponse,
+  PostAuthLinkSocialError,
+  Options<PostAuthLinkSocialData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiLinkSocialResponse,
-    PostAuthApiLinkSocialError,
-    Options<PostAuthApiLinkSocialData>
+    PostAuthLinkSocialResponse,
+    PostAuthLinkSocialError,
+    Options<PostAuthLinkSocialData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiLinkSocial({
+      const { data } = await postAuthLinkSocial({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1501,19 +1681,19 @@ export const postAuthApiLinkSocialMutation = (
   return mutationOptions;
 };
 
-export const getAuthApiListAccountsQueryKey = (
-  options?: Options<GetAuthApiListAccountsData>,
-) => createQueryKey("getAuthApiListAccounts", options);
+export const getAuthListAccountsQueryKey = (
+  options?: Options<GetAuthListAccountsData>,
+) => createQueryKey("getAuthListAccounts", options);
 
 /**
  * List all accounts linked to the user
  */
-export const getAuthApiListAccountsOptions = (
-  options?: Options<GetAuthApiListAccountsData>,
+export const getAuthListAccountsOptions = (
+  options?: Options<GetAuthListAccountsData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiListAccounts({
+      const { data } = await getAuthListAccounts({
         ...options,
         ...queryKey[0],
         signal,
@@ -1521,23 +1701,23 @@ export const getAuthApiListAccountsOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiListAccountsQueryKey(options),
+    queryKey: getAuthListAccountsQueryKey(options),
   });
 };
 
-export const getAuthApiDeleteUserCallbackQueryKey = (
-  options?: Options<GetAuthApiDeleteUserCallbackData>,
-) => createQueryKey("getAuthApiDeleteUserCallback", options);
+export const getAuthDeleteUserCallbackQueryKey = (
+  options?: Options<GetAuthDeleteUserCallbackData>,
+) => createQueryKey("getAuthDeleteUserCallback", options);
 
 /**
  * Callback to complete user deletion with verification token
  */
-export const getAuthApiDeleteUserCallbackOptions = (
-  options?: Options<GetAuthApiDeleteUserCallbackData>,
+export const getAuthDeleteUserCallbackOptions = (
+  options?: Options<GetAuthDeleteUserCallbackData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiDeleteUserCallback({
+      const { data } = await getAuthDeleteUserCallback({
         ...options,
         ...queryKey[0],
         signal,
@@ -1545,23 +1725,23 @@ export const getAuthApiDeleteUserCallbackOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiDeleteUserCallbackQueryKey(options),
+    queryKey: getAuthDeleteUserCallbackQueryKey(options),
   });
 };
 
-export const postAuthApiUnlinkAccountQueryKey = (
-  options: Options<PostAuthApiUnlinkAccountData>,
-) => createQueryKey("postAuthApiUnlinkAccount", options);
+export const postAuthUnlinkAccountQueryKey = (
+  options: Options<PostAuthUnlinkAccountData>,
+) => createQueryKey("postAuthUnlinkAccount", options);
 
 /**
  * Unlink an account
  */
-export const postAuthApiUnlinkAccountOptions = (
-  options: Options<PostAuthApiUnlinkAccountData>,
+export const postAuthUnlinkAccountOptions = (
+  options: Options<PostAuthUnlinkAccountData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiUnlinkAccount({
+      const { data } = await postAuthUnlinkAccount({
         ...options,
         ...queryKey[0],
         signal,
@@ -1569,27 +1749,27 @@ export const postAuthApiUnlinkAccountOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiUnlinkAccountQueryKey(options),
+    queryKey: postAuthUnlinkAccountQueryKey(options),
   });
 };
 
 /**
  * Unlink an account
  */
-export const postAuthApiUnlinkAccountMutation = (
-  options?: Partial<Options<PostAuthApiUnlinkAccountData>>,
+export const postAuthUnlinkAccountMutation = (
+  options?: Partial<Options<PostAuthUnlinkAccountData>>,
 ): UseMutationOptions<
-  PostAuthApiUnlinkAccountResponse,
-  PostAuthApiUnlinkAccountError,
-  Options<PostAuthApiUnlinkAccountData>
+  PostAuthUnlinkAccountResponse,
+  PostAuthUnlinkAccountError,
+  Options<PostAuthUnlinkAccountData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiUnlinkAccountResponse,
-    PostAuthApiUnlinkAccountError,
-    Options<PostAuthApiUnlinkAccountData>
+    PostAuthUnlinkAccountResponse,
+    PostAuthUnlinkAccountError,
+    Options<PostAuthUnlinkAccountData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiUnlinkAccount({
+      const { data } = await postAuthUnlinkAccount({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1600,19 +1780,19 @@ export const postAuthApiUnlinkAccountMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiRefreshTokenQueryKey = (
-  options: Options<PostAuthApiRefreshTokenData>,
-) => createQueryKey("postAuthApiRefreshToken", options);
+export const postAuthRefreshTokenQueryKey = (
+  options: Options<PostAuthRefreshTokenData>,
+) => createQueryKey("postAuthRefreshToken", options);
 
 /**
  * Refresh the access token using a refresh token
  */
-export const postAuthApiRefreshTokenOptions = (
-  options: Options<PostAuthApiRefreshTokenData>,
+export const postAuthRefreshTokenOptions = (
+  options: Options<PostAuthRefreshTokenData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiRefreshToken({
+      const { data } = await postAuthRefreshToken({
         ...options,
         ...queryKey[0],
         signal,
@@ -1620,27 +1800,27 @@ export const postAuthApiRefreshTokenOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiRefreshTokenQueryKey(options),
+    queryKey: postAuthRefreshTokenQueryKey(options),
   });
 };
 
 /**
  * Refresh the access token using a refresh token
  */
-export const postAuthApiRefreshTokenMutation = (
-  options?: Partial<Options<PostAuthApiRefreshTokenData>>,
+export const postAuthRefreshTokenMutation = (
+  options?: Partial<Options<PostAuthRefreshTokenData>>,
 ): UseMutationOptions<
-  PostAuthApiRefreshTokenResponse,
-  PostAuthApiRefreshTokenError,
-  Options<PostAuthApiRefreshTokenData>
+  PostAuthRefreshTokenResponse,
+  PostAuthRefreshTokenError,
+  Options<PostAuthRefreshTokenData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiRefreshTokenResponse,
-    PostAuthApiRefreshTokenError,
-    Options<PostAuthApiRefreshTokenData>
+    PostAuthRefreshTokenResponse,
+    PostAuthRefreshTokenError,
+    Options<PostAuthRefreshTokenData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiRefreshToken({
+      const { data } = await postAuthRefreshToken({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1651,19 +1831,19 @@ export const postAuthApiRefreshTokenMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiGetAccessTokenQueryKey = (
-  options: Options<PostAuthApiGetAccessTokenData>,
-) => createQueryKey("postAuthApiGetAccessToken", options);
+export const postAuthGetAccessTokenQueryKey = (
+  options: Options<PostAuthGetAccessTokenData>,
+) => createQueryKey("postAuthGetAccessToken", options);
 
 /**
  * Get a valid access token, doing a refresh if needed
  */
-export const postAuthApiGetAccessTokenOptions = (
-  options: Options<PostAuthApiGetAccessTokenData>,
+export const postAuthGetAccessTokenOptions = (
+  options: Options<PostAuthGetAccessTokenData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiGetAccessToken({
+      const { data } = await postAuthGetAccessToken({
         ...options,
         ...queryKey[0],
         signal,
@@ -1671,27 +1851,27 @@ export const postAuthApiGetAccessTokenOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiGetAccessTokenQueryKey(options),
+    queryKey: postAuthGetAccessTokenQueryKey(options),
   });
 };
 
 /**
  * Get a valid access token, doing a refresh if needed
  */
-export const postAuthApiGetAccessTokenMutation = (
-  options?: Partial<Options<PostAuthApiGetAccessTokenData>>,
+export const postAuthGetAccessTokenMutation = (
+  options?: Partial<Options<PostAuthGetAccessTokenData>>,
 ): UseMutationOptions<
-  PostAuthApiGetAccessTokenResponse,
-  PostAuthApiGetAccessTokenError,
-  Options<PostAuthApiGetAccessTokenData>
+  PostAuthGetAccessTokenResponse,
+  PostAuthGetAccessTokenError,
+  Options<PostAuthGetAccessTokenData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiGetAccessTokenResponse,
-    PostAuthApiGetAccessTokenError,
-    Options<PostAuthApiGetAccessTokenData>
+    PostAuthGetAccessTokenResponse,
+    PostAuthGetAccessTokenError,
+    Options<PostAuthGetAccessTokenData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiGetAccessToken({
+      const { data } = await postAuthGetAccessToken({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1702,19 +1882,19 @@ export const postAuthApiGetAccessTokenMutation = (
   return mutationOptions;
 };
 
-export const postAuthApiAccountInfoQueryKey = (
-  options: Options<PostAuthApiAccountInfoData>,
-) => createQueryKey("postAuthApiAccountInfo", options);
+export const postAuthAccountInfoQueryKey = (
+  options: Options<PostAuthAccountInfoData>,
+) => createQueryKey("postAuthAccountInfo", options);
 
 /**
  * Get the account info provided by the provider
  */
-export const postAuthApiAccountInfoOptions = (
-  options: Options<PostAuthApiAccountInfoData>,
+export const postAuthAccountInfoOptions = (
+  options: Options<PostAuthAccountInfoData>,
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthApiAccountInfo({
+      const { data } = await postAuthAccountInfo({
         ...options,
         ...queryKey[0],
         signal,
@@ -1722,27 +1902,27 @@ export const postAuthApiAccountInfoOptions = (
       });
       return data;
     },
-    queryKey: postAuthApiAccountInfoQueryKey(options),
+    queryKey: postAuthAccountInfoQueryKey(options),
   });
 };
 
 /**
  * Get the account info provided by the provider
  */
-export const postAuthApiAccountInfoMutation = (
-  options?: Partial<Options<PostAuthApiAccountInfoData>>,
+export const postAuthAccountInfoMutation = (
+  options?: Partial<Options<PostAuthAccountInfoData>>,
 ): UseMutationOptions<
-  PostAuthApiAccountInfoResponse,
-  PostAuthApiAccountInfoError,
-  Options<PostAuthApiAccountInfoData>
+  PostAuthAccountInfoResponse,
+  PostAuthAccountInfoError,
+  Options<PostAuthAccountInfoData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostAuthApiAccountInfoResponse,
-    PostAuthApiAccountInfoError,
-    Options<PostAuthApiAccountInfoData>
+    PostAuthAccountInfoResponse,
+    PostAuthAccountInfoError,
+    Options<PostAuthAccountInfoData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthApiAccountInfo({
+      const { data } = await postAuthAccountInfo({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -1753,16 +1933,16 @@ export const postAuthApiAccountInfoMutation = (
   return mutationOptions;
 };
 
-export const getAuthApiOkQueryKey = (options?: Options<GetAuthApiOkData>) =>
-  createQueryKey("getAuthApiOk", options);
+export const getAuthOkQueryKey = (options?: Options<GetAuthOkData>) =>
+  createQueryKey("getAuthOk", options);
 
 /**
  * Check if the API is working
  */
-export const getAuthApiOkOptions = (options?: Options<GetAuthApiOkData>) => {
+export const getAuthOkOptions = (options?: Options<GetAuthOkData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiOk({
+      const { data } = await getAuthOk({
         ...options,
         ...queryKey[0],
         signal,
@@ -1770,23 +1950,20 @@ export const getAuthApiOkOptions = (options?: Options<GetAuthApiOkData>) => {
       });
       return data;
     },
-    queryKey: getAuthApiOkQueryKey(options),
+    queryKey: getAuthOkQueryKey(options),
   });
 };
 
-export const getAuthApiErrorQueryKey = (
-  options?: Options<GetAuthApiErrorData>,
-) => createQueryKey("getAuthApiError", options);
+export const getAuthErrorQueryKey = (options?: Options<GetAuthErrorData>) =>
+  createQueryKey("getAuthError", options);
 
 /**
  * Displays an error page
  */
-export const getAuthApiErrorOptions = (
-  options?: Options<GetAuthApiErrorData>,
-) => {
+export const getAuthErrorOptions = (options?: Options<GetAuthErrorData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthApiError({
+      const { data } = await getAuthError({
         ...options,
         ...queryKey[0],
         signal,
@@ -1794,6 +1971,6 @@ export const getAuthApiErrorOptions = (
       });
       return data;
     },
-    queryKey: getAuthApiErrorQueryKey(options),
+    queryKey: getAuthErrorQueryKey(options),
   });
 };

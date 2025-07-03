@@ -2,6 +2,176 @@
 
 import { z } from "zod";
 
+export const zClient = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  companyName: z.string(),
+  contactName: z.string(),
+  email: z.union([z.string(), z.null()]),
+  createdAt: z.unknown(),
+});
+
+export const zClient2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    companyName: z.string(),
+    contactName: z.string(),
+    email: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+  }),
+);
+
+export const zProject = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  title: z.union([z.string(), z.null()]),
+  createdAt: z.unknown(),
+  client: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      companyName: z.string(),
+      contactName: z.string(),
+      email: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+    }),
+    z.null(),
+  ]),
+});
+
+export const zProject2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+    client: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        companyName: z.string(),
+        contactName: z.string(),
+        email: z.union([z.string(), z.null()]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+  }),
+);
+
+export const zTimeEntry = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  title: z.union([z.string(), z.null()]),
+  startAt: z.union([z.unknown(), z.null()]),
+  endAt: z.union([z.unknown(), z.null()]),
+  createdAt: z.unknown(),
+  project: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+      client: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          companyName: z.string(),
+          contactName: z.string(),
+          email: z.union([z.string(), z.null()]),
+          createdAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+    }),
+    z.null(),
+  ]),
+  projectTask: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.string(),
+      description: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+    }),
+    z.null(),
+  ]),
+});
+
+export const zTimeEntry2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.union([z.string(), z.null()]),
+    startAt: z.union([z.unknown(), z.null()]),
+    endAt: z.union([z.unknown(), z.null()]),
+    createdAt: z.unknown(),
+    project: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        title: z.union([z.string(), z.null()]),
+        createdAt: z.unknown(),
+        client: z.union([
+          z.object({
+            id: z.number().int().gte(-2147483648).lte(2147483647),
+            companyName: z.string(),
+            contactName: z.string(),
+            email: z.union([z.string(), z.null()]),
+            createdAt: z.unknown(),
+          }),
+          z.null(),
+        ]),
+      }),
+      z.null(),
+    ]),
+    projectTask: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        title: z.string(),
+        description: z.union([z.string(), z.null()]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+  }),
+);
+
+export const zProjectTask = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  title: z.string(),
+  description: z.union([z.string(), z.null()]),
+  createdAt: z.unknown(),
+  project: z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+    client: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        companyName: z.string(),
+        contactName: z.string(),
+        email: z.union([z.string(), z.null()]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+  }),
+});
+
+export const zProjectTask2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.string(),
+    description: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+    project: z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+      client: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          companyName: z.string(),
+          contactName: z.string(),
+          email: z.union([z.string(), z.null()]),
+          createdAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+    }),
+  }),
+);
+
 export const zUser = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
@@ -48,65 +218,123 @@ export const zVerification = z.object({
   updatedAt: z.unknown().optional(),
 });
 
-export const zPostV1ClientData = z.object({
-  name: z.string(),
+export const zGetClientResponse = zClient2;
+
+export const zPostClientData = z.object({
+  companyName: z.string(),
+  contactName: z.string(),
+  email: z.union([z.string(), z.null()]).optional(),
 });
 
-export const zDeleteV1ClientByIdParameterId = z.number();
+export const zPostClientResponse = zClient;
 
-export const zGetV1ClientByIdParameterId = z.number();
+export const zDeleteClientByIdParameterId = z.number();
 
-export const zPatchV1ClientByIdData = z.object({
-  name: z.string().optional(),
+export const zGetClientByIdParameterId = z.number();
+
+export const zGetClientByIdResponse = zClient;
+
+export const zPatchClientByIdData = z.object({
+  companyName: z.string().optional(),
+  contactName: z.string().optional(),
+  email: z.union([z.string(), z.null()]).optional(),
 });
 
-export const zPatchV1ClientByIdParameterId = z.number();
+export const zPatchClientByIdParameterId = z.number();
 
-export const zPostV1ProjectData = z.object({
-  title: z.string(),
-  clientId: z.number(),
+export const zPatchClientByIdResponse = zClient;
+
+export const zGetProjectResponse = zProject2;
+
+export const zPostProjectData = z.object({
+  clientId: z
+    .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+    .optional(),
+  title: z.union([z.string(), z.null()]).optional(),
 });
 
-export const zDeleteV1ProjectByIdParameterId = z.number();
+export const zPostProjectResponse = zProject;
 
-export const zGetV1ProjectByIdParameterId = z.number();
+export const zDeleteProjectByIdParameterId = z.number();
 
-export const zPatchV1ProjectByIdData = z.object({
+export const zGetProjectByIdParameterId = z.number();
+
+export const zGetProjectByIdResponse = zProject;
+
+export const zPatchProjectByIdData = z.object({
+  clientId: z
+    .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+    .optional(),
+  title: z.union([z.string(), z.null()]).optional(),
+});
+
+export const zPatchProjectByIdParameterId = z.number();
+
+export const zGetTimeEntryActiveResponse = zTimeEntry;
+
+export const zDeleteTimeEntryByIdParameterId = z.number();
+
+export const zGetTimeEntryByIdParameterId = z.number();
+
+export const zGetTimeEntryByIdResponse = zTimeEntry;
+
+export const zPatchTimeEntryByIdData = z.object({
   title: z.string().optional(),
-  clientId: z.number().optional(),
-});
-
-export const zPatchV1ProjectByIdParameterId = z.number();
-
-export const zGetV1TimeEntryByIdParameterId = z.number();
-
-export const zPatchV1TimeEntryByIdData = z.object({
-  title: z.string().optional(),
-  userId: z.string().optional(),
-  projectId: z.union([z.number(), z.unknown()]).optional(),
+  projectId: z.union([z.number(), z.null()]).optional(),
+  projectTaskId: z
+    .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+    .optional(),
   startAt: z.union([z.unknown(), z.string().datetime(), z.number()]).optional(),
   endAt: z
     .union([
       z.union([z.unknown(), z.string().datetime(), z.number()]),
-      z.unknown(),
+      z.null(),
     ])
     .optional(),
-  createdAt: z.unknown().optional(),
 });
 
-export const zPatchV1TimeEntryByIdParameterId = z.number();
+export const zPatchTimeEntryByIdParameterId = z.number();
 
-export const zPostV1TimeEntryData = z.object({
+export const zPatchTimeEntryByIdResponse = zTimeEntry;
+
+export const zGetTimeEntryResponse = zTimeEntry2;
+
+export const zPostTimeEntryData = z.object({
   title: z.string(),
-  userId: z.string(),
-  projectId: z.union([z.number(), z.unknown()]),
+  projectId: z.union([z.number(), z.null()]),
+  projectTaskId: z
+    .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+    .optional(),
   startAt: z.union([z.unknown(), z.string().datetime(), z.number()]),
   endAt: z.union([
     z.union([z.unknown(), z.string().datetime(), z.number()]),
-    z.unknown(),
+    z.null(),
   ]),
-  createdAt: z.unknown().optional(),
 });
+
+export const zPostTimeEntryResponse = zTimeEntry;
+
+export const zGetProjectTaskParameterProject = z.number();
+
+export const zGetProjectTaskResponse = zProjectTask2;
+
+export const zDeleteProjectTaskByIdParameterId = z.number();
+
+export const zPatchProjectTaskByIdData = z.object({
+  title: z.string().optional(),
+  description: z.union([z.string(), z.null()]).optional(),
+});
+
+export const zPatchProjectTaskByIdParameterId = z.number();
+
+export const zPostProjectTaskByIdData = z.object({
+  title: z.string(),
+  description: z.union([z.string(), z.null()]).optional(),
+});
+
+export const zPostProjectTaskByIdParameterId = z.number();
+
+export const zPostProjectTaskByIdResponse = zProjectTask;
 
 export const zSocialSignInData = z.object({
   callbackURL: z.string().optional(),
@@ -131,21 +359,21 @@ export const zSocialSignInResponse = z.object({
 /**
  * Success
  */
-export const zGetAuthApiGetSessionResponse = z.object({
+export const zGetAuthGetSessionResponse = z.object({
   session: zSession,
   user: zUser,
 });
 
-export const zPostAuthApiSignOutData = z.object({});
+export const zPostAuthSignOutData = z.object({});
 
 /**
  * Success
  */
-export const zPostAuthApiSignOutResponse = z.object({
+export const zPostAuthSignOutResponse = z.object({
   success: z.boolean().optional(),
 });
 
-export const zPostAuthApiSignUpEmailData = z.object({
+export const zPostAuthSignUpEmailData = z.object({
   name: z.string(),
   email: z.string(),
   password: z.string(),
@@ -155,20 +383,20 @@ export const zPostAuthApiSignUpEmailData = z.object({
 /**
  * Successfully created user
  */
-export const zPostAuthApiSignUpEmailResponse = z.object({
-  token: z.union([z.string(), z.null()]).optional(),
+export const zPostAuthSignUpEmailResponse = z.object({
+  token: z.string().optional(),
   user: z.object({
     id: z.string(),
     email: z.string().email(),
     name: z.string(),
-    image: z.union([z.string().url(), z.null()]).optional(),
+    image: z.string().url().optional(),
     emailVerified: z.boolean(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   }),
 });
 
-export const zPostAuthApiSignInEmailData = z.object({
+export const zPostAuthSignInEmailData = z.object({
   email: z.string(),
   password: z.string(),
   callbackURL: z.string().optional(),
@@ -178,22 +406,22 @@ export const zPostAuthApiSignInEmailData = z.object({
 /**
  * Session response when idToken is provided
  */
-export const zPostAuthApiSignInEmailResponse = z.object({
+export const zPostAuthSignInEmailResponse = z.object({
   redirect: z.unknown(),
   token: z.string(),
-  url: z.union([z.unknown(), z.null()]).optional(),
+  url: z.null().optional(),
   user: z.object({
     id: z.string(),
     email: z.string(),
-    name: z.union([z.string(), z.null()]).optional(),
-    image: z.union([z.string(), z.null()]).optional(),
+    name: z.string().optional(),
+    image: z.string().optional(),
     emailVerified: z.boolean(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   }),
 });
 
-export const zPostAuthApiForgetPasswordData = z.object({
+export const zPostAuthForgetPasswordData = z.object({
   email: z.string(),
   redirectTo: z.string().optional(),
 });
@@ -201,12 +429,12 @@ export const zPostAuthApiForgetPasswordData = z.object({
 /**
  * Success
  */
-export const zPostAuthApiForgetPasswordResponse = z.object({
+export const zPostAuthForgetPasswordResponse = z.object({
   status: z.boolean().optional(),
   message: z.string().optional(),
 });
 
-export const zPostAuthApiResetPasswordData = z.object({
+export const zPostAuthResetPasswordData = z.object({
   newPassword: z.string(),
   token: z.string().optional(),
 });
@@ -214,24 +442,24 @@ export const zPostAuthApiResetPasswordData = z.object({
 /**
  * Success
  */
-export const zPostAuthApiResetPasswordResponse = z.object({
+export const zPostAuthResetPasswordResponse = z.object({
   status: z.boolean().optional(),
 });
 
 /**
  * The token to verify the email
  */
-export const zGetAuthApiVerifyEmailParameterToken = z.string();
+export const zGetAuthVerifyEmailParameterToken = z.string();
 
 /**
  * The URL to redirect to after email verification
  */
-export const zGetAuthApiVerifyEmailParameterCallbackUrl = z.string();
+export const zGetAuthVerifyEmailParameterCallbackUrl = z.string();
 
 /**
  * Success
  */
-export const zGetAuthApiVerifyEmailResponse = z.object({
+export const zGetAuthVerifyEmailResponse = z.object({
   user: z.object({
     id: z.string(),
     email: z.string(),
@@ -244,19 +472,19 @@ export const zGetAuthApiVerifyEmailResponse = z.object({
   status: z.boolean(),
 });
 
-export const zPostAuthApiSendVerificationEmailData = z.object({
+export const zPostAuthSendVerificationEmailData = z.object({
   email: z.string(),
-  callbackURL: z.union([z.string(), z.null()]).optional(),
+  callbackURL: z.string().optional(),
 });
 
 /**
  * Success
  */
-export const zPostAuthApiSendVerificationEmailResponse = z.object({
+export const zPostAuthSendVerificationEmailResponse = z.object({
   status: z.boolean().optional(),
 });
 
-export const zPostAuthApiChangeEmailData = z.object({
+export const zPostAuthChangeEmailData = z.object({
   newEmail: z.string(),
   callbackURL: z.string().optional(),
 });
@@ -264,12 +492,12 @@ export const zPostAuthApiChangeEmailData = z.object({
 /**
  * Email change request processed successfully
  */
-export const zPostAuthApiChangeEmailResponse = z.object({
+export const zPostAuthChangeEmailResponse = z.object({
   status: z.boolean(),
   message: z.enum(["Email updated", "Verification email sent"]).optional(),
 });
 
-export const zPostAuthApiChangePasswordData = z.object({
+export const zPostAuthChangePasswordData = z.object({
   newPassword: z.string(),
   currentPassword: z.string(),
   revokeOtherSessions: z.string().optional(),
@@ -278,20 +506,20 @@ export const zPostAuthApiChangePasswordData = z.object({
 /**
  * Password successfully changed
  */
-export const zPostAuthApiChangePasswordResponse = z.object({
-  token: z.union([z.string(), z.null()]).optional(),
+export const zPostAuthChangePasswordResponse = z.object({
+  token: z.string().optional(),
   user: z.object({
     id: z.string(),
     email: z.string().email(),
     name: z.string(),
-    image: z.union([z.string().url(), z.null()]).optional(),
+    image: z.string().url().optional(),
     emailVerified: z.boolean(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   }),
 });
 
-export const zPostAuthApiUpdateUserData = z.object({
+export const zPostAuthUpdateUserData = z.object({
   name: z.string().optional(),
   image: z.string().optional(),
 });
@@ -299,11 +527,11 @@ export const zPostAuthApiUpdateUserData = z.object({
 /**
  * Success
  */
-export const zPostAuthApiUpdateUserResponse = z.object({
+export const zPostAuthUpdateUserResponse = z.object({
   status: z.boolean().optional(),
 });
 
-export const zPostAuthApiDeleteUserData = z.object({
+export const zPostAuthDeleteUserData = z.object({
   callbackURL: z.string().optional(),
   password: z.string().optional(),
   token: z.string().optional(),
@@ -312,7 +540,7 @@ export const zPostAuthApiDeleteUserData = z.object({
 /**
  * User deletion processed successfully
  */
-export const zPostAuthApiDeleteUserResponse = z.object({
+export const zPostAuthDeleteUserResponse = z.object({
   success: z.boolean(),
   message: z.enum(["User deleted", "Verification email sent"]),
 });
@@ -320,16 +548,16 @@ export const zPostAuthApiDeleteUserResponse = z.object({
 /**
  * The URL to redirect the user to reset their password
  */
-export const zGetAuthApiResetPasswordByTokenParameterCallbackUrl = z.string();
+export const zGetAuthResetPasswordByTokenParameterCallbackUrl = z.string();
 
 /**
  * Success
  */
-export const zGetAuthApiResetPasswordByTokenResponse = z.object({
+export const zGetAuthResetPasswordByTokenResponse = z.object({
   token: z.string().optional(),
 });
 
-export const zPostAuthApiRequestPasswordResetData = z.object({
+export const zPostAuthRequestPasswordResetData = z.object({
   email: z.string(),
   redirectTo: z.string().optional(),
 });
@@ -337,7 +565,7 @@ export const zPostAuthApiRequestPasswordResetData = z.object({
 /**
  * Success
  */
-export const zPostAuthApiRequestPasswordResetResponse = z.object({
+export const zPostAuthRequestPasswordResetResponse = z.object({
   status: z.boolean().optional(),
   message: z.string().optional(),
 });
@@ -345,40 +573,42 @@ export const zPostAuthApiRequestPasswordResetResponse = z.object({
 /**
  * Success
  */
-export const zGetAuthApiListSessionsResponse = z.array(zSession);
+export const zGetAuthListSessionsResponse = z.array(zSession);
 
-export const zPostAuthApiRevokeSessionData = z.object({
+export const zPostAuthRevokeSessionData = z.object({
   token: z.string(),
 });
 
 /**
  * Success
  */
-export const zPostAuthApiRevokeSessionResponse = z.object({
+export const zPostAuthRevokeSessionResponse = z.object({
   status: z.boolean(),
 });
 
-export const zPostAuthApiRevokeSessionsData = z.object({});
+export const zPostAuthRevokeSessionsData = z.object({});
 
 /**
  * Success
  */
-export const zPostAuthApiRevokeSessionsResponse = z.object({
+export const zPostAuthRevokeSessionsResponse = z.object({
   status: z.boolean(),
 });
 
-export const zPostAuthApiRevokeOtherSessionsData = z.object({});
+export const zPostAuthRevokeOtherSessionsData = z.object({});
 
 /**
  * Success
  */
-export const zPostAuthApiRevokeOtherSessionsResponse = z.object({
+export const zPostAuthRevokeOtherSessionsResponse = z.object({
   status: z.boolean(),
 });
 
-export const zPostAuthApiLinkSocialData = z.object({
+export const zPostAuthLinkSocialData = z.object({
   callbackURL: z.string().optional(),
   provider: z.string(),
+  idToken: z.string().optional(),
+  requestSignUp: z.string().optional(),
   scopes: z.string().optional(),
   errorCallbackURL: z.string().optional(),
 });
@@ -386,15 +616,16 @@ export const zPostAuthApiLinkSocialData = z.object({
 /**
  * Success
  */
-export const zPostAuthApiLinkSocialResponse = z.object({
-  url: z.string(),
+export const zPostAuthLinkSocialResponse = z.object({
+  url: z.string().optional(),
   redirect: z.boolean(),
+  status: z.boolean().optional(),
 });
 
 /**
  * Success
  */
-export const zGetAuthApiListAccountsResponse = z.array(
+export const zGetAuthListAccountsResponse = z.array(
   z.object({
     id: z.string().optional(),
     provider: z.string().optional(),
@@ -403,19 +634,19 @@ export const zGetAuthApiListAccountsResponse = z.array(
   }),
 );
 
-export const zGetAuthApiDeleteUserCallbackParameterToken = z.string();
+export const zGetAuthDeleteUserCallbackParameterToken = z.string();
 
-export const zGetAuthApiDeleteUserCallbackParameterCallbackUrl = z.string();
+export const zGetAuthDeleteUserCallbackParameterCallbackUrl = z.string();
 
 /**
  * User successfully deleted
  */
-export const zGetAuthApiDeleteUserCallbackResponse = z.object({
+export const zGetAuthDeleteUserCallbackResponse = z.object({
   success: z.boolean(),
   message: z.enum(["User deleted"]),
 });
 
-export const zPostAuthApiUnlinkAccountData = z.object({
+export const zPostAuthUnlinkAccountData = z.object({
   providerId: z.string(),
   accountId: z.string().optional(),
 });
@@ -423,11 +654,11 @@ export const zPostAuthApiUnlinkAccountData = z.object({
 /**
  * Success
  */
-export const zPostAuthApiUnlinkAccountResponse = z.object({
+export const zPostAuthUnlinkAccountResponse = z.object({
   status: z.boolean().optional(),
 });
 
-export const zPostAuthApiRefreshTokenData = z.object({
+export const zPostAuthRefreshTokenData = z.object({
   providerId: z.string(),
   accountId: z.string().optional(),
   userId: z.string().optional(),
@@ -436,7 +667,7 @@ export const zPostAuthApiRefreshTokenData = z.object({
 /**
  * Access token refreshed successfully
  */
-export const zPostAuthApiRefreshTokenResponse = z.object({
+export const zPostAuthRefreshTokenResponse = z.object({
   tokenType: z.string().optional(),
   idToken: z.string().optional(),
   accessToken: z.string().optional(),
@@ -445,7 +676,7 @@ export const zPostAuthApiRefreshTokenResponse = z.object({
   refreshTokenExpiresAt: z.string().datetime().optional(),
 });
 
-export const zPostAuthApiGetAccessTokenData = z.object({
+export const zPostAuthGetAccessTokenData = z.object({
   providerId: z.string(),
   accountId: z.string().optional(),
   userId: z.string().optional(),
@@ -454,7 +685,7 @@ export const zPostAuthApiGetAccessTokenData = z.object({
 /**
  * A Valid access token
  */
-export const zPostAuthApiGetAccessTokenResponse = z.object({
+export const zPostAuthGetAccessTokenResponse = z.object({
   tokenType: z.string().optional(),
   idToken: z.string().optional(),
   accessToken: z.string().optional(),
@@ -463,14 +694,14 @@ export const zPostAuthApiGetAccessTokenResponse = z.object({
   refreshTokenExpiresAt: z.string().datetime().optional(),
 });
 
-export const zPostAuthApiAccountInfoData = z.object({
+export const zPostAuthAccountInfoData = z.object({
   accountId: z.string(),
 });
 
 /**
  * Success
  */
-export const zPostAuthApiAccountInfoResponse = z.object({
+export const zPostAuthAccountInfoResponse = z.object({
   user: z.object({
     id: z.string(),
     name: z.string().optional(),
@@ -484,11 +715,11 @@ export const zPostAuthApiAccountInfoResponse = z.object({
 /**
  * API is working
  */
-export const zGetAuthApiOkResponse = z.object({
+export const zGetAuthOkResponse = z.object({
   ok: z.boolean(),
 });
 
 /**
  * The HTML content of the error page
  */
-export const zGetAuthApiErrorResponse = z.string();
+export const zGetAuthErrorResponse = z.string();

@@ -2,156 +2,179 @@
 
 import type { Options as ClientOptions, TDataShape, Client } from "./client";
 import type {
-  GetV1ClientData,
-  GetV1ClientResponses,
-  PostV1ClientData,
-  PostV1ClientResponses,
-  DeleteV1ClientByIdData,
-  DeleteV1ClientByIdResponses,
-  GetV1ClientByIdData,
-  GetV1ClientByIdResponses,
-  PatchV1ClientByIdData,
-  PatchV1ClientByIdResponses,
-  GetV1ProjectData,
-  GetV1ProjectResponses,
-  PostV1ProjectData,
-  PostV1ProjectResponses,
-  DeleteV1ProjectByIdData,
-  DeleteV1ProjectByIdResponses,
-  GetV1ProjectByIdData,
-  GetV1ProjectByIdResponses,
-  PatchV1ProjectByIdData,
-  PatchV1ProjectByIdResponses,
-  GetV1TimeEntryActiveData,
-  GetV1TimeEntryActiveResponses,
-  GetV1TimeEntryActiveErrors,
-  GetV1TimeEntryByIdData,
-  GetV1TimeEntryByIdResponses,
-  GetV1TimeEntryByIdErrors,
-  PatchV1TimeEntryByIdData,
-  PatchV1TimeEntryByIdResponses,
-  PatchV1TimeEntryByIdErrors,
-  PostV1TimeEntryData,
-  PostV1TimeEntryResponses,
-  PostV1TimeEntryErrors,
+  GetClientData,
+  GetClientResponses,
+  PostClientData,
+  PostClientResponses,
+  DeleteClientByIdData,
+  DeleteClientByIdResponses,
+  GetClientByIdData,
+  GetClientByIdResponses,
+  PatchClientByIdData,
+  PatchClientByIdResponses,
+  GetProjectData,
+  GetProjectResponses,
+  PostProjectData,
+  PostProjectResponses,
+  DeleteProjectByIdData,
+  DeleteProjectByIdResponses,
+  GetProjectByIdData,
+  GetProjectByIdResponses,
+  PatchProjectByIdData,
+  PatchProjectByIdResponses,
+  GetTimeEntryActiveData,
+  GetTimeEntryActiveResponses,
+  DeleteTimeEntryByIdData,
+  DeleteTimeEntryByIdResponses,
+  DeleteTimeEntryByIdErrors,
+  GetTimeEntryByIdData,
+  GetTimeEntryByIdResponses,
+  PatchTimeEntryByIdData,
+  PatchTimeEntryByIdResponses,
+  GetTimeEntryData,
+  GetTimeEntryResponses,
+  PostTimeEntryData,
+  PostTimeEntryResponses,
+  GetProjectTaskData,
+  GetProjectTaskResponses,
+  DeleteProjectTaskByIdData,
+  DeleteProjectTaskByIdResponses,
+  PatchProjectTaskByIdData,
+  PatchProjectTaskByIdResponses,
+  PostProjectTaskByIdData,
+  PostProjectTaskByIdResponses,
   GetStatusData,
   GetStatusResponses,
   SocialSignInData,
   SocialSignInResponses,
   SocialSignInErrors,
-  GetAuthApiGetSessionData,
-  GetAuthApiGetSessionResponses,
-  GetAuthApiGetSessionErrors,
-  PostAuthApiSignOutData,
-  PostAuthApiSignOutResponses,
-  PostAuthApiSignOutErrors,
-  PostAuthApiSignUpEmailData,
-  PostAuthApiSignUpEmailResponses,
-  PostAuthApiSignUpEmailErrors,
-  PostAuthApiSignInEmailData,
-  PostAuthApiSignInEmailResponses,
-  PostAuthApiSignInEmailErrors,
-  PostAuthApiForgetPasswordData,
-  PostAuthApiForgetPasswordResponses,
-  PostAuthApiForgetPasswordErrors,
-  PostAuthApiResetPasswordData,
-  PostAuthApiResetPasswordResponses,
-  PostAuthApiResetPasswordErrors,
-  GetAuthApiVerifyEmailData,
-  GetAuthApiVerifyEmailResponses,
-  GetAuthApiVerifyEmailErrors,
-  PostAuthApiSendVerificationEmailData,
-  PostAuthApiSendVerificationEmailResponses,
-  PostAuthApiSendVerificationEmailErrors,
-  PostAuthApiChangeEmailData,
-  PostAuthApiChangeEmailResponses,
-  PostAuthApiChangeEmailErrors,
-  PostAuthApiChangePasswordData,
-  PostAuthApiChangePasswordResponses,
-  PostAuthApiChangePasswordErrors,
-  PostAuthApiUpdateUserData,
-  PostAuthApiUpdateUserResponses,
-  PostAuthApiUpdateUserErrors,
-  PostAuthApiDeleteUserData,
-  PostAuthApiDeleteUserResponses,
-  PostAuthApiDeleteUserErrors,
-  GetAuthApiResetPasswordByTokenData,
-  GetAuthApiResetPasswordByTokenResponses,
-  GetAuthApiResetPasswordByTokenErrors,
-  PostAuthApiRequestPasswordResetData,
-  PostAuthApiRequestPasswordResetResponses,
-  PostAuthApiRequestPasswordResetErrors,
-  GetAuthApiListSessionsData,
-  GetAuthApiListSessionsResponses,
-  GetAuthApiListSessionsErrors,
-  PostAuthApiRevokeSessionData,
-  PostAuthApiRevokeSessionResponses,
-  PostAuthApiRevokeSessionErrors,
-  PostAuthApiRevokeSessionsData,
-  PostAuthApiRevokeSessionsResponses,
-  PostAuthApiRevokeSessionsErrors,
-  PostAuthApiRevokeOtherSessionsData,
-  PostAuthApiRevokeOtherSessionsResponses,
-  PostAuthApiRevokeOtherSessionsErrors,
-  PostAuthApiLinkSocialData,
-  PostAuthApiLinkSocialResponses,
-  PostAuthApiLinkSocialErrors,
-  GetAuthApiListAccountsData,
-  GetAuthApiListAccountsResponses,
-  GetAuthApiListAccountsErrors,
-  GetAuthApiDeleteUserCallbackData,
-  GetAuthApiDeleteUserCallbackResponses,
-  GetAuthApiDeleteUserCallbackErrors,
-  PostAuthApiUnlinkAccountData,
-  PostAuthApiUnlinkAccountResponses,
-  PostAuthApiUnlinkAccountErrors,
-  PostAuthApiRefreshTokenData,
-  PostAuthApiRefreshTokenResponses,
-  PostAuthApiRefreshTokenErrors,
-  PostAuthApiGetAccessTokenData,
-  PostAuthApiGetAccessTokenResponses,
-  PostAuthApiGetAccessTokenErrors,
-  PostAuthApiAccountInfoData,
-  PostAuthApiAccountInfoResponses,
-  PostAuthApiAccountInfoErrors,
-  GetAuthApiOkData,
-  GetAuthApiOkResponses,
-  GetAuthApiOkErrors,
-  GetAuthApiErrorData,
-  GetAuthApiErrorResponses,
-  GetAuthApiErrorErrors,
+  GetAuthGetSessionData,
+  GetAuthGetSessionResponses,
+  GetAuthGetSessionErrors,
+  PostAuthSignOutData,
+  PostAuthSignOutResponses,
+  PostAuthSignOutErrors,
+  PostAuthSignUpEmailData,
+  PostAuthSignUpEmailResponses,
+  PostAuthSignUpEmailErrors,
+  PostAuthSignInEmailData,
+  PostAuthSignInEmailResponses,
+  PostAuthSignInEmailErrors,
+  PostAuthForgetPasswordData,
+  PostAuthForgetPasswordResponses,
+  PostAuthForgetPasswordErrors,
+  PostAuthResetPasswordData,
+  PostAuthResetPasswordResponses,
+  PostAuthResetPasswordErrors,
+  GetAuthVerifyEmailData,
+  GetAuthVerifyEmailResponses,
+  GetAuthVerifyEmailErrors,
+  PostAuthSendVerificationEmailData,
+  PostAuthSendVerificationEmailResponses,
+  PostAuthSendVerificationEmailErrors,
+  PostAuthChangeEmailData,
+  PostAuthChangeEmailResponses,
+  PostAuthChangeEmailErrors,
+  PostAuthChangePasswordData,
+  PostAuthChangePasswordResponses,
+  PostAuthChangePasswordErrors,
+  PostAuthUpdateUserData,
+  PostAuthUpdateUserResponses,
+  PostAuthUpdateUserErrors,
+  PostAuthDeleteUserData,
+  PostAuthDeleteUserResponses,
+  PostAuthDeleteUserErrors,
+  GetAuthResetPasswordByTokenData,
+  GetAuthResetPasswordByTokenResponses,
+  GetAuthResetPasswordByTokenErrors,
+  PostAuthRequestPasswordResetData,
+  PostAuthRequestPasswordResetResponses,
+  PostAuthRequestPasswordResetErrors,
+  GetAuthListSessionsData,
+  GetAuthListSessionsResponses,
+  GetAuthListSessionsErrors,
+  PostAuthRevokeSessionData,
+  PostAuthRevokeSessionResponses,
+  PostAuthRevokeSessionErrors,
+  PostAuthRevokeSessionsData,
+  PostAuthRevokeSessionsResponses,
+  PostAuthRevokeSessionsErrors,
+  PostAuthRevokeOtherSessionsData,
+  PostAuthRevokeOtherSessionsResponses,
+  PostAuthRevokeOtherSessionsErrors,
+  PostAuthLinkSocialData,
+  PostAuthLinkSocialResponses,
+  PostAuthLinkSocialErrors,
+  GetAuthListAccountsData,
+  GetAuthListAccountsResponses,
+  GetAuthListAccountsErrors,
+  GetAuthDeleteUserCallbackData,
+  GetAuthDeleteUserCallbackResponses,
+  GetAuthDeleteUserCallbackErrors,
+  PostAuthUnlinkAccountData,
+  PostAuthUnlinkAccountResponses,
+  PostAuthUnlinkAccountErrors,
+  PostAuthRefreshTokenData,
+  PostAuthRefreshTokenResponses,
+  PostAuthRefreshTokenErrors,
+  PostAuthGetAccessTokenData,
+  PostAuthGetAccessTokenResponses,
+  PostAuthGetAccessTokenErrors,
+  PostAuthAccountInfoData,
+  PostAuthAccountInfoResponses,
+  PostAuthAccountInfoErrors,
+  GetAuthOkData,
+  GetAuthOkResponses,
+  GetAuthOkErrors,
+  GetAuthErrorData,
+  GetAuthErrorResponses,
+  GetAuthErrorErrors,
 } from "./types.gen";
-import { client as _heyApiClient } from "./client.gen";
 import {
+  zGetClientResponse,
+  zPostClientResponse,
+  zGetClientByIdResponse,
+  zPatchClientByIdResponse,
+  zGetProjectResponse,
+  zPostProjectResponse,
+  zGetProjectByIdResponse,
+  zGetTimeEntryActiveResponse,
+  zGetTimeEntryByIdResponse,
+  zPatchTimeEntryByIdResponse,
+  zGetTimeEntryResponse,
+  zPostTimeEntryResponse,
+  zGetProjectTaskResponse,
+  zPostProjectTaskByIdResponse,
   zSocialSignInResponse,
-  zGetAuthApiGetSessionResponse,
-  zPostAuthApiSignOutResponse,
-  zPostAuthApiSignUpEmailResponse,
-  zPostAuthApiSignInEmailResponse,
-  zPostAuthApiForgetPasswordResponse,
-  zPostAuthApiResetPasswordResponse,
-  zGetAuthApiVerifyEmailResponse,
-  zPostAuthApiSendVerificationEmailResponse,
-  zPostAuthApiChangeEmailResponse,
-  zPostAuthApiChangePasswordResponse,
-  zPostAuthApiUpdateUserResponse,
-  zPostAuthApiDeleteUserResponse,
-  zGetAuthApiResetPasswordByTokenResponse,
-  zPostAuthApiRequestPasswordResetResponse,
-  zGetAuthApiListSessionsResponse,
-  zPostAuthApiRevokeSessionResponse,
-  zPostAuthApiRevokeSessionsResponse,
-  zPostAuthApiRevokeOtherSessionsResponse,
-  zPostAuthApiLinkSocialResponse,
-  zGetAuthApiListAccountsResponse,
-  zGetAuthApiDeleteUserCallbackResponse,
-  zPostAuthApiUnlinkAccountResponse,
-  zPostAuthApiRefreshTokenResponse,
-  zPostAuthApiGetAccessTokenResponse,
-  zPostAuthApiAccountInfoResponse,
-  zGetAuthApiOkResponse,
-  zGetAuthApiErrorResponse,
+  zGetAuthGetSessionResponse,
+  zPostAuthSignOutResponse,
+  zPostAuthSignUpEmailResponse,
+  zPostAuthSignInEmailResponse,
+  zPostAuthForgetPasswordResponse,
+  zPostAuthResetPasswordResponse,
+  zGetAuthVerifyEmailResponse,
+  zPostAuthSendVerificationEmailResponse,
+  zPostAuthChangeEmailResponse,
+  zPostAuthChangePasswordResponse,
+  zPostAuthUpdateUserResponse,
+  zPostAuthDeleteUserResponse,
+  zGetAuthResetPasswordByTokenResponse,
+  zPostAuthRequestPasswordResetResponse,
+  zGetAuthListSessionsResponse,
+  zPostAuthRevokeSessionResponse,
+  zPostAuthRevokeSessionsResponse,
+  zPostAuthRevokeOtherSessionsResponse,
+  zPostAuthLinkSocialResponse,
+  zGetAuthListAccountsResponse,
+  zGetAuthDeleteUserCallbackResponse,
+  zPostAuthUnlinkAccountResponse,
+  zPostAuthRefreshTokenResponse,
+  zPostAuthGetAccessTokenResponse,
+  zPostAuthAccountInfoResponse,
+  zGetAuthOkResponse,
+  zGetAuthErrorResponse,
 } from "./zod.gen";
+import { client as _heyApiClient } from "./client.gen";
 
 export type Options<
   TData extends TDataShape = TDataShape,
@@ -173,15 +196,18 @@ export type Options<
 /**
  * Get all user-defined clients
  */
-export const getV1Client = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1ClientData, ThrowOnError>,
+export const getClient = <ThrowOnError extends boolean = false>(
+  options?: Options<GetClientData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetV1ClientResponses,
+    GetClientResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client",
+    responseValidator: async (data) => {
+      return await zGetClientResponse.parseAsync(data);
+    },
+    url: "/client",
     ...options,
   });
 };
@@ -189,15 +215,18 @@ export const getV1Client = <ThrowOnError extends boolean = false>(
 /**
  * Create new user-defined client
  */
-export const postV1Client = <ThrowOnError extends boolean = false>(
-  options: Options<PostV1ClientData, ThrowOnError>,
+export const postClient = <ThrowOnError extends boolean = false>(
+  options: Options<PostClientData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostV1ClientResponses,
+    PostClientResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client",
+    responseValidator: async (data) => {
+      return await zPostClientResponse.parseAsync(data);
+    },
+    url: "/client",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -209,15 +238,15 @@ export const postV1Client = <ThrowOnError extends boolean = false>(
 /**
  * Delete user-defined client, all projects containing this client will be unset
  */
-export const deleteV1ClientById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteV1ClientByIdData, ThrowOnError>,
+export const deleteClientById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteClientByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteV1ClientByIdResponses,
+    DeleteClientByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client/{id}",
+    url: "/client/{id}",
     ...options,
   });
 };
@@ -225,15 +254,18 @@ export const deleteV1ClientById = <ThrowOnError extends boolean = false>(
 /**
  * Get user-defined client by ID
  */
-export const getV1ClientById = <ThrowOnError extends boolean = false>(
-  options: Options<GetV1ClientByIdData, ThrowOnError>,
+export const getClientById = <ThrowOnError extends boolean = false>(
+  options: Options<GetClientByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetV1ClientByIdResponses,
+    GetClientByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client/{id}",
+    responseValidator: async (data) => {
+      return await zGetClientByIdResponse.parseAsync(data);
+    },
+    url: "/client/{id}",
     ...options,
   });
 };
@@ -241,15 +273,18 @@ export const getV1ClientById = <ThrowOnError extends boolean = false>(
 /**
  * Update user-defined client data
  */
-export const patchV1ClientById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchV1ClientByIdData, ThrowOnError>,
+export const patchClientById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchClientByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchV1ClientByIdResponses,
+    PatchClientByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/client/{id}",
+    responseValidator: async (data) => {
+      return await zPatchClientByIdResponse.parseAsync(data);
+    },
+    url: "/client/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -261,15 +296,18 @@ export const patchV1ClientById = <ThrowOnError extends boolean = false>(
 /**
  * Get all user projects
  */
-export const getV1Project = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1ProjectData, ThrowOnError>,
+export const getProject = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetV1ProjectResponses,
+    GetProjectResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project",
+    responseValidator: async (data) => {
+      return await zGetProjectResponse.parseAsync(data);
+    },
+    url: "/project",
     ...options,
   });
 };
@@ -277,15 +315,18 @@ export const getV1Project = <ThrowOnError extends boolean = false>(
 /**
  * Create new user project
  */
-export const postV1Project = <ThrowOnError extends boolean = false>(
-  options: Options<PostV1ProjectData, ThrowOnError>,
+export const postProject = <ThrowOnError extends boolean = false>(
+  options: Options<PostProjectData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostV1ProjectResponses,
+    PostProjectResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project",
+    responseValidator: async (data) => {
+      return await zPostProjectResponse.parseAsync(data);
+    },
+    url: "/project",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -297,15 +338,15 @@ export const postV1Project = <ThrowOnError extends boolean = false>(
 /**
  * Delete user project, all time entries will be removed
  */
-export const deleteV1ProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteV1ProjectByIdData, ThrowOnError>,
+export const deleteProjectById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteProjectByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteV1ProjectByIdResponses,
+    DeleteProjectByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project/{id}",
+    url: "/project/{id}",
     ...options,
   });
 };
@@ -313,15 +354,18 @@ export const deleteV1ProjectById = <ThrowOnError extends boolean = false>(
 /**
  * Get user project by ID
  */
-export const getV1ProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<GetV1ProjectByIdData, ThrowOnError>,
+export const getProjectById = <ThrowOnError extends boolean = false>(
+  options: Options<GetProjectByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetV1ProjectByIdResponses,
+    GetProjectByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project/{id}",
+    responseValidator: async (data) => {
+      return await zGetProjectByIdResponse.parseAsync(data);
+    },
+    url: "/project/{id}",
     ...options,
   });
 };
@@ -329,15 +373,15 @@ export const getV1ProjectById = <ThrowOnError extends boolean = false>(
 /**
  * Update user project data
  */
-export const patchV1ProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchV1ProjectByIdData, ThrowOnError>,
+export const patchProjectById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchProjectByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchV1ProjectByIdResponses,
+    PatchProjectByIdResponses,
     unknown,
     ThrowOnError
   >({
-    url: "/v1/project/{id}",
+    url: "/project/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -347,17 +391,36 @@ export const patchV1ProjectById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Test description
+ * Get active time entry
  */
-export const getV1TimeEntryActive = <ThrowOnError extends boolean = false>(
-  options?: Options<GetV1TimeEntryActiveData, ThrowOnError>,
+export const getTimeEntryActive = <ThrowOnError extends boolean = false>(
+  options?: Options<GetTimeEntryActiveData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetV1TimeEntryActiveResponses,
-    GetV1TimeEntryActiveErrors,
+    GetTimeEntryActiveResponses,
+    unknown,
     ThrowOnError
   >({
-    url: "/v1/time-entry/active",
+    responseValidator: async (data) => {
+      return await zGetTimeEntryActiveResponse.parseAsync(data);
+    },
+    url: "/time-entry/active",
+    ...options,
+  });
+};
+
+/**
+ * Delete time entry
+ */
+export const deleteTimeEntryById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteTimeEntryByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteTimeEntryByIdResponses,
+    DeleteTimeEntryByIdErrors,
+    ThrowOnError
+  >({
+    url: "/time-entry/{id}",
     ...options,
   });
 };
@@ -365,15 +428,18 @@ export const getV1TimeEntryActive = <ThrowOnError extends boolean = false>(
 /**
  * Return time entry by ID
  */
-export const getV1TimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<GetV1TimeEntryByIdData, ThrowOnError>,
+export const getTimeEntryById = <ThrowOnError extends boolean = false>(
+  options: Options<GetTimeEntryByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetV1TimeEntryByIdResponses,
-    GetV1TimeEntryByIdErrors,
+    GetTimeEntryByIdResponses,
+    unknown,
     ThrowOnError
   >({
-    url: "/v1/time-entry/{id}",
+    responseValidator: async (data) => {
+      return await zGetTimeEntryByIdResponse.parseAsync(data);
+    },
+    url: "/time-entry/{id}",
     ...options,
   });
 };
@@ -381,15 +447,106 @@ export const getV1TimeEntryById = <ThrowOnError extends boolean = false>(
 /**
  * Update existing time entry
  */
-export const patchV1TimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchV1TimeEntryByIdData, ThrowOnError>,
+export const patchTimeEntryById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchTimeEntryByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchV1TimeEntryByIdResponses,
-    PatchV1TimeEntryByIdErrors,
+    PatchTimeEntryByIdResponses,
+    unknown,
     ThrowOnError
   >({
-    url: "/v1/time-entry/{id}",
+    responseValidator: async (data) => {
+      return await zPatchTimeEntryByIdResponse.parseAsync(data);
+    },
+    url: "/time-entry/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const getTimeEntry = <ThrowOnError extends boolean = false>(
+  options?: Options<GetTimeEntryData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetTimeEntryResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseValidator: async (data) => {
+      return await zGetTimeEntryResponse.parseAsync(data);
+    },
+    url: "/time-entry",
+    ...options,
+  });
+};
+
+/**
+ * Create new time entry
+ */
+export const postTimeEntry = <ThrowOnError extends boolean = false>(
+  options: Options<PostTimeEntryData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostTimeEntryResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseValidator: async (data) => {
+      return await zPostTimeEntryResponse.parseAsync(data);
+    },
+    url: "/time-entry",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const getProjectTask = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectTaskData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectTaskResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseValidator: async (data) => {
+      return await zGetProjectTaskResponse.parseAsync(data);
+    },
+    url: "/project-task",
+    ...options,
+  });
+};
+
+/**
+ * Delete project task by ID
+ */
+export const deleteProjectTaskById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteProjectTaskByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteProjectTaskByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/project-task/{id}",
+    ...options,
+  });
+};
+
+export const patchProjectTaskById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchProjectTaskByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchProjectTaskByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/project-task/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -399,17 +556,20 @@ export const patchV1TimeEntryById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Create new time entry
+ * Create new project task
  */
-export const postV1TimeEntry = <ThrowOnError extends boolean = false>(
-  options: Options<PostV1TimeEntryData, ThrowOnError>,
+export const postProjectTaskById = <ThrowOnError extends boolean = false>(
+  options: Options<PostProjectTaskByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostV1TimeEntryResponses,
-    PostV1TimeEntryErrors,
+    PostProjectTaskByIdResponses,
+    unknown,
     ThrowOnError
   >({
-    url: "/v1/time-entry",
+    responseValidator: async (data) => {
+      return await zPostProjectTaskByIdResponse.parseAsync(data);
+    },
+    url: "/project-task/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -451,7 +611,7 @@ export const socialSignIn = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zSocialSignInResponse.parseAsync(data);
     },
-    url: "/auth/api/sign-in/social",
+    url: "/auth/sign-in/social",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -463,12 +623,12 @@ export const socialSignIn = <ThrowOnError extends boolean = false>(
 /**
  * Get the current session
  */
-export const getAuthApiGetSession = <ThrowOnError extends boolean = false>(
-  options?: Options<GetAuthApiGetSessionData, ThrowOnError>,
+export const getAuthGetSession = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAuthGetSessionData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiGetSessionResponses,
-    GetAuthApiGetSessionErrors,
+    GetAuthGetSessionResponses,
+    GetAuthGetSessionErrors,
     ThrowOnError
   >({
     security: [
@@ -478,9 +638,9 @@ export const getAuthApiGetSession = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiGetSessionResponse.parseAsync(data);
+      return await zGetAuthGetSessionResponse.parseAsync(data);
     },
-    url: "/auth/api/get-session",
+    url: "/auth/get-session",
     ...options,
   });
 };
@@ -488,12 +648,12 @@ export const getAuthApiGetSession = <ThrowOnError extends boolean = false>(
 /**
  * Sign out the current user
  */
-export const postAuthApiSignOut = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthApiSignOutData, ThrowOnError>,
+export const postAuthSignOut = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthSignOutData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiSignOutResponses,
-    PostAuthApiSignOutErrors,
+    PostAuthSignOutResponses,
+    PostAuthSignOutErrors,
     ThrowOnError
   >({
     security: [
@@ -503,9 +663,9 @@ export const postAuthApiSignOut = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiSignOutResponse.parseAsync(data);
+      return await zPostAuthSignOutResponse.parseAsync(data);
     },
-    url: "/auth/api/sign-out",
+    url: "/auth/sign-out",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -517,12 +677,12 @@ export const postAuthApiSignOut = <ThrowOnError extends boolean = false>(
 /**
  * Sign up a user using email and password
  */
-export const postAuthApiSignUpEmail = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthApiSignUpEmailData, ThrowOnError>,
+export const postAuthSignUpEmail = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthSignUpEmailData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiSignUpEmailResponses,
-    PostAuthApiSignUpEmailErrors,
+    PostAuthSignUpEmailResponses,
+    PostAuthSignUpEmailErrors,
     ThrowOnError
   >({
     security: [
@@ -532,9 +692,9 @@ export const postAuthApiSignUpEmail = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiSignUpEmailResponse.parseAsync(data);
+      return await zPostAuthSignUpEmailResponse.parseAsync(data);
     },
-    url: "/auth/api/sign-up/email",
+    url: "/auth/sign-up/email",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -546,12 +706,12 @@ export const postAuthApiSignUpEmail = <ThrowOnError extends boolean = false>(
 /**
  * Sign in with email and password
  */
-export const postAuthApiSignInEmail = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiSignInEmailData, ThrowOnError>,
+export const postAuthSignInEmail = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthSignInEmailData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiSignInEmailResponses,
-    PostAuthApiSignInEmailErrors,
+    PostAuthSignInEmailResponses,
+    PostAuthSignInEmailErrors,
     ThrowOnError
   >({
     security: [
@@ -561,9 +721,9 @@ export const postAuthApiSignInEmail = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiSignInEmailResponse.parseAsync(data);
+      return await zPostAuthSignInEmailResponse.parseAsync(data);
     },
-    url: "/auth/api/sign-in/email",
+    url: "/auth/sign-in/email",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -575,12 +735,12 @@ export const postAuthApiSignInEmail = <ThrowOnError extends boolean = false>(
 /**
  * Send a password reset email to the user
  */
-export const postAuthApiForgetPassword = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiForgetPasswordData, ThrowOnError>,
+export const postAuthForgetPassword = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthForgetPasswordData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiForgetPasswordResponses,
-    PostAuthApiForgetPasswordErrors,
+    PostAuthForgetPasswordResponses,
+    PostAuthForgetPasswordErrors,
     ThrowOnError
   >({
     security: [
@@ -590,9 +750,9 @@ export const postAuthApiForgetPassword = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiForgetPasswordResponse.parseAsync(data);
+      return await zPostAuthForgetPasswordResponse.parseAsync(data);
     },
-    url: "/auth/api/forget-password",
+    url: "/auth/forget-password",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -604,12 +764,12 @@ export const postAuthApiForgetPassword = <ThrowOnError extends boolean = false>(
 /**
  * Reset the password for a user
  */
-export const postAuthApiResetPassword = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiResetPasswordData, ThrowOnError>,
+export const postAuthResetPassword = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthResetPasswordData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiResetPasswordResponses,
-    PostAuthApiResetPasswordErrors,
+    PostAuthResetPasswordResponses,
+    PostAuthResetPasswordErrors,
     ThrowOnError
   >({
     security: [
@@ -619,9 +779,9 @@ export const postAuthApiResetPassword = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiResetPasswordResponse.parseAsync(data);
+      return await zPostAuthResetPasswordResponse.parseAsync(data);
     },
-    url: "/auth/api/reset-password",
+    url: "/auth/reset-password",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -633,12 +793,12 @@ export const postAuthApiResetPassword = <ThrowOnError extends boolean = false>(
 /**
  * Verify the email of the user
  */
-export const getAuthApiVerifyEmail = <ThrowOnError extends boolean = false>(
-  options: Options<GetAuthApiVerifyEmailData, ThrowOnError>,
+export const getAuthVerifyEmail = <ThrowOnError extends boolean = false>(
+  options: Options<GetAuthVerifyEmailData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetAuthApiVerifyEmailResponses,
-    GetAuthApiVerifyEmailErrors,
+    GetAuthVerifyEmailResponses,
+    GetAuthVerifyEmailErrors,
     ThrowOnError
   >({
     security: [
@@ -648,9 +808,9 @@ export const getAuthApiVerifyEmail = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiVerifyEmailResponse.parseAsync(data);
+      return await zGetAuthVerifyEmailResponse.parseAsync(data);
     },
-    url: "/auth/api/verify-email",
+    url: "/auth/verify-email",
     ...options,
   });
 };
@@ -658,14 +818,14 @@ export const getAuthApiVerifyEmail = <ThrowOnError extends boolean = false>(
 /**
  * Send a verification email to the user
  */
-export const postAuthApiSendVerificationEmail = <
+export const postAuthSendVerificationEmail = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<PostAuthApiSendVerificationEmailData, ThrowOnError>,
+  options?: Options<PostAuthSendVerificationEmailData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiSendVerificationEmailResponses,
-    PostAuthApiSendVerificationEmailErrors,
+    PostAuthSendVerificationEmailResponses,
+    PostAuthSendVerificationEmailErrors,
     ThrowOnError
   >({
     security: [
@@ -675,9 +835,9 @@ export const postAuthApiSendVerificationEmail = <
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiSendVerificationEmailResponse.parseAsync(data);
+      return await zPostAuthSendVerificationEmailResponse.parseAsync(data);
     },
-    url: "/auth/api/send-verification-email",
+    url: "/auth/send-verification-email",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -686,12 +846,12 @@ export const postAuthApiSendVerificationEmail = <
   });
 };
 
-export const postAuthApiChangeEmail = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiChangeEmailData, ThrowOnError>,
+export const postAuthChangeEmail = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthChangeEmailData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiChangeEmailResponses,
-    PostAuthApiChangeEmailErrors,
+    PostAuthChangeEmailResponses,
+    PostAuthChangeEmailErrors,
     ThrowOnError
   >({
     security: [
@@ -701,9 +861,9 @@ export const postAuthApiChangeEmail = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiChangeEmailResponse.parseAsync(data);
+      return await zPostAuthChangeEmailResponse.parseAsync(data);
     },
-    url: "/auth/api/change-email",
+    url: "/auth/change-email",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -715,12 +875,12 @@ export const postAuthApiChangeEmail = <ThrowOnError extends boolean = false>(
 /**
  * Change the password of the user
  */
-export const postAuthApiChangePassword = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiChangePasswordData, ThrowOnError>,
+export const postAuthChangePassword = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthChangePasswordData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiChangePasswordResponses,
-    PostAuthApiChangePasswordErrors,
+    PostAuthChangePasswordResponses,
+    PostAuthChangePasswordErrors,
     ThrowOnError
   >({
     security: [
@@ -730,9 +890,9 @@ export const postAuthApiChangePassword = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiChangePasswordResponse.parseAsync(data);
+      return await zPostAuthChangePasswordResponse.parseAsync(data);
     },
-    url: "/auth/api/change-password",
+    url: "/auth/change-password",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -744,12 +904,12 @@ export const postAuthApiChangePassword = <ThrowOnError extends boolean = false>(
 /**
  * Update the current user
  */
-export const postAuthApiUpdateUser = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthApiUpdateUserData, ThrowOnError>,
+export const postAuthUpdateUser = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthUpdateUserData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiUpdateUserResponses,
-    PostAuthApiUpdateUserErrors,
+    PostAuthUpdateUserResponses,
+    PostAuthUpdateUserErrors,
     ThrowOnError
   >({
     security: [
@@ -759,9 +919,9 @@ export const postAuthApiUpdateUser = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiUpdateUserResponse.parseAsync(data);
+      return await zPostAuthUpdateUserResponse.parseAsync(data);
     },
-    url: "/auth/api/update-user",
+    url: "/auth/update-user",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -773,12 +933,12 @@ export const postAuthApiUpdateUser = <ThrowOnError extends boolean = false>(
 /**
  * Delete the user
  */
-export const postAuthApiDeleteUser = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiDeleteUserData, ThrowOnError>,
+export const postAuthDeleteUser = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthDeleteUserData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiDeleteUserResponses,
-    PostAuthApiDeleteUserErrors,
+    PostAuthDeleteUserResponses,
+    PostAuthDeleteUserErrors,
     ThrowOnError
   >({
     security: [
@@ -788,9 +948,9 @@ export const postAuthApiDeleteUser = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiDeleteUserResponse.parseAsync(data);
+      return await zPostAuthDeleteUserResponse.parseAsync(data);
     },
-    url: "/auth/api/delete-user",
+    url: "/auth/delete-user",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -802,14 +962,14 @@ export const postAuthApiDeleteUser = <ThrowOnError extends boolean = false>(
 /**
  * Redirects the user to the callback URL with the token
  */
-export const getAuthApiResetPasswordByToken = <
+export const getAuthResetPasswordByToken = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<GetAuthApiResetPasswordByTokenData, ThrowOnError>,
+  options?: Options<GetAuthResetPasswordByTokenData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiResetPasswordByTokenResponses,
-    GetAuthApiResetPasswordByTokenErrors,
+    GetAuthResetPasswordByTokenResponses,
+    GetAuthResetPasswordByTokenErrors,
     ThrowOnError
   >({
     security: [
@@ -819,9 +979,9 @@ export const getAuthApiResetPasswordByToken = <
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiResetPasswordByTokenResponse.parseAsync(data);
+      return await zGetAuthResetPasswordByTokenResponse.parseAsync(data);
     },
-    url: "/auth/api/reset-password/{token}",
+    url: "/auth/reset-password/{token}",
     ...options,
   });
 };
@@ -829,14 +989,14 @@ export const getAuthApiResetPasswordByToken = <
 /**
  * Send a password reset email to the user
  */
-export const postAuthApiRequestPasswordReset = <
+export const postAuthRequestPasswordReset = <
   ThrowOnError extends boolean = false,
 >(
-  options: Options<PostAuthApiRequestPasswordResetData, ThrowOnError>,
+  options: Options<PostAuthRequestPasswordResetData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiRequestPasswordResetResponses,
-    PostAuthApiRequestPasswordResetErrors,
+    PostAuthRequestPasswordResetResponses,
+    PostAuthRequestPasswordResetErrors,
     ThrowOnError
   >({
     security: [
@@ -846,9 +1006,9 @@ export const postAuthApiRequestPasswordReset = <
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiRequestPasswordResetResponse.parseAsync(data);
+      return await zPostAuthRequestPasswordResetResponse.parseAsync(data);
     },
-    url: "/auth/api/request-password-reset",
+    url: "/auth/request-password-reset",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -860,12 +1020,12 @@ export const postAuthApiRequestPasswordReset = <
 /**
  * List all active sessions for the user
  */
-export const getAuthApiListSessions = <ThrowOnError extends boolean = false>(
-  options?: Options<GetAuthApiListSessionsData, ThrowOnError>,
+export const getAuthListSessions = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAuthListSessionsData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiListSessionsResponses,
-    GetAuthApiListSessionsErrors,
+    GetAuthListSessionsResponses,
+    GetAuthListSessionsErrors,
     ThrowOnError
   >({
     security: [
@@ -875,9 +1035,9 @@ export const getAuthApiListSessions = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiListSessionsResponse.parseAsync(data);
+      return await zGetAuthListSessionsResponse.parseAsync(data);
     },
-    url: "/auth/api/list-sessions",
+    url: "/auth/list-sessions",
     ...options,
   });
 };
@@ -885,12 +1045,12 @@ export const getAuthApiListSessions = <ThrowOnError extends boolean = false>(
 /**
  * Revoke a single session
  */
-export const postAuthApiRevokeSession = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthApiRevokeSessionData, ThrowOnError>,
+export const postAuthRevokeSession = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthRevokeSessionData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiRevokeSessionResponses,
-    PostAuthApiRevokeSessionErrors,
+    PostAuthRevokeSessionResponses,
+    PostAuthRevokeSessionErrors,
     ThrowOnError
   >({
     security: [
@@ -900,9 +1060,9 @@ export const postAuthApiRevokeSession = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiRevokeSessionResponse.parseAsync(data);
+      return await zPostAuthRevokeSessionResponse.parseAsync(data);
     },
-    url: "/auth/api/revoke-session",
+    url: "/auth/revoke-session",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -914,12 +1074,12 @@ export const postAuthApiRevokeSession = <ThrowOnError extends boolean = false>(
 /**
  * Revoke all sessions for the user
  */
-export const postAuthApiRevokeSessions = <ThrowOnError extends boolean = false>(
-  options?: Options<PostAuthApiRevokeSessionsData, ThrowOnError>,
+export const postAuthRevokeSessions = <ThrowOnError extends boolean = false>(
+  options?: Options<PostAuthRevokeSessionsData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiRevokeSessionsResponses,
-    PostAuthApiRevokeSessionsErrors,
+    PostAuthRevokeSessionsResponses,
+    PostAuthRevokeSessionsErrors,
     ThrowOnError
   >({
     security: [
@@ -929,9 +1089,9 @@ export const postAuthApiRevokeSessions = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiRevokeSessionsResponse.parseAsync(data);
+      return await zPostAuthRevokeSessionsResponse.parseAsync(data);
     },
-    url: "/auth/api/revoke-sessions",
+    url: "/auth/revoke-sessions",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -943,14 +1103,14 @@ export const postAuthApiRevokeSessions = <ThrowOnError extends boolean = false>(
 /**
  * Revoke all other sessions for the user except the current one
  */
-export const postAuthApiRevokeOtherSessions = <
+export const postAuthRevokeOtherSessions = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<PostAuthApiRevokeOtherSessionsData, ThrowOnError>,
+  options?: Options<PostAuthRevokeOtherSessionsData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).post<
-    PostAuthApiRevokeOtherSessionsResponses,
-    PostAuthApiRevokeOtherSessionsErrors,
+    PostAuthRevokeOtherSessionsResponses,
+    PostAuthRevokeOtherSessionsErrors,
     ThrowOnError
   >({
     security: [
@@ -960,9 +1120,9 @@ export const postAuthApiRevokeOtherSessions = <
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiRevokeOtherSessionsResponse.parseAsync(data);
+      return await zPostAuthRevokeOtherSessionsResponse.parseAsync(data);
     },
-    url: "/auth/api/revoke-other-sessions",
+    url: "/auth/revoke-other-sessions",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -974,12 +1134,12 @@ export const postAuthApiRevokeOtherSessions = <
 /**
  * Link a social account to the user
  */
-export const postAuthApiLinkSocial = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiLinkSocialData, ThrowOnError>,
+export const postAuthLinkSocial = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthLinkSocialData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiLinkSocialResponses,
-    PostAuthApiLinkSocialErrors,
+    PostAuthLinkSocialResponses,
+    PostAuthLinkSocialErrors,
     ThrowOnError
   >({
     security: [
@@ -989,9 +1149,9 @@ export const postAuthApiLinkSocial = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiLinkSocialResponse.parseAsync(data);
+      return await zPostAuthLinkSocialResponse.parseAsync(data);
     },
-    url: "/auth/api/link-social",
+    url: "/auth/link-social",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1003,12 +1163,12 @@ export const postAuthApiLinkSocial = <ThrowOnError extends boolean = false>(
 /**
  * List all accounts linked to the user
  */
-export const getAuthApiListAccounts = <ThrowOnError extends boolean = false>(
-  options?: Options<GetAuthApiListAccountsData, ThrowOnError>,
+export const getAuthListAccounts = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAuthListAccountsData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiListAccountsResponses,
-    GetAuthApiListAccountsErrors,
+    GetAuthListAccountsResponses,
+    GetAuthListAccountsErrors,
     ThrowOnError
   >({
     security: [
@@ -1018,9 +1178,9 @@ export const getAuthApiListAccounts = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiListAccountsResponse.parseAsync(data);
+      return await zGetAuthListAccountsResponse.parseAsync(data);
     },
-    url: "/auth/api/list-accounts",
+    url: "/auth/list-accounts",
     ...options,
   });
 };
@@ -1028,14 +1188,12 @@ export const getAuthApiListAccounts = <ThrowOnError extends boolean = false>(
 /**
  * Callback to complete user deletion with verification token
  */
-export const getAuthApiDeleteUserCallback = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<GetAuthApiDeleteUserCallbackData, ThrowOnError>,
+export const getAuthDeleteUserCallback = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAuthDeleteUserCallbackData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiDeleteUserCallbackResponses,
-    GetAuthApiDeleteUserCallbackErrors,
+    GetAuthDeleteUserCallbackResponses,
+    GetAuthDeleteUserCallbackErrors,
     ThrowOnError
   >({
     security: [
@@ -1045,9 +1203,9 @@ export const getAuthApiDeleteUserCallback = <
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiDeleteUserCallbackResponse.parseAsync(data);
+      return await zGetAuthDeleteUserCallbackResponse.parseAsync(data);
     },
-    url: "/auth/api/delete-user/callback",
+    url: "/auth/delete-user/callback",
     ...options,
   });
 };
@@ -1055,12 +1213,12 @@ export const getAuthApiDeleteUserCallback = <
 /**
  * Unlink an account
  */
-export const postAuthApiUnlinkAccount = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiUnlinkAccountData, ThrowOnError>,
+export const postAuthUnlinkAccount = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthUnlinkAccountData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiUnlinkAccountResponses,
-    PostAuthApiUnlinkAccountErrors,
+    PostAuthUnlinkAccountResponses,
+    PostAuthUnlinkAccountErrors,
     ThrowOnError
   >({
     security: [
@@ -1070,9 +1228,9 @@ export const postAuthApiUnlinkAccount = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiUnlinkAccountResponse.parseAsync(data);
+      return await zPostAuthUnlinkAccountResponse.parseAsync(data);
     },
-    url: "/auth/api/unlink-account",
+    url: "/auth/unlink-account",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1084,12 +1242,12 @@ export const postAuthApiUnlinkAccount = <ThrowOnError extends boolean = false>(
 /**
  * Refresh the access token using a refresh token
  */
-export const postAuthApiRefreshToken = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiRefreshTokenData, ThrowOnError>,
+export const postAuthRefreshToken = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthRefreshTokenData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiRefreshTokenResponses,
-    PostAuthApiRefreshTokenErrors,
+    PostAuthRefreshTokenResponses,
+    PostAuthRefreshTokenErrors,
     ThrowOnError
   >({
     security: [
@@ -1099,9 +1257,9 @@ export const postAuthApiRefreshToken = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiRefreshTokenResponse.parseAsync(data);
+      return await zPostAuthRefreshTokenResponse.parseAsync(data);
     },
-    url: "/auth/api/refresh-token",
+    url: "/auth/refresh-token",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1113,12 +1271,12 @@ export const postAuthApiRefreshToken = <ThrowOnError extends boolean = false>(
 /**
  * Get a valid access token, doing a refresh if needed
  */
-export const postAuthApiGetAccessToken = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiGetAccessTokenData, ThrowOnError>,
+export const postAuthGetAccessToken = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthGetAccessTokenData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiGetAccessTokenResponses,
-    PostAuthApiGetAccessTokenErrors,
+    PostAuthGetAccessTokenResponses,
+    PostAuthGetAccessTokenErrors,
     ThrowOnError
   >({
     security: [
@@ -1128,9 +1286,9 @@ export const postAuthApiGetAccessToken = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiGetAccessTokenResponse.parseAsync(data);
+      return await zPostAuthGetAccessTokenResponse.parseAsync(data);
     },
-    url: "/auth/api/get-access-token",
+    url: "/auth/get-access-token",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1142,12 +1300,12 @@ export const postAuthApiGetAccessToken = <ThrowOnError extends boolean = false>(
 /**
  * Get the account info provided by the provider
  */
-export const postAuthApiAccountInfo = <ThrowOnError extends boolean = false>(
-  options: Options<PostAuthApiAccountInfoData, ThrowOnError>,
+export const postAuthAccountInfo = <ThrowOnError extends boolean = false>(
+  options: Options<PostAuthAccountInfoData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostAuthApiAccountInfoResponses,
-    PostAuthApiAccountInfoErrors,
+    PostAuthAccountInfoResponses,
+    PostAuthAccountInfoErrors,
     ThrowOnError
   >({
     security: [
@@ -1157,9 +1315,9 @@ export const postAuthApiAccountInfo = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zPostAuthApiAccountInfoResponse.parseAsync(data);
+      return await zPostAuthAccountInfoResponse.parseAsync(data);
     },
-    url: "/auth/api/account-info",
+    url: "/auth/account-info",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -1171,12 +1329,12 @@ export const postAuthApiAccountInfo = <ThrowOnError extends boolean = false>(
 /**
  * Check if the API is working
  */
-export const getAuthApiOk = <ThrowOnError extends boolean = false>(
-  options?: Options<GetAuthApiOkData, ThrowOnError>,
+export const getAuthOk = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAuthOkData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiOkResponses,
-    GetAuthApiOkErrors,
+    GetAuthOkResponses,
+    GetAuthOkErrors,
     ThrowOnError
   >({
     security: [
@@ -1186,9 +1344,9 @@ export const getAuthApiOk = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiOkResponse.parseAsync(data);
+      return await zGetAuthOkResponse.parseAsync(data);
     },
-    url: "/auth/api/ok",
+    url: "/auth/ok",
     ...options,
   });
 };
@@ -1196,12 +1354,12 @@ export const getAuthApiOk = <ThrowOnError extends boolean = false>(
 /**
  * Displays an error page
  */
-export const getAuthApiError = <ThrowOnError extends boolean = false>(
-  options?: Options<GetAuthApiErrorData, ThrowOnError>,
+export const getAuthError = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAuthErrorData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetAuthApiErrorResponses,
-    GetAuthApiErrorErrors,
+    GetAuthErrorResponses,
+    GetAuthErrorErrors,
     ThrowOnError
   >({
     security: [
@@ -1211,9 +1369,9 @@ export const getAuthApiError = <ThrowOnError extends boolean = false>(
       },
     ],
     responseValidator: async (data) => {
-      return await zGetAuthApiErrorResponse.parseAsync(data);
+      return await zGetAuthErrorResponse.parseAsync(data);
     },
-    url: "/auth/api/error",
+    url: "/auth/error",
     ...options,
   });
 };

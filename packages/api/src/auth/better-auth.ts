@@ -9,7 +9,7 @@ import * as authSchema from "../db/auth.schema";
 import env from "../env";
 
 export const auth = betterAuth({
-  basePath: "/api/auth",
+  basePath: "/auth",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: authSchema,

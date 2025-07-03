@@ -8,12 +8,18 @@ export const ProjectsService = {
   findManyByUserId(userId: string) {
     return db.query.project.findMany({
       where: eq(project.ownerId, userId),
+      with: {
+        client: true,
+      },
     });
   },
 
   findById(userId: string, id: number) {
     return db.query.project.findFirst({
       where: and(eq(project.ownerId, userId), eq(project.id, id)),
+      with: {
+        client: true,
+      },
     });
   },
 

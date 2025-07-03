@@ -1,86 +1,167 @@
 "use client";
 
-import { formatTime } from "@/lib/format-time";
-import { Pause, Play, StopCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Play, StopCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 
-import { Project } from "@/schemas/project.schema";
-import { Task } from "@/schemas/task.schema";
+import useActiveTimeEntry from "@/hooks/use-active-time-entry";
+import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
+import {
+	patchTimeEntryByIdMutation,
+	postTimeEntryMutation,
+} from "@/lib/api/@tanstack/react-query.gen";
+import { formatTime } from "@/lib/format-time";
+
 import ProjectTaskSelect from "./project-task-select";
 
 interface StopwatchProps {
-  loadProjects: () => Promise<Project[]>;
-  loadTasks: (project: Project) => Promise<Task[]>;
+	onStop?: (timeEntry: TimeEntry) => void;
 }
 
-export default function Stopwatch(props: StopwatchProps) {
-  const [isRunning] = useState(false);
-  const [isPaused] = useState(false);
+export default function Stopwatch({ onStop }: StopwatchProps) {
+	const { active: activeTimeEntry, setActive: setActiveTimeEntry } =
+		useActiveTimeEntry();
 
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
-  const [selectedTask, setSelectedTask] = useState<Task | undefined>();
+	const [timeMs, setTimeMs] = useState(0);
+	const [title, setTitle] = useState<string>("");
+	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
+	const [selectedTask, setSelectedTask] = useState<ProjectTask | undefined>();
 
-  const canStartTimer = useMemo(
-    () => selectedProject && selectedTask,
-    [selectedProject, selectedTask]
-  );
+	const canStartTimer = useMemo(
+		() => selectedProject && selectedTask,
+		[selectedProject, selectedTask],
+	);
 
-  const onProjectTaskSelect = (project: Project, task: Task) => {
-    setSelectedProject(project);
-    setSelectedTask(task);
-  };
+	const createTimeEntry = useMutation({
+		...postTimeEntryMutation(),
+		onSuccess: (data) => {
+			setActiveTimeEntry(data);
+		},
+	});
 
-  return (
-    <div className="space-y-4">
-      <ProjectTaskSelect
-        disabled={isRunning || isPaused}
-        loadProjects={props.loadProjects}
-        loadTasks={props.loadTasks}
-        onSelect={onProjectTaskSelect}
-      />
+	const updateTimeEntry = useMutation({
+		...patchTimeEntryByIdMutation(),
+	});
 
-      <div className="space-y-2">
-        <Label htmlFor="notes">Notes</Label>
-        <Textarea id="notes" placeholder="What are you working on?" />
-      </div>
+	useEffect(() => {
+		if (!activeTimeEntry) return;
 
-      <Card className="bg-muted/50 border-0">
-        <CardContent className="p-6 flex flex-col items-center justify-center">
-          <div className="text-4xl font-mono font-bold mb-4">
-            {formatTime(0)}
-          </div>
-          <div className="flex gap-2">
-            {!isRunning && !isPaused && (
-              <Button disabled={!canStartTimer} className="w-full">
-                <Play className="h-4 w-4 mr-2" />
-                Start Work
-              </Button>
-            )}
-            {isRunning && (
-              <Button variant="outline">
-                <Pause className="h-4 w-4 mr-2" />
-                Pause
-              </Button>
-            )}
-            {isPaused && (
-              <Button>
-                <Play className="h-4 w-4 mr-2" />
-                Resume
-              </Button>
-            )}
-            {(isRunning || isPaused) && (
-              <Button variant="destructive">
-                <StopCircle className="h-4 w-4 mr-2" />
-                End Work
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+		setTitle(activeTimeEntry.title ?? "");
+		setSelectedProject(activeTimeEntry.project ?? undefined);
+
+		// TODO: Proper types
+		setSelectedTask({
+			...activeTimeEntry.projectTask,
+			project: activeTimeEntry.project,
+		} as never);
+	}, [activeTimeEntry]);
+
+	useEffect(() => {
+		if (!activeTimeEntry) return;
+
+		const getTimeEntryTime = () => {
+			if (!activeTimeEntry) return 0;
+
+			const now = Date.now();
+			const startedAt = new Date(activeTimeEntry.startAt as string);
+			return now - startedAt.getTime();
+		};
+
+		setTimeMs(getTimeEntryTime());
+
+		const ref = setInterval(() => {
+			setTimeMs(getTimeEntryTime());
+		}, 1000);
+
+		return () => clearInterval(ref);
+	}, [activeTimeEntry]);
+
+	const handleStart = () => {
+		createTimeEntry.mutateAsync({
+			body: {
+				title: title,
+				projectId: selectedProject?.id ?? null,
+				startAt: new Date(),
+				projectTaskId: selectedTask?.id,
+				endAt: null,
+			},
+		});
+	};
+
+	const handleStop = () => {
+		if (!activeTimeEntry) return;
+
+		updateTimeEntry
+			.mutateAsync({
+				body: {
+					endAt: new Date(),
+				},
+				path: {
+					id: activeTimeEntry.id,
+				},
+			})
+			.then((e) => {
+				setTitle("");
+				setSelectedProject(undefined);
+				setSelectedTask(undefined);
+				setTimeMs(0);
+
+				setActiveTimeEntry(null);
+				onStop?.(e);
+			});
+	};
+
+	return (
+		<div className="space-y-4">
+			<ProjectTaskSelect
+				disabled={!!activeTimeEntry}
+				onProjectSelect={setSelectedProject}
+				onTaskSelect={setSelectedTask}
+				projectId={selectedProject?.id}
+				taskId={selectedTask?.id}
+			/>
+
+			<div className="space-y-2">
+				<Label htmlFor="title">Title</Label>
+				<Textarea
+					value={title}
+					onChange={(e) => setTitle(e.target.value)}
+					id="title"
+					autoComplete="off"
+					placeholder="What are you working on?"
+				/>
+			</div>
+
+			<Card className="bg-muted/50 border-0">
+				<CardContent className="p-6 flex flex-col items-center justify-center">
+					<div className="text-4xl font-mono font-bold mb-4">
+						{formatTime(timeMs)}
+					</div>
+					<div className="flex gap-2">
+						{!activeTimeEntry && (
+							<Button
+								onClick={handleStart}
+								disabled={!canStartTimer}
+								className="w-full"
+							>
+								<Play className="h-4 w-4 mr-2" />
+								Start Work
+							</Button>
+						)}
+						{!!activeTimeEntry && (
+							<Button onClick={handleStop} variant="destructive">
+								<StopCircle className="h-4 w-4 mr-2" />
+								End Work
+							</Button>
+						)}
+					</div>
+				</CardContent>
+			</Card>
+		</div>
+	);
 }

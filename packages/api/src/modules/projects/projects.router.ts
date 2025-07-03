@@ -1,15 +1,23 @@
 import Elysia, { status } from "elysia";
 import { betterAuth } from "../../auth/index";
-import { CreateProject, ProjectIdParam, UpdateProject } from "./projects.dto";
+import {
+  CreateProject,
+  ProjectIdParam,
+  ProjectResponse,
+  ProjectsResponse,
+  UpdateProject,
+} from "./projects.dto";
 
 import { ClientsService } from "../clients/clients.service";
 import { ProjectsService } from "./projects.service";
 
 export const router = new Elysia({
-  prefix: "/v1/project",
+  prefix: "/project",
   detail: { tags: ["Project"] },
 })
   .use(betterAuth)
+  .model("Project", ProjectResponse)
+  .model("Project[]", ProjectsResponse)
   .get(
     "",
     async ({ user }) => {
@@ -20,6 +28,7 @@ export const router = new Elysia({
       detail: {
         description: "Get all user projects",
       },
+      response: "Project[]",
     }
   )
   .post(
@@ -29,10 +38,21 @@ export const router = new Elysia({
       const { user } = c;
 
       // Check if client is user-defined client
-      const client = await ClientsService.findById(user.id, clientId);
-      if (!client) return status(400, "Client not found");
+      if (clientId) {
+        const client = await ClientsService.findById(user.id, clientId);
+        if (!client) throw status(400, "Client not found");
+      }
 
-      return ProjectsService.create(user.id, { title, clientId });
+      const { id } = await ProjectsService.create(user.id, {
+        title,
+        clientId,
+      });
+
+      const project = await ProjectsService.findById(user.id, id);
+
+      if (!project) throw status(500, "Could not create project");
+
+      return project;
     },
     {
       auth: true,
@@ -40,6 +60,7 @@ export const router = new Elysia({
       detail: {
         description: "Create new user project",
       },
+      response: "Project",
     }
   )
   .get(
@@ -49,7 +70,7 @@ export const router = new Elysia({
 
       const foundProject = await ProjectsService.findById(user.id, id);
 
-      if (!foundProject) return status(404, "Project not found");
+      if (!foundProject) throw status(404, "Project not found");
       return foundProject;
     },
     {
@@ -58,6 +79,7 @@ export const router = new Elysia({
       detail: {
         description: "Get user project by ID",
       },
+      response: "Project",
     }
   )
   .patch(
