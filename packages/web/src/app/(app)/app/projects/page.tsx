@@ -1,18 +1,11 @@
 "use client";
 
 import PageHeader from "@/components/page-header";
+import NewProjectModal from "@/components/projects/new-project-modal";
 import ProjectTableRow from "@/components/projects/project-table-row";
 import ProjectsOverviewError from "@/components/projects/projects-overview-error";
 import ProjectsOverviewLoading from "@/components/projects/projects-overview-loading";
 import SearchInput from "@/components/search-input";
-import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -23,14 +16,14 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -45,12 +38,11 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { deleteProjectById, getProject, Project } from "@/lib/api";
+import { deleteProjectById, getProject, type Project } from "@/lib/api";
 import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Filter, Plus } from "lucide-react";
 import { useState } from "react";
-import NewProjectModal from "@/components/projects/new-project-modal";
 
 export default function ProjectsPage() {
 	const { data, isLoading, error } = useQuery({
@@ -198,8 +190,11 @@ export default function ProjectsPage() {
 						</div>
 					</CardContent>
 				</Card>
-			)} 
-			<NewProjectModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+			)}
+			<NewProjectModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+			/>
 
 			<AlertDialog
 				open={!!projectToDelete}

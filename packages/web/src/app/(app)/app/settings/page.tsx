@@ -8,7 +8,7 @@ export default function SettingsPage() {
 
 	useEffect(() => {
 		navigation.push("/app/settings/user");
-	}, [navigation.push]);
+	}, [navigation]);
 
 	return <></>;
 }
