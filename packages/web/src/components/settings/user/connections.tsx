@@ -4,7 +4,6 @@ import { Loader } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import PageHeader from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
@@ -23,7 +22,14 @@ const ConnectionItem = (props: ConnectionItemProps) => {
 			<CardTitle className="px-6 flex items-center">
 				{props.icon && (
 					<div className="pr-2">
-						<Image src={props.icon} alt={props.title} className="w-5 h-5" width={128} />
+						<Image
+							src={props.icon}
+							alt={props.title}
+							className="w-5 h-5"
+							width={128}
+							height={128}
+							objectFit="contain"
+						/>
 					</div>
 				)}
 				{props.title}
@@ -51,7 +57,7 @@ export default function ConnectionsPage() {
 	const [accounts, setAccounts] = useState<Account[] | undefined>();
 
 	useEffect(() => {
-    if(!authClient) return;
+		if (!authClient) return;
 
 		authClient.listAccounts().then((e) => {
 			setAccounts(e.data ?? []);
@@ -65,11 +71,6 @@ export default function ConnectionsPage() {
 
 	return (
 		<>
-			<PageHeader
-				title="Connections"
-				subtitle="Connect accounts to get additional functionality"
-			/>
-
 			{accounts ? (
 				<div className="space-y-2">
 					<ConnectionItem

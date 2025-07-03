@@ -1,18 +1,18 @@
 "use client";
 
-import ClientLayout from "./client-layout";
 import "../../globals.css";
+import Providers from "./providers";
 
 export default function AppLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className="aliased">
-        <ClientLayout>{children}</ClientLayout>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en" suppressHydrationWarning>
+			<body className="aliased">
+				<Providers>{children}</Providers>
+			</body>
+		</html>
+	);
 }

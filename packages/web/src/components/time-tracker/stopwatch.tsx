@@ -9,7 +9,7 @@ import { Card, CardContent } from "../ui/card";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 
-import { Project, ProjectTask } from "@/lib/api";
+import type { Project, ProjectTask } from "@/lib/api";
 import ProjectTaskSelect from "./project-task-select";
 
 export default function Stopwatch() {

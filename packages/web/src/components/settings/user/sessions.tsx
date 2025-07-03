@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { UAParser } from "ua-parser-js";
 
-import PageHeader from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -71,8 +70,6 @@ export default function SessionsPage() {
 
 	return (
 		<>
-			<PageHeader title="Sessions" subtitle="Active sesions" />
-
 			{sessions ? (
 				<div className="space-y-2">
 					{sessions.map((e) => (

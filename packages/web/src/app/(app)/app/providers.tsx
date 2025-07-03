@@ -1,16 +1,18 @@
 "use client";
 
+import ActiveTimeEntryContainer from "@/components/time-entries/active-time-entry-container";
 import { AppSidebar } from "@/components/app-sidebar";
 import AuthProtect from "@/components/auth/auth-redirect";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import VersionTag from "@/components/version-tag";
+import ActiveTimeEntryProvider from "@/providers/active-time-entry-provider";
 
-export default function ClientLayout({
+export default function Providers({
 	children,
-}: {
+}: Readonly<{
 	children: React.ReactNode;
-}) {
+}>) {
 	return (
 		<ThemeProvider
 			attribute="class"
@@ -27,13 +29,16 @@ export default function ClientLayout({
 						} as React.CSSProperties
 					}
 				>
-					<AppSidebar />
-					<SidebarInset>
-						<div className="p-2 h-full">
-							<div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
-						</div>
-					</SidebarInset>
-					<VersionTag />
+					<ActiveTimeEntryProvider>
+						<AppSidebar />
+						<SidebarInset>
+							<div className="p-2 h-full">
+								<div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
+							</div>
+						</SidebarInset>
+						<ActiveTimeEntryContainer />
+						<VersionTag />
+					</ActiveTimeEntryProvider>
 				</SidebarProvider>
 			</AuthProtect>
 		</ThemeProvider>
