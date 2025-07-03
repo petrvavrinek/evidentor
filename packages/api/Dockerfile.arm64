@@ -12,8 +12,13 @@ RUN apt-get update && \
 # Copy everything into image
 COPY . .
 
+# Env to debug node-gyp build processes
+ENV npm_config_loglevel=silly
+ENV npm_config_verbose=true
+ENV DEBUG=node-gyp*
+
 # Install all packages
-RUN bun install --verbose
+RUN bun install
 
 ENV NODE_ENV=production
 
