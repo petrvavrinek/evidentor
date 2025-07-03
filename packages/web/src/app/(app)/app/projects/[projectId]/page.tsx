@@ -1,60 +1,84 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { Loader, Plus } from "lucide-react";
+import { useMemo, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
-import { getProjectTaskOptions } from "@/lib/api/@tanstack/react-query.gen";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import PageHeader from "@/components/page-header";
+import TaskModal from "@/components/tasks/task-modal";
+import TaskTable from "@/components/tasks/task-table";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getProjectById, type ProjectTask } from "@/lib/api";
+import {
+	getProjectByIdQueryKey,
+	getProjectTaskOptions,
+} from "@/lib/api/@tanstack/react-query.gen";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProjectOverviewPage() {
-  const params = useParams();
-  const projectId = Number(params.projectId);
+	const params = useParams();
+	const projectId = Number(params.projectId);
 
-  const { data: tasks, isLoading, error } = useQuery(getProjectTaskOptions());
+	const [projectTasks, setProjectTasks] = useState<ProjectTask[]>([]);
+	const [newTaskDialogOpen, setNewTaskDialogOpen] = useState(false);
 
-  // Filter tasks for this project
-  const projectTasks = (tasks ?? []).filter(
-    (task) => task.project?.id === projectId
-  );
+	const {
+		data: project,
+		isLoading: isProjectLoading,
+		// isError: isProjectError,
+	} = useQuery({
+		queryKey: getProjectByIdQueryKey({ path: { id: projectId } }),
+		queryFn: () => getProjectById({ path: { id: projectId } }),
+	});
 
-  return (
-    <div className="space-y-6">
-      <PageHeader title={`Project #${projectId} Overview`} />
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Tasks</CardTitle>
-        </CardHeader>
-        <CardContent>
-  {isLoading && <div>Loading tasks...</div>}
-  {error && <div className="text-red-500">Failed to load tasks.</div>}
-  {!isLoading && !error && projectTasks?.length === 0 && (
-    <div>No tasks found for this project.</div>
-  )}
-  {!isLoading && !error && projectTasks?.length > 0 && (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border text-sm">
-        <thead>
-          <tr className="bg-muted">
-            <th className="px-4 py-2 text-left font-semibold">Title</th>
-            <th className="px-4 py-2 text-left font-semibold">Description</th>
-            <th className="px-4 py-2 text-left font-semibold">Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projectTasks.map((task) => (
-            <tr key={task.id} className="border-b hover:bg-muted/50">
-              <td className="px-4 py-2 font-medium">{task.title}</td>
-              <td className="px-4 py-2">{task.description || <span className="text-muted-foreground">No description</span>}</td>
-              <td className="px-4 py-2">{task.createdAt ? new Date(task.createdAt as string).toLocaleString() : '-'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )}
-</CardContent>
-      </Card>
-    </div>
-  );
+	const { data: tasks } = useQuery(getProjectTaskOptions());
+
+	const allProjectTasks = useMemo(
+		() => [...projectTasks, ...(tasks ?? [])],
+		[projectTasks, tasks],
+	);
+
+	if (isProjectLoading) return <Loader />;
+	if (!project?.data) return <>Project not found</>;
+
+	const onProjectTaskCreate = (task: ProjectTask) => {
+		setNewTaskDialogOpen(false);
+		setProjectTasks([task, ...projectTasks]);
+	};
+
+	return (
+		<>
+			<PageHeader
+				title={`Project Overview`}
+				subtitle={project.data.title ?? ""}
+			/>
+			<div className="space-y-6">
+				<Card>
+					<CardHeader className="w-full">
+						<CardTitle className="w-full flex items-center">
+							<div>Project Tasks</div>
+							<Button
+								className="ml-auto"
+								onClick={() => setNewTaskDialogOpen(true)}
+							>
+								<Plus />
+								Add task
+							</Button>
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{tasks && <TaskTable tasks={allProjectTasks} />}
+					</CardContent>
+				</Card>
+
+				<TaskModal
+					open={newTaskDialogOpen}
+					onClose={() => setNewTaskDialogOpen(false)}
+					onCreate={onProjectTaskCreate}
+					project={project.data}
+				/>
+			</div>
+		</>
+	);
 }

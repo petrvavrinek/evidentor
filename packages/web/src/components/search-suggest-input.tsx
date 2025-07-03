@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import SearchInput from "./search-input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-interface SearchSuggestionResult {
+export interface SearchSuggestionResult {
 	id: string | number;
 	text: string;
 	subtext?: string;

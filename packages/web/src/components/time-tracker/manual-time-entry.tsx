@@ -31,9 +31,9 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	const today = new Date();
 	today.setSeconds(0, 0); // Reset seconds and milliseconds
 
-	const [date, setDate] = useState<Date | undefined>(today);
+	const [date, setDate] = useState<Date>(today);
 
-	const canAddTimeEntry = useMemo(() => selectedProject, [selectedProject]);
+	const canAddTimeEntry = useMemo(() => title.length > 0, [title]);
 
 	const createTimeEntry = useMutation({
 		...postTimeEntryMutation(),
@@ -50,13 +50,11 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	};
 
 	const handleCreate = () => {
-		if (!selectedProject) return;
-
-		const startAt = new Date(today);
+		const startAt = new Date(date);
 		startAt.setHours(startTime.hours);
 		startAt.setMinutes(startTime.minutes);
 
-		const endAt = new Date(today);
+		const endAt = new Date(date);
 		endAt.setHours(endTime.hours);
 		endAt.setMinutes(endTime.minutes);
 
@@ -65,8 +63,8 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 				startAt,
 				endAt,
 				title,
-				projectId: selectedProject?.id,
-				projectTaskId: selectedTask?.id,
+				projectId: selectedProject?.id ?? null,
+				projectTaskId: selectedTask?.id ?? null,
 			},
 		});
 	};
@@ -90,7 +88,9 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 							mode="single"
 							selected={date}
 							initialFocus
-							onSelect={setDate}
+							onSelect={(e) => {
+								if (e) setDate(e);
+							}}
 						/>
 					</PopoverContent>
 				</Popover>

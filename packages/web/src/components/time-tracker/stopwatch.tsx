@@ -33,8 +33,8 @@ export default function Stopwatch({ onStop }: StopwatchProps) {
 	const [selectedTask, setSelectedTask] = useState<ProjectTask | undefined>();
 
 	const canStartTimer = useMemo(
-		() => selectedProject && selectedTask,
-		[selectedProject, selectedTask],
+		() => title.length > 0,
+		[title],
 	);
 
 	const createTimeEntry = useMutation({

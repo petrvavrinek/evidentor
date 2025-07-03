@@ -11,6 +11,7 @@ import {
 } from "./project-tasks.dto";
 import { ProjectTasksService } from "./project-tasks.service";
 
+
 export const router = new Elysia({
 	prefix: "/project-task",
 	detail: { tags: ["ProjectTask"] },
@@ -40,7 +41,10 @@ export const router = new Elysia({
 			);
 
 			// This will always be non-nullable
-			return (await ProjectTasksService.findByTaskId(task.id, user.id))!;
+			const result = (await ProjectTasksService.findByTaskId(task.id, user.id))!;
+
+			console.dir(result, { depth: null });
+			return result;
 		},
 		{
 			params: ProjectIdParam,

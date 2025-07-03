@@ -103,7 +103,8 @@ export const ProjectTasksService = {
 		const task = await this.getSelectQueryBuilder(userId).where(
 			eq(projectTask.id, id),
 		);
-		return task as never as ProjectTaskResponseType;
+		if(!task[0]) return null;
+		return task[0] as never as ProjectTaskResponseType;
 	},
 
 	/**
