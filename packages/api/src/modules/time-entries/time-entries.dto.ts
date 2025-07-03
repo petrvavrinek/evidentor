@@ -29,7 +29,7 @@ export const UpdateTimeEntry = t.Partial(CreateTimeEntry);
  * Time entry ID schema (used for query or path parameters)
  */
 export const TimeEntryIdParam = t.Object({
-	id: t.Number(),
+	id: t.Number({ default: 0 }),
 });
 
 /**

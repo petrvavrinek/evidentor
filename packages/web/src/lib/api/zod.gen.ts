@@ -272,15 +272,9 @@ export const zPatchProjectByIdParameterId = z.number();
 
 export const zGetTimeEntryActiveResponse = zTimeEntry;
 
-export const zDeleteTimeEntryByIdParameterId = z.union([
-  z.string().default(0),
-  z.union([z.string().default(0), z.number()]),
-]);
+export const zDeleteTimeEntryByIdParameterId = z.number().default(0);
 
-export const zGetTimeEntryByIdParameterId = z.union([
-  z.string().default(0),
-  z.union([z.string().default(0), z.number()]),
-]);
+export const zGetTimeEntryByIdParameterId = z.number().default(0);
 
 export const zGetTimeEntryByIdResponse = zTimeEntry;
 
@@ -299,10 +293,7 @@ export const zPatchTimeEntryByIdData = z.object({
     .optional(),
 });
 
-export const zPatchTimeEntryByIdParameterId = z.union([
-  z.string().default(0),
-  z.union([z.string().default(0), z.number()]),
-]);
+export const zPatchTimeEntryByIdParameterId = z.number().default(0);
 
 export const zPatchTimeEntryByIdResponse = zTimeEntry;
 
@@ -323,10 +314,7 @@ export const zPostTimeEntryData = z.object({
 
 export const zPostTimeEntryResponse = zTimeEntry;
 
-export const zGetProjectTaskParameterProject = z.union([
-  z.string().default(0),
-  z.number(),
-]);
+export const zGetProjectTaskParameterProject = z.number();
 
 export const zGetProjectTaskResponse = zProjectTask2;
 

@@ -349,7 +349,7 @@ export type GetTimeEntryActiveResponse =
 export type DeleteTimeEntryByIdData = {
   body?: never;
   path: {
-    id: string | (string | number);
+    id: number;
   };
   query?: never;
   url: "/time-entry/{id}";
@@ -372,7 +372,7 @@ export type DeleteTimeEntryByIdResponses = {
 export type GetTimeEntryByIdData = {
   body?: never;
   path: {
-    id: string | (string | number);
+    id: number;
   };
   query?: never;
   url: "/time-entry/{id}";
@@ -394,7 +394,7 @@ export type PatchTimeEntryByIdData = {
     endAt?: (unknown | string | number) | null;
   };
   path: {
-    id: string | (string | number);
+    id: number;
   };
   query?: never;
   url: "/time-entry/{id}";
@@ -445,7 +445,7 @@ export type GetProjectTaskData = {
   body?: never;
   path?: never;
   query?: {
-    project?: string | number;
+    project?: number;
   };
   url: "/project-task";
 };
