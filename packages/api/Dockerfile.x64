@@ -14,7 +14,7 @@ RUN apt-get update && \
 COPY . .
 
 # Install all packages
-RUN bun install 
+RUN bun install --verbose
 
 ENV NODE_ENV=production
 
