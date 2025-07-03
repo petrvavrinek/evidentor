@@ -272,6 +272,8 @@ export const zPatchProjectByIdParameterId = z.number();
 
 export const zGetTimeEntryActiveResponse = zTimeEntry;
 
+export const zDeleteTimeEntryByIdParameterId = z.number();
+
 export const zGetTimeEntryByIdParameterId = z.number();
 
 export const zGetTimeEntryByIdResponse = zTimeEntry;
@@ -292,6 +294,8 @@ export const zPatchTimeEntryByIdData = z.object({
 });
 
 export const zPatchTimeEntryByIdParameterId = z.number();
+
+export const zPatchTimeEntryByIdResponse = zTimeEntry;
 
 export const zGetTimeEntryResponse = zTimeEntry2;
 

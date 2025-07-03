@@ -33,6 +33,11 @@ interface TaskSelectProps {
 	 * Select ID for Label usage
 	 */
 	id?: string;
+
+	/**
+	 * Selected task ID
+	 */
+	taskId?: ProjectTask["id"];
 }
 
 /**
@@ -42,8 +47,8 @@ interface TaskSelectProps {
  */
 export default function TaskSelect(props: TaskSelectProps) {
 	const { data: tasks, isLoading } = useQuery({
-		queryKey: getProjectTaskQueryKey({ query: { project: props.project?.id}}),
-		queryFn: () => getProjectTask({ query: { project: props.project?.id }}),
+		queryKey: getProjectTaskQueryKey({ query: { project: props.project?.id } }),
+		queryFn: () => getProjectTask({ query: { project: props.project?.id } }),
 	});
 
 	const [selectedTaskIdx, setSelectedTaskIdx] = useState<number | undefined>(
@@ -55,9 +60,16 @@ export default function TaskSelect(props: TaskSelectProps) {
 			props.onSelect?.(tasks.data[selectedTaskIdx]);
 	}, [selectedTaskIdx, tasks, props]);
 
-	// useEffect(() => {
-	//   setSelectedTaskIdx(undefined);
-	// }, [data]);
+	useEffect(() => {
+		if (!props.taskId) return;
+
+		const selectedTaskIdx = tasks?.data?.findIndex(
+			(e) => e.id === props.taskId,
+		);
+		if (selectedTaskIdx && selectedTaskIdx < 0) return;
+
+		setSelectedTaskIdx(selectedTaskIdx);
+	}, [props.taskId, tasks]);
 
 	if (isLoading || !tasks?.data)
 		return <Skeleton className="rounded-md w-full h-[36px]" />;

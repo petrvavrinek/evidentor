@@ -115,9 +115,9 @@ export const TimeEntriesService = {
 				throw new Error("Project is not found or not accessible to user");
 		}
 
-		if (data.endAt) {
+		if (!data.endAt) {
 			const active = await this.getActiveByUserId(userId);
-			if (!active) throw new Error("User already has active time entry");
+			if (active) throw new Error("User already has active time entry");
 		}
 
 		const entry = await db

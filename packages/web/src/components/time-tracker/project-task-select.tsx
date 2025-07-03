@@ -9,16 +9,15 @@ import TaskSelect from "../task-select";
 import { Label } from "../ui/label";
 
 interface ProjectTaskSelectProps {
-	onSelect?: (project: Project, task: ProjectTask) => void;
+	projectId?: Project["id"];
+	taskId?: ProjectTask["id"];
+	onProjectSelect?: (project: Project) => void;
+	onTaskSelect?: (task: ProjectTask) => void;
 	disabled?: boolean;
 }
 
 export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
-
-	const onTaskSelect = (task: ProjectTask) => {
-		if (selectedProject && task) props.onSelect?.(selectedProject, task);
-	};
 
 	return (
 		<>
@@ -27,9 +26,10 @@ export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
 				<ProjectSelect
 					disabled={props.disabled}
 					onSelect={(project) => {
+						props.onProjectSelect?.(project);
 						setSelectedProject(project);
-						console.log(project);
 					}}
+					projectId={props.projectId}
 				/>
 			</div>
 
@@ -39,7 +39,10 @@ export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
 					project={selectedProject}
 					disabled={props.disabled || !selectedProject}
 					key={selectedProject?.id}
-					onSelect={onTaskSelect}
+					onSelect={(task) => {
+						props.onTaskSelect?.(task);
+					}}
+					taskId={props.taskId}
 				/>
 			</div>
 		</>

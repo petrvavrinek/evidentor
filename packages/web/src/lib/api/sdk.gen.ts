@@ -24,11 +24,13 @@ import type {
   PatchProjectByIdResponses,
   GetTimeEntryActiveData,
   GetTimeEntryActiveResponses,
+  DeleteTimeEntryByIdData,
+  DeleteTimeEntryByIdResponses,
+  DeleteTimeEntryByIdErrors,
   GetTimeEntryByIdData,
   GetTimeEntryByIdResponses,
   PatchTimeEntryByIdData,
   PatchTimeEntryByIdResponses,
-  PatchTimeEntryByIdErrors,
   GetTimeEntryData,
   GetTimeEntryResponses,
   PostTimeEntryData,
@@ -138,6 +140,7 @@ import {
   zGetProjectByIdResponse,
   zGetTimeEntryActiveResponse,
   zGetTimeEntryByIdResponse,
+  zPatchTimeEntryByIdResponse,
   zGetTimeEntryResponse,
   zPostTimeEntryResponse,
   zGetProjectTaskResponse,
@@ -407,6 +410,22 @@ export const getTimeEntryActive = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Delete time entry
+ */
+export const deleteTimeEntryById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteTimeEntryByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteTimeEntryByIdResponses,
+    DeleteTimeEntryByIdErrors,
+    ThrowOnError
+  >({
+    url: "/time-entry/{id}",
+    ...options,
+  });
+};
+
+/**
  * Return time entry by ID
  */
 export const getTimeEntryById = <ThrowOnError extends boolean = false>(
@@ -433,9 +452,12 @@ export const patchTimeEntryById = <ThrowOnError extends boolean = false>(
 ) => {
   return (options.client ?? _heyApiClient).patch<
     PatchTimeEntryByIdResponses,
-    PatchTimeEntryByIdErrors,
+    unknown,
     ThrowOnError
   >({
+    responseValidator: async (data) => {
+      return await zPatchTimeEntryByIdResponse.parseAsync(data);
+    },
     url: "/time-entry/{id}",
     ...options,
     headers: {

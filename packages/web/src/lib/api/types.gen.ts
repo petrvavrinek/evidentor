@@ -346,6 +346,29 @@ export type GetTimeEntryActiveResponses = {
 export type GetTimeEntryActiveResponse =
   GetTimeEntryActiveResponses[keyof GetTimeEntryActiveResponses];
 
+export type DeleteTimeEntryByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/time-entry/{id}";
+};
+
+export type DeleteTimeEntryByIdErrors = {
+  /**
+   * Time entry not found
+   */
+  404: unknown;
+};
+
+export type DeleteTimeEntryByIdResponses = {
+  /**
+   * Time entry deleted
+   */
+  200: unknown;
+};
+
 export type GetTimeEntryByIdData = {
   body?: never;
   path: {
@@ -377,19 +400,12 @@ export type PatchTimeEntryByIdData = {
   url: "/time-entry/{id}";
 };
 
-export type PatchTimeEntryByIdErrors = {
-  /**
-   * Time entry not found
-   */
-  404: unknown;
+export type PatchTimeEntryByIdResponses = {
+  200: TimeEntry;
 };
 
-export type PatchTimeEntryByIdResponses = {
-  /**
-   * Time entry updated
-   */
-  200: unknown;
-};
+export type PatchTimeEntryByIdResponse =
+  PatchTimeEntryByIdResponses[keyof PatchTimeEntryByIdResponses];
 
 export type GetTimeEntryData = {
   body?: never;

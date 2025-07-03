@@ -13,6 +13,7 @@ import {
   getProjectById,
   patchProjectById,
   getTimeEntryActive,
+  deleteTimeEntryById,
   getTimeEntryById,
   patchTimeEntryById,
   getTimeEntry,
@@ -71,8 +72,10 @@ import type {
   GetProjectByIdData,
   PatchProjectByIdData,
   GetTimeEntryActiveData,
+  DeleteTimeEntryByIdData,
   GetTimeEntryByIdData,
   PatchTimeEntryByIdData,
+  PatchTimeEntryByIdResponse,
   GetTimeEntryData,
   PostTimeEntryData,
   PostTimeEntryResponse,
@@ -491,6 +494,33 @@ export const getTimeEntryActiveOptions = (
   });
 };
 
+/**
+ * Delete time entry
+ */
+export const deleteTimeEntryByIdMutation = (
+  options?: Partial<Options<DeleteTimeEntryByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteTimeEntryByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<DeleteTimeEntryByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteTimeEntryById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
 export const getTimeEntryByIdQueryKey = (
   options: Options<GetTimeEntryByIdData>,
 ) => createQueryKey("getTimeEntryById", options);
@@ -521,12 +551,12 @@ export const getTimeEntryByIdOptions = (
 export const patchTimeEntryByIdMutation = (
   options?: Partial<Options<PatchTimeEntryByIdData>>,
 ): UseMutationOptions<
-  unknown,
+  PatchTimeEntryByIdResponse,
   DefaultError,
   Options<PatchTimeEntryByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
-    unknown,
+    PatchTimeEntryByIdResponse,
     DefaultError,
     Options<PatchTimeEntryByIdData>
   > = {

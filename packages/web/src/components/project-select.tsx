@@ -32,6 +32,11 @@ interface ProjectSelectProps {
 	 * Select ID for Label usage
 	 */
 	id?: string;
+
+	/**
+	 * Default selected project ID
+	 */
+	projectId?: Project["id"];
 }
 
 /**
@@ -53,6 +58,17 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
 		if (selectedProjectIdx !== undefined && projects?.data)
 			props.onSelect?.(projects.data[selectedProjectIdx]);
 	}, [selectedProjectIdx, projects, props.onSelect]);
+
+	useEffect(() => {
+		if (!props.projectId) return;
+
+		const foundProject = projects?.data?.findIndex(
+			(e) => e.id === props.projectId,
+		);
+		if (foundProject && foundProject < 0) return;
+
+		setSelectedProjectIdx(foundProject);
+	}, [props.projectId, projects]);
 
 	if (isLoading) return <Skeleton className="rounded-md w-full h-[36px]" />;
 

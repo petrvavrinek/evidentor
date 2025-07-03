@@ -68,7 +68,7 @@ export const router = new Elysia({
 		async ({ user, body }) => {
 			const createdTimeEntry = await TimeEntriesService.create(user.id, body);
 			if (!createdTimeEntry) throw status(500, "Could not create time entry");
-			return await TimeEntriesService.findById(user.id, createdTimeEntry.id);
+			return (await TimeEntriesService.findById(user.id, createdTimeEntry.id))!;
 		},
 		{
 			body: CreateTimeEntry,
@@ -91,8 +91,8 @@ export const router = new Elysia({
 		":id",
 		async ({ user, params: { id }, body }) => {
 			const entry = await TimeEntriesService.updateById(user.id, id, body);
-			if (!entry) return status(404, "Time entry not found");
-			return entry;
+			if (!entry) throw status(404, "Time entry not found");
+			return (await TimeEntriesService.findById(user.id, entry.id))!;
 		},
 		{
 			params: TimeEntryIdParam,
@@ -100,12 +100,27 @@ export const router = new Elysia({
 			auth: true,
 			detail: {
 				description: "Update existing time entry",
+			},
+			response: "TimeEntry"
+		},
+	)
+	.delete(
+		":id",
+		async ({ user, params: { id } }) => {
+			const entry = await TimeEntriesService.findById(user.id, id);
+			if (!entry) throw status(404, "Time entry not found");
+
+			await TimeEntriesService.deleteById(user.id, entry.id);
+		},
+		{
+			params: TimeEntryIdParam,
+			auth: true,
+			detail: {
+				description: "Delete time entry",
 				responses: {
+					200: { description: "Time entry deleted" },
 					404: {
 						description: "Time entry not found",
-					},
-					200: {
-						description: "Time entry updated",
 					},
 				},
 			},
