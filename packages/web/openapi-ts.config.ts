@@ -8,7 +8,10 @@ export default defineConfig({
 		path: "./src/lib/api",
 	},
 	plugins: [
-		"@hey-api/client-fetch",
+		{
+			name: "@hey-api/client-fetch",
+			baseUrl: false
+		},
 		"@hey-api/schemas",
 		"zod",
 		{
