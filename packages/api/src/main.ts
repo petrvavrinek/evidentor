@@ -38,9 +38,8 @@ const app = new Elysia()
 	.use(routers.projectRouter)
 	.use(routers.timeEntryRouter)
 	.use(routers.projectTasksRouter)
-	.get("/status", () => {
-		return "ok";
-	});
+	.head("/status", () => "ok")
+	.get("/status", () => "ok");
 
 // Quick overview about routes
 logger.info("Defined routes:");
