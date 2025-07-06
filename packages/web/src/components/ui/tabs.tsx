@@ -1,18 +1,18 @@
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import type * as React from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 
 export type TabsProps = React.ComponentProps<typeof TabsPrimitive.Root> & {
-  // Search parameter to preserve tab state
+	// Search parameter to preserve tab state
 	searchParam?: string;
 };
 
-function Tabs({ className, searchParam, ...props }: TabsProps) {
+function TabsInner({ className, searchParam, ...props }: TabsProps) {
 	const searchParams = useSearchParams();
 	const [value, setValue] = useState(props.value);
 
@@ -41,6 +41,14 @@ function Tabs({ className, searchParam, ...props }: TabsProps) {
 			value={value}
 			onValueChange={setValue}
 		/>
+	);
+}
+
+function Tabs(props: TabsProps) {
+	return (
+		<React.Suspense>
+			<TabsInner {...props} />
+		</React.Suspense>
 	);
 }
 
