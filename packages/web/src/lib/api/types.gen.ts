@@ -42,6 +42,10 @@ export type Project2 = Array<{
   } | null;
 }>;
 
+export type ProjectCount = {
+  count: number;
+};
+
 export type TimeEntry = {
   id: number;
   title: string | null;
@@ -131,6 +135,10 @@ export type ProjectTask2 = Array<{
     } | null;
   };
 }>;
+
+export type ProjectTaskCount = {
+  count: number;
+};
 
 export type User = {
   id?: string;
@@ -256,6 +264,24 @@ export type PatchClientByIdResponses = {
 
 export type PatchClientByIdResponse =
   PatchClientByIdResponses[keyof PatchClientByIdResponses];
+
+export type GetProjectCountData = {
+  body?: never;
+  path?: never;
+  query?: {
+    client?: number;
+    from?: unknown | string | number;
+    to?: unknown | string | number;
+  };
+  url: "/project/count";
+};
+
+export type GetProjectCountResponses = {
+  200: ProjectCount;
+};
+
+export type GetProjectCountResponse =
+  GetProjectCountResponses[keyof GetProjectCountResponses];
 
 export type GetProjectData = {
   body?: never;
@@ -440,6 +466,24 @@ export type PostTimeEntryResponses = {
 
 export type PostTimeEntryResponse =
   PostTimeEntryResponses[keyof PostTimeEntryResponses];
+
+export type GetProjectTaskCountData = {
+  body?: never;
+  path?: never;
+  query?: {
+    project?: number;
+    from?: unknown | string | number;
+    to?: unknown | string | number;
+  };
+  url: "/project-task/count";
+};
+
+export type GetProjectTaskCountResponses = {
+  200: ProjectTaskCount;
+};
+
+export type GetProjectTaskCountResponse =
+  GetProjectTaskCountResponses[keyof GetProjectTaskCountResponses];
 
 export type GetProjectTaskData = {
   body?: never;

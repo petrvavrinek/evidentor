@@ -206,6 +206,17 @@ export const Project__Schema = {
   $id: "#/components/schemas/Project[]",
 } as const;
 
+export const ProjectCountSchema = {
+  type: "object",
+  properties: {
+    count: {
+      type: "number",
+    },
+  },
+  required: ["count"],
+  $id: "#/components/schemas/ProjectCount",
+} as const;
+
 export const TimeEntrySchema = {
   type: "object",
   properties: {
@@ -736,6 +747,17 @@ export const ProjectTask__Schema = {
     $id: "#/components/schemas/ProjectTask",
   },
   $id: "#/components/schemas/ProjectTask[]",
+} as const;
+
+export const ProjectTaskCountSchema = {
+  type: "object",
+  properties: {
+    count: {
+      type: "number",
+    },
+  },
+  required: ["count"],
+  $id: "#/components/schemas/ProjectTaskCount",
 } as const;
 
 export const UserSchema = {

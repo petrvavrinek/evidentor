@@ -57,3 +57,15 @@ export const ProjectTaskQueryFilter = t.Partial(
 );
 
 export type ProjectTaskFilter = Static<typeof ProjectTaskQueryFilter>;
+
+export const ProjectTaskBetweenFilter = t.Object({
+	...ProjectTaskQueryFilter.properties,
+	from: t.Optional(t.Date()),
+	to: t.Optional(t.Date()),
+});
+
+export type ProjectTaskBetweenFilterType = Static<typeof ProjectTaskBetweenFilter>;
+
+export const ProjectTaskCountReponse = t.Object({
+	count: t.Number(),
+});

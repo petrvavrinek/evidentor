@@ -3,6 +3,8 @@ import { betterAuth } from "../../auth";
 import { ProjectIdParam } from "../projects/projects.dto";
 import {
 	CreateProjectTask,
+	ProjectTaskBetweenFilter,
+	ProjectTaskCountReponse,
 	ProjectTaskIdParam,
 	ProjectTaskQueryFilter,
 	ProjectTaskResponse,
@@ -11,7 +13,6 @@ import {
 } from "./project-tasks.dto";
 import { ProjectTasksService } from "./project-tasks.service";
 
-
 export const router = new Elysia({
 	prefix: "/project-task",
 	detail: { tags: ["ProjectTask"] },
@@ -19,6 +20,19 @@ export const router = new Elysia({
 	.use(betterAuth)
 	.model("ProjectTask", ProjectTaskResponse)
 	.model("ProjectTask[]", ProjectTasksResponse)
+	.model("ProjectTaskCount", ProjectTaskCountReponse)
+	.get(
+		"count",
+		async ({ user, query }) => {
+			const count = await ProjectTasksService.getCount(user.id, query);
+			return { count };
+		},
+		{
+			auth: true,
+			query: ProjectTaskBetweenFilter,
+			response: "ProjectTaskCount",
+		},
+	)
 	.get(
 		"",
 		async ({ user, query }) => {
@@ -41,7 +55,10 @@ export const router = new Elysia({
 			);
 
 			// This will always be non-nullable
-			const result = (await ProjectTasksService.findByTaskId(task.id, user.id))!;
+			const result = (await ProjectTasksService.findByTaskId(
+				task.id,
+				user.id,
+			))!;
 
 			console.dir(result, { depth: null });
 			return result;

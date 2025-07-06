@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
-import { t } from "elysia";
+import { type Static, t } from "elysia";
 
 import { project } from "@/db/schema";
 
@@ -41,3 +41,15 @@ export const ProjectResponse = t.Omit(SelectProject, ["ownerId", "clientId"]);
  * Project response
  */
 export const ProjectsResponse = t.Array(ProjectResponse);
+
+export const ProjectQueryFilter = t.Object({
+  client: t.Optional(t.Number()),
+  from: t.Optional(t.Date()),
+  to: t.Optional(t.Date())
+})
+
+export type ProjectQueryFilterType = Static<typeof ProjectQueryFilter>;
+
+export const ProjectCountReponse = t.Object({
+	count: t.Number(),
+});

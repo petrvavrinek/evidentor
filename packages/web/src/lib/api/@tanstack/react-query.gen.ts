@@ -7,6 +7,7 @@ import {
   deleteClientById,
   getClientById,
   patchClientById,
+  getProjectCount,
   getProject,
   postProject,
   deleteProjectById,
@@ -18,6 +19,7 @@ import {
   patchTimeEntryById,
   getTimeEntry,
   postTimeEntry,
+  getProjectTaskCount,
   getProjectTask,
   deleteProjectTaskById,
   patchProjectTaskById,
@@ -65,6 +67,7 @@ import type {
   GetClientByIdData,
   PatchClientByIdData,
   PatchClientByIdResponse,
+  GetProjectCountData,
   GetProjectData,
   PostProjectData,
   PostProjectResponse,
@@ -79,6 +82,7 @@ import type {
   GetTimeEntryData,
   PostTimeEntryData,
   PostTimeEntryResponse,
+  GetProjectTaskCountData,
   GetProjectTaskData,
   DeleteProjectTaskByIdData,
   PatchProjectTaskByIdData,
@@ -328,6 +332,27 @@ export const patchClientByIdMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getProjectCountQueryKey = (
+  options?: Options<GetProjectCountData>,
+) => createQueryKey("getProjectCount", options);
+
+export const getProjectCountOptions = (
+  options?: Options<GetProjectCountData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectCount({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectCountQueryKey(options),
+  });
 };
 
 export const getProjectQueryKey = (options?: Options<GetProjectData>) =>
@@ -636,6 +661,27 @@ export const postTimeEntryMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getProjectTaskCountQueryKey = (
+  options?: Options<GetProjectTaskCountData>,
+) => createQueryKey("getProjectTaskCount", options);
+
+export const getProjectTaskCountOptions = (
+  options?: Options<GetProjectTaskCountData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectTaskCount({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectTaskCountQueryKey(options),
+  });
 };
 
 export const getProjectTaskQueryKey = (options?: Options<GetProjectTaskData>) =>
