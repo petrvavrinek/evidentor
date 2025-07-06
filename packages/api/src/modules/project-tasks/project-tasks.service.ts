@@ -1,9 +1,13 @@
-import { eq, getTableColumns } from "drizzle-orm";
+import { count, eq, getTableColumns, gte, lte } from "drizzle-orm";
 
 import { client, project, projectTask } from "@/db/schema";
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
-import type { ProjectTaskFilter, ProjectTaskResponseType } from "./project-tasks.dto";
+import type {
+	ProjectTaskBetweenFilterType,
+	ProjectTaskFilter,
+	ProjectTaskResponseType,
+} from "./project-tasks.dto";
 
 export const ProjectTasksService = {
 	/**
@@ -34,13 +38,16 @@ export const ProjectTasksService = {
 	 * @param userId
 	 * @returns
 	 */
-	async findAllByUserId(userId: string, filter?: ProjectTaskFilter): Promise<ProjectTaskResponseType[]> {
+	async findAllByUserId(
+		userId: string,
+		filter?: ProjectTaskFilter,
+	): Promise<ProjectTaskResponseType[]> {
 		let query = this.getSelectQueryBuilder(userId);
 
-		if(filter?.project)
+		if (filter?.project)
 			query = query.where(eq(projectTask.projectId, filter.project));
 
-		return await query as ProjectTaskResponseType[];
+		return (await query) as ProjectTaskResponseType[];
 	},
 
 	/**
@@ -103,7 +110,7 @@ export const ProjectTasksService = {
 		const task = await this.getSelectQueryBuilder(userId).where(
 			eq(projectTask.id, id),
 		);
-		if(!task[0]) return null;
+		if (!task[0]) return null;
 		return task[0] as never as ProjectTaskResponseType;
 	},
 
@@ -113,5 +120,30 @@ export const ProjectTasksService = {
 	 */
 	async deleteTaskById(id: number) {
 		await db.delete(projectTask).where(eq(projectTask.id, id));
+	},
+
+	/**
+	 * Count user tasks by filter
+	 * @param userId User ID
+	 * @param filter Filter to
+	 * @returns Number of tasks
+	 */
+	async getCount(
+		userId: string,
+		filter?: ProjectTaskBetweenFilterType,
+	): Promise<number> {
+		const query = db
+			.select({ count: count() })
+			.from(projectTask)
+			.leftJoin(project, eq(projectTask.projectId, project.id))
+			.where(eq(project.ownerId, userId))
+			.$dynamic();
+
+		if (filter?.project) query.where(eq(project.id, filter.project));
+		if (filter?.from) query.where(gte(projectTask.createdAt, filter.from));
+		if (filter?.to) query.where(lte(projectTask.createdAt, filter.to));
+
+		const r = await query;
+		return r[0]?.count ?? 0;
 	},
 };

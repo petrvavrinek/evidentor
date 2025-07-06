@@ -12,6 +12,8 @@ import type {
   GetClientByIdResponses,
   PatchClientByIdData,
   PatchClientByIdResponses,
+  GetProjectCountData,
+  GetProjectCountResponses,
   GetProjectData,
   GetProjectResponses,
   PostProjectData,
@@ -35,6 +37,8 @@ import type {
   GetTimeEntryResponses,
   PostTimeEntryData,
   PostTimeEntryResponses,
+  GetProjectTaskCountData,
+  GetProjectTaskCountResponses,
   GetProjectTaskData,
   GetProjectTaskResponses,
   DeleteProjectTaskByIdData,
@@ -135,6 +139,7 @@ import {
   zPostClientResponse,
   zGetClientByIdResponse,
   zPatchClientByIdResponse,
+  zGetProjectCountResponse,
   zGetProjectResponse,
   zPostProjectResponse,
   zGetProjectByIdResponse,
@@ -143,6 +148,7 @@ import {
   zPatchTimeEntryByIdResponse,
   zGetTimeEntryResponse,
   zPostTimeEntryResponse,
+  zGetProjectTaskCountResponse,
   zGetProjectTaskResponse,
   zPostProjectTaskByIdResponse,
   zSocialSignInResponse,
@@ -290,6 +296,22 @@ export const patchClientById = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+export const getProjectCount = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectCountData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectCountResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseValidator: async (data) => {
+      return await zGetProjectCountResponse.parseAsync(data);
+    },
+    url: "/project/count",
+    ...options,
   });
 };
 
@@ -503,6 +525,22 @@ export const postTimeEntry = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+export const getProjectTaskCount = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectTaskCountData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectTaskCountResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseValidator: async (data) => {
+      return await zGetProjectTaskCountResponse.parseAsync(data);
+    },
+    url: "/project-task/count",
+    ...options,
   });
 };
 

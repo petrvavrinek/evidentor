@@ -54,6 +54,10 @@ export const zProject2 = z.array(
   }),
 );
 
+export const zProjectCount = z.object({
+  count: z.number(),
+});
+
 export const zTimeEntry = z.object({
   id: z.number().int().gte(-2147483648).lte(2147483647),
   title: z.union([z.string(), z.null()]),
@@ -172,6 +176,10 @@ export const zProjectTask2 = z.array(
   }),
 );
 
+export const zProjectTaskCount = z.object({
+  count: z.number(),
+});
+
 export const zUser = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
@@ -244,6 +252,22 @@ export const zPatchClientByIdParameterId = z.number();
 
 export const zPatchClientByIdResponse = zClient;
 
+export const zGetProjectCountParameterClient = z.number();
+
+export const zGetProjectCountParameterFrom = z.union([
+  z.unknown(),
+  z.string().datetime(),
+  z.number(),
+]);
+
+export const zGetProjectCountParameterTo = z.union([
+  z.unknown(),
+  z.string().datetime(),
+  z.number(),
+]);
+
+export const zGetProjectCountResponse = zProjectCount;
+
 export const zGetProjectResponse = zProject2;
 
 export const zPostProjectData = z.object({
@@ -313,6 +337,22 @@ export const zPostTimeEntryData = z.object({
 });
 
 export const zPostTimeEntryResponse = zTimeEntry;
+
+export const zGetProjectTaskCountParameterProject = z.number();
+
+export const zGetProjectTaskCountParameterFrom = z.union([
+  z.unknown(),
+  z.string().datetime(),
+  z.number(),
+]);
+
+export const zGetProjectTaskCountParameterTo = z.union([
+  z.unknown(),
+  z.string().datetime(),
+  z.number(),
+]);
+
+export const zGetProjectTaskCountResponse = zProjectTaskCount;
 
 export const zGetProjectTaskParameterProject = z.number();
 
