@@ -1,7 +1,9 @@
-import PageHeader from "@/components/page-header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TypographyH3 } from "@/components/ui/typography";
 import { Clock, Calendar, BarChart3 } from "lucide-react";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
+import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
+
+import PageHeader from "@/components/page-header";
 
 export default function ReportsPage() {
   return (

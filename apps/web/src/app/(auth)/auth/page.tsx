@@ -1,12 +1,14 @@
 "use client";
 
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { Tabs, TabsContent } from "@evidentor/ui/components/ui/tabs";
 
 import { SignInForm } from "@/components/auth/sign-in-form";
 import { SignUpForm } from "@/components/auth/sign-up-form";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
 
 export default function AuthPage() {
 	const [activeTab, setActiveTab] = useState("signin");
@@ -17,18 +19,17 @@ export default function AuthPage() {
 	}, []);
 
 	return (
-		<Tabs value={activeTab} onValueChange={setActiveTab}>
+		<Tabs value={activeTab} onValueChange={setActiveTab} searchParam="action">
 			<TabsContent value="signin">
 				<SignInForm>
 					<div className="text-center text-sm">
 						Don&apos;t have an account?{" "}
-						<a
-							href="#"
+						<Link
+							href="?action=signup"
 							className="underline underline-offset-4"
-							onClick={() => setActiveTab("signup")}
 						>
 							Sign up
-						</a>
+						</Link>
 					</div>
 				</SignInForm>
 			</TabsContent>
@@ -37,18 +38,16 @@ export default function AuthPage() {
 				<SignUpForm>
 					<div className="text-center text-sm">
 						Already have an account?{" "}
-						<a
-							href="#"
+						<Link
+							href="?action=signin"
 							className="underline underline-offset-4"
 							onClick={() => setActiveTab("signin")}
 						>
-							Sign up
-						</a>
+							Sign in
+						</Link>
 					</div>
 				</SignUpForm>
 			</TabsContent>
 		</Tabs>
 	);
-
-	return;
 }

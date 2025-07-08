@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+
+import { Skeleton } from "@evidentor/ui/components/ui/skeleton";
+
 import DashboardCard from "./dashboard-card";
-import { Skeleton } from "../ui/skeleton";
 
 interface DashboardCountCardProps {
 	title: string;

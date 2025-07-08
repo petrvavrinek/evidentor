@@ -1,11 +1,10 @@
 "use client";
 
-import PageHeader from "@/components/page-header";
-import NewProjectModal from "@/components/projects/new-project-modal";
-import ProjectTableRow from "@/components/projects/project-table-row";
-import ProjectsOverviewError from "@/components/projects/projects-overview-error";
-import ProjectsOverviewLoading from "@/components/projects/projects-overview-loading";
-import SearchInput from "@/components/search-input";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -15,15 +14,15 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from "@evidentor/ui/components/ui/alert-dialog";
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@evidentor/ui/components/ui/card";
 import {
 	Table,
 	TableBody,
@@ -31,13 +30,17 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
+} from "@evidentor/ui/components/ui/table";
+
+import PageHeader from "@/components/page-header";
+import NewProjectModal from "@/components/projects/new-project-modal";
+import ProjectTableRow from "@/components/projects/project-table-row";
+import ProjectsOverviewError from "@/components/projects/projects-overview-error";
+import ProjectsOverviewLoading from "@/components/projects/projects-overview-loading";
+import SearchInput from "@/components/search-input";
+
 import { deleteProjectById, getProject, type Project } from "@/lib/api";
 import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 
 export default function ProjectsPage() {
 	const { data, isLoading, error } = useQuery({

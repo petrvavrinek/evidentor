@@ -4,24 +4,20 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-import { ClientForm } from "@/components/clients/client-form";
-import { ClientTableRow } from "@/components/clients/client-table-row";
-import PageHeader from "@/components/page-header";
-import SearchInput from "@/components/search-input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@evidentor/ui/components/ui/card";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
+} from "@evidentor/ui/components/ui/dialog";
 import {
 	Table,
 	TableBody,
@@ -29,8 +25,15 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
-import { Client, getClient } from "@/lib/api";
+} from "@evidentor/ui/components/ui/table";
+
+import { ClientForm } from "@/components/clients/client-form";
+import { ClientTableRow } from "@/components/clients/client-table-row";
+import PageHeader from "@/components/page-header";
+import SearchInput from "@/components/search-input";
+
+import { type Client, getClient } from "@/lib/api";
+
 import {
 	deleteClientByIdMutation,
 	getClientQueryKey,

@@ -2,8 +2,7 @@
 
 import { Clock, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
-import type { TimeEntry } from "@/lib/api";
-import { Button } from "../ui/button";
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,8 +10,10 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { TableCell, TableRow } from "../ui/table";
+} from "@evidentor/ui/components/ui/dropdown-menu";
+import { TableCell, TableRow } from "@evidentor/ui/components/ui/table";
+
+import type { TimeEntry } from "@/lib/api";
 import { formatTime } from "@/lib/format-time";
 
 interface TimeEntryRowProps {

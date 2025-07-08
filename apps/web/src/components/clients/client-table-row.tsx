@@ -1,5 +1,6 @@
 import { MoreHorizontal } from "lucide-react";
 
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -7,11 +8,10 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import type { Client } from "@/lib/api";
-import { TableCell, TableRow } from "../ui/table";
+} from "@evidentor/ui/components/ui/dropdown-menu";
+import { TableCell, TableRow } from "@evidentor/ui/components/ui/table";
 
-import { Button } from "../ui/button";
+import type { Client } from "@/lib/api";
 
 interface ClientTableRowProps {
 	client: Client;

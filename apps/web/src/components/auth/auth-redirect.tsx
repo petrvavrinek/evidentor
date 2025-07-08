@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useEffect, useState } from "react";
 
+import { Skeleton } from "@evidentor/ui/components/ui/skeleton";
+
 import { client } from "@/lib/api/client.gen";
 import { authClient } from "@/lib/auth-client";
-import { Skeleton } from "../ui/skeleton";
 
 interface AuthProtectProps {
 	children?: React.ReactNode;

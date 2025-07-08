@@ -1,7 +1,8 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { type ChangeEvent, useEffect, useState } from "react";
+
+import { Input } from "@evidentor/ui/components/ui/input";
 
 export interface Time {
 	hours: number;

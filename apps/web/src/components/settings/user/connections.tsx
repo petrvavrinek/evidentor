@@ -4,8 +4,9 @@ import { Loader } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@evidentor/ui/components/ui/button";
+import { Card, CardContent, CardTitle } from "@evidentor/ui/components/ui/card";
+
 import { authClient } from "@/lib/auth-client";
 
 interface ConnectionItemProps {

@@ -1,13 +1,15 @@
 "use client";
 
-import type { TimeEntry } from "@/lib/api";
 import {
 	Table,
 	TableBody,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "../ui/table";
+} from "@evidentor/ui/components/ui/table";
+
+import type { TimeEntry } from "@/lib/api";
+
 import TimeEntryRow from "./time-entry-row";
 
 interface TimeEntriesTableProps {

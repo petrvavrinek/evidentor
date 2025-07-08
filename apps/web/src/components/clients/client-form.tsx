@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -12,8 +12,9 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "../ui/form";
-import LoadableButton from "../ui/loadable-button";
+} from "@evidentor/ui/components/ui/form";
+import { Input } from "@evidentor/ui/components/ui/input";
+import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 
 const FormSchema = z.object({
 	companyName: z.string(),

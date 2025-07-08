@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@evidentor/ui/components/ui/card";
 
 interface ProjectsOverviewErrorProps {
   error: unknown;

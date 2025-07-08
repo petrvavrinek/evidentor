@@ -3,11 +3,11 @@
 import { Square } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Button } from "@evidentor/ui/components/ui/button";
+import { Card, CardContent } from "@evidentor/ui/components/ui/card";
+
 import type { TimeEntry } from "@/lib/api";
 import { formatTime } from "@/lib/format-time";
-
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
 
 interface ActiveTimeEntryProps {
 	timeEntry: TimeEntry;

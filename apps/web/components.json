@@ -5,17 +5,17 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "src/app/globals.css",
+    "css": "../../packages/shared-ui/globals.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+    "utils": "@evidentor/ui/lib/utils",
+    "ui": "@evidentor/ui/components/ui",
+    "lib": "@evidentor/ui/lib",
+    "hooks": "@evidentor/ui/hooks"
   },
   "iconLibrary": "lucide"
 }

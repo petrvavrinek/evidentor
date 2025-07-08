@@ -10,6 +10,8 @@ export const router = new Elysia({
 	.get(
 		"",
 		async ({ user }) => {
+      
+
 			return {};
 		},
 		{

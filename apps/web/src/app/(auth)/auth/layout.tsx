@@ -1,8 +1,13 @@
 import Link from "next/link";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Card, CardContent } from "@/components/ui/card";
-import { TypographyH1 } from "@/components/ui/typography";
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@evidentor/ui/components/ui/alert";
+import { Card, CardContent } from "@evidentor/ui/components/ui/card";
+import { TypographyH1 } from "@evidentor/ui/components/ui/typography";
+
 import app from "@/config/app";
 import ContactConfig from "@/config/contact";
 

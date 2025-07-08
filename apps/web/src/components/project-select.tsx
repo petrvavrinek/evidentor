@@ -1,17 +1,19 @@
 "use client";
 
-import { getProject, type Project } from "@/lib/api";
-import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { useQuery } from "@tanstack/react-query";
 import { type Key, useEffect, useState } from "react";
+
+import { getProject, type Project } from "@/lib/api";
+import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "./ui/select";
-import { Skeleton } from "./ui/skeleton";
+} from "@evidentor/ui/components/ui/select";
+import { Skeleton } from "@evidentor/ui/components/ui/skeleton";
 
 interface ProjectSelectProps {
 	/**

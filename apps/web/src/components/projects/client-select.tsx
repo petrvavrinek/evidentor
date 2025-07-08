@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SearchSuggest, {
 	type SearchSuggestionResult,
 } from "@/components/search-suggest-input";
+
 import { getClient } from "@/lib/api";
 import { getClientQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 

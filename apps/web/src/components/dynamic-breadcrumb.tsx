@@ -1,8 +1,10 @@
 "use client";
 
+import { LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { getBreadcrumbPath } from "@/config/app-routes";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,9 +12,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { getBreadcrumbPath } from "@/config/app-routes";
-import { LayoutDashboard } from "lucide-react";
+} from "@evidentor/ui/components/ui/breadcrumb";
 
 interface DynamicBreadcrumbProps {
   variant?: "default" | "subtle" | "prominent" | "card" | "pill";

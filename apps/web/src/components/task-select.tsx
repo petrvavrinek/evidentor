@@ -1,18 +1,19 @@
 "use client";
 
-import { getProjectTask, Project, ProjectTask } from "@/lib/api";
-import { getProjectTaskQueryKey } from "@/lib/api/@tanstack/react-query.gen";
-
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "./ui/select";
-import { Skeleton } from "./ui/skeleton";
+} from "@evidentor/ui/components/ui/select";
+import { Skeleton } from "@evidentor/ui/components/ui/skeleton";
+
+import { getProjectTask, Project, ProjectTask } from "@/lib/api";
+import { getProjectTaskQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 
 interface TaskSelectProps {
 	/**

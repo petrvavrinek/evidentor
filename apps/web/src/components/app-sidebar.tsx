@@ -1,8 +1,14 @@
 "use client";
 
+import { Clock } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@evidentor/ui/components/ui/collapsible";
 import {
 	Sidebar,
 	SidebarContent,
@@ -16,23 +22,18 @@ import {
 	SidebarMenuSub,
 	SidebarSeparator,
 	useSidebar,
-} from "@/components/ui/sidebar";
+} from "@evidentor/ui/components/ui/sidebar";
+import { TypographyH1 } from "@evidentor/ui/components/ui/typography";
+
 import config from "@/config/app";
 import {
 	appRoutes,
 	getVisibleRoutes,
 	type RouteItem,
 } from "@/config/app-routes";
-import { Clock } from "lucide-react";
-
 import { authClient } from "@/lib/auth-client";
+
 import { NavUser } from "./nav-user";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "./ui/collapsible";
-import { TypographyH1 } from "./ui/typography";
 
 interface SidebarItemProps {
 	item: RouteItem;

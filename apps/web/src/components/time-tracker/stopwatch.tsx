@@ -4,10 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 import { Play, StopCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
+import { Button } from "@evidentor/ui/components/ui/button";
+import { Card, CardContent } from "@evidentor/ui/components/ui/card";
+import { Label } from "@evidentor/ui/components/ui/label";
+import { Textarea } from "@evidentor/ui/components/ui/textarea";
 
 import useActiveTimeEntry from "@/hooks/use-active-time-entry";
 import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
@@ -32,10 +32,7 @@ export default function Stopwatch({ onStop }: StopwatchProps) {
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 	const [selectedTask, setSelectedTask] = useState<ProjectTask | undefined>();
 
-	const canStartTimer = useMemo(
-		() => title.length > 0,
-		[title],
-	);
+	const canStartTimer = useMemo(() => title.length > 0, [title]);
 
 	const createTimeEntry = useMutation({
 		...postTimeEntryMutation(),

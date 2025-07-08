@@ -1,12 +1,18 @@
 "use client";
 
-import PageHeader from "@/components/page-header";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { User } from "lucide-react";
 
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@evidentor/ui/components/ui/tabs";
+
+import PageHeader from "@/components/page-header";
 import UserConnections from "@/components/settings/user/connections";
 import Profile from "@/components/settings/user/profile";
 import UserSessions from "@/components/settings/user/sessions";
-import { User } from "lucide-react";
 
 export default function SettingsUserPage() {
 	return (
