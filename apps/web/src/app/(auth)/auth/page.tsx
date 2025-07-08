@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,18 +19,17 @@ export default function AuthPage() {
 	}, []);
 
 	return (
-		<Tabs value={activeTab} onValueChange={setActiveTab}>
+		<Tabs value={activeTab} onValueChange={setActiveTab} searchParam="action">
 			<TabsContent value="signin">
 				<SignInForm>
 					<div className="text-center text-sm">
 						Don&apos;t have an account?{" "}
-						<a
-							href="#"
+						<Link
+							href="?action=signup"
 							className="underline underline-offset-4"
-							onClick={() => setActiveTab("signup")}
 						>
 							Sign up
-						</a>
+						</Link>
 					</div>
 				</SignInForm>
 			</TabsContent>
@@ -38,18 +38,16 @@ export default function AuthPage() {
 				<SignUpForm>
 					<div className="text-center text-sm">
 						Already have an account?{" "}
-						<a
-							href="#"
+						<Link
+							href="?action=signin"
 							className="underline underline-offset-4"
 							onClick={() => setActiveTab("signin")}
 						>
-							Sign up
-						</a>
+							Sign in
+						</Link>
 					</div>
 				</SignUpForm>
 			</TabsContent>
 		</Tabs>
 	);
-
-	return;
 }
