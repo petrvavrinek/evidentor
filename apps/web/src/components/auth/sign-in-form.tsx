@@ -78,7 +78,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
 				</Alert>
 			)}
 
-			<Form {...form}>
+			<Form {...form} >
 				<form onSubmit={form.handleSubmit(onSubmitComponent)}>
 					<div className="flex flex-col gap-6">
 						<div className="flex flex-col gap-6">

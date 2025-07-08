@@ -13,7 +13,7 @@ RUN apt-get update && \
     apt-get install -y python3 make gcc g++
 
 # Copy everything into image
-COPY ./apps/api ./apps/api
+COPY ./apps/email-service ./apps/email-service
 COPY ./packages/shared-queues ./packages/shared-queues
 COPY ./bun.lock .
 COPY ./package.json .

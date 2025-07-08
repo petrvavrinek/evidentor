@@ -159,9 +159,11 @@ export default function Calendar({
 			</div>
 
 			<div className="grid grid-cols-7 gap-1">
-				{Array.from({ length: firstDayOfMonth }).map((_, index) => (
-					<div key={`empty-${index}`} className="h-20 md:h-24"></div>
-				))}
+				{Array.from({ length: firstDayOfMonth })
+					.map((_, i) => i)
+					.map((e) => (
+						<div key={`empty-${e}`} className="h-20 md:h-24"></div>
+					))}
 
 				{Array.from({ length: daysInMonth }).map((_, index) => {
 					const day = index + 1;

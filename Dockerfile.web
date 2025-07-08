@@ -8,7 +8,8 @@ WORKDIR /app
 # Install dependencies
 COPY ./package.json ./bun.lock ./
 
-
+# Copy necessary packages or whole repo
+# To reduce disk space, copy only those that are used
 COPY ./apps/web ./apps/web
 COPY ./packages/shared-ui ./packages/shared-ui
 
@@ -20,8 +21,6 @@ RUN ls -l
 # Install all dependencies
 RUN bun install
 
-# Debug build
-ENV DEBUG=*
 
 # Build application
 RUN bun run build
@@ -42,13 +41,16 @@ RUN adduser --system --uid 1001 nextjs
 
 USER nextjs
 
-COPY --from=builder /app/apps/web/public ./public
 
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static apps/web/.next/static
+
+# COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+# COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
+# COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 
 ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
 
-CMD ["bun", "server.js"]
+CMD ["bun", "apps/web/server.js"]

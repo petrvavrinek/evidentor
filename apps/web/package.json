@@ -10,7 +10,7 @@
 		"openapi-ts": "openapi-ts"
 	},
 	"dependencies": {
-    "@evidentor/ui": "workspace:*",
+		"@evidentor/ui": "workspace:*",
 		"@hey-api/client-fetch": "^0.13.1",
 		"@hey-api/client-next": "^0.5.1",
 		"@hookform/resolvers": "^5.1.1",
