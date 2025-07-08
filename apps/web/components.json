@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "../../packages/shared-ui/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@evidentor/ui/lib/utils",
+    "ui": "@evidentor/ui/components/ui",
+    "lib": "@evidentor/ui/lib",
+    "hooks": "@evidentor/ui/hooks"
+  },
+  "iconLibrary": "lucide"
+}
