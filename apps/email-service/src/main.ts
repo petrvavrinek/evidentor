@@ -8,11 +8,13 @@ import {
 	type EmailQueueDataType,
 	type EmailQueueResultType,
 } from "@evidentor/queues";
+import logger from "./logger";
 
 const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 	EmailQueue.name,
 	async (job) => {
 		const { data } = job;
+		logger.info(`Received job ${job.name}, event type: ${data.type}`);
 
 		if (data.type === "welcome-email") {
 			const rendered = await render(
@@ -27,3 +29,5 @@ const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 		return { ok: true };
 	},
 );
+
+logger.info(`Connected and waiting for jobs...`);
