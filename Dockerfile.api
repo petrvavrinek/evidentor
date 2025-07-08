@@ -3,7 +3,7 @@ ARG TARGETARCH=x64
 
 FROM oven/bun:canary-debian AS build
 
-ENV TARGETARCH=${TARGETARCH}
+ARG TARGETARCH
 
 ENV DEBIAN_FRONTEND=noninteractive
 
