@@ -1,17 +1,16 @@
 import { Body, Head, Html, Link } from "@react-email/components";
+import { Tailwind } from "@react-email/tailwind";
 import { Clock } from "lucide-react";
 
-import Providers from "./providers";
-
-import "../globals.css";
+import config from "../tailwind.config.mjs";
 
 interface LayoutProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
 	return (
-		<Providers>
+		<Tailwind config={config}>
 			<Html>
 				<Head />
 				<Body>
@@ -23,7 +22,7 @@ export default function Layout({ children }: LayoutProps) {
 							</div>
 						</Link>
 
-						<div className="p-8">{children}</div>
+						<div className="p-8">{children ?? "Content here"}</div>
 
 						<div className="bg-gray-50 p-5 text-center border-t border-gray-200">
 							<p className="text-gray-500 text-sm m-0">
@@ -36,6 +35,6 @@ export default function Layout({ children }: LayoutProps) {
 					</div>
 				</Body>
 			</Html>
-		</Providers>
+		</Tailwind>
 	);
 }

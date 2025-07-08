@@ -1,4 +1,4 @@
-import Layout from "../src/layout";
+import Layout from "./layout";
 
 interface WelcomeEmailProps {
 	user: {
@@ -7,17 +7,15 @@ interface WelcomeEmailProps {
 	};
 }
 
-import "../globals.css";
-
-export default function Email({ user }: WelcomeEmailProps) {
+export default function WelcomeEmail({ user }: WelcomeEmailProps) {
 	return (
 		<Layout>
 			<h2 className="text-gray-800 text-xl mb-5">Hi {user.name},</h2>
 
 			<p className="text-gray-600 leading-relaxed mb-5">
-				Welcome to Evidentor! We're excited to have you on board. Your
-				account has been successfully created and you're ready to start managing
-				your projects and time tracking.
+				Welcome to Evidentor! We're excited to have you on board. Your account
+				has been successfully created and you're ready to start managing your
+				projects and time tracking.
 			</p>
 
 			<p className="text-gray-600 leading-relaxed mb-8">
@@ -44,7 +42,7 @@ export default function Email({ user }: WelcomeEmailProps) {
 	);
 }
 
-Email.PreviewProps = {
+WelcomeEmail.PreviewProps = {
 	user: {
 		email: "test@test.cz",
 		name: "Test user",
