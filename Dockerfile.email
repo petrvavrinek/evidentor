@@ -1,3 +1,6 @@
+# Default target architecture is x64
+ARG TARGETARCH=x64
+
 FROM oven/bun:canary-debian AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,7 +13,10 @@ RUN apt-get update && \
     apt-get install -y python3 make gcc g++
 
 # Copy everything into image
-COPY . .
+COPY ./apps/api ./apps/api
+COPY ./packages/shared-queues ./packages/shared-queues
+COPY ./bun.lock .
+COPY ./package.json .
 
 # Env to debug node-gyp build processes
 ENV npm_config_loglevel=silly
@@ -29,13 +35,13 @@ ENV NODE_ENV=production
 RUN bun build \
     --compile \
     --minify \
-    --target bun-linux-arm64 \
+    --target bun-linux-${TARGETARCH} \
     --outfile server \
-    ./src/main.ts
+    ./apps/email-service/src/main.ts
 
 RUN echo "Build stage" ; ls -l
 
-FROM arm64v8/debian:bookworm-slim
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 

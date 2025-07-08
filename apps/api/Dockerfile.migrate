@@ -1,3 +1,6 @@
+# Default target architecture is x64
+ARG TARGETARCH=x64
+
 FROM oven/bun:canary-debian AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,19 +18,18 @@ COPY . .
 # Install all packages
 RUN bun install
 
-
 # Build application
 RUN bun build \
   --compile \
   --minify \
-  --target bun-linux-arm64 \
+  --target bun-linux-${TARGETARCH} \
   --outfile migrator \
   ./scripts/migrate.ts
 
 # Run migrations
 CMD [ "bun", "run", "migration:apply" ]
 
-FROM arm64v8/debian:bookworm-slim
+FROM debian:bookworm-slim
 
 WORKDIR /app
 

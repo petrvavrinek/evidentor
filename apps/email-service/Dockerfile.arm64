@@ -1,0 +1,43 @@
+FROM oven/bun:canary-debian AS build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# /app workdir
+WORKDIR /app
+
+# Copy everything into image
+COPY . .
+
+# Env to debug node-gyp build processes
+ENV npm_config_loglevel=silly
+ENV npm_config_verbose=true
+ENV DEBUG=node-gyp
+ENV V=1
+ENV CXXFLAGS="-v"
+ENV MAKEFLAGS="--debug=v"
+
+# Install all packages
+RUN bun install
+
+ENV NODE_ENV=production
+
+# Build application
+RUN bun build \
+    --compile \
+    --minify \
+    --target bun-linux-arm64 \
+    --outfile server \
+    ./src/main.ts
+
+FROM arm64v8/debian:bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /app
+
+# Copy built server
+COPY --from=build /app/server server
+
+ENV NODE_ENV=production
+
+CMD ["./server"]
