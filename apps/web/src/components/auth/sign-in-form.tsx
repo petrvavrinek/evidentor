@@ -1,8 +1,15 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@evidentor/ui/components/ui/alert";
 import {
 	Form,
 	FormControl,
@@ -10,17 +17,13 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { authClient } from "@/lib/auth-client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import LoadableButton from "../ui/loadable-button";
+} from "@evidentor/ui/components/ui/form";
+import { Input } from "@evidentor/ui/components/ui/input";
+import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 
 import publicConfig from "@/config/public";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 
 const FormSchema = z.object({
 	email: z.string().email(),

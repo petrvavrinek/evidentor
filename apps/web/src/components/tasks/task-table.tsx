@@ -1,11 +1,13 @@
-import type { ProjectTask } from "@/lib/api";
 import {
 	Table,
 	TableBody,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "../ui/table";
+} from "@evidentor/ui/components/ui/table";
+
+import type { ProjectTask } from "@/lib/api";
+
 import TaskTableRow from "./task-table-row";
 
 interface TaskTableProps {

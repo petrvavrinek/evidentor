@@ -1,5 +1,6 @@
 import { Project } from "@/lib/api/types.gen";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 
 interface ProjectCardProps {
   project: Project;

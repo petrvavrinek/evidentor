@@ -1,12 +1,13 @@
 "use client";
 
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { Tabs, TabsContent } from "@evidentor/ui/components/ui/tabs";
 
 import { SignInForm } from "@/components/auth/sign-in-form";
 import { SignUpForm } from "@/components/auth/sign-up-form";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
 
 export default function AuthPage() {
 	const [activeTab, setActiveTab] = useState("signin");

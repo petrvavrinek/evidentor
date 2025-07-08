@@ -3,8 +3,13 @@
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@evidentor/ui/components/ui/popover";
+
 import SearchInput from "./search-input";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export interface SearchSuggestionResult {
 	id: string | number;

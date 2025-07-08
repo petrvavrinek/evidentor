@@ -6,9 +6,10 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { UAParser } from "ua-parser-js";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Badge } from "@evidentor/ui/components/ui/badge";
+import { Button } from "@evidentor/ui/components/ui/button";
+import { Card, CardContent, CardTitle } from "@evidentor/ui/components/ui/card";
+
 import { authClient } from "@/lib/auth-client";
 
 interface SessionItemProps {

@@ -1,3 +1,14 @@
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@evidentor/ui/components/ui/alert";
 import {
 	Form,
 	FormControl,
@@ -5,17 +16,11 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "@evidentor/ui/components/ui/form";
+import { Input } from "@evidentor/ui/components/ui/input";
+import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 
 import { authClient } from "@/lib/auth-client";
-import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import LoadableButton from "../ui/loadable-button";
 
 interface RegisterFormProps {
 	className?: React.ComponentProps<"div">["className"];

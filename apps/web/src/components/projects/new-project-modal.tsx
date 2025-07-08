@@ -8,7 +8,8 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
+} from "@evidentor/ui/components/ui/dialog";
+
 import { postProject } from "@/lib/api";
 import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import type {

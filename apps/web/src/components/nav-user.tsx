@@ -1,8 +1,13 @@
 "use client";
 
-import { Bell, Ellipsis, LogOut, User } from "lucide-react";
+import { Ellipsis, LogOut, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@evidentor/ui/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,14 +16,13 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@evidentor/ui/components/ui/dropdown-menu";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar";
-import { useRouter } from "next/navigation";
+} from "@evidentor/ui/components/ui/sidebar";
 
 export function NavUser({
 	user,

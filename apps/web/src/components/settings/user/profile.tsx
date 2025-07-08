@@ -2,12 +2,21 @@
 
 import { Upload } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { TypographyH3 } from "@/components/ui/typography";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@evidentor/ui/components/ui/avatar";
+import { Button } from "@evidentor/ui/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+} from "@evidentor/ui/components/ui/card";
+import { Input } from "@evidentor/ui/components/ui/input";
+import { Label } from "@evidentor/ui/components/ui/label";
+import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
+
 import { authClient } from "@/lib/auth-client";
 
 export default function Profile() {

@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 
+import { Label } from "@evidentor/ui/components/ui/label";
+
 import type { Project, ProjectTask } from "@/lib/api";
 
 import { ProjectSelect } from "../project-select";
 import TaskSelect from "../task-select";
-import { Label } from "../ui/label";
 
 interface ProjectTaskSelectProps {
 	projectId?: Project["id"];

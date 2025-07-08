@@ -1,7 +1,12 @@
 import type React from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Progress } from "../ui/progress";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@evidentor/ui/components/ui/card";
+import { Progress } from "@evidentor/ui/components/ui/progress";
 
 interface DashboardCardProps {
 	title: string;
