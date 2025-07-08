@@ -12,14 +12,18 @@
 		"dev": "email dev"
 	},
 	"devDependencies": {
+		"@react-email/preview-server": "^4.1.0",
 		"@types/bun": "latest",
-		"react-email": "4.0.17"
+		"react-email": "^4.1.0",
+		"tailwindcss": "^4.1.11"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
 	},
 	"dependencies": {
-		"@react-email/components": "0.1.1",
+		"@react-email/components": "0.2.0",
+		"@tailwindcss/postcss": "^4.1.11",
+		"lucide-react": "^0.525.0",
 		"react": "19.1.0",
 		"react-dom": "19.1.0"
 	}
