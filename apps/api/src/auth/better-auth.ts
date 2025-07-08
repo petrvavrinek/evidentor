@@ -8,6 +8,8 @@ import { db } from "../database";
 import * as authSchema from "../db/auth.schema";
 import env from "../env";
 
+import { EmailQueue } from "@evidentor/queues";
+
 export const auth = betterAuth({
 	basePath: "/auth",
 	database: drizzleAdapter(db, {
@@ -51,6 +53,19 @@ export const auth = betterAuth({
 			prompt: "select_account",
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
+		},
+	},
+
+	databaseHooks: {
+		user: {
+			create: {
+				after: async (user, context) => {
+					await EmailQueue.add("welcome", {
+						type: "welcome-email",
+						data: { to: user.email, user: { name: user.name } },
+					});
+				},
+			},
 		},
 	},
 });

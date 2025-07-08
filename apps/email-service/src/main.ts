@@ -2,13 +2,28 @@ import { render } from "@react-email/components";
 import WelcomeEmail from "../emails/welcome-email";
 import { sendMail } from "./transport";
 
-const main = async () => {
-	const res = await render(
-		WelcomeEmail({ user: { email: "vavrinek", name: "petr" } }),
-	);
-	const r = await sendMail("vavrinekpetr155@gmail.com", "Test", res);
+import {
+	createWorker,
+	EmailQueue,
+	type EmailQueueDataType,
+	type EmailQueueResultType,
+} from "@evidentor/queues";
 
-	console.log(r);
-};
+const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
+	EmailQueue.name,
+	async (job) => {
+		const { data } = job;
 
-main();
+		if (data.type === "welcome-email") {
+			const rendered = await render(
+				WelcomeEmail({
+					user: { email: data.data.to, name: data.data.user.name },
+				}),
+			);
+
+			await sendMail(data.data.to, "Welcome!", rendered);
+		}
+
+		return { ok: true };
+	},
+);
