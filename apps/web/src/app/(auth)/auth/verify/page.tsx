@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import type { User } from "better-auth";
 import { ArrowLeft, Check, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ import {
 } from "@evidentor/ui/components/ui/alert";
 import { Button } from "@evidentor/ui/components/ui/button";
 
-export default function AuthPage() {
+export function AuthPage() {
 	const [verifyStatus, setVerifyStatus] = useState<boolean | undefined>(false);
 	const [tokenUser, setTokenUser] = useState<User | null>(null);
 	const [verificationEmailSent, setVerificationEmailSent] = useState(false);
@@ -99,5 +99,13 @@ export default function AuthPage() {
 				)}
 			</AlertDescription>
 		</Alert>
+	);
+}
+
+export default function AuthSuspensePage() {
+	return (
+		<Suspense>
+			<AuthPage />
+		</Suspense>
 	);
 }
