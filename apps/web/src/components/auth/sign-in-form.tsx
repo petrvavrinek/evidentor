@@ -52,6 +52,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
 		const result = await authClient.signIn.email({
 			email: e.email,
 			password: e.password,
+			callbackURL: `${publicConfig.PublicUrl}/app`
 		});
 
 		if (result.error?.message) setErrorMessage(result.error.message);

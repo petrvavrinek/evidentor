@@ -45,18 +45,6 @@ export default function AuthLayout({
 							</Alert>
 							{children}
 						</CardContent>
-						{/* <CardFooter className="flex justify-center text-sm text-gray-500 pt-6">
-							<div className="text-center">
-								Protected by our{" "}
-								<a href="/terms" className="underline hover:text-gray-700">
-									Terms of Service
-								</a>{" "}
-								and{" "}
-								<a href="/privacy" className="underline hover:text-gray-700">
-									Privacy Policy
-								</a>
-							</div>
-						</CardFooter> */}
 					</Card>
 
 					{/* Additional Info */}

@@ -1,4 +1,5 @@
-import { Clock, Shield } from "lucide-react";
+import { Link } from "@react-email/components";
+import { Shield } from "lucide-react";
 import Layout from "./layout";
 
 interface VerificationEmailProps {
@@ -32,12 +33,12 @@ export default function VerificationEmail({
 
 			{/* Verification Button */}
 			<div className="text-center mb-8">
-				<a
+				<Link
 					href={verificationLink}
 					className="inline-block bg-primary text-white no-underline font-semibold py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
 				>
 					Verify Email Address
-				</a>
+				</Link>
 			</div>
 
 			{/* Alternative Link */}

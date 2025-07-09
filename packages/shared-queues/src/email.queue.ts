@@ -11,6 +11,10 @@ export type EmailQueueDataType =
 	| EmailQueueEvent<
 			"verification-email",
 			{ to: string; user: { name: string }; token: string }
+	  >
+	| EmailQueueEvent<
+			"password-reset",
+			{ to: string; user: { name: string }; token: string }
 	  >;
 
 export type EmailQueueResultType = {

@@ -23,6 +23,9 @@ export default function AuthPage() {
 			<TabsContent value="signin">
 				<SignInForm>
 					<div className="text-center text-sm">
+						<Link href="/auth/password-reset" className="underline underline-offset-4">Forgot your password?</Link>
+					</div>
+					<div className="text-center text-sm">
 						Don&apos;t have an account?{" "}
 						<Link
 							href="?action=signup"

@@ -20,6 +20,18 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: true,
+		sendResetPassword: async (data) => {
+			logger.info(`Sending password reset email to ${data.user.email}`);
+			await EmailQueue.add("welcome", {
+				type: "password-reset",
+				data: {
+					to: data.user.email,
+					token: data.token,
+					user: { name: data.user.name },
+				},
+			});
+		},
+		resetPasswordTokenExpiresIn: 1000 * 60 * 60,
 	},
 	trustedOrigins: ["*"],
 
@@ -55,14 +67,13 @@ export const auth = betterAuth({
 			prompt: "select_account",
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
-
 		},
 	},
 	// databaseHooks: {
 	// 	user: {
 	// 		create: {
 	// 			after: async (user, context) => {
-					
+
 	// 				logger.info(`Sending welcome email to ${user.email}`);
 	// 				await EmailQueue.add("welcome", {
 	// 					type: "welcome-email",
@@ -86,7 +97,7 @@ export const auth = betterAuth({
 		},
 		sendOnSignUp: true,
 		autoSignInAfterVerification: true,
-		expiresIn: 1000 * 60 * 60 * 24 // 24 hours
+		expiresIn: 1000 * 60 * 60 * 24, // 24 hours
 	},
 });
 
