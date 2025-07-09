@@ -19,6 +19,7 @@ export const auth = betterAuth({
 	}),
 	emailAndPassword: {
 		enabled: true,
+		requireEmailVerification: true,
 	},
 	trustedOrigins: ["*"],
 
@@ -54,21 +55,38 @@ export const auth = betterAuth({
 			prompt: "select_account",
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
+
 		},
 	},
-
-	databaseHooks: {
-		user: {
-			create: {
-				after: async (user, context) => {
-					logger.info(`Sending welcome email to ${user.email}`);
-					await EmailQueue.add("welcome", {
-						type: "welcome-email",
-						data: { to: user.email, user: { name: user.name } },
-					});
+	// databaseHooks: {
+	// 	user: {
+	// 		create: {
+	// 			after: async (user, context) => {
+					
+	// 				logger.info(`Sending welcome email to ${user.email}`);
+	// 				await EmailQueue.add("welcome", {
+	// 					type: "welcome-email",
+	// 					data: { to: user.email, user: { name: user.name } },
+	// 				});
+	// 			},
+	// 		},
+	// 	},
+	// },
+	emailVerification: {
+		sendVerificationEmail: async (data) => {
+			logger.info(`Sending verification email to ${data.user.email}`);
+			await EmailQueue.add("welcome", {
+				type: "verification-email",
+				data: {
+					to: data.user.email,
+					token: data.token,
+					user: { name: data.user.name },
 				},
-			},
+			});
 		},
+		sendOnSignUp: true,
+		autoSignInAfterVerification: true,
+		expiresIn: 1000 * 60 * 60 * 24 // 24 hours
 	},
 });
 
