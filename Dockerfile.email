@@ -62,9 +62,6 @@ RUN echo "Run stage" ; ls -l
 ENV NODE_ENV=production
 ENV PORT=3000
 
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl -f http://localhost:3000/status || exit 1
-
 CMD ["./server"]
 
 # Expose port 3000
