@@ -37,6 +37,8 @@ import type {
   GetTimeEntryResponses,
   PostTimeEntryData,
   PostTimeEntryResponses,
+  GetTimeEntryAnalyzeDurationByDateData,
+  GetTimeEntryAnalyzeDurationByDateResponses,
   GetProjectTaskCountData,
   GetProjectTaskCountResponses,
   GetProjectTaskData,
@@ -49,6 +51,8 @@ import type {
   PostProjectTaskByIdResponses,
   GetStatusData,
   GetStatusResponses,
+  HeadStatusData,
+  HeadStatusResponses,
   SocialSignInData,
   SocialSignInResponses,
   SocialSignInErrors,
@@ -148,6 +152,7 @@ import {
   zPatchTimeEntryByIdResponse,
   zGetTimeEntryResponse,
   zPostTimeEntryResponse,
+  zGetTimeEntryAnalyzeDurationByDateResponse,
   zGetProjectTaskCountResponse,
   zGetProjectTaskResponse,
   zPostProjectTaskByIdResponse,
@@ -528,6 +533,24 @@ export const postTimeEntry = <ThrowOnError extends boolean = false>(
   });
 };
 
+export const getTimeEntryAnalyzeDurationByDate = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<GetTimeEntryAnalyzeDurationByDateData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetTimeEntryAnalyzeDurationByDateResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseValidator: async (data) => {
+      return await zGetTimeEntryAnalyzeDurationByDateResponse.parseAsync(data);
+    },
+    url: "/time-entry/analyze/duration-by-date",
+    ...options,
+  });
+};
+
 export const getProjectTaskCount = <ThrowOnError extends boolean = false>(
   options?: Options<GetProjectTaskCountData, ThrowOnError>,
 ) => {
@@ -621,6 +644,19 @@ export const getStatus = <ThrowOnError extends boolean = false>(
 ) => {
   return (options?.client ?? _heyApiClient).get<
     GetStatusResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/status",
+    ...options,
+  });
+};
+
+export const headStatus = <ThrowOnError extends boolean = false>(
+  options?: Options<HeadStatusData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).head<
+    HeadStatusResponses,
     unknown,
     ThrowOnError
   >({

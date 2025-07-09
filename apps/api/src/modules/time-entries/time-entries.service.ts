@@ -1,9 +1,10 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, gte, lte, sql, SQLWrapper } from "drizzle-orm";
 
 import { timeEntry } from "@/db/schema";
 
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
+import { TimeEntryFilterType } from "./time-entries.dto";
 
 type TimeEntry = typeof timeEntry.$inferSelect;
 
@@ -129,5 +130,43 @@ export const TimeEntriesService = {
 			.returning();
 
 		return entry[0] ?? null;
+	},
+
+	/**
+	 * Outputs dates and ms to each da
+	 * @param userId User ID
+	 * @param filter Filter
+	 */
+	async getDurationEachDate(userId: string, filter?: TimeEntryFilterType) {
+		const filters = [];
+
+		if (filter?.projectId)
+			filters.push(eq(timeEntry.projectId, filter.projectId));
+
+		if (filter?.from) {
+			filters.push(
+				and(
+					gte(timeEntry.startAt, filter.from),
+					gte(timeEntry.endAt, filter.from),
+				),
+			);
+		}
+
+		if (filter?.to) {
+			filters.push(
+				and(lte(timeEntry.startAt, filter.to), lte(timeEntry.endAt, filter.to)),
+			);
+		}
+
+		const query = db
+			.select({
+				date: sql<Date>`DATE(${timeEntry.startAt})`,
+				duration: sql<number>`ROUND(SUM(EXTRACT(EPOCH FROM (${timeEntry.endAt} - ${timeEntry.startAt}))))`,
+			})
+			.from(timeEntry)
+			.where(and(eq(timeEntry.userId, userId), ...filters));
+
+		const result = await query.groupBy(sql`DATE(${timeEntry.startAt})`);
+		return result.map((e) => ({ date: e.date, duration: Number(e.duration) }));
 	},
 };

@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@evidentor/ui/components/ui/alert";
+import {
 	Form,
 	FormControl,
 	FormField,
@@ -15,10 +20,9 @@ import {
 import { Input } from "@evidentor/ui/components/ui/input";
 import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { authClient } from "@/lib/auth-client";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const FormSchema = z.object({
 	password: z.string().min(6),

@@ -83,6 +83,8 @@ export default function SessionsPage() {
 								authClient.revokeSession({ token: e.token }).then((res) => {
 									if (res.data?.status && sessionData?.session.id === e.id)
 										redirect("/auth");
+
+									setSessions(sessions.filter((s) => s.id !== e.id));
 								});
 							}}
 						/>

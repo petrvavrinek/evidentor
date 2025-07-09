@@ -43,7 +43,7 @@ export const ProjectResponse = t.Omit(SelectProject, ["ownerId", "clientId"]);
 export const ProjectsResponse = t.Array(ProjectResponse);
 
 export const ProjectQueryFilter = t.Object({
-  client: t.Optional(t.Number()),
+  client: t.Optional(t.Number({ default: 0 })),
   from: t.Optional(t.Date()),
   to: t.Optional(t.Date())
 })

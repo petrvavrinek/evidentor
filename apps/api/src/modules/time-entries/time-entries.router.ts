@@ -3,6 +3,8 @@ import { betterAuth } from "../../auth/auth.middleware";
 import {
 	CreateTimeEntry,
 	TimeEntriesResponse,
+	TimeEntryDurationByDate,
+	TimeEntryFilter,
 	TimeEntryIdParam,
 	TimeEntryResponse,
 	UpdateTimeEntry,
@@ -16,6 +18,7 @@ export const router = new Elysia({
 	.use(betterAuth)
 	.model("TimeEntry", TimeEntryResponse)
 	.model("TimeEntry[]", TimeEntriesResponse)
+	.model("TimeEntryDurationByDate", TimeEntryDurationByDate)
 	.get(
 		"/active",
 		async ({ user }) => {
@@ -124,4 +127,13 @@ export const router = new Elysia({
 				},
 			},
 		},
+	)
+	.get(
+		"analyze/duration-by-date",
+		async ({ user, query }) => {
+			return TimeEntriesService.getDurationEachDate(user.id, query);
+		},
+		{ auth: true, query: TimeEntryFilter, response: "TimeEntryDurationByDate" },
 	);
+
+TimeEntriesService.getDurationEachDate("q2xXlchLxHLwo8HnRsiauIpF1d7WAa9O");

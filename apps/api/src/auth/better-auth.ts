@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+import { EmailQueue } from "@evidentor/queues";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI } from "better-auth/plugins";
@@ -7,8 +8,6 @@ import { openAPI } from "better-auth/plugins";
 import { db } from "../database";
 import * as authSchema from "../db/auth.schema";
 import env from "../env";
-
-import { EmailQueue } from "@evidentor/queues";
 import logger from "../logger";
 
 export const auth = betterAuth({
@@ -34,21 +33,7 @@ export const auth = betterAuth({
 		resetPasswordTokenExpiresIn: 1000 * 60 * 60,
 	},
 	trustedOrigins: ["*"],
-
-	plugins: [
-		openAPI(),
-		// organization({
-		//   // Enable teams with 1 default
-		//   teams: {
-		//     enabled: true,
-		//     maximumTeams: 1,
-		//     allowRemovingAllTeams: false,
-		//     defaultTeam: {
-		//       enabled: true,
-		//     },
-		//   },
-		// }),
-	],
+	plugins: [openAPI()],
 	advanced: {
 		crossSubDomainCookies: {
 			enabled: true,
@@ -69,20 +54,6 @@ export const auth = betterAuth({
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		},
 	},
-	// databaseHooks: {
-	// 	user: {
-	// 		create: {
-	// 			after: async (user, context) => {
-
-	// 				logger.info(`Sending welcome email to ${user.email}`);
-	// 				await EmailQueue.add("welcome", {
-	// 					type: "welcome-email",
-	// 					data: { to: user.email, user: { name: user.name } },
-	// 				});
-	// 			},
-	// 		},
-	// 	},
-	// },
 	emailVerification: {
 		sendVerificationEmail: async (data) => {
 			logger.info(`Sending verification email to ${data.user.email}`);

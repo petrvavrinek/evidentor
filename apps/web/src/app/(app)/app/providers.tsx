@@ -1,11 +1,15 @@
 "use client";
 
+import {
+	SidebarInset,
+	SidebarProvider,
+} from "@evidentor/ui/components/ui/sidebar";
+import { Toaster } from "@evidentor/ui/components/ui/sonner";
+
 import { AppSidebar } from "@/components/app-sidebar";
 import AuthProtect from "@/components/auth/auth-redirect";
 import { ThemeProvider } from "@/components/theme-provider";
 import ActiveTimeEntryContainer from "@/components/time-entries/active-time-entry-container";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
 import VersionTag from "@/components/version-tag";
 import ActiveTimeEntryProvider from "@/providers/active-time-entry-provider";
 

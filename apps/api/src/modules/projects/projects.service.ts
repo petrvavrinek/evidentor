@@ -1,6 +1,6 @@
 import { and, count, eq, gte, lte } from "drizzle-orm";
 import { db } from "../../database";
-import { client, project } from "../../db/schema";
+import { project } from "../../db/schema";
 import { ProjectQueryFilterType } from "./projects.dto";
 
 type Project = typeof project.$inferInsert;
@@ -56,15 +56,17 @@ export const ProjectsService = {
 		userId: string,
 		filter?: ProjectQueryFilterType,
 	): Promise<number> {
+		const filters = [];
+
+		if (filter?.client) filters.push(eq(project.clientId, filter.client));
+		if (filter?.from) filters.push(gte(project.createdAt, filter.from));
+		if (filter?.to) filters.push(lte(project.createdAt, filter.to));
+
 		const query = db
 			.select({ count: count() })
 			.from(project)
 			.$dynamic()
-			.where(eq(project.ownerId, userId));
-
-		if (filter?.client) query.where(eq(project.clientId, filter.client));
-		if (filter?.from) query.where(gte(project.createdAt, filter.from));
-		if (filter?.to) query.where(lte(project.createdAt, filter.to));
+			.where(and(eq(project.ownerId, userId), ...filters));
 
 		const result = await query;
 		return result[0]?.count ?? 0;

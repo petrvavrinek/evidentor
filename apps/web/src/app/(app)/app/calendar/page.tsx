@@ -88,7 +88,6 @@ export default function CalendarPage() {
 								date={currentDate}
 								onDateSelect={setCurrentDate}
 								events={ev}
-								onMonthViewChange={(a, b) => console.log(a, b)}
 							/>
 						</CardContent>
 					</Card>

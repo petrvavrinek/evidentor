@@ -45,7 +45,6 @@ export default function ClientSelect({ value, onChange }: ClientSelectProps) {
 		currentValue: string,
 		suggestion?: SearchSuggestionResult,
 	) => {
-		console.log(currentValue);
 		setInputValue(currentValue);
 		if (currentValue === "") {
 			onChange(null);

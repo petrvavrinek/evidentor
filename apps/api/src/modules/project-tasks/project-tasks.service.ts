@@ -1,4 +1,4 @@
-import { count, eq, getTableColumns, gte, lte } from "drizzle-orm";
+import { and, count, eq, getTableColumns, gte, lte } from "drizzle-orm";
 
 import { client, project, projectTask } from "@/db/schema";
 import { db } from "../../database";
@@ -132,16 +132,17 @@ export const ProjectTasksService = {
 		userId: string,
 		filter?: ProjectTaskBetweenFilterType,
 	): Promise<number> {
+		const filters = [];
+
+		if (filter?.project) filters.push(eq(project.id, filter.project));
+		if (filter?.from) filters.push(gte(projectTask.createdAt, filter.from));
+		if (filter?.to) filters.push(lte(projectTask.createdAt, filter.to));
+
 		const query = db
 			.select({ count: count() })
 			.from(projectTask)
 			.leftJoin(project, eq(projectTask.projectId, project.id))
-			.where(eq(project.ownerId, userId))
-			.$dynamic();
-
-		if (filter?.project) query.where(eq(project.id, filter.project));
-		if (filter?.from) query.where(gte(projectTask.createdAt, filter.from));
-		if (filter?.to) query.where(lte(projectTask.createdAt, filter.to));
+			.where(and(eq(project.ownerId, userId), ...filters));
 
 		const r = await query;
 		return r[0]?.count ?? 0;

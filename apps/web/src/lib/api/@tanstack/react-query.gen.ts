@@ -19,6 +19,7 @@ import {
   patchTimeEntryById,
   getTimeEntry,
   postTimeEntry,
+  getTimeEntryAnalyzeDurationByDate,
   getProjectTaskCount,
   getProjectTask,
   deleteProjectTaskById,
@@ -82,6 +83,7 @@ import type {
   GetTimeEntryData,
   PostTimeEntryData,
   PostTimeEntryResponse,
+  GetTimeEntryAnalyzeDurationByDateData,
   GetProjectTaskCountData,
   GetProjectTaskData,
   DeleteProjectTaskByIdData,
@@ -661,6 +663,27 @@ export const postTimeEntryMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getTimeEntryAnalyzeDurationByDateQueryKey = (
+  options?: Options<GetTimeEntryAnalyzeDurationByDateData>,
+) => createQueryKey("getTimeEntryAnalyzeDurationByDate", options);
+
+export const getTimeEntryAnalyzeDurationByDateOptions = (
+  options?: Options<GetTimeEntryAnalyzeDurationByDateData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getTimeEntryAnalyzeDurationByDate({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getTimeEntryAnalyzeDurationByDateQueryKey(options),
+  });
 };
 
 export const getProjectTaskCountQueryKey = (
