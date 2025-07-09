@@ -15,7 +15,7 @@ import {
 } from "@evidentor/ui/components/ui/alert";
 import { Button } from "@evidentor/ui/components/ui/button";
 
-export function AuthPage() {
+function AuthPage() {
 	const [verifyStatus, setVerifyStatus] = useState<boolean | undefined>(false);
 	const [tokenUser, setTokenUser] = useState<User | null>(null);
 	const [verificationEmailSent, setVerificationEmailSent] = useState(false);
