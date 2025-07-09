@@ -12,6 +12,7 @@ import logger from "./logger";
 import WelcomeEmail from "../emails/welcome-email";
 import VerificationEmail from "../emails/verification-email";
 import { envConfig } from "./config";
+import PasswordResetEmail from "../emails/password-reset-email";
 
 const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 	EmailQueue.name,
@@ -41,6 +42,19 @@ const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 				);
 
 				await sendMail(data.data.to, "Account verification", rendered);
+				break;
+			}
+
+			case "password-reset": {
+				const passwordResetLink = `${envConfig.FRONTEND_URL}/auth/password-reset?token=${data.data.token}`;
+				const rendered = await render(
+					PasswordResetEmail({
+						passwordResetLink,
+						user: { email: data.data.to, name: data.data.user.name },
+					}),
+				);
+
+				await sendMail(data.data.to, "Password reset", rendered);
 				break;
 			}
 		}
