@@ -30,4 +30,13 @@ const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 	},
 );
 
+const server = Bun.serve({
+	routes: {
+		"/status": new Response("OK"),
+	},
+	port: process.env.PORT ?? 3000,
+	hostname: "0.0.0.0",
+});
+
+logger.info(`Listening for healthchecks on ${server.hostname}:${server.port}`);
 logger.info(`Connected and waiting for jobs...`);
