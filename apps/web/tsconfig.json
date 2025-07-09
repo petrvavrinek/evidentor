@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/components/ui/*": ["../../packages/shared-ui/components/ui/*"],
+      // "@/components/ui/*": ["../../packages/shared-ui/components/ui/*"],
       "@/*": ["./src/*"],
     }
   },

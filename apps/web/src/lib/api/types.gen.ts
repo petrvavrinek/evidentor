@@ -98,6 +98,11 @@ export type TimeEntry2 = Array<{
   } | null;
 }>;
 
+export type TimeEntryDurationByDate = Array<{
+  date: unknown | string | number;
+  duration: number;
+}>;
+
 export type ProjectTask = {
   id: number;
   title: string;
@@ -467,6 +472,24 @@ export type PostTimeEntryResponses = {
 export type PostTimeEntryResponse =
   PostTimeEntryResponses[keyof PostTimeEntryResponses];
 
+export type GetTimeEntryAnalyzeDurationByDateData = {
+  body?: never;
+  path?: never;
+  query?: {
+    projectId?: number | null;
+    from?: unknown | string | number;
+    to?: unknown | string | number;
+  };
+  url: "/time-entry/analyze/duration-by-date";
+};
+
+export type GetTimeEntryAnalyzeDurationByDateResponses = {
+  200: TimeEntryDurationByDate;
+};
+
+export type GetTimeEntryAnalyzeDurationByDateResponse =
+  GetTimeEntryAnalyzeDurationByDateResponses[keyof GetTimeEntryAnalyzeDurationByDateResponses];
+
 export type GetProjectTaskCountData = {
   body?: never;
   path?: never;
@@ -557,6 +580,17 @@ export type GetStatusData = {
 };
 
 export type GetStatusResponses = {
+  200: unknown;
+};
+
+export type HeadStatusData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/status";
+};
+
+export type HeadStatusResponses = {
   200: unknown;
 };
 

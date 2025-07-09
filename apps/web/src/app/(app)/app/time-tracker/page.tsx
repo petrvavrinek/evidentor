@@ -8,21 +8,26 @@ import PageHeader from "@/components/page-header";
 import TimeEntriesTable from "@/components/time-entries/time-entries-table";
 import ManualTimeEntry from "@/components/time-tracker/manual-time-entry";
 import Stopwatch from "@/components/time-tracker/stopwatch";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getTimeEntry, type TimeEntry } from "@/lib/api";
 import {
 	deleteTimeEntryByIdMutation,
 	getProjectTaskQueryKey,
 } from "@/lib/api/@tanstack/react-query.gen";
 import { groupBy } from "@/lib/utils";
-import { TypographyH3 } from "@/components/ui/typography";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@evidentor/ui/components/ui/card";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@evidentor/ui/components/ui/tabs";
+import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US");
 

@@ -1,4 +1,4 @@
-import { and, eq, gte, lte, sql } from "drizzle-orm";
+import { and, eq, gte, lte, sql, SQLWrapper } from "drizzle-orm";
 
 import { timeEntry } from "@/db/schema";
 
@@ -138,19 +138,13 @@ export const TimeEntriesService = {
 	 * @param filter Filter
 	 */
 	async getDurationEachDate(userId: string, filter?: TimeEntryFilterType) {
-		const query = db
-			.select({
-				date: sql<Date>`DATE(${timeEntry.startAt})`,
-				duration: sql<number>`ROUND(SUM(EXTRACT(EPOCH FROM (${timeEntry.endAt} - ${timeEntry.startAt}))))`,
-			})
-			.from(timeEntry)
-			.$dynamic()
-			.where(eq(timeEntry.userId, userId));
+		const filters = [];
 
 		if (filter?.projectId)
-			query.where(eq(timeEntry.projectId, filter.projectId));
+			filters.push(eq(timeEntry.projectId, filter.projectId));
+
 		if (filter?.from) {
-			query.where(
+			filters.push(
 				and(
 					gte(timeEntry.startAt, filter.from),
 					gte(timeEntry.endAt, filter.from),
@@ -159,10 +153,19 @@ export const TimeEntriesService = {
 		}
 
 		if (filter?.to) {
-			query.where(
+			filters.push(
 				and(lte(timeEntry.startAt, filter.to), lte(timeEntry.endAt, filter.to)),
 			);
 		}
+
+		const query = db
+			.select({
+				date: sql<Date>`DATE(${timeEntry.startAt})`,
+				duration: sql<number>`ROUND(SUM(EXTRACT(EPOCH FROM (${timeEntry.endAt} - ${timeEntry.startAt}))))`,
+			})
+			.from(timeEntry)
+			.where(and(eq(timeEntry.userId, userId), ...filters));
+
 		const result = await query.groupBy(sql`DATE(${timeEntry.startAt})`);
 		return result.map((e) => ({ date: e.date, duration: Number(e.duration) }));
 	},

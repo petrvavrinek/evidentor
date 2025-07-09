@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardCountCard from "@/components/dashboard/dashboard-count-card";
+import HoursSummaryCard from "@/components/dashboard/hours-summary-card";
 
 import { getProjectCount, getProjectTaskCount } from "@/lib/api";
 
@@ -17,12 +18,15 @@ export default function Home() {
 
 	return (
 		<div className="flex flex-1 flex-col">
-			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
 				<DashboardCountCard title="Project count" countFn={getProjectCountFn} />
 				<DashboardCountCard
 					title="Task count"
 					countFn={getProjectTaskCountFn}
 				/>
+			</div>
+			<div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 md-b4">
+				<HoursSummaryCard />
 			</div>
 
 			<div className="mt-5">WIP</div>

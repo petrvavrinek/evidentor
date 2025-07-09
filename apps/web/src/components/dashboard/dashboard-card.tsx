@@ -3,6 +3,7 @@ import type React from "react";
 import {
 	Card,
 	CardContent,
+	CardDescription,
 	CardHeader,
 	CardTitle,
 } from "@evidentor/ui/components/ui/card";
@@ -15,7 +16,6 @@ interface DashboardCardProps {
 	children: React.ReactNode;
 	progress?: number;
 }
-// <Clock className="h-4 w-4 text-muted-foreground" />
 
 /**
  * Base dashboard card
@@ -27,13 +27,18 @@ export default function DashboardCard({
 	icon,
 	children,
 	progress,
+	subtitle,
 }: DashboardCardProps) {
 	return (
 		<Card>
-			<CardHeader className="flex flex-row items-center justify-between">
-				<CardTitle className="text-sm font-medium">{title}</CardTitle>
-				{icon}
+			<CardHeader className="flex flex-col gap-2">
+				<div className="flex flex-row items-center justify-between">
+					<CardTitle className="text-sm font-medium">{title}</CardTitle>
+					{icon}
+				</div>
+				{subtitle && <CardDescription> {subtitle}</CardDescription>}
 			</CardHeader>
+
 			<CardContent>
 				{children}
 				{progress !== undefined && <Progress value={81} className="h-1 mt-2" />}

@@ -122,7 +122,7 @@ export default function ClientsPage() {
 											colSpan={6}
 											className="text-center py-8 text-muted-foreground"
 										>
-											No clients found. Try adjusting your search or filters.
+											No clients found.
 										</TableCell>
 									</TableRow>
 								) : (

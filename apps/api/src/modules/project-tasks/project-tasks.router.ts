@@ -60,7 +60,6 @@ export const router = new Elysia({
 				user.id,
 			))!;
 
-			console.dir(result, { depth: null });
 			return result;
 		},
 		{

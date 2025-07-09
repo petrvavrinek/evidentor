@@ -549,6 +549,38 @@ export const TimeEntry__Schema = {
   $id: "#/components/schemas/TimeEntry[]",
 } as const;
 
+export const TimeEntryDurationByDateSchema = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      date: {
+        anyOf: [
+          {
+            type: "Date",
+          },
+          {
+            format: "date-time",
+            type: "string",
+          },
+          {
+            format: "date",
+            type: "string",
+          },
+          {
+            type: "number",
+          },
+        ],
+      },
+      duration: {
+        type: "number",
+      },
+    },
+    required: ["date", "duration"],
+  },
+  $id: "#/components/schemas/TimeEntryDurationByDate",
+} as const;
+
 export const ProjectTaskSchema = {
   type: "object",
   properties: {

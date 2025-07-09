@@ -28,8 +28,6 @@ function AuthPage() {
 		if (!token) return;
 
 		authClient.verifyEmail({ query: { token } }).then((e) => {
-			console.log(e);
-
 			setVerifyStatus(e.data?.status ?? false);
 			setTokenUser(e.data?.user ?? null);
 
