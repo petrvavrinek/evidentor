@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
-import { t } from "elysia";
+import { Static, t } from "elysia";
 
 import { timeEntry } from "@/db/schema";
 import { ProjectResponse } from "../projects/projects.dto";
@@ -56,3 +56,19 @@ export const TimeEntryResponse = t.Omit(SelectTimeEntry, [
  * Time entries response with project data
  */
 export const TimeEntriesResponse = t.Array(TimeEntryResponse);
+
+// Filter from date/to-date
+export const TimeEntryFilter = t.Object({
+	...t.Pick(t.Partial(InsertTimeEntry), ["projectId"]).properties,
+	from: t.Optional(t.Date()),
+	to: t.Optional(t.Date()),
+});
+
+export type TimeEntryFilterType = Static<typeof TimeEntryFilter>;
+
+export const TimeEntryDurationByDate = t.Array(
+	t.Object({
+		date: t.Date(),
+		duration: t.Number(),
+	}),
+);
