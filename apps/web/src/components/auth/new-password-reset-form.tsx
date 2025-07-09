@@ -92,7 +92,7 @@ export function NewPasswordResetSubmitForm({
 									<FormItem>
 										<FormLabel>Password</FormLabel>
 										<FormControl>
-											<Input {...field} />
+											<Input {...field} type="password" />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -106,7 +106,7 @@ export function NewPasswordResetSubmitForm({
 									<FormItem>
 										<FormLabel>Repeat password</FormLabel>
 										<FormControl>
-											<Input {...field} />
+											<Input {...field} type="password" />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
