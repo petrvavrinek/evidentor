@@ -1,14 +1,17 @@
 import { createQueue } from "./queue";
 
-export type EmailQueueDataType = {
-	type: "welcome-email";
-	data: {
-		to: string;
-		user: {
-			name: string;
-		};
-	};
+type EmailQueueEvent<Event extends string, Data> = {
+	type: Event;
+	data: Data;
 };
+
+// Queue data types
+export type EmailQueueDataType =
+	| EmailQueueEvent<"welcome-email", { to: string; user: { name: string } }>
+	| EmailQueueEvent<
+			"verification-email",
+			{ to: string; user: { name: string }; token: string }
+	  >;
 
 export type EmailQueueResultType = {
 	ok: boolean;
@@ -20,4 +23,3 @@ export const EmailQueue = createQueue<
 	EmailQueueResultType,
 	"welcome"
 >("Emails");
-
