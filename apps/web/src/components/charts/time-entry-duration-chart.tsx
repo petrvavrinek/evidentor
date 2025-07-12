@@ -1,5 +1,8 @@
 "use client";
 
+import type { TimeEntryDurationByDate } from "@/lib/api";
+import { getDayNames, getMonthNames, isMonthSame } from "@/lib/dates";
+import { groupBy } from "@/lib/utils";
 import {
 	type ChartConfig,
 	ChartContainer,
@@ -8,23 +11,59 @@ import {
 } from "@evidentor/ui/components/ui/chart";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import type { TimeEntryDurationByDate } from "@/lib/api";
 
 interface TimeEntryDurationChartProps {
 	durations: TimeEntryDurationByDate;
 	transformTitle?: (date: Date) => string;
+	displayType: "day" | "month";
 }
+const dayNames = getDayNames("short");
+const monthNames = getMonthNames("short");
+
+const mapDayName = (e: Date) => dayNames[e.getDay()];
+const mapMonthName = (e: Date) => monthNames[e.getMonth()];
 
 export default function TimeEntryDurationChart({
 	durations,
-	transformTitle,
+	displayType = "day",
 }: TimeEntryDurationChartProps) {
+	const reducedDurations = useMemo(() => {
+		if (displayType === "day") return durations;
+
+		const groupped = groupBy(durations, (e) => {
+			const d = new Date(e.date as string);
+			return `${d.getFullYear()}-${d.getMonth() + 1}-01 15:00:00.00`;
+		});
+
+		return Object.keys(groupped).map<TimeEntryDurationByDate[number]>(
+			(yearMonth) => {
+				const date = new Date(yearMonth);
+				const filteredDurations = durations.filter((e) =>
+					isMonthSame(e.date, date),
+				);
+
+				const totalDuration = filteredDurations.reduce(
+					(prev, current) => prev + current.duration,
+					0,
+				);
+
+				return {
+					date,
+					duration: totalDuration,
+				};
+			},
+		);
+	}, [displayType, durations]);
+
 	const chartData = useMemo<TimeEntryDurationByDate>(() => {
-		return durations.map((e) => ({
-			date: transformTitle?.(new Date(e.date as string)) ?? (e.date as string),
+		return reducedDurations.map((e) => ({
+			date:
+				displayType === "day"
+					? mapDayName(new Date(e.date as never))
+					: mapMonthName(new Date(e.date as never)),
 			duration: Math.floor(e.duration / 60 / 60),
 		}));
-	}, [durations, transformTitle]);
+	}, [reducedDurations, displayType]);
 
 	const chartConfig = {
 		duration: {

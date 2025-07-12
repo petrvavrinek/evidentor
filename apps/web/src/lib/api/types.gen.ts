@@ -99,7 +99,7 @@ export type TimeEntry2 = Array<{
 }>;
 
 export type TimeEntryDurationByDate = Array<{
-  date: unknown | string | number;
+  date: unknown | Date | number;
   duration: number;
 }>;
 
@@ -275,8 +275,8 @@ export type GetProjectCountData = {
   path?: never;
   query?: {
     client?: number;
-    from?: unknown | string | number;
-    to?: unknown | string | number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
   };
   url: "/project/count";
 };
@@ -421,8 +421,8 @@ export type PatchTimeEntryByIdData = {
     title?: string;
     projectId?: number | null;
     projectTaskId?: number | null;
-    startAt?: unknown | string | number;
-    endAt?: (unknown | string | number) | null;
+    startAt?: unknown | Date | number;
+    endAt?: (unknown | Date | number) | null;
   };
   path: {
     id: number;
@@ -457,8 +457,8 @@ export type PostTimeEntryData = {
     title: string;
     projectId: number | null;
     projectTaskId?: number | null;
-    startAt: unknown | string | number;
-    endAt: (unknown | string | number) | null;
+    startAt: unknown | Date | number;
+    endAt: (unknown | Date | number) | null;
   };
   path?: never;
   query?: never;
@@ -477,8 +477,8 @@ export type GetTimeEntryAnalyzeDurationByDateData = {
   path?: never;
   query?: {
     projectId?: number | null;
-    from?: unknown | string | number;
-    to?: unknown | string | number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
   };
   url: "/time-entry/analyze/duration-by-date";
 };
@@ -495,8 +495,8 @@ export type GetProjectTaskCountData = {
   path?: never;
   query?: {
     project?: number;
-    from?: unknown | string | number;
-    to?: unknown | string | number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
   };
   url: "/project-task/count";
 };
@@ -913,11 +913,11 @@ export type PostAuthSignUpEmailResponses = {
       /**
        * When the user was created
        */
-      createdAt: string;
+      createdAt: Date;
       /**
        * When the user was last updated
        */
-      updatedAt: string;
+      updatedAt: Date;
     };
   };
 };
@@ -1008,8 +1008,8 @@ export type PostAuthSignInEmailResponses = {
       name?: string;
       image?: string;
       emailVerified: boolean;
-      createdAt: string;
-      updatedAt: string;
+      createdAt: Date;
+      updatedAt: Date;
     };
   };
 };
@@ -1509,11 +1509,11 @@ export type PostAuthChangePasswordResponses = {
       /**
        * When the user was created
        */
-      createdAt: string;
+      createdAt: Date;
       /**
        * When the user was last updated
        */
-      updatedAt: string;
+      updatedAt: Date;
     };
   };
 };
@@ -2204,8 +2204,8 @@ export type GetAuthListAccountsResponses = {
   200: Array<{
     id?: string;
     provider?: string;
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
   }>;
 };
 
@@ -2416,8 +2416,8 @@ export type PostAuthRefreshTokenResponses = {
     idToken?: string;
     accessToken?: string;
     refreshToken?: string;
-    accessTokenExpiresAt?: string;
-    refreshTokenExpiresAt?: string;
+    accessTokenExpiresAt?: Date;
+    refreshTokenExpiresAt?: Date;
   };
 };
 
@@ -2493,8 +2493,8 @@ export type PostAuthGetAccessTokenResponses = {
     idToken?: string;
     accessToken?: string;
     refreshToken?: string;
-    accessTokenExpiresAt?: string;
-    refreshTokenExpiresAt?: string;
+    accessTokenExpiresAt?: Date;
+    refreshTokenExpiresAt?: Date;
   };
 };
 

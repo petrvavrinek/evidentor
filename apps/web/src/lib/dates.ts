@@ -76,3 +76,19 @@ export const isDateSame = (a: Date, b: Date) =>
 	a.getFullYear() === b.getFullYear() &&
 	a.getMonth() === b.getMonth() &&
 	a.getDate() === b.getDate();
+
+/**
+ * Check if two months are same in same year
+ * @param a 
+ * @param b
+ * @returns
+ */
+export const isMonthSame = (a: Date | unknown, b: Date | unknown) => {
+	const _a = new Date(a as never);
+	const _b = new Date(b as never);
+
+	return (
+		_a.getFullYear() === _b.getFullYear() && _a.getMonth() === _b.getMonth()
+	);
+};
+

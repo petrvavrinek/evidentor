@@ -8,6 +8,8 @@ import logger from "./logger";
 import { auth, OpenAPI } from "./auth";
 import * as routers from "./routers";
 
+
+
 const app = new Elysia()
 	.use(
 		cors({
