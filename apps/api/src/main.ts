@@ -40,6 +40,7 @@ const app = new Elysia()
 	.use(routers.projectRouter)
 	.use(routers.timeEntryRouter)
 	.use(routers.projectTasksRouter)
+	.use(routers.invoicesRouter)
 	.head("/status", () => "ok")
 	.get("/status", () => "ok");
 
