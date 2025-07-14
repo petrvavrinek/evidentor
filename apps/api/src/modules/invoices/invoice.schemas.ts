@@ -1,8 +1,9 @@
-import { client, invoice, project } from "@/db/schema";
-import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
+import { client, invoice, invoiceItem, project } from "@/db/schema";
+import { createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 
-const InvoiceSelectSchema = createInsertSchema(invoice);
+const InvoiceSelectSchema = createSelectSchema(invoice);
+const InvoiceItemSelectSchema = createSelectSchema(invoiceItem);
 
 export const CreateInvoiceSchema = t.Object({
 	...t.Pick(InvoiceSelectSchema, [
@@ -23,8 +24,6 @@ export const CreateInvoiceSchema = t.Object({
 
 export type CreateInvoiceType = Static<typeof CreateInvoiceSchema>;
 
-// export const UpdateInvoice = t.Partial(CreateInvoice);
-
 export const InvoiceIdParam = t.Object({
 	id: t.Number(),
 });
@@ -36,6 +35,7 @@ export const SelectInvoice = t.Object({
 	...createSelectSchema(invoice).properties,
 	project: t.Nullable(InvoiceProjectSelectSchema),
 	client: t.Nullable(InvoiceClientSelectSchema),
+	items: t.Array(InvoiceItemSelectSchema),
 });
 
 export const InvoiceResponse = t.Omit(SelectInvoice, []);
