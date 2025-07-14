@@ -72,5 +72,3 @@ export const TimeEntryDurationByDate = t.Array(
 		duration: t.Number(),
 	}),
 );
-
-console.dir(t.Date(), { depth: null });

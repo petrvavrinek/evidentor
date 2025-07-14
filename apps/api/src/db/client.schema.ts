@@ -1,4 +1,5 @@
-import { pgTable, integer, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
 import { user } from "./auth.schema";
 
 // Temp client data

@@ -1,23 +1,22 @@
 import { and, eq, type SQL } from "drizzle-orm";
 import { db } from "../../database";
-import { invoice } from "../../db/schema";
+import { invoice, invoiceItem } from "../../db/schema";
+import type { CreateInvoiceType } from "./invoice.schemas";
 
 interface CreateInvoiceQueryOptions {
 	filters?: SQL[];
 }
 
 export const InvoicesService = {
-	/**
-	 * Create find query that automatically include relations
-	 * @param options Options to find
-	 * @returns
-	 */
-	async createFindQuery(options?: CreateInvoiceQueryOptions) {
-		const query = db.select().from(invoice).$dynamic();
-
-		if (options?.filters) query.where(and(...options.filters));
-
-		return query;
+	findByOptions(options?: CreateInvoiceQueryOptions) {
+		return db.query.invoice.findMany({
+			with: {
+				client: true,
+				items: true,
+				project: true,
+			},
+			where: options?.filters ? and(...options.filters) : undefined,
+		});
 	},
 
 	/**
@@ -26,7 +25,7 @@ export const InvoicesService = {
 	 * @returns Array of invoices
 	 */
 	findManyByUserId(userId: string) {
-		return this.createFindQuery({ filters: [eq(invoice.ownerId, userId)] });
+		return this.findByOptions({ filters: [eq(invoice.ownerId, userId)] });
 	},
 
 	/**
@@ -36,24 +35,31 @@ export const InvoicesService = {
 	 * @returns Invoice or null
 	 */
 	async findById(userId: string, id: number) {
-		const results = await this.createFindQuery({
+		const results = await this.findByOptions({
 			filters: [eq(invoice.id, id), eq(invoice.ownerId, userId)],
 		});
 
-		return results[0] ?? null;
+		return results?.[0] ?? null;
 	},
 
-	async create(
-		userId: string,
-		data: Partial<
-			Omit<typeof invoice.$inferInsert, "id" | "ownerId" | "createdAt">
-		>,
-	) {
-		const [created] = await db
-			.insert(invoice)
-			.values({ ...data, ownerId: userId })
-			.returning();
-		return created;
+	async create(userId: string, data: CreateInvoiceType) {
+		return db.transaction(async (tx) => {
+			const [created] = await tx
+				.insert(invoice)
+				.values({ ...data, ownerId: userId, amount: 0 })
+				.returning();
+
+			await tx.insert(invoiceItem).values(
+				data.items.map((e) => ({
+					name: e.name,
+					qty: e.qty,
+					unitPrice: e.unitPrice,
+					invoiceId: created.id,
+				})),
+			);
+
+			return created;
+		});
 	},
 
 	async updateById(

@@ -78,6 +78,13 @@
       "when": 1750270434222,
       "tag": "0010_create_project_task_table",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1752485493490,
+      "tag": "0011_create_invoice_table",
+      "breakpoints": true
     }
   ]
 }

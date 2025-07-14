@@ -1,29 +1,35 @@
-import Elysia, { t } from "elysia";
+import Elysia, { status, t } from "elysia";
 import { betterAuth } from "../../auth";
 import {
-	CreateInvoice,
-	UpdateInvoice,
+	CreateInvoiceSchema,
 	InvoiceIdParam,
 	InvoiceResponse,
 	InvoicesResponse,
 } from "./invoice.schemas";
 import { InvoicesService } from "./invoices.service";
 
+import { ClientsService } from "../clients/clients.service";
+import { ProjectsService } from "../projects/projects.service";
+
 export const invoicesRouter = new Elysia({
-	prefix: "/invoices",
+	prefix: "/invoice",
 	detail: { tags: ["Invoice"] },
 })
 	.use(betterAuth)
 	.model("Invoice", InvoiceResponse)
 	.model("Invoice[]", InvoicesResponse)
-	.get("/", async ({ user }) => InvoicesService.findManyByUserId(user.id), {
+	.get("", async ({ user }) => InvoicesService.findManyByUserId(user.id), {
 		auth: true,
 		detail: { description: "Get all user invoices" },
 		response: "Invoice[]",
 	})
 	.get(
-		"/:id",
-		async ({ user, params }) => InvoicesService.findById(user.id, params.id),
+		":id",
+		async ({ user, params }) => {
+			const invoice = await InvoicesService.findById(user.id, params.id);
+			if (!invoice) throw status(404, "Invoice not found");
+			return invoice;
+		},
 		{
 			auth: true,
 			params: InvoiceIdParam,
@@ -31,26 +37,42 @@ export const invoicesRouter = new Elysia({
 			detail: { description: "Get invoice by id" },
 		},
 	)
-	.post("/", async ({ user, body }) => InvoicesService.create(user.id, body), {
-		auth: true,
-		body: CreateInvoice,
-		response: "Invoice",
-		detail: { description: "Create invoice" },
-	})
-	.patch(
-		"/:id",
-		async ({ user, params, body }) =>
-			InvoicesService.updateById(user.id, params.id, body),
+	.post(
+		"",
+		async ({ user, body }) => {
+			if (body.clientId) {
+				const client = await ClientsService.findById(user.id, body.clientId);
+				if (!client) throw status(404, "Client not found");
+			}
+			if (body.projectId) {
+				const project = await ProjectsService.findById(user.id, body.projectId);
+				if (!project) throw status(404, "Project not found");
+			}
+
+			const invoice = await InvoicesService.create(user.id, body);
+			return (await InvoicesService.findById(user.id, invoice.id))!;
+		},
 		{
 			auth: true,
-			params: InvoiceIdParam,
-			body: UpdateInvoice,
+			body: CreateInvoiceSchema,
 			response: "Invoice",
-			detail: { description: "Update invoice" },
+			detail: { description: "Create invoice" },
 		},
 	)
+	// .patch(
+	// 	"/:id",
+	// 	async ({ user, params, body }) =>
+	// 		InvoicesService.updateById(user.id, params.id, body),
+	// 	{
+	// 		auth: true,
+	// 		params: InvoiceIdParam,
+	// 		body: UpdateInvoice,
+	// 		response: "Invoice",
+	// 		detail: { description: "Update invoice" },
+	// 	},
+	// )
 	.delete(
-		"/:id",
+		":id",
 		async ({ user, params }) => {
 			await InvoicesService.deleteById(user.id, params.id);
 			return { success: true };

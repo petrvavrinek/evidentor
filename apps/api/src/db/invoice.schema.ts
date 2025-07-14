@@ -25,9 +25,10 @@ export const invoice = pgTable("invoice", {
 	clientId: integer().references(() => client.id, { onDelete: "set null" }),
 	projectId: integer().references(() => project.id, { onDelete: "set null" }),
 	amount: integer().notNull(),
-	status: text().$type<"draft" | "sent" | "paid" | "overdue">().notNull(),
 	currency: CurrencyEnum().notNull(),
 	dueDate: timestamp(),
+	paidAt: timestamp(),
+	sentAt: timestamp(),
 	issuedAt: timestamp()
 		.$defaultFn(() => new Date())
 		.notNull(),
@@ -40,7 +41,7 @@ export const invoice = pgTable("invoice", {
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
 });
 
-export const invoiceRelations = relations(invoice, ({ one }) => ({
+export const invoiceRelations = relations(invoice, ({ one, many }) => ({
 	client: one(client, {
 		fields: [invoice.clientId],
 		references: [client.id],
@@ -53,6 +54,7 @@ export const invoiceRelations = relations(invoice, ({ one }) => ({
 		fields: [invoice.ownerId],
 		references: [user.id],
 	}),
+	items: many(invoiceItem),
 }));
 
 export const invoiceItem = pgTable("invoice_item", {
