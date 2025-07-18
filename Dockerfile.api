@@ -16,7 +16,7 @@ RUN apt-get update && \
 
 # Copy everything into image
 COPY ./apps/api ./apps/api
-COPY ./packages/shared-queues ./packages/shared-queues
+COPY ./packages/queues ./packages/queues
 COPY ./bun.lock .
 COPY ./package.json .
 

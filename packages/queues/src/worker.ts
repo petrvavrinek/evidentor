@@ -1,4 +1,4 @@
-import { Worker, type Processor } from "bullmq";
+import { type Processor, Worker } from "bullmq";
 import { envConfig } from "./config";
 
 type CreateWorkerOptions = Omit<WorkerOptions, "connection">;

@@ -4,6 +4,7 @@ import { router as projectTasksRouter } from "./modules/project-tasks/project-ta
 import { router as projectRouter } from "./modules/projects/projects.router";
 import { router as timeEntryRouter } from "./modules/time-entries/time-entries.router";
 import { invoicesRouter } from "./modules/invoices/invoices.router";
+import { calendarRouter } from "./modules/calendar/calendar.router";
 
 export {
 	analyticsRouter,
@@ -12,4 +13,5 @@ export {
 	projectTasksRouter,
 	timeEntryRouter,
 	invoicesRouter,
+	calendarRouter,
 };

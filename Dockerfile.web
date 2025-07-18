@@ -11,7 +11,7 @@ COPY ./package.json ./bun.lock ./
 # Copy necessary packages or whole repo
 # To reduce disk space, copy only those that are used
 COPY ./apps/web ./apps/web
-COPY ./packages/shared-ui ./packages/shared-ui
+COPY ./packages/ui ./packages/ui
 
 # Change directory to web
 WORKDIR /app/apps/web
