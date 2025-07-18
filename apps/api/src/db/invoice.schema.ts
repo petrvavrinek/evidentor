@@ -11,6 +11,7 @@ import {
 import { user } from "./auth.schema";
 import { client } from "./client.schema";
 import { project } from "./project.schema";
+import { projectTask } from "./project-task.schema";
 
 // Available currencies
 // TODO: Maybe move this to some config?
@@ -59,6 +60,9 @@ export const invoiceRelations = relations(invoice, ({ one, many }) => ({
 
 export const invoiceItem = pgTable("invoice_item", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
+	projectTaskId: integer().references(() => projectTask.id, {
+		onDelete: "set null",
+	}),
 	name: varchar().notNull(),
 	// TODO: Unsigned int
 	qty: integer().notNull(),
@@ -70,5 +74,9 @@ export const invoiceItemRelations = relations(invoiceItem, ({ one }) => ({
 	invoice: one(invoice, {
 		fields: [invoiceItem.invoiceId],
 		references: [invoice.id],
+	}),
+	projectTask: one(projectTask, {
+		fields: [invoiceItem.projectTaskId],
+		references: [projectTask.id],
 	}),
 }));

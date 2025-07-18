@@ -49,6 +49,14 @@ import type {
   PatchProjectTaskByIdResponses,
   PostProjectTaskByIdData,
   PostProjectTaskByIdResponses,
+  GetInvoiceData,
+  GetInvoiceResponses,
+  PostInvoiceData,
+  PostInvoiceResponses,
+  DeleteInvoiceByIdData,
+  DeleteInvoiceByIdResponses,
+  GetInvoiceByIdData,
+  GetInvoiceByIdResponses,
   GetStatusData,
   GetStatusResponses,
   HeadStatusData,
@@ -179,6 +187,14 @@ import {
   zPatchProjectTaskByIdData,
   zPostProjectTaskByIdData,
   zPostProjectTaskByIdResponse,
+  zGetInvoiceData,
+  zGetInvoiceResponse,
+  zPostInvoiceData,
+  zPostInvoiceResponse,
+  zDeleteInvoiceByIdData,
+  zDeleteInvoiceByIdResponse,
+  zGetInvoiceByIdData,
+  zGetInvoiceByIdResponse,
   zGetStatusData,
   zHeadStatusData,
   zSocialSignInData,
@@ -758,6 +774,98 @@ export const postProjectTaskById = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Get all user invoices
+ */
+export const getInvoice = <ThrowOnError extends boolean = false>(
+  options?: Options<GetInvoiceData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetInvoiceResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoiceData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetInvoiceResponse.parseAsync(data);
+    },
+    url: "/invoice",
+    ...options,
+  });
+};
+
+/**
+ * Create invoice
+ */
+export const postInvoice = <ThrowOnError extends boolean = false>(
+  options: Options<PostInvoiceData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostInvoiceResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPostInvoiceData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostInvoiceResponse.parseAsync(data);
+    },
+    url: "/invoice",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete invoice
+ */
+export const deleteInvoiceById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteInvoiceByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteInvoiceByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zDeleteInvoiceByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zDeleteInvoiceByIdResponse.parseAsync(data);
+    },
+    url: "/invoice/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get invoice by id
+ */
+export const getInvoiceById = <ThrowOnError extends boolean = false>(
+  options: Options<GetInvoiceByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetInvoiceByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoiceByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetInvoiceByIdResponse.parseAsync(data);
+    },
+    url: "/invoice/{id}",
+    ...options,
   });
 };
 

@@ -1,6 +1,8 @@
-import { MoreHorizontal } from "lucide-react";
+"use client";
 
-import { Button } from "@evidentor/ui/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
 import {
 	Card,
 	CardContent,
@@ -8,10 +10,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@evidentor/ui/components/ui/card";
-import {
-	DropdownMenu,
-	DropdownMenuTrigger,
-} from "@evidentor/ui/components/ui/dropdown-menu";
 import {
 	Table,
 	TableBody,
@@ -21,13 +19,49 @@ import {
 	TableRow,
 } from "@evidentor/ui/components/ui/table";
 
+import InvoiceDetailModal from "@/components/invoices/invoice-detail-modal";
+import InvoiceCreateModal from "@/components/invoices/invoice-create-modal";
+import { InvoiceTableRow } from "@/components/invoices/invoice-table-row";
 import PageHeader from "@/components/page-header";
 import SearchInput from "@/components/search-input";
 
+import type { Invoice } from "@/lib/api";
+import { getInvoiceQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { deleteInvoiceById, getInvoice } from "@/lib/api/sdk.gen";
+import { Button } from "@evidentor/ui/components/ui/button";
+import { Plus } from "lucide-react";
+
 export default function InvoicesPage() {
+	const {
+		data: invoices,
+		isLoading,
+		error,
+		refetch,
+	} = useQuery({
+		initialData: null,
+		queryKey: getInvoiceQueryKey(),
+		queryFn: () => getInvoice(),
+	});
+
+	const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+	const [createOpen, setCreateOpen] = useState(false);
+	const handleDelete = (id: number) => {
+		deleteInvoiceById({ path: { id } }).then(() => refetch());
+	};
+	const handleCloseModal = () => setSelectedInvoice(null);
+
 	return (
 		<>
-			<PageHeader title="Invoices" subtitle="Manage your invoices" />
+			<PageHeader
+				title="Invoices"
+				subtitle="Manage your invoices"
+				controls={
+					<Button className="mt-4 md:mt-0" onClick={() => setCreateOpen(true)}>
+						<Plus className="mr-2 h-4 w-4" />
+						Create invoice
+					</Button>
+				}
+			/>
 
 			<div className="flex flex-col md:flex-row gap-4 my-5">
 				<SearchInput
@@ -36,11 +70,16 @@ export default function InvoicesPage() {
 					containerClassName="flex-1"
 				/>
 			</div>
-
 			<Card>
 				<CardHeader className="px-6">
 					<CardTitle>Invoice List</CardTitle>
-					<CardDescription>1 invoice found</CardDescription>
+					<CardDescription>
+						{isLoading
+							? "Loading..."
+							: error
+								? "Failed to load invoices"
+								: `${invoices?.data?.length ?? 0} invoice${invoices?.data?.length !== 1 ? "s" : ""} found`}
+					</CardDescription>
 				</CardHeader>
 				<CardContent className="px-6">
 					<div className="rounded-md border">
@@ -64,32 +103,52 @@ export default function InvoicesPage() {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								<TableRow>
-									<TableCell className="font-medium">0001</TableCell>
-									<TableCell>Client name</TableCell>
-									<TableCell className="hidden md:table-cell">
-										Project name
-									</TableCell>
-									<TableCell className="hidden md:table-cell">date</TableCell>
-									<TableCell className="hidden md:table-cell">date</TableCell>
-									<TableCell>1000 Kč</TableCell>
-									<TableCell>Paid</TableCell>
-									<TableCell>
-										<DropdownMenu>
-											<DropdownMenuTrigger asChild>
-												<Button variant="ghost" size="icon">
-													<MoreHorizontal className="h-4 w-4" />
-													<span className="sr-only">Open menu</span>
-												</Button>
-											</DropdownMenuTrigger>
-										</DropdownMenu>
-									</TableCell>
-								</TableRow>
+								{isLoading ? (
+									<TableRow>
+										<TableCell colSpan={8} className="text-center">
+											Loading...
+										</TableCell>
+									</TableRow>
+								) : error ? (
+									<TableRow>
+										<TableCell
+											colSpan={8}
+											className="text-center text-destructive"
+										>
+											{error instanceof Error ? error.message : String(error)}
+										</TableCell>
+									</TableRow>
+								) : invoices?.data?.length === 0 ? (
+									<TableRow>
+										<TableCell colSpan={8} className="text-center">
+											No invoices found
+										</TableCell>
+									</TableRow>
+								) : (
+									invoices?.data?.map((invoice) => (
+										<InvoiceTableRow
+											key={invoice.id}
+											invoice={invoice}
+											onDelete={() => handleDelete(invoice.id)}
+											onViewDetails={() => setSelectedInvoice(invoice)}
+										/>
+									))
+								)}
 							</TableBody>
 						</Table>
 					</div>
 				</CardContent>
 			</Card>
+			<InvoiceDetailModal
+				invoice={selectedInvoice}
+				isOpen={!!selectedInvoice}
+				onClose={handleCloseModal}
+			/>
+			<InvoiceCreateModal
+				isOpen={createOpen}
+				onClose={() => setCreateOpen(false)}
+				onCreated={refetch}
+			/>
 		</>
 	);
 }

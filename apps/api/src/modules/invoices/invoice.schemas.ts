@@ -1,42 +1,52 @@
-import { client, invoice, invoiceItem, project } from "@/db/schema";
+import {
+	client,
+	invoice,
+	invoiceItem,
+	project,
+	projectTask,
+} from "@/db/schema";
+
 import { createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 
-const InvoiceSelectSchema = createSelectSchema(invoice);
-const InvoiceItemSelectSchema = createSelectSchema(invoiceItem);
+const InvoiceSchema = createSelectSchema(invoice);
+const InvoiceItemSchema = createSelectSchema(invoiceItem);
+const ProjectTaskSchema = createSelectSchema(projectTask);
 
-export const CreateInvoiceSchema = t.Object({
-	...t.Pick(InvoiceSelectSchema, [
-		"clientId",
-		"projectId",
-		"status",
-		"dueDate",
-		"currency",
-	]).properties,
+export const InvoiceCreateSchema = t.Object({
+	...t.Pick(InvoiceSchema, ["clientId", "projectId", "dueDate", "currency"])
+		.properties,
 	items: t.Array(
 		t.Object({
 			name: t.String(),
 			qty: t.Integer(),
 			unitPrice: t.Integer(),
+			projectTaskId: t.Optional(t.Integer()),
+			projectTask: t.Optional(ProjectTaskSchema),
 		}),
 	),
 });
 
-export type CreateInvoiceType = Static<typeof CreateInvoiceSchema>;
+export type InvoiceCreateType = Static<typeof InvoiceCreateSchema>;
 
-export const InvoiceIdParam = t.Object({
+export const InvoiceIdParamSchema = t.Object({
 	id: t.Number(),
 });
 
-const InvoiceProjectSelectSchema = createSelectSchema(project);
-const InvoiceClientSelectSchema = createSelectSchema(client);
+const ProjectSelectSchema = createSelectSchema(project);
+const ClientSelectSchema = createSelectSchema(client);
 
-export const SelectInvoice = t.Object({
-	...createSelectSchema(invoice).properties,
-	project: t.Nullable(InvoiceProjectSelectSchema),
-	client: t.Nullable(InvoiceClientSelectSchema),
-	items: t.Array(InvoiceItemSelectSchema),
+export const InvoiceSelectSchema = t.Object({
+	...InvoiceSchema.properties,
+	project: t.Nullable(ProjectSelectSchema),
+	client: t.Nullable(ClientSelectSchema),
+	items: t.Array(
+    t.Object({
+      ...InvoiceItemSchema.properties,
+      projectTask: t.Nullable(ProjectTaskSchema)
+    })
+  ),
 });
 
-export const InvoiceResponse = t.Omit(SelectInvoice, []);
-export const InvoicesResponse = t.Array(SelectInvoice);
+export const InvoiceResponseSchema = t.Omit(InvoiceSelectSchema, []);
+export const InvoicesResponseSchema = t.Array(InvoiceSelectSchema);

@@ -1,23 +1,22 @@
 import Elysia, { status, t } from "elysia";
 import { betterAuth } from "../../auth";
 import {
-	CreateInvoiceSchema,
-	InvoiceIdParam,
-	InvoiceResponse,
-	InvoicesResponse,
+	InvoiceCreateSchema,
+	InvoiceIdParamSchema,
+	InvoiceResponseSchema,
 } from "./invoice.schemas";
-import { InvoicesService } from "./invoices.service";
 
 import { ClientsService } from "../clients/clients.service";
 import { ProjectsService } from "../projects/projects.service";
+import { InvoicesService } from "./invoices.service";
 
 export const invoicesRouter = new Elysia({
 	prefix: "/invoice",
 	detail: { tags: ["Invoice"] },
 })
 	.use(betterAuth)
-	.model("Invoice", InvoiceResponse)
-	.model("Invoice[]", InvoicesResponse)
+	.model("Invoice", InvoiceResponseSchema)
+	.model("Invoice[]", InvoiceResponseSchema)
 	.get("", async ({ user }) => InvoicesService.findManyByUserId(user.id), {
 		auth: true,
 		detail: { description: "Get all user invoices" },
@@ -32,7 +31,7 @@ export const invoicesRouter = new Elysia({
 		},
 		{
 			auth: true,
-			params: InvoiceIdParam,
+			params: InvoiceIdParamSchema,
 			response: "Invoice",
 			detail: { description: "Get invoice by id" },
 		},
@@ -54,7 +53,7 @@ export const invoicesRouter = new Elysia({
 		},
 		{
 			auth: true,
-			body: CreateInvoiceSchema,
+			body: InvoiceCreateSchema,
 			response: "Invoice",
 			detail: { description: "Create invoice" },
 		},
@@ -79,7 +78,7 @@ export const invoicesRouter = new Elysia({
 		},
 		{
 			auth: true,
-			params: InvoiceIdParam,
+			params: InvoiceIdParamSchema,
 			response: t.Object({ success: t.Boolean() }),
 			detail: { description: "Delete invoice" },
 		},

@@ -145,6 +145,80 @@ export type ProjectTaskCount = {
   count: number;
 };
 
+export type Invoice = {
+  id: number;
+  clientId: number | null;
+  projectId: number | null;
+  amount: number;
+  currency: "czk" | "eur" | "usd";
+  dueDate: unknown | null;
+  paidAt: unknown | null;
+  sentAt: unknown | null;
+  issuedAt: unknown;
+  createdAt: unknown;
+  updatedAt: unknown;
+  ownerId: string | null;
+  project: {
+    id: number;
+    title: string | null;
+    ownerId: string | null;
+    clientId: number | null;
+    createdAt: unknown;
+  } | null;
+  client: {
+    id: number;
+    companyName: string;
+    contactName: string;
+    email: string | null;
+    ownerId: string | null;
+    createdAt: unknown;
+  } | null;
+  items: Array<{
+    id: number;
+    name: string;
+    qty: number;
+    unitPrice: number;
+    invoiceId: number | null;
+  }>;
+};
+
+export type Invoice2 = Array<{
+  id: number;
+  clientId: number | null;
+  projectId: number | null;
+  amount: number;
+  currency: "czk" | "eur" | "usd";
+  dueDate: unknown | null;
+  paidAt: unknown | null;
+  sentAt: unknown | null;
+  issuedAt: unknown;
+  createdAt: unknown;
+  updatedAt: unknown;
+  ownerId: string | null;
+  project: {
+    id: number;
+    title: string | null;
+    ownerId: string | null;
+    clientId: number | null;
+    createdAt: unknown;
+  } | null;
+  client: {
+    id: number;
+    companyName: string;
+    contactName: string;
+    email: string | null;
+    ownerId: string | null;
+    createdAt: unknown;
+  } | null;
+  items: Array<{
+    id: number;
+    name: string;
+    qty: number;
+    unitPrice: number;
+    invoiceId: number | null;
+  }>;
+}>;
+
 export type User = {
   id?: string;
   name?: string;
@@ -274,9 +348,9 @@ export type GetProjectCountData = {
   body?: never;
   path?: never;
   query?: {
-    client?: number;
-    from?: unknown | Date | number;
-    to?: unknown | Date | number;
+    client?: string | number;
+    from?: unknown | Date | (string | number);
+    to?: unknown | Date | (string | number);
   };
   url: "/project/count";
 };
@@ -419,7 +493,7 @@ export type GetTimeEntryByIdResponse =
 export type PatchTimeEntryByIdData = {
   body: {
     title?: string;
-    projectId?: number | null;
+    projectId?: (string | number) | null;
     projectTaskId?: number | null;
     startAt?: unknown | Date | number;
     endAt?: (unknown | Date | number) | null;
@@ -455,7 +529,7 @@ export type GetTimeEntryResponse =
 export type PostTimeEntryData = {
   body: {
     title: string;
-    projectId: number | null;
+    projectId: (string | number) | null;
     projectTaskId?: number | null;
     startAt: unknown | Date | number;
     endAt: (unknown | Date | number) | null;
@@ -476,9 +550,9 @@ export type GetTimeEntryAnalyzeDurationByDateData = {
   body?: never;
   path?: never;
   query?: {
-    projectId?: number | null;
-    from?: unknown | Date | number;
-    to?: unknown | Date | number;
+    projectId?: (string | number) | null;
+    from?: unknown | Date | (string | number);
+    to?: unknown | Date | (string | number);
   };
   url: "/time-entry/analyze/duration-by-date";
 };
@@ -494,9 +568,9 @@ export type GetProjectTaskCountData = {
   body?: never;
   path?: never;
   query?: {
-    project?: number;
-    from?: unknown | Date | number;
-    to?: unknown | Date | number;
+    project?: string | number;
+    from?: unknown | Date | (string | number);
+    to?: unknown | Date | (string | number);
   };
   url: "/project-task/count";
 };
@@ -512,7 +586,7 @@ export type GetProjectTaskData = {
   body?: never;
   path?: never;
   query?: {
-    project?: number;
+    project?: string | number;
   };
   url: "/project-task";
 };
@@ -571,6 +645,77 @@ export type PostProjectTaskByIdResponses = {
 
 export type PostProjectTaskByIdResponse =
   PostProjectTaskByIdResponses[keyof PostProjectTaskByIdResponses];
+
+export type GetInvoiceData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/invoice";
+};
+
+export type GetInvoiceResponses = {
+  200: Invoice2;
+};
+
+export type GetInvoiceResponse = GetInvoiceResponses[keyof GetInvoiceResponses];
+
+export type PostInvoiceData = {
+  body: {
+    clientId: number | null;
+    projectId: number | null;
+    dueDate: unknown | null;
+    currency: "czk" | "eur" | "usd";
+    items: Array<{
+      name: string;
+      qty: string | number;
+      unitPrice: string | number;
+    }>;
+  };
+  path?: never;
+  query?: never;
+  url: "/invoice";
+};
+
+export type PostInvoiceResponses = {
+  200: Invoice;
+};
+
+export type PostInvoiceResponse =
+  PostInvoiceResponses[keyof PostInvoiceResponses];
+
+export type DeleteInvoiceByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice/{id}";
+};
+
+export type DeleteInvoiceByIdResponses = {
+  200: {
+    success: boolean;
+  };
+};
+
+export type DeleteInvoiceByIdResponse =
+  DeleteInvoiceByIdResponses[keyof DeleteInvoiceByIdResponses];
+
+export type GetInvoiceByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice/{id}";
+};
+
+export type GetInvoiceByIdResponses = {
+  200: Invoice;
+};
+
+export type GetInvoiceByIdResponse =
+  GetInvoiceByIdResponses[keyof GetInvoiceByIdResponses];
 
 export type GetStatusData = {
   body?: never;

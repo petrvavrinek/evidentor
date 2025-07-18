@@ -1,22 +1,42 @@
 import { and, eq, type SQL } from "drizzle-orm";
 import { db } from "../../database";
 import { invoice, invoiceItem } from "../../db/schema";
-import type { CreateInvoiceType } from "./invoice.schemas";
+import type { InvoiceCreateType } from "./invoice.schemas";
 
 interface CreateInvoiceQueryOptions {
 	filters?: SQL[];
 }
 
 export const InvoicesService = {
+	/**
+	 * Find many invoice with options
+	 */
 	findByOptions(options?: CreateInvoiceQueryOptions) {
 		return db.query.invoice.findMany({
 			with: {
 				client: true,
-				items: true,
+				items: {
+					with: {
+						projectTask: true,
+					},
+				},
 				project: true,
 			},
 			where: options?.filters ? and(...options.filters) : undefined,
 		});
+	},
+
+	/**
+	 * Find one invoice with options
+	 * @param id Invoice ID
+	 * @param options Options
+	 * @returns
+	 */
+	async findOneByOptions(id: number, options?: CreateInvoiceQueryOptions) {
+		const result = await this.findByOptions({
+			filters: [eq(invoice.id, id), ...(options?.filters ?? [])],
+		});
+		return result?.[0] ?? null;
 	},
 
 	/**
@@ -42,11 +62,16 @@ export const InvoicesService = {
 		return results?.[0] ?? null;
 	},
 
-	async create(userId: string, data: CreateInvoiceType) {
+	async create(userId: string, data: InvoiceCreateType) {
 		return db.transaction(async (tx) => {
+			const amount = data.items.reduce(
+				(prev, current) => prev + current.unitPrice * current.qty,
+				0,
+			);
+
 			const [created] = await tx
 				.insert(invoice)
-				.values({ ...data, ownerId: userId, amount: 0 })
+				.values({ ...data, ownerId: userId, amount })
 				.returning();
 
 			await tx.insert(invoiceItem).values(
