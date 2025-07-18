@@ -6,9 +6,11 @@ import {
 	InvoiceResponseSchema,
 } from "./invoice.schemas";
 
+import { InvoiceQueue } from "@evidentor/queues";
 import { ClientsService } from "../clients/clients.service";
 import { ProjectsService } from "../projects/projects.service";
 import { InvoicesService } from "./invoices.service";
+import { convertInvoiceToQueueType } from "./utils/convert-queue";
 
 export const invoicesRouter = new Elysia({
 	prefix: "/invoice",
@@ -49,7 +51,19 @@ export const invoicesRouter = new Elysia({
 			}
 
 			const invoice = await InvoicesService.create(user.id, body);
-			return (await InvoicesService.findById(user.id, invoice.id))!;
+			const newInvoice = (await InvoicesService.findById(
+				user.id,
+				invoice!.id,
+			))!;
+
+			// Generate invoice in the background
+			const invoiceQueueData = convertInvoiceToQueueType(newInvoice);
+			await InvoiceQueue.add("", {
+				type: "generate-invoice",
+				data: invoiceQueueData,
+			});
+
+			return newInvoice;
 		},
 		{
 			auth: true,

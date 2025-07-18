@@ -19,10 +19,12 @@ export const InvoiceWorker = createWorker<
 
 	const { data: invoiceData } = job.data;
 	const doc = InvoiceDocument(invoiceData);
+	console.log("Generating invoice", invoiceData.id);
 
 	const filePath = path.join("invoices", `${randomUUID()}.pdf`);
 	const stream = await renderToStream(doc);
 	await storage.write(filePath, stream, { mimeType: "application/pdf" });
+	console.log("saved to", filePath);
 
 	return { ok: true, filePath: filePath };
 });
