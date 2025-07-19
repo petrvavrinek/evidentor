@@ -79,7 +79,7 @@ export const InvoicesService = {
 					name: e.name,
 					qty: e.qty,
 					unitPrice: e.unitPrice,
-					invoiceId: created.id,
+					invoiceId: created?.id,
 				})),
 			);
 

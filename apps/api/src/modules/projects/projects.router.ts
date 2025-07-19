@@ -1,5 +1,6 @@
 import Elysia, { status } from "elysia";
 import { betterAuth } from "../../auth/index";
+import { ClientsService } from "../clients/clients.service";
 import {
 	CreateProject,
 	ProjectCountReponse,
@@ -9,8 +10,6 @@ import {
 	ProjectsResponse,
 	UpdateProject,
 } from "./projects.dto";
-
-import { ClientsService } from "../clients/clients.service";
 import { ProjectsService } from "./projects.service";
 
 export const router = new Elysia({
@@ -58,12 +57,12 @@ export const router = new Elysia({
 				if (!client) throw status(400, "Client not found");
 			}
 
-			const { id } = await ProjectsService.create(user.id, {
+			const createdProject = await ProjectsService.create(user.id, {
 				title,
 				clientId,
 			});
 
-			const project = await ProjectsService.findById(user.id, id);
+			const project = await ProjectsService.findById(user.id, createdProject!.id);
 
 			if (!project) throw status(500, "Could not create project");
 

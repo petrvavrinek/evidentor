@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+import { LoggerService } from "@evidentor/logging";
 import { EmailQueue } from "@evidentor/queues";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -8,7 +9,8 @@ import { openAPI } from "better-auth/plugins";
 import { db } from "../database";
 import * as authSchema from "../db/auth.schema";
 import env from "../env";
-import logger from "../logger";
+
+const logger = new LoggerService("auth");
 
 export const auth = betterAuth({
 	basePath: "/auth",
