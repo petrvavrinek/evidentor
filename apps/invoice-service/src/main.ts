@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { LoggerService } from "@evidentor/logging";
 import {
 	createWorker,
 	InvoiceQueue,
@@ -11,6 +12,8 @@ import { renderToStream } from "@react-pdf/renderer";
 
 import { InvoiceDocument } from "./renderer/Invoice";
 
+const logger = new LoggerService("InvoiceWorker");
+
 export const InvoiceWorker = createWorker<
 	InvoiceQueueDataType,
 	InvoiceQueueResultType
@@ -18,13 +21,13 @@ export const InvoiceWorker = createWorker<
 	if (job.data.type !== "generate-invoice") return { ok: false };
 
 	const { data: invoiceData } = job.data;
-	const doc = InvoiceDocument(invoiceData);
-	console.log("Generating invoice", invoiceData.id);
+	logger.info(`Received invoice generate job for invoice ${invoiceData.id}`);
 
+	const doc = InvoiceDocument(invoiceData);
 	const filePath = path.join("invoices", `${randomUUID()}.pdf`);
 	const stream = await renderToStream(doc);
 	await storage.write(filePath, stream, { mimeType: "application/pdf" });
-	console.log("saved to", filePath);
 
+	logger.info(`Invoice ${invoiceData.id} generated to "${filePath}"`);
 	return { ok: true, filePath: filePath };
 });

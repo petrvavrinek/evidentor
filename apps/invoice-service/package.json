@@ -13,6 +13,7 @@
   "dependencies": {
     "@evidentor/queues": "workspace:*",
     "@evidentor/storage": "workspace:*",
+    "@evidentor/logging": "workspace:*",
     "@react-pdf/renderer": "^4.3.0"
   },
   "peerDependencies": {

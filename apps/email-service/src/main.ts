@@ -7,13 +7,14 @@ import {
 	type EmailQueueDataType,
 	type EmailQueueResultType,
 } from "@evidentor/queues";
-import logger from "./logger";
 
-import WelcomeEmail from "../emails/welcome-email";
-import VerificationEmail from "../emails/verification-email";
-import { envConfig } from "./config";
+import { LoggerService } from "@evidentor/logging";
 import PasswordResetEmail from "../emails/password-reset-email";
+import VerificationEmail from "../emails/verification-email";
+import WelcomeEmail from "../emails/welcome-email";
+import { envConfig } from "./config";
 
+const logger = new LoggerService("EmailWorker");
 const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 	EmailQueue.name,
 	async (job) => {
@@ -60,7 +61,7 @@ const EmailWorker = createWorker<EmailQueueDataType, EmailQueueResultType>(
 		}
 
 		return { ok: true };
-	},
+	}
 );
 
 const server = Bun.serve({
