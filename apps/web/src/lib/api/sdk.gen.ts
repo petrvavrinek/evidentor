@@ -49,6 +49,14 @@ import type {
   PatchProjectTaskByIdResponses,
   PostProjectTaskByIdData,
   PostProjectTaskByIdResponses,
+  GetInvoiceData,
+  GetInvoiceResponses,
+  PostInvoiceData,
+  PostInvoiceResponses,
+  DeleteInvoiceByIdData,
+  DeleteInvoiceByIdResponses,
+  GetInvoiceByIdData,
+  GetInvoiceByIdResponses,
   GetStatusData,
   GetStatusResponses,
   HeadStatusData,
@@ -139,50 +147,111 @@ import type {
   GetAuthErrorErrors,
 } from "./types.gen";
 import {
+  zGetClientData,
   zGetClientResponse,
+  zPostClientData,
   zPostClientResponse,
+  zDeleteClientByIdData,
+  zGetClientByIdData,
   zGetClientByIdResponse,
+  zPatchClientByIdData,
   zPatchClientByIdResponse,
+  zGetProjectCountData,
   zGetProjectCountResponse,
+  zGetProjectData,
   zGetProjectResponse,
+  zPostProjectData,
   zPostProjectResponse,
+  zDeleteProjectByIdData,
+  zGetProjectByIdData,
   zGetProjectByIdResponse,
+  zPatchProjectByIdData,
+  zGetTimeEntryActiveData,
   zGetTimeEntryActiveResponse,
+  zDeleteTimeEntryByIdData,
+  zGetTimeEntryByIdData,
   zGetTimeEntryByIdResponse,
+  zPatchTimeEntryByIdData,
   zPatchTimeEntryByIdResponse,
+  zGetTimeEntryData,
   zGetTimeEntryResponse,
+  zPostTimeEntryData,
   zPostTimeEntryResponse,
+  zGetTimeEntryAnalyzeDurationByDateData,
   zGetTimeEntryAnalyzeDurationByDateResponse,
+  zGetProjectTaskCountData,
   zGetProjectTaskCountResponse,
+  zGetProjectTaskData,
   zGetProjectTaskResponse,
+  zDeleteProjectTaskByIdData,
+  zPatchProjectTaskByIdData,
+  zPostProjectTaskByIdData,
   zPostProjectTaskByIdResponse,
+  zGetInvoiceData,
+  zGetInvoiceResponse,
+  zPostInvoiceData,
+  zPostInvoiceResponse,
+  zDeleteInvoiceByIdData,
+  zDeleteInvoiceByIdResponse,
+  zGetInvoiceByIdData,
+  zGetInvoiceByIdResponse,
+  zGetStatusData,
+  zHeadStatusData,
+  zSocialSignInData,
   zSocialSignInResponse,
+  zGetAuthGetSessionData,
   zGetAuthGetSessionResponse,
+  zPostAuthSignOutData,
   zPostAuthSignOutResponse,
+  zPostAuthSignUpEmailData,
   zPostAuthSignUpEmailResponse,
+  zPostAuthSignInEmailData,
   zPostAuthSignInEmailResponse,
+  zPostAuthForgetPasswordData,
   zPostAuthForgetPasswordResponse,
+  zPostAuthResetPasswordData,
   zPostAuthResetPasswordResponse,
+  zGetAuthVerifyEmailData,
   zGetAuthVerifyEmailResponse,
+  zPostAuthSendVerificationEmailData,
   zPostAuthSendVerificationEmailResponse,
+  zPostAuthChangeEmailData,
   zPostAuthChangeEmailResponse,
+  zPostAuthChangePasswordData,
   zPostAuthChangePasswordResponse,
+  zPostAuthUpdateUserData,
   zPostAuthUpdateUserResponse,
+  zPostAuthDeleteUserData,
   zPostAuthDeleteUserResponse,
+  zGetAuthResetPasswordByTokenData,
   zGetAuthResetPasswordByTokenResponse,
+  zPostAuthRequestPasswordResetData,
   zPostAuthRequestPasswordResetResponse,
+  zGetAuthListSessionsData,
   zGetAuthListSessionsResponse,
+  zPostAuthRevokeSessionData,
   zPostAuthRevokeSessionResponse,
+  zPostAuthRevokeSessionsData,
   zPostAuthRevokeSessionsResponse,
+  zPostAuthRevokeOtherSessionsData,
   zPostAuthRevokeOtherSessionsResponse,
+  zPostAuthLinkSocialData,
   zPostAuthLinkSocialResponse,
+  zGetAuthListAccountsData,
   zGetAuthListAccountsResponse,
+  zGetAuthDeleteUserCallbackData,
   zGetAuthDeleteUserCallbackResponse,
+  zPostAuthUnlinkAccountData,
   zPostAuthUnlinkAccountResponse,
+  zPostAuthRefreshTokenData,
   zPostAuthRefreshTokenResponse,
+  zPostAuthGetAccessTokenData,
   zPostAuthGetAccessTokenResponse,
+  zPostAuthAccountInfoData,
   zPostAuthAccountInfoResponse,
+  zGetAuthOkData,
   zGetAuthOkResponse,
+  zGetAuthErrorData,
   zGetAuthErrorResponse,
 } from "./zod.gen";
 import { client as _heyApiClient } from "./client.gen";
@@ -215,6 +284,9 @@ export const getClient = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetClientData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetClientResponse.parseAsync(data);
     },
@@ -234,6 +306,9 @@ export const postClient = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostClientData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zPostClientResponse.parseAsync(data);
     },
@@ -257,6 +332,9 @@ export const deleteClientById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zDeleteClientByIdData.parseAsync(data);
+    },
     url: "/client/{id}",
     ...options,
   });
@@ -273,6 +351,9 @@ export const getClientById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetClientByIdData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetClientByIdResponse.parseAsync(data);
     },
@@ -292,6 +373,9 @@ export const patchClientById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPatchClientByIdData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zPatchClientByIdResponse.parseAsync(data);
     },
@@ -312,6 +396,9 @@ export const getProjectCount = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetProjectCountData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetProjectCountResponse.parseAsync(data);
     },
@@ -331,6 +418,9 @@ export const getProject = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetProjectData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetProjectResponse.parseAsync(data);
     },
@@ -350,6 +440,9 @@ export const postProject = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostProjectData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zPostProjectResponse.parseAsync(data);
     },
@@ -373,6 +466,9 @@ export const deleteProjectById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zDeleteProjectByIdData.parseAsync(data);
+    },
     url: "/project/{id}",
     ...options,
   });
@@ -389,6 +485,9 @@ export const getProjectById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetProjectByIdData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetProjectByIdResponse.parseAsync(data);
     },
@@ -408,6 +507,9 @@ export const patchProjectById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPatchProjectByIdData.parseAsync(data);
+    },
     url: "/project/{id}",
     ...options,
     headers: {
@@ -428,6 +530,9 @@ export const getTimeEntryActive = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntryActiveData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetTimeEntryActiveResponse.parseAsync(data);
     },
@@ -447,6 +552,9 @@ export const deleteTimeEntryById = <ThrowOnError extends boolean = false>(
     DeleteTimeEntryByIdErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zDeleteTimeEntryByIdData.parseAsync(data);
+    },
     url: "/time-entry/{id}",
     ...options,
   });
@@ -463,6 +571,9 @@ export const getTimeEntryById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntryByIdData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetTimeEntryByIdResponse.parseAsync(data);
     },
@@ -482,6 +593,9 @@ export const patchTimeEntryById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPatchTimeEntryByIdData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zPatchTimeEntryByIdResponse.parseAsync(data);
     },
@@ -502,6 +616,9 @@ export const getTimeEntry = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntryData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetTimeEntryResponse.parseAsync(data);
     },
@@ -521,6 +638,9 @@ export const postTimeEntry = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostTimeEntryData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zPostTimeEntryResponse.parseAsync(data);
     },
@@ -543,6 +663,9 @@ export const getTimeEntryAnalyzeDurationByDate = <
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntryAnalyzeDurationByDateData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetTimeEntryAnalyzeDurationByDateResponse.parseAsync(data);
     },
@@ -559,6 +682,9 @@ export const getProjectTaskCount = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetProjectTaskCountData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetProjectTaskCountResponse.parseAsync(data);
     },
@@ -575,6 +701,9 @@ export const getProjectTask = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetProjectTaskData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zGetProjectTaskResponse.parseAsync(data);
     },
@@ -594,6 +723,9 @@ export const deleteProjectTaskById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zDeleteProjectTaskByIdData.parseAsync(data);
+    },
     url: "/project-task/{id}",
     ...options,
   });
@@ -607,6 +739,9 @@ export const patchProjectTaskById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPatchProjectTaskByIdData.parseAsync(data);
+    },
     url: "/project-task/{id}",
     ...options,
     headers: {
@@ -627,6 +762,9 @@ export const postProjectTaskById = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostProjectTaskByIdData.parseAsync(data);
+    },
     responseValidator: async (data) => {
       return await zPostProjectTaskByIdResponse.parseAsync(data);
     },
@@ -639,6 +777,98 @@ export const postProjectTaskById = <ThrowOnError extends boolean = false>(
   });
 };
 
+/**
+ * Get all user invoices
+ */
+export const getInvoice = <ThrowOnError extends boolean = false>(
+  options?: Options<GetInvoiceData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetInvoiceResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoiceData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetInvoiceResponse.parseAsync(data);
+    },
+    url: "/invoice",
+    ...options,
+  });
+};
+
+/**
+ * Create invoice
+ */
+export const postInvoice = <ThrowOnError extends boolean = false>(
+  options: Options<PostInvoiceData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostInvoiceResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPostInvoiceData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostInvoiceResponse.parseAsync(data);
+    },
+    url: "/invoice",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete invoice
+ */
+export const deleteInvoiceById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteInvoiceByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteInvoiceByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zDeleteInvoiceByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zDeleteInvoiceByIdResponse.parseAsync(data);
+    },
+    url: "/invoice/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get invoice by id
+ */
+export const getInvoiceById = <ThrowOnError extends boolean = false>(
+  options: Options<GetInvoiceByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetInvoiceByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoiceByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetInvoiceByIdResponse.parseAsync(data);
+    },
+    url: "/invoice/{id}",
+    ...options,
+  });
+};
+
 export const getStatus = <ThrowOnError extends boolean = false>(
   options?: Options<GetStatusData, ThrowOnError>,
 ) => {
@@ -647,6 +877,9 @@ export const getStatus = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetStatusData.parseAsync(data);
+    },
     url: "/status",
     ...options,
   });
@@ -660,6 +893,9 @@ export const headStatus = <ThrowOnError extends boolean = false>(
     unknown,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zHeadStatusData.parseAsync(data);
+    },
     url: "/status",
     ...options,
   });
@@ -676,15 +912,18 @@ export const socialSignIn = <ThrowOnError extends boolean = false>(
     SocialSignInErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zSocialSignInData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zSocialSignInResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zSocialSignInResponse.parseAsync(data);
-    },
     url: "/auth/sign-in/social",
     ...options,
     headers: {
@@ -705,15 +944,18 @@ export const getAuthGetSession = <ThrowOnError extends boolean = false>(
     GetAuthGetSessionErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthGetSessionData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthGetSessionResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthGetSessionResponse.parseAsync(data);
-    },
     url: "/auth/get-session",
     ...options,
   });
@@ -730,15 +972,18 @@ export const postAuthSignOut = <ThrowOnError extends boolean = false>(
     PostAuthSignOutErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthSignOutData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthSignOutResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthSignOutResponse.parseAsync(data);
-    },
     url: "/auth/sign-out",
     ...options,
     headers: {
@@ -759,15 +1004,18 @@ export const postAuthSignUpEmail = <ThrowOnError extends boolean = false>(
     PostAuthSignUpEmailErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthSignUpEmailData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthSignUpEmailResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthSignUpEmailResponse.parseAsync(data);
-    },
     url: "/auth/sign-up/email",
     ...options,
     headers: {
@@ -788,15 +1036,18 @@ export const postAuthSignInEmail = <ThrowOnError extends boolean = false>(
     PostAuthSignInEmailErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthSignInEmailData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthSignInEmailResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthSignInEmailResponse.parseAsync(data);
-    },
     url: "/auth/sign-in/email",
     ...options,
     headers: {
@@ -817,15 +1068,18 @@ export const postAuthForgetPassword = <ThrowOnError extends boolean = false>(
     PostAuthForgetPasswordErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthForgetPasswordData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthForgetPasswordResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthForgetPasswordResponse.parseAsync(data);
-    },
     url: "/auth/forget-password",
     ...options,
     headers: {
@@ -846,15 +1100,18 @@ export const postAuthResetPassword = <ThrowOnError extends boolean = false>(
     PostAuthResetPasswordErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthResetPasswordData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthResetPasswordResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthResetPasswordResponse.parseAsync(data);
-    },
     url: "/auth/reset-password",
     ...options,
     headers: {
@@ -875,15 +1132,18 @@ export const getAuthVerifyEmail = <ThrowOnError extends boolean = false>(
     GetAuthVerifyEmailErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthVerifyEmailData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthVerifyEmailResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthVerifyEmailResponse.parseAsync(data);
-    },
     url: "/auth/verify-email",
     ...options,
   });
@@ -902,15 +1162,18 @@ export const postAuthSendVerificationEmail = <
     PostAuthSendVerificationEmailErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthSendVerificationEmailData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthSendVerificationEmailResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthSendVerificationEmailResponse.parseAsync(data);
-    },
     url: "/auth/send-verification-email",
     ...options,
     headers: {
@@ -928,15 +1191,18 @@ export const postAuthChangeEmail = <ThrowOnError extends boolean = false>(
     PostAuthChangeEmailErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthChangeEmailData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthChangeEmailResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthChangeEmailResponse.parseAsync(data);
-    },
     url: "/auth/change-email",
     ...options,
     headers: {
@@ -957,15 +1223,18 @@ export const postAuthChangePassword = <ThrowOnError extends boolean = false>(
     PostAuthChangePasswordErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthChangePasswordData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthChangePasswordResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthChangePasswordResponse.parseAsync(data);
-    },
     url: "/auth/change-password",
     ...options,
     headers: {
@@ -986,15 +1255,18 @@ export const postAuthUpdateUser = <ThrowOnError extends boolean = false>(
     PostAuthUpdateUserErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthUpdateUserData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthUpdateUserResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthUpdateUserResponse.parseAsync(data);
-    },
     url: "/auth/update-user",
     ...options,
     headers: {
@@ -1015,15 +1287,18 @@ export const postAuthDeleteUser = <ThrowOnError extends boolean = false>(
     PostAuthDeleteUserErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthDeleteUserData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthDeleteUserResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthDeleteUserResponse.parseAsync(data);
-    },
     url: "/auth/delete-user",
     ...options,
     headers: {
@@ -1046,15 +1321,18 @@ export const getAuthResetPasswordByToken = <
     GetAuthResetPasswordByTokenErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthResetPasswordByTokenData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthResetPasswordByTokenResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthResetPasswordByTokenResponse.parseAsync(data);
-    },
     url: "/auth/reset-password/{token}",
     ...options,
   });
@@ -1073,15 +1351,18 @@ export const postAuthRequestPasswordReset = <
     PostAuthRequestPasswordResetErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthRequestPasswordResetData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthRequestPasswordResetResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthRequestPasswordResetResponse.parseAsync(data);
-    },
     url: "/auth/request-password-reset",
     ...options,
     headers: {
@@ -1102,15 +1383,18 @@ export const getAuthListSessions = <ThrowOnError extends boolean = false>(
     GetAuthListSessionsErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthListSessionsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthListSessionsResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthListSessionsResponse.parseAsync(data);
-    },
     url: "/auth/list-sessions",
     ...options,
   });
@@ -1127,15 +1411,18 @@ export const postAuthRevokeSession = <ThrowOnError extends boolean = false>(
     PostAuthRevokeSessionErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthRevokeSessionData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthRevokeSessionResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthRevokeSessionResponse.parseAsync(data);
-    },
     url: "/auth/revoke-session",
     ...options,
     headers: {
@@ -1156,15 +1443,18 @@ export const postAuthRevokeSessions = <ThrowOnError extends boolean = false>(
     PostAuthRevokeSessionsErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthRevokeSessionsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthRevokeSessionsResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthRevokeSessionsResponse.parseAsync(data);
-    },
     url: "/auth/revoke-sessions",
     ...options,
     headers: {
@@ -1187,15 +1477,18 @@ export const postAuthRevokeOtherSessions = <
     PostAuthRevokeOtherSessionsErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthRevokeOtherSessionsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthRevokeOtherSessionsResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthRevokeOtherSessionsResponse.parseAsync(data);
-    },
     url: "/auth/revoke-other-sessions",
     ...options,
     headers: {
@@ -1216,15 +1509,18 @@ export const postAuthLinkSocial = <ThrowOnError extends boolean = false>(
     PostAuthLinkSocialErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthLinkSocialData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthLinkSocialResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthLinkSocialResponse.parseAsync(data);
-    },
     url: "/auth/link-social",
     ...options,
     headers: {
@@ -1245,15 +1541,18 @@ export const getAuthListAccounts = <ThrowOnError extends boolean = false>(
     GetAuthListAccountsErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthListAccountsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthListAccountsResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthListAccountsResponse.parseAsync(data);
-    },
     url: "/auth/list-accounts",
     ...options,
   });
@@ -1270,15 +1569,18 @@ export const getAuthDeleteUserCallback = <ThrowOnError extends boolean = false>(
     GetAuthDeleteUserCallbackErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthDeleteUserCallbackData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthDeleteUserCallbackResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthDeleteUserCallbackResponse.parseAsync(data);
-    },
     url: "/auth/delete-user/callback",
     ...options,
   });
@@ -1295,15 +1597,18 @@ export const postAuthUnlinkAccount = <ThrowOnError extends boolean = false>(
     PostAuthUnlinkAccountErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthUnlinkAccountData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthUnlinkAccountResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthUnlinkAccountResponse.parseAsync(data);
-    },
     url: "/auth/unlink-account",
     ...options,
     headers: {
@@ -1324,15 +1629,18 @@ export const postAuthRefreshToken = <ThrowOnError extends boolean = false>(
     PostAuthRefreshTokenErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthRefreshTokenData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthRefreshTokenResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthRefreshTokenResponse.parseAsync(data);
-    },
     url: "/auth/refresh-token",
     ...options,
     headers: {
@@ -1353,15 +1661,18 @@ export const postAuthGetAccessToken = <ThrowOnError extends boolean = false>(
     PostAuthGetAccessTokenErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthGetAccessTokenData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthGetAccessTokenResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthGetAccessTokenResponse.parseAsync(data);
-    },
     url: "/auth/get-access-token",
     ...options,
     headers: {
@@ -1382,15 +1693,18 @@ export const postAuthAccountInfo = <ThrowOnError extends boolean = false>(
     PostAuthAccountInfoErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zPostAuthAccountInfoData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostAuthAccountInfoResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zPostAuthAccountInfoResponse.parseAsync(data);
-    },
     url: "/auth/account-info",
     ...options,
     headers: {
@@ -1411,15 +1725,18 @@ export const getAuthOk = <ThrowOnError extends boolean = false>(
     GetAuthOkErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthOkData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthOkResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthOkResponse.parseAsync(data);
-    },
     url: "/auth/ok",
     ...options,
   });
@@ -1436,15 +1753,18 @@ export const getAuthError = <ThrowOnError extends boolean = false>(
     GetAuthErrorErrors,
     ThrowOnError
   >({
+    requestValidator: async (data) => {
+      return await zGetAuthErrorData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetAuthErrorResponse.parseAsync(data);
+    },
     security: [
       {
         scheme: "bearer",
         type: "http",
       },
     ],
-    responseValidator: async (data) => {
-      return await zGetAuthErrorResponse.parseAsync(data);
-    },
     url: "/auth/error",
     ...options,
   });

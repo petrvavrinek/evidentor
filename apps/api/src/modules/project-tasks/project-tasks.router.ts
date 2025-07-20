@@ -56,7 +56,7 @@ export const router = new Elysia({
 
 			// This will always be non-nullable
 			const result = (await ProjectTasksService.findByTaskId(
-				task.id,
+				task!.id,
 				user.id,
 			))!;
 

@@ -41,6 +41,7 @@ import SearchInput from "@/components/search-input";
 
 import { deleteProjectById, getProject, type Project } from "@/lib/api";
 import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import ProjectDetailModal from "@/components/projects/project-detail-modal";
 
 export default function ProjectsPage() {
 	const { data, isLoading, error } = useQuery({
@@ -52,6 +53,9 @@ export default function ProjectsPage() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
+	const [showProjectDetail, setShowProjectDetail] = useState<Project | null>(
+		null,
+	);
 
 	const queryClient = useQueryClient();
 
@@ -76,6 +80,10 @@ export default function ProjectsPage() {
 	const handleUpdate = (id: number) => {
 		// TODO: Implement update functionality
 		console.log(`Update project ${id}`);
+	};
+
+	const handleDetailShow = (project: Project) => {
+		setShowProjectDetail(project);
 	};
 
 	const projects = data?.data || [];
@@ -150,6 +158,7 @@ export default function ProjectsPage() {
 												project={project}
 												onUpdate={handleUpdate}
 												onDelete={handleDelete}
+												onDetailShow={() => handleDetailShow(project)}
 											/>
 										))
 									)}
@@ -190,6 +199,11 @@ export default function ProjectsPage() {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+			<ProjectDetailModal
+				project={showProjectDetail ?? undefined}
+				isOpen={!!showProjectDetail}
+				onClose={() => setShowProjectDetail(null)}
+			/>
 		</>
 	);
 }

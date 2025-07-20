@@ -47,7 +47,7 @@ export default function ProjectOverviewPage() {
 	);
 
 	if (isProjectLoading) return <Loader />;
-	if (!project?.data) return <>Project not found</>;
+	if (!project?.data) return "Project not found";
 
 	const onProjectTaskCreate = (task: ProjectTask) => {
 		setNewTaskDialogOpen(false);

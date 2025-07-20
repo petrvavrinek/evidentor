@@ -1,4 +1,5 @@
 import { defineConfig } from "@hey-api/openapi-ts";
+import { datePlugin } from "./openapi/date-plugin";
 
 export default defineConfig({
 	input: "http://localhost:3000/swagger/json",
@@ -8,12 +9,19 @@ export default defineConfig({
 		path: "./src/lib/api",
 	},
 	plugins: [
+		
 		{
 			name: "@hey-api/client-fetch",
-			baseUrl: false
+			baseUrl: false,
 		},
-		"@hey-api/schemas",
+		{
+			name: "@hey-api/schemas",
+		},
 		"zod",
+		{
+			name: "@hey-api/transformers",
+			dates: true,
+		},
 		{
 			name: "@hey-api/sdk",
 			validator: true,
@@ -26,5 +34,6 @@ export default defineConfig({
 		{
 			name: "@tanstack/react-query",
 		},
-	],
+		datePlugin(),
+	]
 });

@@ -18,12 +18,14 @@ interface ProjectTableRowProps {
 	project: Project;
 	onUpdate?: (id: number) => void;
 	onDelete?: (id: number) => void;
+	onDetailShow?: () => void;
 }
 
 export default function ProjectTableRow({
 	project,
 	onUpdate,
 	onDelete,
+	onDetailShow,
 }: ProjectTableRowProps) {
 	return (
 		<TableRow>
@@ -54,6 +56,7 @@ export default function ProjectTableRow({
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
+						<DropdownMenuItem onClick={onDetailShow}>Detail</DropdownMenuItem>
 						<DropdownMenuItem onClick={() => onUpdate?.(project.id)}>
 							Edit
 						</DropdownMenuItem>

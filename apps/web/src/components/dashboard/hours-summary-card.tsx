@@ -11,15 +11,12 @@ import { getTimeEntryAnalyzeDurationByDateQueryKey } from "@/lib/api/@tanstack/r
 import {
 	createDatesBetween,
 	firstDayOfWeek,
-	getDayNames,
 	isDateSame,
 	toDateOnly,
 } from "@/lib/dates";
 
 import TimeEntryDurationChart from "../charts/time-entry-duration-chart";
 import DashboardCard from "./dashboard-card";
-
-const dayNames = getDayNames("short");
 
 const firstDayDate = toDateOnly(firstDayOfWeek(new Date(), 1));
 const lastDayDate = toDateOnly(firstDayDate);
@@ -51,10 +48,7 @@ export default function HoursSummaryCard() {
 	return (
 		<DashboardCard title="Hours summary" subtitle="Your working hours overview">
 			{data?.data && (
-				<TimeEntryDurationChart
-					durations={transformedDates}
-					transformTitle={(e) => dayNames[e.getDay()]}
-				/>
+				<TimeEntryDurationChart durations={transformedDates} displayType="day" />
 			)}
 			{isLoading && "..."}
 		</DashboardCard>

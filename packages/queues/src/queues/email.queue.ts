@@ -1,4 +1,4 @@
-import { createQueue } from "./queue";
+import { createQueue } from "../queue";
 
 type EmailQueueEvent<Event extends string, Data> = {
 	type: Event;

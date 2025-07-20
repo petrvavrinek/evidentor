@@ -1,10 +1,10 @@
-import { and, eq, gte, lte, sql, SQLWrapper } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
 
 import { timeEntry } from "@/db/schema";
 
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
-import { TimeEntryFilterType } from "./time-entries.dto";
+import type { TimeEntryFilterType } from "./time-entries.dto";
 
 type TimeEntry = typeof timeEntry.$inferSelect;
 
