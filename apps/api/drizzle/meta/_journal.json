@@ -85,6 +85,13 @@
       "when": 1752485493490,
       "tag": "0011_create_invoice_table",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1753044743573,
+      "tag": "0012_update_invoice_item_add_project_task",
+      "breakpoints": true
     }
   ]
 }
