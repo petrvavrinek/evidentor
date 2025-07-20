@@ -1,7 +1,7 @@
 import { and, count, eq, gte, lte } from "drizzle-orm";
 import { db } from "../../database";
 import { project } from "../../db/schema";
-import { ProjectQueryFilterType } from "./projects.dto";
+import type { ProjectQueryFilterType } from "./projects.dto";
 
 type Project = typeof project.$inferInsert;
 

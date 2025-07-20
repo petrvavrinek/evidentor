@@ -17,22 +17,17 @@ interface AuthProtectProps {
 export default function AuthProtect({ children }: AuthProtectProps) {
 	const router = useRouter();
 	const session = authClient.useSession();
-	const [isMounted, setIsMounted] = useState(false);
 	const [clientProvider, setClientProvider] = useState<QueryClient>();
 	const [clientCredentialsSet, setClientCredentialsSet] = useState(false);
 
 	useEffect(() => {
-		setIsMounted(true);
-	}, []);
-
-	useEffect(() => {
-		if (isMounted && !session.isPending && !session.data) {
+		if (!session.isPending && !session.data) {
 			router.replace("/auth");
 		}
 
 		// Init client once
 		if (!clientProvider) setClientProvider(new QueryClient());
-	}, [isMounted, session.isPending, session.data, router, clientProvider]);
+	}, [session.isPending, session.data, router, clientProvider]);
 
 	useEffect(() => {
 		if (session.data?.session.token) {
@@ -47,12 +42,7 @@ export default function AuthProtect({ children }: AuthProtectProps) {
 		}
 	}, [session]);
 
-	if (
-		!isMounted ||
-		session.isPending ||
-		!clientProvider ||
-		!clientCredentialsSet
-	) {
+	if (session.isPending || !clientProvider || !clientCredentialsSet) {
 		return <Skeleton className="w-full h-1.5" />;
 	}
 

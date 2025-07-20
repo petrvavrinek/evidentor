@@ -1,9 +1,9 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
-import { Static, t } from "elysia";
+import { type Static, t } from "elysia";
 
 import { timeEntry } from "@/db/schema";
-import { ProjectResponse } from "../projects/projects.dto";
 import { ProjectTaskResponse } from "../project-tasks/project-tasks.dto";
+import { ProjectResponse } from "../projects/projects.dto";
 
 /**
  * Base time entry insert schema with refined values
@@ -72,5 +72,3 @@ export const TimeEntryDurationByDate = t.Array(
 		duration: t.Number(),
 	}),
 );
-
-console.dir(t.Date(), { depth: null });

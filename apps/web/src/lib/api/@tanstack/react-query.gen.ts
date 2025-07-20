@@ -25,6 +25,10 @@ import {
   deleteProjectTaskById,
   patchProjectTaskById,
   postProjectTaskById,
+  getInvoice,
+  postInvoice,
+  deleteInvoiceById,
+  getInvoiceById,
   getStatus,
   socialSignIn,
   getAuthGetSession,
@@ -90,6 +94,12 @@ import type {
   PatchProjectTaskByIdData,
   PostProjectTaskByIdData,
   PostProjectTaskByIdResponse,
+  GetInvoiceData,
+  PostInvoiceData,
+  PostInvoiceResponse,
+  DeleteInvoiceByIdData,
+  DeleteInvoiceByIdResponse,
+  GetInvoiceByIdData,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
@@ -827,6 +837,123 @@ export const postProjectTaskByIdMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getInvoiceQueryKey = (options?: Options<GetInvoiceData>) =>
+  createQueryKey("getInvoice", options);
+
+/**
+ * Get all user invoices
+ */
+export const getInvoiceOptions = (options?: Options<GetInvoiceData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getInvoice({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getInvoiceQueryKey(options),
+  });
+};
+
+export const postInvoiceQueryKey = (options: Options<PostInvoiceData>) =>
+  createQueryKey("postInvoice", options);
+
+/**
+ * Create invoice
+ */
+export const postInvoiceOptions = (options: Options<PostInvoiceData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postInvoice({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postInvoiceQueryKey(options),
+  });
+};
+
+/**
+ * Create invoice
+ */
+export const postInvoiceMutation = (
+  options?: Partial<Options<PostInvoiceData>>,
+): UseMutationOptions<
+  PostInvoiceResponse,
+  DefaultError,
+  Options<PostInvoiceData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostInvoiceResponse,
+    DefaultError,
+    Options<PostInvoiceData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postInvoice({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete invoice
+ */
+export const deleteInvoiceByIdMutation = (
+  options?: Partial<Options<DeleteInvoiceByIdData>>,
+): UseMutationOptions<
+  DeleteInvoiceByIdResponse,
+  DefaultError,
+  Options<DeleteInvoiceByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    DeleteInvoiceByIdResponse,
+    DefaultError,
+    Options<DeleteInvoiceByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteInvoiceById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getInvoiceByIdQueryKey = (options: Options<GetInvoiceByIdData>) =>
+  createQueryKey("getInvoiceById", options);
+
+/**
+ * Get invoice by id
+ */
+export const getInvoiceByIdOptions = (options: Options<GetInvoiceByIdData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getInvoiceById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getInvoiceByIdQueryKey(options),
+  });
 };
 
 export const getStatusQueryKey = (options?: Options<GetStatusData>) =>

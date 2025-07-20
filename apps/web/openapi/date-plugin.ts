@@ -11,7 +11,6 @@ type UserConfig = {
 export type DatePlugin = DefinePlugin<UserConfig>;
 
 const transformSchemaObject = (schema: IR.SchemaObject): IR.SchemaObject => {
-	//	console.dir(schema, { depth: null });
 
 	return schema;
 };

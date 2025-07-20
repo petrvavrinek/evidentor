@@ -792,6 +792,547 @@ export const ProjectTaskCountSchema = {
   $id: "#/components/schemas/ProjectTaskCount",
 } as const;
 
+export const InvoiceSchema = {
+  type: "object",
+  properties: {
+    id: {
+      minimum: -2147483648,
+      maximum: 2147483647,
+      type: "integer",
+    },
+    clientId: {
+      anyOf: [
+        {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    projectId: {
+      anyOf: [
+        {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    amount: {
+      minimum: -2147483648,
+      maximum: 2147483647,
+      type: "integer",
+    },
+    currency: {
+      anyOf: [
+        {
+          const: "czk",
+          type: "string",
+        },
+        {
+          const: "eur",
+          type: "string",
+        },
+        {
+          const: "usd",
+          type: "string",
+        },
+      ],
+    },
+    dueDate: {
+      anyOf: [
+        {
+          type: "Date",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    paidAt: {
+      anyOf: [
+        {
+          type: "Date",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    sentAt: {
+      anyOf: [
+        {
+          type: "Date",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    issuedAt: {
+      type: "Date",
+    },
+    createdAt: {
+      type: "Date",
+    },
+    updatedAt: {
+      type: "Date",
+    },
+    ownerId: {
+      anyOf: [
+        {
+          type: "string",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    project: {
+      anyOf: [
+        {
+          type: "object",
+          properties: {
+            id: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            title: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            ownerId: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            clientId: {
+              anyOf: [
+                {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            createdAt: {
+              type: "Date",
+            },
+          },
+          required: ["id", "title", "ownerId", "clientId", "createdAt"],
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    client: {
+      anyOf: [
+        {
+          type: "object",
+          properties: {
+            id: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            companyName: {
+              type: "string",
+            },
+            contactName: {
+              type: "string",
+            },
+            email: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            ownerId: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            createdAt: {
+              type: "Date",
+            },
+          },
+          required: [
+            "id",
+            "companyName",
+            "contactName",
+            "email",
+            "ownerId",
+            "createdAt",
+          ],
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    items: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          id: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          name: {
+            type: "string",
+          },
+          qty: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          unitPrice: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          invoiceId: {
+            anyOf: [
+              {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        required: ["id", "name", "qty", "unitPrice", "invoiceId"],
+      },
+    },
+  },
+  required: [
+    "id",
+    "clientId",
+    "projectId",
+    "amount",
+    "currency",
+    "dueDate",
+    "paidAt",
+    "sentAt",
+    "issuedAt",
+    "createdAt",
+    "updatedAt",
+    "ownerId",
+    "project",
+    "client",
+    "items",
+  ],
+  $id: "#/components/schemas/Invoice",
+} as const;
+
+export const Invoice__Schema = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      id: {
+        minimum: -2147483648,
+        maximum: 2147483647,
+        type: "integer",
+      },
+      clientId: {
+        anyOf: [
+          {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      projectId: {
+        anyOf: [
+          {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      amount: {
+        minimum: -2147483648,
+        maximum: 2147483647,
+        type: "integer",
+      },
+      currency: {
+        anyOf: [
+          {
+            const: "czk",
+            type: "string",
+          },
+          {
+            const: "eur",
+            type: "string",
+          },
+          {
+            const: "usd",
+            type: "string",
+          },
+        ],
+      },
+      dueDate: {
+        anyOf: [
+          {
+            type: "Date",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      paidAt: {
+        anyOf: [
+          {
+            type: "Date",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      sentAt: {
+        anyOf: [
+          {
+            type: "Date",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      issuedAt: {
+        type: "Date",
+      },
+      createdAt: {
+        type: "Date",
+      },
+      updatedAt: {
+        type: "Date",
+      },
+      ownerId: {
+        anyOf: [
+          {
+            type: "string",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      project: {
+        anyOf: [
+          {
+            type: "object",
+            properties: {
+              id: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              title: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              ownerId: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              clientId: {
+                anyOf: [
+                  {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              createdAt: {
+                type: "Date",
+              },
+            },
+            required: ["id", "title", "ownerId", "clientId", "createdAt"],
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      client: {
+        anyOf: [
+          {
+            type: "object",
+            properties: {
+              id: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              companyName: {
+                type: "string",
+              },
+              contactName: {
+                type: "string",
+              },
+              email: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              ownerId: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              createdAt: {
+                type: "Date",
+              },
+            },
+            required: [
+              "id",
+              "companyName",
+              "contactName",
+              "email",
+              "ownerId",
+              "createdAt",
+            ],
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      items: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            id: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            name: {
+              type: "string",
+            },
+            qty: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            unitPrice: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            invoiceId: {
+              anyOf: [
+                {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+          },
+          required: ["id", "name", "qty", "unitPrice", "invoiceId"],
+        },
+      },
+    },
+    required: [
+      "id",
+      "clientId",
+      "projectId",
+      "amount",
+      "currency",
+      "dueDate",
+      "paidAt",
+      "sentAt",
+      "issuedAt",
+      "createdAt",
+      "updatedAt",
+      "ownerId",
+      "project",
+      "client",
+      "items",
+    ],
+  },
+  $id: "#/components/schemas/Invoice[]",
+} as const;
+
 export const UserSchema = {
   type: "object",
   properties: {

@@ -3,12 +3,12 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 
 import env from "./env";
-import logger from "./logger";
 
+import { LoggerService } from "@evidentor/logging";
 import { auth, OpenAPI } from "./auth";
 import * as routers from "./routers";
 
-
+const logger = new LoggerService("main");
 
 const app = new Elysia()
 	.use(
@@ -40,6 +40,7 @@ const app = new Elysia()
 	.use(routers.projectRouter)
 	.use(routers.timeEntryRouter)
 	.use(routers.projectTasksRouter)
+	.use(routers.invoicesRouter)
 	.head("/status", () => "ok")
 	.get("/status", () => "ok");
 

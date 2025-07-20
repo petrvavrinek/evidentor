@@ -1,0 +1,27 @@
+{
+	"name": "@evidentor/storage",
+  "description": "Evidentor storage package",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest",
+		"@types/find-package-json": "^1.2.6"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@flystorage/file-storage": "^1.1.0",
+		"@flystorage/local-fs": "^1.1.0",
+		"find-package-json": "^1.2.0"
+	},
+	"exports": {
+		".": {
+			"import": "./index.ts",
+			"default": "./index.ts",
+			"node": "./index.ts",
+			"types": "./index.ts"
+		}
+	}
+}
