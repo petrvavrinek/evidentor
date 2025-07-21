@@ -4,6 +4,7 @@ ARG TARGETARCH=x64
 FROM oven/bun:canary-debian AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
+ARG TARGETARCH
 
 # /app workdir
 
