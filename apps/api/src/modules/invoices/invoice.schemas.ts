@@ -13,17 +13,18 @@ const InvoiceItemSchema = createSelectSchema(invoiceItem);
 const ProjectTaskSchema = createSelectSchema(projectTask);
 
 export const InvoiceCreateSchema = t.Object({
-	...t.Pick(InvoiceSchema, ["clientId", "projectId", "dueDate", "currency"])
+	...t.Pick(InvoiceSchema, ["projectId", "dueDate", "currency"])
 		.properties,
 	items: t.Array(
 		t.Object({
 			name: t.String(),
-			qty: t.Integer(),
-			unitPrice: t.Integer(),
-			projectTaskId: t.Optional(t.Integer()),
-			projectTask: t.Optional(ProjectTaskSchema),
+			qty: t.Number(),
+			unitPrice: t.Number(),
+			projectTaskId: t.Optional(t.Number()),
 		}),
 	),
+	projectId: t.Number(),
+	dueDate: t.Date()
 });
 
 export type InvoiceCreateType = Static<typeof InvoiceCreateSchema>;

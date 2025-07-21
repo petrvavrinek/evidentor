@@ -4,6 +4,7 @@ import {
 	InvoiceCreateSchema,
 	InvoiceIdParamSchema,
 	InvoiceResponseSchema,
+	InvoicesResponseSchema,
 } from "./invoice.schemas";
 
 import { InvoiceQueue } from "@evidentor/queues";
@@ -18,7 +19,7 @@ export const invoicesRouter = new Elysia({
 })
 	.use(betterAuth)
 	.model("Invoice", InvoiceResponseSchema)
-	.model("Invoice[]", InvoiceResponseSchema)
+	.model("Invoice[]", InvoicesResponseSchema)
 	.get("", async ({ user }) => InvoicesService.findManyByUserId(user.id), {
 		auth: true,
 		detail: { description: "Get all user invoices" },
@@ -41,16 +42,16 @@ export const invoicesRouter = new Elysia({
 	.post(
 		"",
 		async ({ user, body }) => {
-			if (body.clientId) {
-				const client = await ClientsService.findById(user.id, body.clientId);
-				if (!client) throw status(404, "Client not found");
-			}
-			if (body.projectId) {
-				const project = await ProjectsService.findById(user.id, body.projectId);
-				if (!project) throw status(404, "Project not found");
-			}
+			const project = await ProjectsService.findById(user.id, body.projectId);
+			if (!project) throw status(404, "Project not found");
 
-			const invoice = await InvoicesService.create(user.id, body);
+			if (!project.clientId)
+				throw status(400, "Project does not have assigned client");
+
+			const invoice = await InvoicesService.create(user.id, {
+				...body,
+				clientId: project.clientId,
+			});
 			const newInvoice = (await InvoicesService.findById(
 				user.id,
 				invoice!.id,

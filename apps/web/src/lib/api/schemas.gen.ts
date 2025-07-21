@@ -1011,6 +1011,18 @@ export const InvoiceSchema = {
             maximum: 2147483647,
             type: "integer",
           },
+          projectTaskId: {
+            anyOf: [
+              {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
           name: {
             type: "string",
           },
@@ -1036,8 +1048,61 @@ export const InvoiceSchema = {
               },
             ],
           },
+          projectTask: {
+            anyOf: [
+              {
+                type: "object",
+                properties: {
+                  id: {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  title: {
+                    type: "string",
+                  },
+                  projectId: {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  description: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  createdAt: {
+                    type: "Date",
+                  },
+                },
+                required: [
+                  "id",
+                  "title",
+                  "projectId",
+                  "description",
+                  "createdAt",
+                ],
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
         },
-        required: ["id", "name", "qty", "unitPrice", "invoiceId"],
+        required: [
+          "id",
+          "projectTaskId",
+          "name",
+          "qty",
+          "unitPrice",
+          "invoiceId",
+          "projectTask",
+        ],
       },
     },
   },
@@ -1282,6 +1347,18 @@ export const Invoice__Schema = {
               maximum: 2147483647,
               type: "integer",
             },
+            projectTaskId: {
+              anyOf: [
+                {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
             name: {
               type: "string",
             },
@@ -1307,8 +1384,61 @@ export const Invoice__Schema = {
                 },
               ],
             },
+            projectTask: {
+              anyOf: [
+                {
+                  type: "object",
+                  properties: {
+                    id: {
+                      minimum: -2147483648,
+                      maximum: 2147483647,
+                      type: "integer",
+                    },
+                    title: {
+                      type: "string",
+                    },
+                    projectId: {
+                      minimum: -2147483648,
+                      maximum: 2147483647,
+                      type: "integer",
+                    },
+                    description: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    createdAt: {
+                      type: "Date",
+                    },
+                  },
+                  required: [
+                    "id",
+                    "title",
+                    "projectId",
+                    "description",
+                    "createdAt",
+                  ],
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
           },
-          required: ["id", "name", "qty", "unitPrice", "invoiceId"],
+          required: [
+            "id",
+            "projectTaskId",
+            "name",
+            "qty",
+            "unitPrice",
+            "invoiceId",
+            "projectTask",
+          ],
         },
       },
     },

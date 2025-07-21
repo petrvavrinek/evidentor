@@ -1,6 +1,6 @@
-import { and, eq, type SQL } from "drizzle-orm";
+import { and, eq, type SQL, inArray } from "drizzle-orm";
 import { db } from "../../database";
-import { invoice, invoiceItem } from "../../db/schema";
+import { invoice, invoiceItem, project, projectTask } from "../../db/schema";
 import type { InvoiceCreateType } from "./invoice.schemas";
 
 interface CreateInvoiceQueryOptions {
@@ -62,28 +62,56 @@ export const InvoicesService = {
 		return results?.[0] ?? null;
 	},
 
-	async create(userId: string, data: InvoiceCreateType) {
+	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
 		return db.transaction(async (tx) => {
+			// Find project tasks if any
+			const projectTasks = data.items
+				.filter((e) => !!e.projectTaskId)
+				.map((e) => e.projectTaskId as number);
+
+			// Check if project tasks are accessible by user
+			const invoiceProjectTaskItems = await tx
+				.select({ id: projectTask.id })
+				.from(projectTask)
+				.leftJoin(project, eq(projectTask.projectId, project.id))
+				.where(
+					and(
+						eq(project.ownerId, userId),
+						eq(project.id, data.projectId),
+						inArray(projectTask.id, projectTasks),
+					),
+				);
+			// Map task ids to array
+			const invoiceProjectTaskIds = invoiceProjectTaskItems.map((e) => e.id);
+
+			// Calculate total amount
 			const amount = data.items.reduce(
 				(prev, current) => prev + current.unitPrice * current.qty,
 				0,
 			);
 
-			const [created] = await tx
+			// Create invoice
+			const [createdInvoice] = await tx
 				.insert(invoice)
 				.values({ ...data, ownerId: userId, amount })
 				.returning();
 
+			// Create invoice items
 			await tx.insert(invoiceItem).values(
 				data.items.map((e) => ({
 					name: e.name,
 					qty: e.qty,
 					unitPrice: e.unitPrice,
-					invoiceId: created?.id,
+					invoiceId: createdInvoice?.id,
+					// Check if project task exist, otherwise fallback to null
+					projectTaskId:
+						e.projectTaskId && invoiceProjectTaskIds.includes(e.projectTaskId)
+							? e.projectTaskId
+							: null,
 				})),
 			);
 
-			return created;
+			return createdInvoice;
 		});
 	},
 
