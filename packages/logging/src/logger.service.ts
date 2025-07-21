@@ -1,4 +1,4 @@
-import "pino-pretty";
+import pretty from "pino-pretty";
 import pino from "pino";
 
 import type { ILogger, SerializableLogType } from "./logger.interface";
@@ -10,12 +10,14 @@ export class LoggerService implements ILogger {
 	_logger: pino.Logger<never>;
 
 	constructor(prefix: string) {
-		this._logger = pino({
-			transport: {
-				target: "pino-pretty",
-			},
-			name: prefix,
+		const stream = pretty({
+			colorize: true,
+			ignore: "hostname,pid"
 		});
+
+		this._logger = pino({
+			name: prefix,
+		}, stream);
 	}
 
 	convertToString(...args: SerializableLogType[]): string {
