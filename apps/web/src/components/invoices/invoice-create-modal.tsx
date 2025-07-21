@@ -1,5 +1,4 @@
 import { ProjectSelect } from "@/components/project-select";
-import ClientSelect from "@/components/projects/client-select";
 import { postInvoice } from "@/lib/api/sdk.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
@@ -35,8 +34,7 @@ const InvoiceItemSchema = z.object({
 });
 
 const InvoiceSchema = z.object({
-	clientId: z.number().nullable(),
-	projectId: z.number().nullable(),
+	projectId: z.number(),
 	dueDate: z.string().optional(),
 	currency: z.enum(["czk", "eur", "usd"]),
 	items: z.array(InvoiceItemSchema).min(1, "At least one item"),
@@ -54,8 +52,6 @@ export default function InvoiceCreateModal({
 	const form = useForm<InvoiceFormValues>({
 		resolver: zodResolver(InvoiceSchema),
 		defaultValues: {
-			clientId: null,
-			projectId: null,
 			dueDate: "",
 			currency: "czk",
 			items: [{ name: "", qty: 1, unitPrice: 0 }],
@@ -72,7 +68,6 @@ export default function InvoiceCreateModal({
 		try {
 			await postInvoice({
 				body: {
-					clientId: values.clientId,
 					projectId: values.projectId,
 					currency: values.currency,
 					dueDate: values.dueDate || null,
@@ -101,29 +96,13 @@ export default function InvoiceCreateModal({
 					>
 						<FormField
 							control={form.control}
-							name="clientId"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Client</FormLabel>
-									<FormControl>
-										<ClientSelect
-											value={field.value}
-											onChange={field.onChange}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
 							name="projectId"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Project</FormLabel>
 									<FormControl>
 										<ProjectSelect
-											projectId={field.value ?? undefined}
+											projectId={field.value}
 											onSelect={(project) =>
 												field.onChange(project?.id ?? null)
 											}

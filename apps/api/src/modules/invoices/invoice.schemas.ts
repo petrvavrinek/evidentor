@@ -18,9 +18,9 @@ export const InvoiceCreateSchema = t.Object({
 	items: t.Array(
 		t.Object({
 			name: t.String(),
-			qty: t.Integer(),
-			unitPrice: t.Integer(),
-			projectTaskId: t.Optional(t.Integer()),
+			qty: t.Number(),
+			unitPrice: t.Number(),
+			projectTaskId: t.Optional(t.Number()),
 		}),
 	),
 	projectId: t.Number(),

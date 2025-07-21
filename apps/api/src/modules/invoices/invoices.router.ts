@@ -4,6 +4,7 @@ import {
 	InvoiceCreateSchema,
 	InvoiceIdParamSchema,
 	InvoiceResponseSchema,
+	InvoicesResponseSchema,
 } from "./invoice.schemas";
 
 import { InvoiceQueue } from "@evidentor/queues";
@@ -18,7 +19,7 @@ export const invoicesRouter = new Elysia({
 })
 	.use(betterAuth)
 	.model("Invoice", InvoiceResponseSchema)
-	.model("Invoice[]", InvoiceResponseSchema)
+	.model("Invoice[]", InvoicesResponseSchema)
 	.get("", async ({ user }) => InvoicesService.findManyByUserId(user.id), {
 		auth: true,
 		detail: { description: "Get all user invoices" },
