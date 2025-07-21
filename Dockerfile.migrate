@@ -14,6 +14,7 @@ RUN apt-get update && \
 
 # Copy all files into image
 COPY ./apps/api ./apps/api
+COPY ./packages/queues ./packages/queues
 COPY ./packages/logging ./packages/logging
 
 COPY ./bun.lock .
