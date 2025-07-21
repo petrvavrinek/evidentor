@@ -30,7 +30,7 @@ ENV CXXFLAGS="-v"
 ENV MAKEFLAGS="--debug=v"
 
 # Install all packages
-RUN bun install
+RUN bun install --frozen-lockfile
 
 ENV NODE_ENV=production
 

@@ -16,7 +16,9 @@ RUN apt-get update && \
 
 # Copy everything into image
 COPY ./apps/email-service ./apps/email-service
-COPY ./packages/shared-queues ./packages/shared-queues
+COPY ./packages/queues ./packages/queues
+COPY ./packages/logging ./packages/logging
+
 COPY ./bun.lock .
 COPY ./package.json .
 
@@ -29,7 +31,7 @@ ENV CXXFLAGS="-v"
 ENV MAKEFLAGS="--debug=v"
 
 # Install all packages
-RUN bun install
+RUN bun install --frozen-lockfile
 
 ENV NODE_ENV=production
 
