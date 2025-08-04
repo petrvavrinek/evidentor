@@ -92,6 +92,13 @@
       "when": 1753044743573,
       "tag": "0012_update_invoice_item_add_project_task",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1754326717852,
+      "tag": "0013_create_calendar_table",
+      "breakpoints": true
     }
   ]
 }
