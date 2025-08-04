@@ -1,5 +1,6 @@
 import Elysia, { status } from "elysia";
-import { betterAuth } from "../../auth/index";
+
+import { BetterAuthMacro } from "../auth";
 import { ClientsService } from "../clients/clients.service";
 import {
 	CreateProject,
@@ -12,11 +13,11 @@ import {
 } from "./projects.dto";
 import { ProjectsService } from "./projects.service";
 
-export const router = new Elysia({
+const router = new Elysia({
 	prefix: "/project",
 	detail: { tags: ["Project"] },
 })
-	.use(betterAuth)
+	.use(BetterAuthMacro)
 	.model("Project", ProjectResponse)
 	.model("Project[]", ProjectsResponse)
 	.model("ProjectCount", ProjectCountReponse)
@@ -62,7 +63,10 @@ export const router = new Elysia({
 				clientId,
 			});
 
-			const project = await ProjectsService.findById(user.id, createdProject!.id);
+			const project = await ProjectsService.findById(
+				user.id,
+				createdProject!.id,
+			);
 
 			if (!project) throw status(500, "Could not create project");
 
@@ -134,3 +138,5 @@ export const router = new Elysia({
 			},
 		},
 	);
+
+export default router;

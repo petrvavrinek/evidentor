@@ -1,5 +1,6 @@
 import Elysia, { status } from "elysia";
-import { betterAuth } from "../../auth";
+
+import { BetterAuthMacro } from "../auth";
 import { ProjectIdParam } from "../projects/projects.dto";
 import {
 	CreateProjectTask,
@@ -13,11 +14,11 @@ import {
 } from "./project-tasks.dto";
 import { ProjectTasksService } from "./project-tasks.service";
 
-export const router = new Elysia({
+const router = new Elysia({
 	prefix: "/project-task",
 	detail: { tags: ["ProjectTask"] },
 })
-	.use(betterAuth)
+	.use(BetterAuthMacro)
 	.model("ProjectTask", ProjectTaskResponse)
 	.model("ProjectTask[]", ProjectTasksResponse)
 	.model("ProjectTaskCount", ProjectTaskCountReponse)
@@ -100,3 +101,5 @@ export const router = new Elysia({
 			params: ProjectTaskIdParam,
 		},
 	);
+
+export default router;

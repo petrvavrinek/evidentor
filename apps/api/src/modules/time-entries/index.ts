@@ -1,5 +1,5 @@
 import { Elysia, status } from "elysia";
-import { betterAuth } from "../../auth/auth.middleware";
+import { BetterAuthMacro } from "../auth";
 import {
 	CreateTimeEntry,
 	TimeEntriesResponse,
@@ -11,11 +11,11 @@ import {
 } from "./time-entries.dto";
 import { TimeEntriesService } from "./time-entries.service";
 
-export const router = new Elysia({
+const router = new Elysia({
 	prefix: "/time-entry",
 	detail: { tags: ["Timer"] },
 })
-	.use(betterAuth)
+	.use(BetterAuthMacro)
 	.model("TimeEntry", TimeEntryResponse)
 	.model("TimeEntry[]", TimeEntriesResponse)
 	.model("TimeEntryDurationByDate", TimeEntryDurationByDate)
@@ -136,4 +136,5 @@ export const router = new Elysia({
 		{ auth: true, query: TimeEntryFilter, response: "TimeEntryDurationByDate" },
 	);
 
-TimeEntriesService.getDurationEachDate("q2xXlchLxHLwo8HnRsiauIpF1d7WAa9O");
+// TimeEntriesService.getDurationEachDate("q2xXlchLxHLwo8HnRsiauIpF1d7WAa9O");
+export default router;

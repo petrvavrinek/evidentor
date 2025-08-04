@@ -1,11 +1,11 @@
-import { auth } from "../auth";
-
+// @ts-nocheck
+import { auth } from "./better-auth";
 
 // @ts-ignore
 let _schema: ReturnType<typeof auth.api.generateOpenAPISchema>;
-// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 
 // @ts-ignore
+// biome-ignore lint/suspicious/noAssignInExpressions: Official docs
 const getSchema = async () => (_schema ??= auth.api.generateOpenAPISchema());
 
 export const OpenAPI = {

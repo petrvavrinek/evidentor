@@ -1,12 +1,15 @@
 import { cors } from "@elysiajs/cors";
-import { swagger } from "@elysiajs/swagger";
+import { LoggerService } from "@evidentor/logging";
 import { Elysia } from "elysia";
 
+import { db } from "./database";
 import env from "./env";
-
-import { LoggerService } from "@evidentor/logging";
-import { auth, OpenAPI } from "./auth";
-import * as routers from "./routers";
+import { AuthRouter } from "./modules/auth";
+import ClientsRouter from "./modules/clients";
+import InvoicesRouter from "./modules/invoices";
+import ProjectTaskRouter from "./modules/project-tasks";
+import ProjectsRouter from "./modules/projects";
+import TimeEntryRouter from "./modules/time-entries";
 
 const logger = new LoggerService("main");
 
@@ -19,28 +22,15 @@ const app = new Elysia()
 			allowedHeaders: ["Content-Type", "Authorization"],
 		}),
 	)
-	.use(
-		swagger({
-			documentation: {
-				components: (await OpenAPI.components) as never,
-				paths: (await OpenAPI.getPaths("/auth")) as never,
-				openapi: "3.1.0",
-			},
-		}) as never,
-	)
 	.onRequest((handler) => {
 		logger.info(`[${handler.request.method}] ${handler.request.url}`);
 	})
-	.all("/auth/*", (context) => {
-		if (["POST", "GET"].includes(context.request.method))
-			return auth.handler(context.request);
-		context.status(405);
-	})
-	.use(routers.clientRouter)
-	.use(routers.projectRouter)
-	.use(routers.timeEntryRouter)
-	.use(routers.projectTasksRouter)
-	.use(routers.invoicesRouter)
+	.use(AuthRouter)
+	.use(ClientsRouter)
+	.use(InvoicesRouter)
+	.use(ProjectTaskRouter)
+	.use(ProjectsRouter)
+	.use(TimeEntryRouter)
 	.head("/status", () => "ok")
 	.get("/status", () => "ok");
 
@@ -56,16 +46,17 @@ app.listen(env.PORT);
 
 logger.info(`Server running at :${env.PORT}`);
 
-// According to docs: graceful shutdown
-// Source: https://hono.dev/docs/getting-started/nodejs
-process.on("SIGINT", () => {
+// Handle shutdown func
+const handleShutdown = () => {
 	logger.info("Closing server");
 	app.stop(true);
+	db.$client.end();
 	process.exit(0);
-});
-process.on("SIGTERM", () => {
-	app.stop(true);
-	process.exit(0);
-});
+};
+
+// According to docs: graceful shutdown
+// Source: https://hono.dev/docs/getting-started/nodejs
+process.on("SIGINT", handleShutdown);
+process.on("SIGTERM", handleShutdown);
 
 export type App = typeof app;
