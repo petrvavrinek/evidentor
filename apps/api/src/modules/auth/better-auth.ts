@@ -72,6 +72,7 @@ export const auth = betterAuth({
 		autoSignInAfterVerification: true,
 		expiresIn: 1000 * 60 * 60 * 24, // 24 hours
 	},
+	
 });
 
 export type AuthType = {

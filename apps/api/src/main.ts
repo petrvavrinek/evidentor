@@ -10,6 +10,7 @@ import InvoicesRouter from "./modules/invoices";
 import ProjectTaskRouter from "./modules/project-tasks";
 import ProjectsRouter from "./modules/projects";
 import TimeEntryRouter from "./modules/time-entries";
+import CalendarRouter from "./modules/calendar";
 
 const logger = new LoggerService("main");
 
@@ -31,6 +32,7 @@ const app = new Elysia()
 	.use(ProjectTaskRouter)
 	.use(ProjectsRouter)
 	.use(TimeEntryRouter)
+	.use(CalendarRouter)
 	.head("/status", () => "ok")
 	.get("/status", () => "ok");
 

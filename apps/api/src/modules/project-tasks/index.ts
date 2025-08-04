@@ -24,7 +24,7 @@ const router = new Elysia({
 	.model("ProjectTaskCount", ProjectTaskCountReponse)
 	.get(
 		"count",
-		async ({ user, query }) => {
+		async ({ user, query, }) => {
 			const count = await ProjectTasksService.getCount(user.id, query);
 			return { count };
 		},
