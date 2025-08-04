@@ -22,13 +22,26 @@ import {
 	getProjectByIdQueryKey,
 	getProjectTaskOptions,
 } from "@/lib/api/@tanstack/react-query.gen";
+import EditTaskModal from "@/components/tasks/edit-task-modal";
 
 export default function ProjectOverviewPage() {
 	const params = useParams();
 	const projectId = Number(params.projectId);
 
-	const [projectTasks, setProjectTasks] = useState<ProjectTask[]>([]);
-	const [newTaskDialogOpen, setNewTaskDialogOpen] = useState(false);
+  const [projectTasks, setProjectTasks] = useState<ProjectTask[]>([]);
+  const [newTaskDialogOpen, setNewTaskDialogOpen] = useState(false);
+	const [editTask, setEditTask] = useState<ProjectTask>();
+
+  // Update a task in local state
+  const handleTaskUpdate = (updatedTask: ProjectTask) => {
+    setProjectTasks((prev) => {
+      const idx = prev.findIndex((t) => t.id === updatedTask.id);
+      if (idx === -1) return prev;
+      const newTasks = [...prev];
+      newTasks[idx] = updatedTask;
+      return newTasks;
+    });
+  };
 
 	const {
 		data: project,
@@ -41,10 +54,11 @@ export default function ProjectOverviewPage() {
 
 	const { data: tasks } = useQuery(getProjectTaskOptions());
 
-	const allProjectTasks = useMemo(
-		() => [...projectTasks, ...(tasks ?? [])],
-		[projectTasks, tasks],
-	);
+  // Prefer local edits, then remote
+  const allProjectTasks = useMemo(() => {
+    const remoteTasks = (tasks ?? []).filter(rt => !projectTasks.some(lt => lt.id === rt.id));
+    return [...projectTasks, ...remoteTasks];
+  }, [projectTasks, tasks]);
 
 	if (isProjectLoading) return <Loader />;
 	if (!project?.data) return "Project not found";
@@ -54,10 +68,10 @@ export default function ProjectOverviewPage() {
 		setProjectTasks([task, ...projectTasks]);
 	};
 
-	return (
-		<>
-			<PageHeader
-				title={`Project Overview`}
+  return (
+    <>
+      <PageHeader
+        title={`Project Overview`}
 				subtitle={project.data.title ?? ""}
 			/>
 			<div className="space-y-6">
@@ -75,7 +89,7 @@ export default function ProjectOverviewPage() {
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						{tasks && <TaskTable tasks={allProjectTasks} />}
+						{tasks && <TaskTable tasks={allProjectTasks} onTaskUpdate={setEditTask} />}
 					</CardContent>
 				</Card>
 
@@ -85,6 +99,17 @@ export default function ProjectOverviewPage() {
 					onCreate={onProjectTaskCreate}
 					project={project.data}
 				/>
+				{
+					editTask && (
+						<EditTaskModal
+							task={editTask}
+							open
+							onClose={() => setEditTask(undefined)}
+							onUpdate={handleTaskUpdate}
+						/>
+					)
+				}
+				
 			</div>
 		</>
 	);
