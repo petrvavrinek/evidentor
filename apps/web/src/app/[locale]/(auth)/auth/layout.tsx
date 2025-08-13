@@ -12,6 +12,7 @@ import app from "@/config/app";
 import ContactConfig from "@/config/contact";
 
 import "../../globals.css";
+import { useTranslations } from "next-intl";
 
 export default function AuthLayout({
 	children,

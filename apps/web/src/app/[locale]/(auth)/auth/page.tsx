@@ -9,6 +9,7 @@ import { Tabs, TabsContent } from "@evidentor/ui/components/ui/tabs";
 import { SignInForm } from "@/components/auth/sign-in-form";
 import { SignUpForm } from "@/components/auth/sign-up-form";
 import { authClient } from "@/lib/auth-client";
+import { useTranslations } from "next-intl";
 
 export default function AuthPage() {
 	const [activeTab, setActiveTab] = useState("signin");
@@ -18,6 +19,8 @@ export default function AuthPage() {
 		});
 	}, []);
 
+	const t = useTranslations("auth")
+
 	return (
 		<Tabs value={activeTab} onValueChange={setActiveTab} searchParam="action">
 			<TabsContent value="signin">
@@ -26,7 +29,7 @@ export default function AuthPage() {
 						<Link href="/auth/password-reset" className="underline underline-offset-4">Forgot your password?</Link>
 					</div>
 					<div className="text-center text-sm">
-						Don&apos;t have an account?{" "}
+						Don&apos;t have an account?{" "} {t("test")}
 						<Link
 							href="?action=signup"
 							className="underline underline-offset-4"

@@ -10,8 +10,13 @@ import {
 import Link from "next/link";
 
 import { Button } from "@evidentor/ui/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export default function LandingPage() {
+	const t = useTranslations();
+	
+
+
 	return (
 		<body>
 			<div className="flex min-h-screen flex-col">
@@ -27,7 +32,7 @@ export default function LandingPage() {
 								href="#features"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Features
+								Features{" - " + t("test")} 
 							</Link>
 							<Link
 								href="#benefits"
