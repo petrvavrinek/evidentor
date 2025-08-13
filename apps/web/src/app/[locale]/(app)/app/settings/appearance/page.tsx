@@ -11,6 +11,7 @@ import {
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 
 import PageHeader from "@/components/page-header";
+import LanguageSwitch from "@/components/language-switch";
 
 export default function PageAppearance() {
 	const theme = useTheme();
@@ -24,6 +25,10 @@ export default function PageAppearance() {
 				subtitle="Customize the look and feel of the application"
 			/>
 
+			<div className="space-y-4 mb-4">
+				<TypographyH3>Language</TypographyH3>
+				<LanguageSwitch className="w-[160px]" />
+			</div>
 			<div className="space-y-4">
 				<TypographyH3>Theme</TypographyH3>
 
@@ -54,6 +59,8 @@ export default function PageAppearance() {
 					</div>
 				</RadioGroup>
 			</div>
+
+			
 		</>
 	);
 }

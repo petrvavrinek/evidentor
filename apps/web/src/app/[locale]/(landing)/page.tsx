@@ -9,14 +9,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+import LanguageSwitch from "@/components/language-switch";
 import { Button } from "@evidentor/ui/components/ui/button";
-import { useTranslations } from "next-intl";
 
 export default function LandingPage() {
-	const t = useTranslations();
-	
-
-
 	return (
 		<body>
 			<div className="flex min-h-screen flex-col">
@@ -32,7 +28,7 @@ export default function LandingPage() {
 								href="#features"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Features{" - " + t("test")} 
+								Features
 							</Link>
 							<Link
 								href="#benefits"
@@ -319,8 +315,9 @@ export default function LandingPage() {
 								Contact
 							</Link>
 						</nav>
-						<div className="text-sm text-muted-foreground">
-							© 2025 Evidentor. All rights reserved.
+						<div className="text-sm text-muted-foreground flex flex-col">
+							<p>© 2025 Evidentor. All rights reserved.</p>
+							<LanguageSwitch className="mt-2" />
 						</div>
 					</div>
 				</footer>
