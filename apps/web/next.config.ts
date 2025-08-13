@@ -1,5 +1,4 @@
 import path from "node:path";
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -12,6 +11,8 @@ const nextConfig: NextConfig = {
 	transpilePackages: ["@evidentor/ui"],
 	// There is issue with monorepo building. See more https://github.com/oven-sh/bun/issues/17310
 	outputFileTracingRoot: path.resolve(__dirname, '../../'),
+	trailingSlash: true,
+	skipTrailingSlashRedirect: true
 };
 
 export default nextConfig;

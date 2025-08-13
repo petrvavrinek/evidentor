@@ -16,10 +16,6 @@ export default function AppLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className="aliased">
-				<Providers>{children}</Providers>
-			</body>
-		</html>
+		<Providers>{children}</Providers>
 	);
 }

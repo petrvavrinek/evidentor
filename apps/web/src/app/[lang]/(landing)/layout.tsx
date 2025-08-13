@@ -13,5 +13,5 @@ export default function LandingPageLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <html lang="en">{children}</html>;
+	return children;
 }
