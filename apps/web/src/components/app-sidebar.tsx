@@ -34,6 +34,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 
 import { NavUser } from "./nav-user";
+import { useTranslations } from "next-intl";
 
 interface SidebarItemProps {
 	item: RouteItem;
@@ -42,6 +43,8 @@ interface SidebarItemProps {
 }
 
 function SidebarItem(props: SidebarItemProps) {
+	const t = useTranslations("app.sidebar");
+
 	const { item } = props;
 
 	// Skip rendering hidden items
@@ -57,7 +60,7 @@ function SidebarItem(props: SidebarItemProps) {
 					onClick={props.onClick}
 				>
 					{item.icon && <item.icon />}
-					<span>{item.name}</span>
+					<span>{t(item.id)}</span>
 				</SidebarMenuButton>
 			</Link>
 		);
@@ -75,7 +78,7 @@ function SidebarItem(props: SidebarItemProps) {
 					<CollapsibleTrigger asChild>
 						<SidebarMenuButton>
 							{item.icon && <item.icon />}
-							<span>{item.name}</span>
+							<span>{t(item.id)}</span>
 						</SidebarMenuButton>
 					</CollapsibleTrigger>
 					<CollapsibleContent>

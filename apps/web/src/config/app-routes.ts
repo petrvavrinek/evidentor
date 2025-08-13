@@ -47,7 +47,7 @@ export const appRoutes: RouteItem[] = [
     name: "Time Tracker",
     href: "/app/time-tracker",
     icon: Clock,
-    id: "time-tracker",
+    id: "timeTracker",
     description: "Log your time and track productivity.",
   },
   {
@@ -58,10 +58,10 @@ export const appRoutes: RouteItem[] = [
     description: "Create and manage invoices for your clients.",
   },
   {
-    name: "Reports",
+    name: "Statistics",
     href: "/app/reports",
     icon: BarChart3,
-    id: "reports",
+    id: "statistics",
     description: "Analyze your time tracking and project data.",
   },
   {
