@@ -23,6 +23,7 @@ import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const FormSchema = z.object({
 	password: z.string().min(6),
@@ -42,6 +43,8 @@ export function NewPasswordResetSubmitForm({
 	token,
 	onReset,
 }: NewPasswordResetSubmitForm) {
+	const t = useTranslations("auth.forms.resetPassword.submit");
+
 	const [errorMessage, setErrorMessage] = useState<string>();
 	const [loading, setLoading] = useState(false);
 	const form = useForm<FormData>({
@@ -94,7 +97,7 @@ export function NewPasswordResetSubmitForm({
 								name="password"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Password</FormLabel>
+										<FormLabel>{t("password")}</FormLabel>
 										<FormControl>
 											<Input {...field} type="password" />
 										</FormControl>
@@ -108,7 +111,7 @@ export function NewPasswordResetSubmitForm({
 								name="passwordAgain"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Repeat password</FormLabel>
+										<FormLabel>{t("passwordAgain")}</FormLabel>
 										<FormControl>
 											<Input {...field} type="password" />
 										</FormControl>
@@ -122,7 +125,7 @@ export function NewPasswordResetSubmitForm({
 								type="submit"
 								className="w-full"
 							>
-								Reset password
+								{t("submit")}
 							</LoadableButton>
 						</div>
 					</div>

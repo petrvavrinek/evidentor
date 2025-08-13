@@ -26,6 +26,7 @@ import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const FormSchema = z.object({
 	email: z.string().email(),
@@ -34,6 +35,8 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export function PasswordResetReqestForm() {
+	const t = useTranslations("auth.forms.resetPassword.request");
+
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | undefined>();
 	const [passwordResetSent, setPasswordResetSent] = useState(false);
@@ -65,15 +68,14 @@ export function PasswordResetReqestForm() {
 			{passwordResetSent ? (
 				<>
 					<Alert>
-						<AlertTitle>Sent</AlertTitle>
 						<AlertDescription>
-							Password reset sent. Check your email inbox.
+							{t("sent")}
 						</AlertDescription>
 					</Alert>
 					<Link href={"/auth"}>
 						<Button className="w-full">
 							<Send />
-							Back to sign in
+							{t("goToLogin")}
 						</Button>
 					</Link>
 				</>
@@ -87,7 +89,7 @@ export function PasswordResetReqestForm() {
 									name="email"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Email</FormLabel>
+											<FormLabel>{t("email")}</FormLabel>
 											<FormControl>
 												<Input {...field} />
 											</FormControl>
@@ -101,7 +103,7 @@ export function PasswordResetReqestForm() {
 									type="submit"
 									className="w-full"
 								>
-									Request password reset
+									{t("submit")}
 								</LoadableButton>
 							</div>
 						</div>

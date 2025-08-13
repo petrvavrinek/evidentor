@@ -24,6 +24,7 @@ import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 import publicConfig from "@/config/public";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 const FormSchema = z.object({
 	email: z.string().email(),
@@ -38,9 +39,10 @@ interface LoginFormProps {
 }
 
 export function SignInForm({ children, className }: LoginFormProps) {
+	const t = useTranslations("auth.forms.signin");
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | undefined>();
-
+	
 	const form = useForm<FormData>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {},
@@ -88,7 +90,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
 								name="email"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Email</FormLabel>
+										<FormLabel>{t("email")}</FormLabel>
 										<FormControl>
 											<Input {...field} />
 										</FormControl>
@@ -102,7 +104,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
 								name="password"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Password</FormLabel>
+										<FormLabel>{t("password")}</FormLabel>
 										<FormControl>
 											<Input {...field} type="password" />
 										</FormControl>
@@ -115,12 +117,12 @@ export function SignInForm({ children, className }: LoginFormProps) {
 								type="submit"
 								className="w-full"
 							>
-								Login
+								{t("submit")}
 							</LoadableButton>
 						</div>
 						<div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
 							<span className="bg-background text-muted-foreground relative z-10 px-2">
-								Or
+								{t("or")}
 							</span>
 						</div>
 						<div className="grid gap-4 sm:grid-cols-1">
@@ -138,7 +140,7 @@ export function SignInForm({ children, className }: LoginFormProps) {
 										fill="currentColor"
 									/>
 								</svg>
-								Continue with Google
+								{t("submitGoogle")}
 							</LoadableButton>
 						</div>
 					</div>

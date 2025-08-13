@@ -2,4 +2,4 @@
 
 /* Include shared-ui components and styles */
 @import "@evidentor/ui/globals.css";
-@source "../../../../packages/ui/**/*.{ts,tsx}";
+@source "../../../../../packages/ui/**/*.{ts,tsx}";

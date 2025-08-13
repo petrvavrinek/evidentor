@@ -19,18 +19,17 @@ export default function AuthLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const t = useTranslations("auth");
 	return (
 		<body className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10 antialiased">
-			<div className="w-full max-w-md space-y-8">
+			<div className="w-full max-w-md space-y-5">
 				{/* Header */}
 				<div className="text-center">
 					<TypographyH1>
 						<Link href={"/"}>{app.AppName}</Link>
 					</TypographyH1>
 					<p className="mt-2 text-gray-600">
-						Sign in to access your dashboard
-						<br />
-						
+						{t("subtitle")}
 					</p>
 				</div>
 
@@ -38,11 +37,8 @@ export default function AuthLayout({
 				<Card className="shadow-lg">
 					<CardContent className="pb-4">
 						<Alert variant="destructive" className="mb-4">
-							<AlertTitle>README BEFORE USE</AlertTitle>
-							<AlertDescription>
-								Keep in mind that this app should not be used for production
-								work. <br />
-								This app is still in development!
+							<AlertTitle className="font-bold">{t("alerts.dev.title")}</AlertTitle>
+							<AlertDescription>{t("alerts.dev.message")}
 							</AlertDescription>
 						</Alert>
 						{children}
@@ -52,7 +48,7 @@ export default function AuthLayout({
 				{/* Additional Info */}
 				<div className="text-center text-sm text-gray-500">
 					<p>
-						Need help? Feel free to contact us at{" "}
+						{t("footer.help") + ": "}
 						<Link href={`mailto:${ContactConfig.InfoMail}`}>
 							{ContactConfig.InfoMail}
 						</Link>

@@ -14,8 +14,13 @@ import {
 	AlertTitle,
 } from "@evidentor/ui/components/ui/alert";
 import { Button } from "@evidentor/ui/components/ui/button";
+import { useTranslations } from "next-intl";
+
 
 function AuthPage() {
+	const t = useTranslations("auth.alerts.verify");
+	const tGeneric = useTranslations("generic");
+
 	const [verifyStatus, setVerifyStatus] = useState<boolean | undefined>(false);
 	const [tokenUser, setTokenUser] = useState<User | null>(null);
 	const [verificationEmailSent, setVerificationEmailSent] = useState(false);
@@ -48,13 +53,12 @@ function AuthPage() {
 	if (!query.has("token")) {
 		return (
 			<Alert variant="destructive">
-				<AlertTitle>No token found</AlertTitle>
+				<AlertTitle className="font-bold">{t("missingToken.title")}</AlertTitle>
 				<AlertDescription>
-					Missing token, if you came from your verification email, try to sign
-					in once again and request token one more time.
+					{t("missingToken.message")}
 					<Button variant="destructive">
 						<ArrowLeft />
-						<Link href={"/auth"}>Go back to login</Link>
+						<Link href={"/auth"}>{t("missingToken.goToLogin")}</Link>
 					</Button>
 				</AlertDescription>
 			</Alert>
@@ -62,35 +66,35 @@ function AuthPage() {
 	}
 
 	if (verifyStatus === undefined) {
-		return <div>Loading...</div>;
+		return <div>{tGeneric("loading")}...</div>;
 	}
 
 	if (verifyStatus) {
 		return (
 			<>
-				<div>Verification successful!</div>
-				<div>You will be redirected to dashboard in few seconds...</div>
+				<div>{t("success.title")}</div>
+				<div>{t("success.message")}</div>
 			</>
 		);
 	}
 
 	return (
 		<Alert>
-			<AlertTitle>Verification unsuccessful</AlertTitle>
+			<AlertTitle>{t("generic.title")}</AlertTitle>
 			<AlertDescription>
-				Token is invalid or timeouted.
+				{t("generic.message")}
 				{tokenUser && (
 					<div>
-						You can try to reqeust new one:
+						{t("generic.sendVerification.message")}
 						{verificationEmailSent ? (
 							<Button disabled>
 								<Check />
-								Verification email sent
+								{t("generic.sendVerification.sent")}
 							</Button>
 						) : (
 							<Button onClick={() => sendVerificationEmail(tokenUser)}>
 								<Send />
-								Send new verification email
+								{t("generic.sendVerification.send")}
 							</Button>
 						)}
 					</div>
