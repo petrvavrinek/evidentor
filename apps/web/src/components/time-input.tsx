@@ -1,132 +1,60 @@
 "use client";
 
-import { type ChangeEvent, useEffect, useState, useRef } from "react";
+import React from "react";
 
-import { Input } from "@evidentor/ui/components/ui/input";
+import { Label } from "@evidentor/ui/components/ui/label";
+import { TimePickerInput } from "@evidentor/ui/components/ui/time-picker";
 
-export interface Time {
-	hours: number;
-	minutes: number;
-}
 
 interface TimeInputProps {
-	value: Time;
-	onChange: (newTime: Time) => void;
+	date: Date | undefined;
+	setDate: (date: Date | undefined) => void;
 }
 
-export function TimeInput({ value, onChange }: TimeInputProps) {
-	const [hours, setHours] = useState(value.hours.toString().padStart(2, "0"));
-	const [minutes, setMinutes] = useState(
-		value.minutes.toString().padStart(2, "0"),
-	);
-	
-	// Track if we're currently editing to prevent external updates from interfering
-	const isEditingHours = useRef(false);
-	const isEditingMinutes = useRef(false);
-
-	useEffect(() => {
-		// Only update local state if we're not currently editing
-		if (!isEditingHours.current) {
-			setHours(value.hours.toString().padStart(2, "0"));
-		}
-		if (!isEditingMinutes.current) {
-			setMinutes(value.minutes.toString().padStart(2, "0"));
-		}
-	}, [value]);
-
-	const handleHoursChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const val = e.target.value;
-		isEditingHours.current = true;
-		
-		// Allow empty input or 1-2 digits
-		if (val === "" || /^\d{1,2}$/.test(val)) {
-			setHours(val);
-			
-			if (val !== "") {
-				let intVal = Number.parseInt(val, 10);
-				if (intVal > 23) intVal = 23;
-				
-				onChange({ 
-					hours: intVal, 
-					minutes: Number.parseInt(minutes, 10) || 0 
-				});
-			}
-		}
-	};
-
-	const handleMinutesChange = (e: ChangeEvent<HTMLInputElement>) => {
-		const val = e.target.value;
-		isEditingMinutes.current = true;
-		
-		// Allow empty input or 1-2 digits
-		if (val === "" || /^\d{1,2}$/.test(val)) {
-			setMinutes(val);
-			
-			if (val !== "") {
-				let intVal = Number.parseInt(val, 10);
-				if (intVal > 59) intVal = 59;
-				
-				onChange({ 
-					hours: Number.parseInt(hours, 10) || 0, 
-					minutes: intVal 
-				});
-			}
-		}
-	};
-
-	const handleHoursFocus = () => {
-		isEditingHours.current = true;
-	};
-
-	const handleHoursBlur = () => {
-		isEditingHours.current = false;
-		
-		if (hours === "") {
-			setHours("00");
-			onChange({ hours: 0, minutes: Number.parseInt(minutes, 10) || 0 });
-		} else {
-			const paddedHours = hours.padStart(2, "0");
-			setHours(paddedHours);
-		}
-	};
-
-	const handleMinutesFocus = () => {
-		isEditingMinutes.current = true;
-	};
-
-	const handleMinutesBlur = () => {
-		isEditingMinutes.current = false;
-		
-		if (minutes === "") {
-			setMinutes("00");
-			onChange({ hours: Number.parseInt(hours, 10) || 0, minutes: 0 });
-		} else {
-			const paddedMinutes = minutes.padStart(2, "0");
-			setMinutes(paddedMinutes);
-		}
-	};
-
+export function TimeInput({ date, setDate }: TimeInputProps) {
+  const minuteRef = React.useRef<HTMLInputElement>(null);
+  const hourRef = React.useRef<HTMLInputElement>(null);
+  const secondRef = React.useRef<HTMLInputElement>(null);
+ 
 	return (
-		<div className="flex items-center">
-			<Input
-				type="text"
-				value={hours}
-				onChange={handleHoursChange}
-				onFocus={handleHoursFocus}
-				onBlur={handleHoursBlur}
-				className="w-16 text-center"
-				maxLength={2}
-			/>
-			<span className="mx-1 text-lg">:</span>
-			<Input
-				type="text"
-				value={minutes}
-				onChange={handleMinutesChange}
-				onFocus={handleMinutesFocus}
-				onBlur={handleMinutesBlur}
-				className="w-16 text-center"
-				maxLength={2}
-			/>
-		</div>
+    <div className="flex items-end gap-2">
+      <div className="grid gap-1 text-center">
+        <Label htmlFor="hours" className="text-xs">
+          Hours
+        </Label>
+        <TimePickerInput
+          picker="hours"
+          date={date}
+          setDate={setDate}
+          ref={hourRef}
+          onRightFocus={() => minuteRef.current?.focus()}
+        />
+      </div>
+      <div className="grid gap-1 text-center">
+        <Label htmlFor="minutes" className="text-xs">
+          Minutes
+        </Label>
+        <TimePickerInput
+          picker="minutes"
+          date={date}
+          setDate={setDate}
+          ref={minuteRef}
+          onLeftFocus={() => hourRef.current?.focus()}
+          onRightFocus={() => secondRef.current?.focus()}
+        />
+      </div>
+      <div className="grid gap-1 text-center">
+        <Label htmlFor="seconds" className="text-xs">
+          Seconds
+        </Label>
+        <TimePickerInput
+          picker="seconds"
+          date={date}
+          setDate={setDate}
+          ref={secondRef}
+          onLeftFocus={() => minuteRef.current?.focus()}
+        />
+      </div>
+    </div>
 	);
 }
