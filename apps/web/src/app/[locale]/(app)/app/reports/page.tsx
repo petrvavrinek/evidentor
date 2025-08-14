@@ -1,4 +1,4 @@
-import { Clock, Calendar, BarChart3 } from "lucide-react";
+import { BarChart3, Calendar, Clock } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";

@@ -19,19 +19,24 @@ import {
 	TableRow,
 } from "@evidentor/ui/components/ui/table";
 
-import InvoiceDetailModal from "@/components/invoices/invoice-detail-modal";
 import InvoiceCreateModal from "@/components/invoices/invoice-create-modal";
+import InvoiceDetailModal from "@/components/invoices/invoice-detail-modal";
 import { InvoiceTableRow } from "@/components/invoices/invoice-table-row";
 import PageHeader from "@/components/page-header";
 import SearchInput from "@/components/search-input";
 
+import useTitle from "@/hooks/use-title";
 import type { Invoice } from "@/lib/api";
 import { getInvoiceQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { deleteInvoiceById, getInvoice } from "@/lib/api/sdk.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function InvoicesPage() {
+	const t = useTranslations("app.pages.invoices");
+	useTitle(t("title"));
+
 	const {
 		data: invoices,
 		isLoading,

@@ -6,5 +6,17 @@ export default {
     description: "Track your time",
     manualEntry: "Manual entry",
     stopwatch: "Stopwatch"
+  },
+  clients: {
+    title: "Manage clients"
+  },
+  projects: {
+    title: "Manage projects"
+  },
+  invoices: {
+    title: "Manage invoices"
+  },
+  dashboard: {
+    title: "Dashboard"
   }
 } satisfies typeof csPages;

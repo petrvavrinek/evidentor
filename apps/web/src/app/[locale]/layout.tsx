@@ -17,6 +17,9 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 
   return (
     <html lang={locale}>
+      <head>
+        <link rel="icon" href="/logo-black.svg" sizes="any" />
+      </head>
       <body>
         <NextIntlClientProvider>
           {children}

@@ -1,6 +1,5 @@
 "use client";
 
-import { Clock } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -32,8 +31,9 @@ import {
 } from "@/config/app-routes";
 import { authClient } from "@/lib/auth-client";
 
-import { NavUser } from "./nav-user";
 import { useTranslations } from "next-intl";
+import AppLogo from "./app-logo";
+import { NavUser } from "./nav-user";
 
 interface SidebarItemProps {
 	item: RouteItem;
@@ -116,7 +116,7 @@ export function AppSidebar() {
 		<Sidebar variant="sidebar">
 			<SidebarHeader>
 				<TypographyH1 className="my-4 flex justify-center items-center">
-					<Clock className="mr-2" size={32} />
+					<AppLogo className="mr-2 size-[48px] select-none" />
 					<span>{config.AppName}</span>
 				</TypographyH1>
 			</SidebarHeader>

@@ -42,8 +42,13 @@ import SearchInput from "@/components/search-input";
 import { deleteProjectById, getProject, type Project } from "@/lib/api";
 import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import ProjectDetailModal from "@/components/projects/project-detail-modal";
+import { useTranslations } from "next-intl";
+import useTitle from "@/hooks/use-title";
 
 export default function ProjectsPage() {
+	const t = useTranslations("app.pages.projects");
+	useTitle(t("title"));
+
 	const { data, isLoading, error } = useQuery({
 		initialData: null,
 		queryKey: getProjectQueryKey(),

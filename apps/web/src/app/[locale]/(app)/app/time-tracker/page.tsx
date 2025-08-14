@@ -30,6 +30,7 @@ import {
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useTranslations } from "next-intl";
+import useTitle from "@/hooks/use-title";
 
 
 export default function TimeTrackerPage() {
@@ -38,6 +39,8 @@ export default function TimeTrackerPage() {
 	const dateFormatter = useDateFormatter();
 	const [createdTimeEntries, setCreatedTimeEntries] = useState<TimeEntry[]>([]);
 	const [fetchedTimeEntreis, setFetchedTimeEntries] = useState<TimeEntry[]>([]);
+
+	useTitle(t("title"));
 
 	const { data, isLoading } = useQuery({
 		queryKey: getProjectTaskQueryKey(),

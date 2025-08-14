@@ -39,10 +39,15 @@ import {
 	getClientQueryKey,
 	postClientMutation,
 } from "@/lib/api/@tanstack/react-query.gen";
+import { useTranslations } from "next-intl";
+import useTitle from "@/hooks/use-title";
 
 export default function ClientsPage() {
+	const t = useTranslations("app.pages.clients");
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+	useTitle(t("title"));
 
 	const {
 		data: { data: clients = [] } = {},
