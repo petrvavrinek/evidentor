@@ -2,16 +2,20 @@
 
 import React from "react";
 
-import { Label } from "@evidentor/ui/components/ui/label";
-import { TimePickerInput } from "@evidentor/ui/components/ui/time-picker";
-
+import { Label } from "./label";
+import { TimePickerInput } from "./time-picker";
 
 interface TimeInputProps {
 	date: Date | undefined;
 	setDate: (date: Date | undefined) => void;
+  labels?: {
+    hours?: string,
+    minutes?: string,
+    seconds?: string;
+  }
 }
 
-export function TimeInput({ date, setDate }: TimeInputProps) {
+export function TimeInput({ date, setDate, labels }: TimeInputProps) {
   const minuteRef = React.useRef<HTMLInputElement>(null);
   const hourRef = React.useRef<HTMLInputElement>(null);
   const secondRef = React.useRef<HTMLInputElement>(null);
@@ -20,7 +24,7 @@ export function TimeInput({ date, setDate }: TimeInputProps) {
     <div className="flex items-end gap-2">
       <div className="grid gap-1 text-center">
         <Label htmlFor="hours" className="text-xs">
-          Hours
+          {labels?.hours ?? "Hours"}
         </Label>
         <TimePickerInput
           picker="hours"
@@ -32,7 +36,7 @@ export function TimeInput({ date, setDate }: TimeInputProps) {
       </div>
       <div className="grid gap-1 text-center">
         <Label htmlFor="minutes" className="text-xs">
-          Minutes
+          {labels?.minutes ?? "Minutes"}
         </Label>
         <TimePickerInput
           picker="minutes"
@@ -45,7 +49,7 @@ export function TimeInput({ date, setDate }: TimeInputProps) {
       </div>
       <div className="grid gap-1 text-center">
         <Label htmlFor="seconds" className="text-xs">
-          Seconds
+          {labels?.seconds ?? "Seconds"}
         </Label>
         <TimePickerInput
           picker="seconds"

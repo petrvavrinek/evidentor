@@ -21,6 +21,7 @@ import DashboardCard from "./dashboard-card";
 const firstDayDate = toDateOnly(firstDayOfWeek(new Date(), 1));
 const lastDayDate = toDateOnly(firstDayDate);
 lastDayDate.setDate(firstDayDate.getDate() + 7);
+lastDayDate.setHours(firstDayDate.getHours() - 1);
 
 export default function HoursSummaryCard() {
 	const dates = createDatesBetween(firstDayDate, lastDayDate);

@@ -9,14 +9,13 @@ import { useMemo, useState } from "react";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Calendar } from "@evidentor/ui/components/ui/calendar";
 import { Label } from "@evidentor/ui/components/ui/label";
-import { TimePickerInput } from "@evidentor/ui/components/ui/time-picker";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@evidentor/ui/components/ui/popover";
 import { Textarea } from "@evidentor/ui/components/ui/textarea";
-import { TimeInput } from "../time-input";
+import { TimeInput } from "@evidentor/ui/components/ui/time-input";
 
 import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
 import { postTimeEntryMutation } from "@/lib/api/@tanstack/react-query.gen";
@@ -107,7 +106,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 						<Calendar
 							mode="single"
 							selected={date}
-							initialFocus
+							autoFocus
 							onSelect={(e) => {
 								if (e) setDate(e);
 							}}
