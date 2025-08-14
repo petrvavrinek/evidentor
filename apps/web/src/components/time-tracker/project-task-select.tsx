@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Label } from "@evidentor/ui/components/ui/label";
-
 import type { Project, ProjectTask } from "@/lib/api";
 
 import { ProjectSelect } from "../project-select";
@@ -18,12 +18,13 @@ interface ProjectTaskSelectProps {
 }
 
 export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
+	const t = useTranslations("common");
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 
 	return (
 		<>
 			<div className="space-y-2">
-				<Label htmlFor="project">Project</Label>
+				<Label htmlFor="project">{t("project")}</Label>
 				<ProjectSelect
 					disabled={props.disabled}
 					onSelect={(project) => {
@@ -35,7 +36,7 @@ export default function ProjectTaskSelect(props: ProjectTaskSelectProps) {
 			</div>
 
 			<div className="space-y-2">
-				<Label htmlFor="task">Task</Label>
+				<Label htmlFor="task">{t("task")}</Label>
 				<TaskSelect
 					project={selectedProject}
 					disabled={props.disabled || !selectedProject}

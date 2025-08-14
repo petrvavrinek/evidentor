@@ -1,3 +1,6 @@
 export default {
-  loading: "Načítání"
+  loading: "Načítání",
+  project: "Projekt",
+  task: "Úkol",
+  title: "Název"
 }

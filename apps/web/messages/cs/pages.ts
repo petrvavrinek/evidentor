@@ -1,6 +1,8 @@
 export default {
   timeTracker: {
     title: "Sledování času",
-    description: "Sledujte svůj pracovní čas TODO"
+    description: "Správa časových záznamů",
+    stopwatch: "Stopky",
+    manualEntry: "Manuální záznam"
   }
 }

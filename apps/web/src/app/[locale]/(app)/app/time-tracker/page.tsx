@@ -114,11 +114,11 @@ export default function TimeTrackerPage() {
 							<TabsList className="grid w-full grid-cols-2">
 								<TabsTrigger value="stopwatch">
 									<Clock className="h-4 w-4 mr-2" />
-									Stopwatch
+									{t("stopwatch")}
 								</TabsTrigger>
 								<TabsTrigger value="manual">
 									<Calendar className="h-4 w-4 mr-2" />
-									Manual Entry
+									{t("manualEntry")}
 								</TabsTrigger>
 							</TabsList>
 							<TabsContent value="stopwatch" className="mt-4">

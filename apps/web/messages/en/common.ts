@@ -1,5 +1,8 @@
 import type csCommon from '../cs/common';
 
 export default {
-  loading: "Loading"
+  loading: "Loading",
+  project: "Project",
+  task: "Task",
+  title: "Title"
 } satisfies typeof csCommon;
