@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 
-import { DynamicBreadcrumb } from "./dynamic-breadcrumb";
 
 interface PageHeaderProps {
 	title: string;
@@ -15,13 +14,6 @@ export default function PageHeader({
 }: PageHeaderProps) {
 	return (
 		<div className="space-y-6">
-			<DynamicBreadcrumb
-				variant="card"
-				size="default"
-				linkVariant="ghost"
-				separatorVariant="chevron"
-				maxItems={5}
-			/>
 			<div className="mb-4 flex items-center">
 				<div className="flex flex-col">
 					<h1 className="text-2xl font-bold tracking-tight">{title}</h1>

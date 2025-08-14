@@ -28,7 +28,6 @@ import { TypographyH1 } from "@evidentor/ui/components/ui/typography";
 import config from "@/config/app";
 import {
 	appRoutes,
-	getVisibleRoutes,
 	type RouteItem,
 } from "@/config/app-routes";
 import { authClient } from "@/lib/auth-client";
@@ -106,14 +105,10 @@ export function AppSidebar() {
 	const sidebar = useSidebar();
 	const session = authClient.useSession();
 	const user = session.data?.user;
-
 	const onItemClick = () => sidebar.setOpenMobile(false);
 
 	const isActive = (item: RouteItem) =>
 		"href" in item ? item.href === currentPathname : false;
-
-	// Get only visible routes for the sidebar
-	const visibleRoutes = getVisibleRoutes(appRoutes);
 
 	if (!user) return <></>;
 
@@ -131,7 +126,7 @@ export function AppSidebar() {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupContent className="flex flex-col gap-2">
-						{visibleRoutes.map((e) => (
+						{appRoutes.map((e) => (
 							<SidebarItem
 								isActive={isActive}
 								item={e}
