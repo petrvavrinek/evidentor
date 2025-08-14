@@ -21,6 +21,7 @@ import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
 import { postTimeEntryMutation } from "@/lib/api/@tanstack/react-query.gen";
 
 import ProjectTaskSelect from "./project-task-select";
+
 interface ManualTimeEntryProps {
 	onCreate?: (newTimeEntry: TimeEntry) => void;
 }

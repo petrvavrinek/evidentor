@@ -28,11 +28,14 @@ import {
 	TabsTrigger,
 } from "@evidentor/ui/components/ui/tabs";
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { useTranslations } from "next-intl";
 
-const dateFormatter = new Intl.DateTimeFormat("en-US");
 
 export default function TimeTrackerPage() {
+	const t = useTranslations("app.pages.timeTracker");
 	const [currentTab, setCurrentTab] = useState("stopwatch");
+	const dateFormatter = useDateFormatter();
 	const [createdTimeEntries, setCreatedTimeEntries] = useState<TimeEntry[]>([]);
 	const [fetchedTimeEntreis, setFetchedTimeEntries] = useState<TimeEntry[]>([]);
 
@@ -97,15 +100,11 @@ export default function TimeTrackerPage() {
 	return (
 		<>
 			<PageHeader
-				title="Time tracker"
-				subtitle="Track your time and manage time entries"
+				title={t("title")}
+				subtitle={t("description")}
 			/>
 			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
 				<Card className="xl:col-span-1 h-fit">
-					<CardHeader>
-						<CardTitle>Time Entry</CardTitle>
-						<CardDescription>Track your working hours</CardDescription>
-					</CardHeader>
 					<CardContent>
 						<Tabs
 							value={currentTab}

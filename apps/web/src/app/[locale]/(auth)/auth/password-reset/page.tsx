@@ -32,7 +32,7 @@ function PasswordReset() {
 	if (containToken)
 		return (
 			<NewPasswordResetSubmitForm
-				token={query.get("token") as string}
+				token={query.get("token") ?? undefined}
 				onReset={() => setPasswordReset(true)}
 			/>
 		);

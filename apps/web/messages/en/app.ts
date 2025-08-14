@@ -1,4 +1,6 @@
 import type csApp from "../cs/app";
+import pages from "./pages";
+
 export default {
   sidebar: {
     calendar: "Calendar",
@@ -12,7 +14,6 @@ export default {
     "settings/appearance": "Appearance and language",
     "settings/billing": "Billing",
     "settings/user": "User"
-  }
-
-
+  },
+  pages
 } satisfies typeof csApp;

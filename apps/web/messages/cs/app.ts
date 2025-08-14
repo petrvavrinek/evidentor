@@ -1,3 +1,5 @@
+import pages from "./pages";
+
 export default {
   sidebar: {
     dashboard: "Dashboard",
@@ -11,5 +13,6 @@ export default {
     "settings/user": "Uživatel",
     "settings/billing": "Fakturace",
     "settings/appearance": "Vzhled a jazyk"
-  }
+  },
+  pages
 }
