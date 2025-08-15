@@ -7,8 +7,8 @@ import SearchSuggest, {
 	type SearchSuggestionResult,
 } from "@/components/search-suggest-input";
 
-import { getClient } from "@/lib/api";
-import { getClientQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getClients } from "@/lib/api";
+import { getClientsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 
 interface ClientSelectProps {
 	value: number | null;
@@ -17,8 +17,8 @@ interface ClientSelectProps {
 
 export default function ClientSelect({ value, onChange }: ClientSelectProps) {
 	const { data: clients } = useQuery({
-		queryKey: getClientQueryKey(),
-		queryFn: () => getClient(),
+		queryKey: getClientsQueryKey(),
+		queryFn: () => getClients(),
 	});
 
 	const [inputValue, setInputValue] = useState("");

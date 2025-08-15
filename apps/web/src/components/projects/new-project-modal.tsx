@@ -10,11 +10,11 @@ import {
 	DialogTitle,
 } from "@evidentor/ui/components/ui/dialog";
 
-import { postProject } from "@/lib/api";
-import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { postProjects } from "@/lib/api";
+import { getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import type {
-	PostProjectData,
-	PostProjectResponse,
+	PostProjectsData,
+	PostProjectsResponse,
 	Project,
 } from "@/lib/api/types.gen";
 
@@ -32,12 +32,12 @@ export default function NewProjectModal({
 	const queryClient = useQueryClient();
 
 	const { mutate, isPending } = useMutation<
-		PostProjectResponse,
+		PostProjectsResponse,
 		Error,
-		PostProjectData["body"]
+		PostProjectsData["body"]
 	>({
 		mutationFn: async (variables) => {
-			const { data, error } = await postProject({ body: variables });
+			const { data, error } = await postProjects({ body: variables });
 			if (error) {
 				// biome-ignore lint/suspicious/noExplicitAny: Remove this
 				throw new Error((error as any).detail || "Failed to create project");
@@ -45,7 +45,7 @@ export default function NewProjectModal({
 			return data as Project;
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: getProjectQueryKey() });
+			queryClient.invalidateQueries({ queryKey: getProjectsQueryKey() });
 			toast.info("Project addded");
 			onClose();
 		},

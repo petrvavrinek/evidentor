@@ -4,7 +4,7 @@ import DashboardCountCard from "@/components/dashboard/dashboard-count-card";
 import HoursSummaryCard from "@/components/dashboard/hours-summary-card";
 import useTitle from "@/hooks/use-title";
 
-import { getProjectCount, getProjectTaskCount } from "@/lib/api";
+import { getProjectsCount, getProjectTasksCount } from "@/lib/api";
 import { useTranslations } from "next-intl";
 
 export default function Home() {
@@ -12,12 +12,12 @@ export default function Home() {
 	useTitle(t("title"));
 
 	const getProjectTaskCountFn = async () => {
-		const c = await getProjectTaskCount();
+		const c = await getProjectTasksCount();
 		return c.data?.count ?? 0;
 	};
 
 	const getProjectCountFn = async () => {
-		const c = await getProjectCount();
+		const c = await getProjectsCount();
 		return c.data?.count ?? 0;
 	};
 

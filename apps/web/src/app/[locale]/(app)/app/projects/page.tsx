@@ -39,8 +39,8 @@ import ProjectsOverviewError from "@/components/projects/projects-overview-error
 import ProjectsOverviewLoading from "@/components/projects/projects-overview-loading";
 import SearchInput from "@/components/search-input";
 
-import { deleteProjectById, getProject, type Project } from "@/lib/api";
-import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { deleteProjectsById, getProjects, type Project } from "@/lib/api";
+import { getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import ProjectDetailModal from "@/components/projects/project-detail-modal";
 import { useTranslations } from "next-intl";
 import useTitle from "@/hooks/use-title";
@@ -51,8 +51,8 @@ export default function ProjectsPage() {
 
 	const { data, isLoading, error } = useQuery({
 		initialData: null,
-		queryKey: getProjectQueryKey(),
-		queryFn: () => getProject(),
+		queryKey: getProjectsQueryKey(),
+		queryFn: () => getProjects(),
 	});
 
 	const [searchQuery, setSearchQuery] = useState("");
@@ -65,9 +65,9 @@ export default function ProjectsPage() {
 	const queryClient = useQueryClient();
 
 	const deleteMutation = useMutation({
-		mutationFn: (id: number) => deleteProjectById({ path: { id } }),
+		mutationFn: (id: number) => deleteProjectsById({ path: { id } }),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: getProjectQueryKey() });
+			queryClient.invalidateQueries({ queryKey: getProjectsQueryKey() });
 			toast.info("Project deleted");
 		},
 		onError: () => {

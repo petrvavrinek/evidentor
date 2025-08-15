@@ -18,7 +18,7 @@ import { Textarea } from "@evidentor/ui/components/ui/textarea";
 import { TimeInput } from "@evidentor/ui/components/ui/time-input";
 
 import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
-import { postTimeEntryMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { postTimeEntriesMutation } from "@/lib/api/@tanstack/react-query.gen";
 
 import ProjectTaskSelect from "./project-task-select";
 
@@ -51,7 +51,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	const canAddTimeEntry = useMemo(() => title.length > 0, [title]);
 
 	const createTimeEntry = useMutation({
-		...postTimeEntryMutation(),
+		...postTimeEntriesMutation(),
 		onSuccess: (data) => onCreate(data),
 	});
 

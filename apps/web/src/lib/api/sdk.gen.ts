@@ -2,61 +2,63 @@
 
 import type { Options as ClientOptions, TDataShape, Client } from "./client";
 import type {
-  GetClientData,
-  GetClientResponses,
-  PostClientData,
-  PostClientResponses,
-  DeleteClientByIdData,
-  DeleteClientByIdResponses,
-  GetClientByIdData,
-  GetClientByIdResponses,
-  PatchClientByIdData,
-  PatchClientByIdResponses,
-  GetProjectCountData,
-  GetProjectCountResponses,
-  GetProjectData,
-  GetProjectResponses,
-  PostProjectData,
-  PostProjectResponses,
-  DeleteProjectByIdData,
-  DeleteProjectByIdResponses,
-  GetProjectByIdData,
-  GetProjectByIdResponses,
-  PatchProjectByIdData,
-  PatchProjectByIdResponses,
-  GetTimeEntryActiveData,
-  GetTimeEntryActiveResponses,
-  DeleteTimeEntryByIdData,
-  DeleteTimeEntryByIdResponses,
-  DeleteTimeEntryByIdErrors,
-  GetTimeEntryByIdData,
-  GetTimeEntryByIdResponses,
-  PatchTimeEntryByIdData,
-  PatchTimeEntryByIdResponses,
-  GetTimeEntryData,
-  GetTimeEntryResponses,
-  PostTimeEntryData,
-  PostTimeEntryResponses,
-  GetTimeEntryAnalyzeDurationByDateData,
-  GetTimeEntryAnalyzeDurationByDateResponses,
-  GetProjectTaskCountData,
-  GetProjectTaskCountResponses,
-  GetProjectTaskData,
-  GetProjectTaskResponses,
-  DeleteProjectTaskByIdData,
-  DeleteProjectTaskByIdResponses,
-  PatchProjectTaskByIdData,
-  PatchProjectTaskByIdResponses,
-  PostProjectTaskByIdData,
-  PostProjectTaskByIdResponses,
-  GetInvoiceData,
-  GetInvoiceResponses,
-  PostInvoiceData,
-  PostInvoiceResponses,
-  DeleteInvoiceByIdData,
-  DeleteInvoiceByIdResponses,
-  GetInvoiceByIdData,
-  GetInvoiceByIdResponses,
+  GetClientsData,
+  GetClientsResponses,
+  PostClientsData,
+  PostClientsResponses,
+  DeleteClientsByIdData,
+  DeleteClientsByIdResponses,
+  GetClientsByIdData,
+  GetClientsByIdResponses,
+  PatchClientsByIdData,
+  PatchClientsByIdResponses,
+  GetInvoicesData,
+  GetInvoicesResponses,
+  PostInvoicesData,
+  PostInvoicesResponses,
+  DeleteInvoicesByIdData,
+  DeleteInvoicesByIdResponses,
+  GetInvoicesByIdData,
+  GetInvoicesByIdResponses,
+  GetProjectTasksCountData,
+  GetProjectTasksCountResponses,
+  GetProjectTasksData,
+  GetProjectTasksResponses,
+  DeleteProjectTasksByIdData,
+  DeleteProjectTasksByIdResponses,
+  PatchProjectTasksByIdData,
+  PatchProjectTasksByIdResponses,
+  PostProjectTasksByIdData,
+  PostProjectTasksByIdResponses,
+  GetProjectsCountData,
+  GetProjectsCountResponses,
+  GetProjectsData,
+  GetProjectsResponses,
+  PostProjectsData,
+  PostProjectsResponses,
+  DeleteProjectsByIdData,
+  DeleteProjectsByIdResponses,
+  GetProjectsByIdData,
+  GetProjectsByIdResponses,
+  PatchProjectsByIdData,
+  PatchProjectsByIdResponses,
+  GetTimeEntriesActiveData,
+  GetTimeEntriesActiveResponses,
+  DeleteTimeEntriesByIdData,
+  DeleteTimeEntriesByIdResponses,
+  DeleteTimeEntriesByIdErrors,
+  GetTimeEntriesByIdData,
+  GetTimeEntriesByIdResponses,
+  PatchTimeEntriesByIdData,
+  PatchTimeEntriesByIdResponses,
+  GetTimeEntriesData,
+  GetTimeEntriesResponses,
+  PostTimeEntriesData,
+  PostTimeEntriesResponses,
+  GetTimeEntriesAnalyzeDurationByDateData,
+  GetTimeEntriesAnalyzeDurationByDateResponses,
+  GetCalendarsData,
+  GetCalendarsResponses,
   GetStatusData,
   GetStatusResponses,
   HeadStatusData,
@@ -147,54 +149,55 @@ import type {
   GetAuthErrorErrors,
 } from "./types.gen";
 import {
-  zGetClientData,
-  zGetClientResponse,
-  zPostClientData,
-  zPostClientResponse,
-  zDeleteClientByIdData,
-  zGetClientByIdData,
-  zGetClientByIdResponse,
-  zPatchClientByIdData,
-  zPatchClientByIdResponse,
-  zGetProjectCountData,
-  zGetProjectCountResponse,
-  zGetProjectData,
-  zGetProjectResponse,
-  zPostProjectData,
-  zPostProjectResponse,
-  zDeleteProjectByIdData,
-  zGetProjectByIdData,
-  zGetProjectByIdResponse,
-  zPatchProjectByIdData,
-  zGetTimeEntryActiveData,
-  zGetTimeEntryActiveResponse,
-  zDeleteTimeEntryByIdData,
-  zGetTimeEntryByIdData,
-  zGetTimeEntryByIdResponse,
-  zPatchTimeEntryByIdData,
-  zPatchTimeEntryByIdResponse,
-  zGetTimeEntryData,
-  zGetTimeEntryResponse,
-  zPostTimeEntryData,
-  zPostTimeEntryResponse,
-  zGetTimeEntryAnalyzeDurationByDateData,
-  zGetTimeEntryAnalyzeDurationByDateResponse,
-  zGetProjectTaskCountData,
-  zGetProjectTaskCountResponse,
-  zGetProjectTaskData,
-  zGetProjectTaskResponse,
-  zDeleteProjectTaskByIdData,
-  zPatchProjectTaskByIdData,
-  zPostProjectTaskByIdData,
-  zPostProjectTaskByIdResponse,
-  zGetInvoiceData,
-  zGetInvoiceResponse,
-  zPostInvoiceData,
-  zPostInvoiceResponse,
-  zDeleteInvoiceByIdData,
-  zDeleteInvoiceByIdResponse,
-  zGetInvoiceByIdData,
-  zGetInvoiceByIdResponse,
+  zGetClientsData,
+  zGetClientsResponse,
+  zPostClientsData,
+  zPostClientsResponse,
+  zDeleteClientsByIdData,
+  zGetClientsByIdData,
+  zGetClientsByIdResponse,
+  zPatchClientsByIdData,
+  zPatchClientsByIdResponse,
+  zGetInvoicesData,
+  zGetInvoicesResponse,
+  zPostInvoicesData,
+  zPostInvoicesResponse,
+  zDeleteInvoicesByIdData,
+  zDeleteInvoicesByIdResponse,
+  zGetInvoicesByIdData,
+  zGetInvoicesByIdResponse,
+  zGetProjectTasksCountData,
+  zGetProjectTasksCountResponse,
+  zGetProjectTasksData,
+  zGetProjectTasksResponse,
+  zDeleteProjectTasksByIdData,
+  zPatchProjectTasksByIdData,
+  zPostProjectTasksByIdData,
+  zPostProjectTasksByIdResponse,
+  zGetProjectsCountData,
+  zGetProjectsCountResponse,
+  zGetProjectsData,
+  zGetProjectsResponse,
+  zPostProjectsData,
+  zPostProjectsResponse,
+  zDeleteProjectsByIdData,
+  zGetProjectsByIdData,
+  zGetProjectsByIdResponse,
+  zPatchProjectsByIdData,
+  zGetTimeEntriesActiveData,
+  zGetTimeEntriesActiveResponse,
+  zDeleteTimeEntriesByIdData,
+  zGetTimeEntriesByIdData,
+  zGetTimeEntriesByIdResponse,
+  zPatchTimeEntriesByIdData,
+  zPatchTimeEntriesByIdResponse,
+  zGetTimeEntriesData,
+  zGetTimeEntriesResponse,
+  zPostTimeEntriesData,
+  zPostTimeEntriesResponse,
+  zGetTimeEntriesAnalyzeDurationByDateData,
+  zGetTimeEntriesAnalyzeDurationByDateResponse,
+  zGetCalendarsData,
   zGetStatusData,
   zHeadStatusData,
   zSocialSignInData,
@@ -276,43 +279,43 @@ export type Options<
 /**
  * Get all user-defined clients
  */
-export const getClient = <ThrowOnError extends boolean = false>(
-  options?: Options<GetClientData, ThrowOnError>,
+export const getClients = <ThrowOnError extends boolean = false>(
+  options?: Options<GetClientsData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetClientResponses,
+    GetClientsResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zGetClientData.parseAsync(data);
+      return await zGetClientsData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zGetClientResponse.parseAsync(data);
+      return await zGetClientsResponse.parseAsync(data);
     },
-    url: "/client",
+    url: "/clients",
     ...options,
   });
 };
 
 /**
- * Create new user-defined client
+ * Create new client
  */
-export const postClient = <ThrowOnError extends boolean = false>(
-  options: Options<PostClientData, ThrowOnError>,
+export const postClients = <ThrowOnError extends boolean = false>(
+  options: Options<PostClientsData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostClientResponses,
+    PostClientsResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zPostClientData.parseAsync(data);
+      return await zPostClientsData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zPostClientResponse.parseAsync(data);
+      return await zPostClientsResponse.parseAsync(data);
     },
-    url: "/client",
+    url: "/clients",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -324,18 +327,18 @@ export const postClient = <ThrowOnError extends boolean = false>(
 /**
  * Delete user-defined client, all projects containing this client will be unset
  */
-export const deleteClientById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteClientByIdData, ThrowOnError>,
+export const deleteClientsById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteClientsByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteClientByIdResponses,
+    DeleteClientsByIdResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zDeleteClientByIdData.parseAsync(data);
+      return await zDeleteClientsByIdData.parseAsync(data);
     },
-    url: "/client/{id}",
+    url: "/clients/{id}",
     ...options,
   });
 };
@@ -343,21 +346,21 @@ export const deleteClientById = <ThrowOnError extends boolean = false>(
 /**
  * Get user-defined client by ID
  */
-export const getClientById = <ThrowOnError extends boolean = false>(
-  options: Options<GetClientByIdData, ThrowOnError>,
+export const getClientsById = <ThrowOnError extends boolean = false>(
+  options: Options<GetClientsByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetClientByIdResponses,
+    GetClientsByIdResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zGetClientByIdData.parseAsync(data);
+      return await zGetClientsByIdData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zGetClientByIdResponse.parseAsync(data);
+      return await zGetClientsByIdResponse.parseAsync(data);
     },
-    url: "/client/{id}",
+    url: "/clients/{id}",
     ...options,
   });
 };
@@ -365,410 +368,21 @@ export const getClientById = <ThrowOnError extends boolean = false>(
 /**
  * Update user-defined client data
  */
-export const patchClientById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchClientByIdData, ThrowOnError>,
+export const patchClientsById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchClientsByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).patch<
-    PatchClientByIdResponses,
+    PatchClientsByIdResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zPatchClientByIdData.parseAsync(data);
+      return await zPatchClientsByIdData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zPatchClientByIdResponse.parseAsync(data);
+      return await zPatchClientsByIdResponse.parseAsync(data);
     },
-    url: "/client/{id}",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-export const getProjectCount = <ThrowOnError extends boolean = false>(
-  options?: Options<GetProjectCountData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetProjectCountResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetProjectCountData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetProjectCountResponse.parseAsync(data);
-    },
-    url: "/project/count",
-    ...options,
-  });
-};
-
-/**
- * Get all user projects
- */
-export const getProject = <ThrowOnError extends boolean = false>(
-  options?: Options<GetProjectData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetProjectResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetProjectData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetProjectResponse.parseAsync(data);
-    },
-    url: "/project",
-    ...options,
-  });
-};
-
-/**
- * Create new user project
- */
-export const postProject = <ThrowOnError extends boolean = false>(
-  options: Options<PostProjectData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).post<
-    PostProjectResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zPostProjectData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zPostProjectResponse.parseAsync(data);
-    },
-    url: "/project",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
- * Delete user project, all time entries will be removed
- */
-export const deleteProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteProjectByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).delete<
-    DeleteProjectByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zDeleteProjectByIdData.parseAsync(data);
-    },
-    url: "/project/{id}",
-    ...options,
-  });
-};
-
-/**
- * Get user project by ID
- */
-export const getProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<GetProjectByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).get<
-    GetProjectByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetProjectByIdData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetProjectByIdResponse.parseAsync(data);
-    },
-    url: "/project/{id}",
-    ...options,
-  });
-};
-
-/**
- * Update user project data
- */
-export const patchProjectById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchProjectByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).patch<
-    PatchProjectByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zPatchProjectByIdData.parseAsync(data);
-    },
-    url: "/project/{id}",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
- * Get active time entry
- */
-export const getTimeEntryActive = <ThrowOnError extends boolean = false>(
-  options?: Options<GetTimeEntryActiveData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetTimeEntryActiveResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetTimeEntryActiveData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetTimeEntryActiveResponse.parseAsync(data);
-    },
-    url: "/time-entry/active",
-    ...options,
-  });
-};
-
-/**
- * Delete time entry
- */
-export const deleteTimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteTimeEntryByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).delete<
-    DeleteTimeEntryByIdResponses,
-    DeleteTimeEntryByIdErrors,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zDeleteTimeEntryByIdData.parseAsync(data);
-    },
-    url: "/time-entry/{id}",
-    ...options,
-  });
-};
-
-/**
- * Return time entry by ID
- */
-export const getTimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<GetTimeEntryByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).get<
-    GetTimeEntryByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetTimeEntryByIdData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetTimeEntryByIdResponse.parseAsync(data);
-    },
-    url: "/time-entry/{id}",
-    ...options,
-  });
-};
-
-/**
- * Update existing time entry
- */
-export const patchTimeEntryById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchTimeEntryByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).patch<
-    PatchTimeEntryByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zPatchTimeEntryByIdData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zPatchTimeEntryByIdResponse.parseAsync(data);
-    },
-    url: "/time-entry/{id}",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-export const getTimeEntry = <ThrowOnError extends boolean = false>(
-  options?: Options<GetTimeEntryData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetTimeEntryResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetTimeEntryData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetTimeEntryResponse.parseAsync(data);
-    },
-    url: "/time-entry",
-    ...options,
-  });
-};
-
-/**
- * Create new time entry
- */
-export const postTimeEntry = <ThrowOnError extends boolean = false>(
-  options: Options<PostTimeEntryData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).post<
-    PostTimeEntryResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zPostTimeEntryData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zPostTimeEntryResponse.parseAsync(data);
-    },
-    url: "/time-entry",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-export const getTimeEntryAnalyzeDurationByDate = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<GetTimeEntryAnalyzeDurationByDateData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetTimeEntryAnalyzeDurationByDateResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetTimeEntryAnalyzeDurationByDateData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetTimeEntryAnalyzeDurationByDateResponse.parseAsync(data);
-    },
-    url: "/time-entry/analyze/duration-by-date",
-    ...options,
-  });
-};
-
-export const getProjectTaskCount = <ThrowOnError extends boolean = false>(
-  options?: Options<GetProjectTaskCountData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetProjectTaskCountResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetProjectTaskCountData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetProjectTaskCountResponse.parseAsync(data);
-    },
-    url: "/project-task/count",
-    ...options,
-  });
-};
-
-export const getProjectTask = <ThrowOnError extends boolean = false>(
-  options?: Options<GetProjectTaskData, ThrowOnError>,
-) => {
-  return (options?.client ?? _heyApiClient).get<
-    GetProjectTaskResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zGetProjectTaskData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zGetProjectTaskResponse.parseAsync(data);
-    },
-    url: "/project-task",
-    ...options,
-  });
-};
-
-/**
- * Delete project task by ID
- */
-export const deleteProjectTaskById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteProjectTaskByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).delete<
-    DeleteProjectTaskByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zDeleteProjectTaskByIdData.parseAsync(data);
-    },
-    url: "/project-task/{id}",
-    ...options,
-  });
-};
-
-export const patchProjectTaskById = <ThrowOnError extends boolean = false>(
-  options: Options<PatchProjectTaskByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).patch<
-    PatchProjectTaskByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zPatchProjectTaskByIdData.parseAsync(data);
-    },
-    url: "/project-task/{id}",
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
-    },
-  });
-};
-
-/**
- * Create new project task
- */
-export const postProjectTaskById = <ThrowOnError extends boolean = false>(
-  options: Options<PostProjectTaskByIdData, ThrowOnError>,
-) => {
-  return (options.client ?? _heyApiClient).post<
-    PostProjectTaskByIdResponses,
-    unknown,
-    ThrowOnError
-  >({
-    requestValidator: async (data) => {
-      return await zPostProjectTaskByIdData.parseAsync(data);
-    },
-    responseValidator: async (data) => {
-      return await zPostProjectTaskByIdResponse.parseAsync(data);
-    },
-    url: "/project-task/{id}",
+    url: "/clients/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -780,21 +394,21 @@ export const postProjectTaskById = <ThrowOnError extends boolean = false>(
 /**
  * Get all user invoices
  */
-export const getInvoice = <ThrowOnError extends boolean = false>(
-  options?: Options<GetInvoiceData, ThrowOnError>,
+export const getInvoices = <ThrowOnError extends boolean = false>(
+  options?: Options<GetInvoicesData, ThrowOnError>,
 ) => {
   return (options?.client ?? _heyApiClient).get<
-    GetInvoiceResponses,
+    GetInvoicesResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zGetInvoiceData.parseAsync(data);
+      return await zGetInvoicesData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zGetInvoiceResponse.parseAsync(data);
+      return await zGetInvoicesResponse.parseAsync(data);
     },
-    url: "/invoice",
+    url: "/invoices",
     ...options,
   });
 };
@@ -802,21 +416,21 @@ export const getInvoice = <ThrowOnError extends boolean = false>(
 /**
  * Create invoice
  */
-export const postInvoice = <ThrowOnError extends boolean = false>(
-  options: Options<PostInvoiceData, ThrowOnError>,
+export const postInvoices = <ThrowOnError extends boolean = false>(
+  options: Options<PostInvoicesData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).post<
-    PostInvoiceResponses,
+    PostInvoicesResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zPostInvoiceData.parseAsync(data);
+      return await zPostInvoicesData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zPostInvoiceResponse.parseAsync(data);
+      return await zPostInvoicesResponse.parseAsync(data);
     },
-    url: "/invoice",
+    url: "/invoices",
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -828,21 +442,21 @@ export const postInvoice = <ThrowOnError extends boolean = false>(
 /**
  * Delete invoice
  */
-export const deleteInvoiceById = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteInvoiceByIdData, ThrowOnError>,
+export const deleteInvoicesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteInvoicesByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).delete<
-    DeleteInvoiceByIdResponses,
+    DeleteInvoicesByIdResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zDeleteInvoiceByIdData.parseAsync(data);
+      return await zDeleteInvoicesByIdData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zDeleteInvoiceByIdResponse.parseAsync(data);
+      return await zDeleteInvoicesByIdResponse.parseAsync(data);
     },
-    url: "/invoice/{id}",
+    url: "/invoices/{id}",
     ...options,
   });
 };
@@ -850,21 +464,428 @@ export const deleteInvoiceById = <ThrowOnError extends boolean = false>(
 /**
  * Get invoice by id
  */
-export const getInvoiceById = <ThrowOnError extends boolean = false>(
-  options: Options<GetInvoiceByIdData, ThrowOnError>,
+export const getInvoicesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetInvoicesByIdData, ThrowOnError>,
 ) => {
   return (options.client ?? _heyApiClient).get<
-    GetInvoiceByIdResponses,
+    GetInvoicesByIdResponses,
     unknown,
     ThrowOnError
   >({
     requestValidator: async (data) => {
-      return await zGetInvoiceByIdData.parseAsync(data);
+      return await zGetInvoicesByIdData.parseAsync(data);
     },
     responseValidator: async (data) => {
-      return await zGetInvoiceByIdResponse.parseAsync(data);
+      return await zGetInvoicesByIdResponse.parseAsync(data);
     },
-    url: "/invoice/{id}",
+    url: "/invoices/{id}",
+    ...options,
+  });
+};
+
+export const getProjectTasksCount = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectTasksCountData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectTasksCountResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetProjectTasksCountData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetProjectTasksCountResponse.parseAsync(data);
+    },
+    url: "/project-tasks/count",
+    ...options,
+  });
+};
+
+export const getProjectTasks = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectTasksData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectTasksResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetProjectTasksData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetProjectTasksResponse.parseAsync(data);
+    },
+    url: "/project-tasks",
+    ...options,
+  });
+};
+
+/**
+ * Delete project task by ID
+ */
+export const deleteProjectTasksById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteProjectTasksByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteProjectTasksByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zDeleteProjectTasksByIdData.parseAsync(data);
+    },
+    url: "/project-tasks/{id}",
+    ...options,
+  });
+};
+
+export const patchProjectTasksById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchProjectTasksByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchProjectTasksByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPatchProjectTasksByIdData.parseAsync(data);
+    },
+    url: "/project-tasks/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Create new project task
+ */
+export const postProjectTasksById = <ThrowOnError extends boolean = false>(
+  options: Options<PostProjectTasksByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostProjectTasksByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPostProjectTasksByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostProjectTasksByIdResponse.parseAsync(data);
+    },
+    url: "/project-tasks/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const getProjectsCount = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectsCountData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectsCountResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetProjectsCountData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetProjectsCountResponse.parseAsync(data);
+    },
+    url: "/projects/count",
+    ...options,
+  });
+};
+
+/**
+ * Get all user projects
+ */
+export const getProjects = <ThrowOnError extends boolean = false>(
+  options?: Options<GetProjectsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetProjectsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetProjectsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetProjectsResponse.parseAsync(data);
+    },
+    url: "/projects",
+    ...options,
+  });
+};
+
+/**
+ * Create new user project
+ */
+export const postProjects = <ThrowOnError extends boolean = false>(
+  options: Options<PostProjectsData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostProjectsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPostProjectsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostProjectsResponse.parseAsync(data);
+    },
+    url: "/projects",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Delete user project, all time entries will be removed
+ */
+export const deleteProjectsById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteProjectsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteProjectsByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zDeleteProjectsByIdData.parseAsync(data);
+    },
+    url: "/projects/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get user project by ID
+ */
+export const getProjectsById = <ThrowOnError extends boolean = false>(
+  options: Options<GetProjectsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetProjectsByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetProjectsByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetProjectsByIdResponse.parseAsync(data);
+    },
+    url: "/projects/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Update user project data
+ */
+export const patchProjectsById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchProjectsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchProjectsByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPatchProjectsByIdData.parseAsync(data);
+    },
+    url: "/projects/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Get active time entry
+ */
+export const getTimeEntriesActive = <ThrowOnError extends boolean = false>(
+  options?: Options<GetTimeEntriesActiveData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetTimeEntriesActiveResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntriesActiveData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetTimeEntriesActiveResponse.parseAsync(data);
+    },
+    url: "/time-entries/active",
+    ...options,
+  });
+};
+
+/**
+ * Delete time entry
+ */
+export const deleteTimeEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteTimeEntriesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteTimeEntriesByIdResponses,
+    DeleteTimeEntriesByIdErrors,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zDeleteTimeEntriesByIdData.parseAsync(data);
+    },
+    url: "/time-entries/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Return time entry by ID
+ */
+export const getTimeEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<GetTimeEntriesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetTimeEntriesByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntriesByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetTimeEntriesByIdResponse.parseAsync(data);
+    },
+    url: "/time-entries/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Update existing time entry
+ */
+export const patchTimeEntriesById = <ThrowOnError extends boolean = false>(
+  options: Options<PatchTimeEntriesByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchTimeEntriesByIdResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPatchTimeEntriesByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPatchTimeEntriesByIdResponse.parseAsync(data);
+    },
+    url: "/time-entries/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const getTimeEntries = <ThrowOnError extends boolean = false>(
+  options?: Options<GetTimeEntriesData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetTimeEntriesResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntriesData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetTimeEntriesResponse.parseAsync(data);
+    },
+    url: "/time-entries",
+    ...options,
+  });
+};
+
+/**
+ * Create new time entry
+ */
+export const postTimeEntries = <ThrowOnError extends boolean = false>(
+  options: Options<PostTimeEntriesData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostTimeEntriesResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zPostTimeEntriesData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostTimeEntriesResponse.parseAsync(data);
+    },
+    url: "/time-entries",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const getTimeEntriesAnalyzeDurationByDate = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<GetTimeEntriesAnalyzeDurationByDateData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetTimeEntriesAnalyzeDurationByDateResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetTimeEntriesAnalyzeDurationByDateData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetTimeEntriesAnalyzeDurationByDateResponse.parseAsync(
+        data,
+      );
+    },
+    url: "/time-entries/analyze/duration-by-date",
+    ...options,
+  });
+};
+
+export const getCalendars = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCalendarsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetCalendarsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetCalendarsData.parseAsync(data);
+    },
+    url: "/calendars",
     ...options,
   });
 };

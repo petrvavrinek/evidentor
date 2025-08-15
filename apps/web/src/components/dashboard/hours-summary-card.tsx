@@ -4,10 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import {
-	getTimeEntryAnalyzeDurationByDate,
+	getTimeEntriesAnalyzeDurationByDate,
 	type TimeEntryDurationByDate,
 } from "@/lib/api";
-import { getTimeEntryAnalyzeDurationByDateQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getTimeEntriesAnalyzeDurationByDateQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import {
 	createDatesBetween,
 	firstDayOfWeek,
@@ -27,9 +27,9 @@ export default function HoursSummaryCard() {
 	const dates = createDatesBetween(firstDayDate, lastDayDate);
 
 	const { data, isLoading } = useQuery({
-		queryKey: getTimeEntryAnalyzeDurationByDateQueryKey(),
+		queryKey: getTimeEntriesAnalyzeDurationByDateQueryKey(),
 		queryFn: () =>
-			getTimeEntryAnalyzeDurationByDate({
+			getTimeEntriesAnalyzeDurationByDate({
 				query: { from: firstDayDate, to: lastDayDate },
 			}),
 	});

@@ -32,12 +32,12 @@ import { ClientTableRow } from "@/components/clients/client-table-row";
 import PageHeader from "@/components/page-header";
 import SearchInput from "@/components/search-input";
 
-import { type Client, getClient } from "@/lib/api";
+import { type Client, getClients } from "@/lib/api";
 
 import {
-	deleteClientByIdMutation,
-	getClientQueryKey,
-	postClientMutation,
+	deleteClientsByIdMutation,
+	getClientsQueryKey,
+	postClientsMutation,
 } from "@/lib/api/@tanstack/react-query.gen";
 import { useTranslations } from "next-intl";
 import useTitle from "@/hooks/use-title";
@@ -55,17 +55,17 @@ export default function ClientsPage() {
 		refetch,
 	} = useQuery({
 		initialData: [] as never,
-		queryKey: getClientQueryKey(),
-		queryFn: () => getClient(),
+		queryKey: getClientsQueryKey(),
+		queryFn: () => getClients(),
 	});
 
 	const createClientMutation = useMutation({
-		...postClientMutation(),
+		...postClientsMutation(),
 		onSuccess: () => refetch(),
 	});
 
 	const deleteClientMutation = useMutation({
-		...deleteClientByIdMutation(),
+		...deleteClientsByIdMutation(),
 		onSuccess: () => refetch(),
 	});
 

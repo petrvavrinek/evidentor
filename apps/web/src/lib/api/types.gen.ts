@@ -5,145 +5,60 @@ export type Client = {
   companyName: string;
   contactName: string;
   email: string | null;
-  createdAt: unknown;
+} & {
+  address: {
+    id: number;
+    streetLine1: string;
+    streetLine2: string | null;
+    city: string;
+    state: string | null;
+    postalCode: string | null;
+    country: string;
+    createdAt: unknown;
+    updatedAt: unknown;
+  } | null;
+  billing: {
+    id: number;
+    clientId: number;
+    accountNumber: string;
+    iban: string | null;
+    swiftCode: string | null;
+    variableSymbol: string | null;
+    createdAt: unknown;
+    updatedAt: unknown;
+  } | null;
 };
 
-export type Client2 = Array<{
-  id: number;
-  companyName: string;
-  contactName: string;
-  email: string | null;
-  createdAt: unknown;
-}>;
-
-export type Project = {
-  id: number;
-  title: string | null;
-  createdAt: unknown;
-  client: {
+export type Client2 = Array<
+  {
     id: number;
     companyName: string;
     contactName: string;
     email: string | null;
-    createdAt: unknown;
-  } | null;
-};
-
-export type Project2 = Array<{
-  id: number;
-  title: string | null;
-  createdAt: unknown;
-  client: {
-    id: number;
-    companyName: string;
-    contactName: string;
-    email: string | null;
-    createdAt: unknown;
-  } | null;
-}>;
-
-export type ProjectCount = {
-  count: number;
-};
-
-export type TimeEntry = {
-  id: number;
-  title: string | null;
-  startAt: unknown | null;
-  endAt: unknown | null;
-  createdAt: unknown;
-  project: {
-    id: number;
-    title: string | null;
-    createdAt: unknown;
-    client: {
+  } & {
+    address: {
       id: number;
-      companyName: string;
-      contactName: string;
-      email: string | null;
+      streetLine1: string;
+      streetLine2: string | null;
+      city: string;
+      state: string | null;
+      postalCode: string | null;
+      country: string;
       createdAt: unknown;
+      updatedAt: unknown;
     } | null;
-  } | null;
-  projectTask: {
-    id: number;
-    title: string;
-    description: string | null;
-    createdAt: unknown;
-  } | null;
-};
-
-export type TimeEntry2 = Array<{
-  id: number;
-  title: string | null;
-  startAt: unknown | null;
-  endAt: unknown | null;
-  createdAt: unknown;
-  project: {
-    id: number;
-    title: string | null;
-    createdAt: unknown;
-    client: {
+    billing: {
       id: number;
-      companyName: string;
-      contactName: string;
-      email: string | null;
+      clientId: number;
+      accountNumber: string;
+      iban: string | null;
+      swiftCode: string | null;
+      variableSymbol: string | null;
       createdAt: unknown;
+      updatedAt: unknown;
     } | null;
-  } | null;
-  projectTask: {
-    id: number;
-    title: string;
-    description: string | null;
-    createdAt: unknown;
-  } | null;
-}>;
-
-export type TimeEntryDurationByDate = Array<{
-  date: unknown | Date | number;
-  duration: number;
-}>;
-
-export type ProjectTask = {
-  id: number;
-  title: string;
-  description: string | null;
-  createdAt: unknown;
-  project: {
-    id: number;
-    title: string | null;
-    createdAt: unknown;
-    client: {
-      id: number;
-      companyName: string;
-      contactName: string;
-      email: string | null;
-      createdAt: unknown;
-    } | null;
-  };
-};
-
-export type ProjectTask2 = Array<{
-  id: number;
-  title: string;
-  description: string | null;
-  createdAt: unknown;
-  project: {
-    id: number;
-    title: string | null;
-    createdAt: unknown;
-    client: {
-      id: number;
-      companyName: string;
-      contactName: string;
-      email: string | null;
-      createdAt: unknown;
-    } | null;
-  };
-}>;
-
-export type ProjectTaskCount = {
-  count: number;
-};
+  }
+>;
 
 export type Invoice = {
   id: number;
@@ -171,6 +86,7 @@ export type Invoice = {
     contactName: string;
     email: string | null;
     ownerId: string | null;
+    addressId: number | null;
     createdAt: unknown;
   } | null;
   items: Array<{
@@ -216,6 +132,7 @@ export type Invoice2 = Array<{
     contactName: string;
     email: string | null;
     ownerId: string | null;
+    addressId: number | null;
     createdAt: unknown;
   } | null;
   items: Array<{
@@ -235,447 +152,318 @@ export type Invoice2 = Array<{
   }>;
 }>;
 
+export type ProjectTask = {
+  id: number;
+  title: string;
+  description: string | null;
+  createdAt: unknown;
+  project: {
+    id: number;
+    title: string | null;
+    createdAt: unknown;
+    client: {
+      id: number;
+      companyName: string;
+      contactName: string;
+      email: string | null;
+      ownerId: string | null;
+      addressId: number | null;
+      createdAt: unknown;
+    } | null;
+  };
+};
+
+export type ProjectTask2 = Array<{
+  id: number;
+  title: string;
+  description: string | null;
+  createdAt: unknown;
+  project: {
+    id: number;
+    title: string | null;
+    createdAt: unknown;
+    client: {
+      id: number;
+      companyName: string;
+      contactName: string;
+      email: string | null;
+      ownerId: string | null;
+      addressId: number | null;
+      createdAt: unknown;
+    } | null;
+  };
+}>;
+
+export type ProjectTaskCount = {
+  count: number;
+};
+
+export type Project = {
+  id: number;
+  title: string | null;
+  createdAt: unknown;
+  client: {
+    id: number;
+    companyName: string;
+    contactName: string;
+    email: string | null;
+    ownerId: string | null;
+    addressId: number | null;
+    createdAt: unknown;
+  } | null;
+};
+
+export type Project2 = Array<{
+  id: number;
+  title: string | null;
+  createdAt: unknown;
+  client: {
+    id: number;
+    companyName: string;
+    contactName: string;
+    email: string | null;
+    ownerId: string | null;
+    addressId: number | null;
+    createdAt: unknown;
+  } | null;
+}>;
+
+export type ProjectCount = {
+  count: number;
+};
+
+export type TimeEntry = {
+  id: number;
+  title: string | null;
+  startAt: unknown | null;
+  endAt: unknown | null;
+  createdAt: unknown;
+  project: {
+    id: number;
+    title: string | null;
+    createdAt: unknown;
+    client: {
+      id: number;
+      companyName: string;
+      contactName: string;
+      email: string | null;
+      ownerId: string | null;
+      addressId: number | null;
+      createdAt: unknown;
+    } | null;
+  } | null;
+  projectTask: {
+    id: number;
+    title: string;
+    description: string | null;
+    createdAt: unknown;
+  } | null;
+};
+
+export type TimeEntry2 = Array<{
+  id: number;
+  title: string | null;
+  startAt: unknown | null;
+  endAt: unknown | null;
+  createdAt: unknown;
+  project: {
+    id: number;
+    title: string | null;
+    createdAt: unknown;
+    client: {
+      id: number;
+      companyName: string;
+      contactName: string;
+      email: string | null;
+      ownerId: string | null;
+      addressId: number | null;
+      createdAt: unknown;
+    } | null;
+  } | null;
+  projectTask: {
+    id: number;
+    title: string;
+    description: string | null;
+    createdAt: unknown;
+  } | null;
+}>;
+
+export type TimeEntryDurationByDate = Array<{
+  date: unknown | Date | number;
+  duration: number;
+}>;
+
 export type User = {
   id?: string;
-  name?: string;
-  email?: string;
-  emailVerified?: boolean;
+  name: string;
+  email: string;
+  emailVerified: boolean;
   image?: string;
-  createdAt?: unknown;
-  updatedAt?: unknown;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Session = {
   id?: string;
-  expiresAt?: unknown;
-  token?: string;
-  createdAt?: unknown;
-  updatedAt?: unknown;
+  expiresAt: string;
+  token: string;
+  createdAt: string;
+  updatedAt: string;
   ipAddress?: string;
   userAgent?: string;
-  userId?: string;
+  userId: string;
 };
 
 export type Account = {
   id?: string;
-  accountId?: string;
-  providerId?: string;
-  userId?: string;
+  accountId: string;
+  providerId: string;
+  userId: string;
   accessToken?: string;
   refreshToken?: string;
   idToken?: string;
-  accessTokenExpiresAt?: unknown;
-  refreshTokenExpiresAt?: unknown;
+  accessTokenExpiresAt?: string;
+  refreshTokenExpiresAt?: string;
   scope?: string;
   password?: string;
-  createdAt?: unknown;
-  updatedAt?: unknown;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Verification = {
   id?: string;
-  identifier?: string;
-  value?: string;
-  expiresAt?: unknown;
-  createdAt?: unknown;
-  updatedAt?: unknown;
+  identifier: string;
+  value: string;
+  expiresAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
-export type GetClientData = {
+export type GetClientsData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/client";
+  url: "/clients";
 };
 
-export type GetClientResponses = {
+export type GetClientsResponses = {
   200: Client2;
 };
 
-export type GetClientResponse = GetClientResponses[keyof GetClientResponses];
+export type GetClientsResponse = GetClientsResponses[keyof GetClientsResponses];
 
-export type PostClientData = {
+export type PostClientsData = {
   body: {
     companyName: string;
     contactName: string;
     email?: string | null;
+  } & {
+    address?: {
+      streetLine1: string;
+      streetLine2?: string | null;
+      city: string;
+      state?: string | null;
+      postalCode?: string | null;
+      country: string;
+    };
+    billing?: {
+      accountNumber: string;
+      iban?: string | null;
+      swiftCode?: string | null;
+      variableSymbol?: string | null;
+    };
   };
   path?: never;
   query?: never;
-  url: "/client";
+  url: "/clients";
 };
 
-export type PostClientResponses = {
+export type PostClientsResponses = {
   200: Client;
 };
 
-export type PostClientResponse = PostClientResponses[keyof PostClientResponses];
+export type PostClientsResponse =
+  PostClientsResponses[keyof PostClientsResponses];
 
-export type DeleteClientByIdData = {
+export type DeleteClientsByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/client/{id}";
+  url: "/clients/{id}";
 };
 
-export type DeleteClientByIdResponses = {
+export type DeleteClientsByIdResponses = {
   200: unknown;
 };
 
-export type GetClientByIdData = {
+export type GetClientsByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/client/{id}";
+  url: "/clients/{id}";
 };
 
-export type GetClientByIdResponses = {
+export type GetClientsByIdResponses = {
   200: Client;
 };
 
-export type GetClientByIdResponse =
-  GetClientByIdResponses[keyof GetClientByIdResponses];
+export type GetClientsByIdResponse =
+  GetClientsByIdResponses[keyof GetClientsByIdResponses];
 
-export type PatchClientByIdData = {
+export type PatchClientsByIdData = {
   body: {
     companyName?: string;
     contactName?: string;
     email?: string | null;
+  } & {
+    address?: {
+      streetLine1: string;
+      streetLine2?: string | null;
+      city: string;
+      state?: string | null;
+      postalCode?: string | null;
+      country: string;
+    };
+    billing?: {
+      accountNumber: string;
+      iban?: string | null;
+      swiftCode?: string | null;
+      variableSymbol?: string | null;
+    };
   };
   path: {
     id: number;
   };
   query?: never;
-  url: "/client/{id}";
+  url: "/clients/{id}";
 };
 
-export type PatchClientByIdResponses = {
+export type PatchClientsByIdResponses = {
   200: Client;
 };
 
-export type PatchClientByIdResponse =
-  PatchClientByIdResponses[keyof PatchClientByIdResponses];
+export type PatchClientsByIdResponse =
+  PatchClientsByIdResponses[keyof PatchClientsByIdResponses];
 
-export type GetProjectCountData = {
-  body?: never;
-  path?: never;
-  query?: {
-    client?: number;
-    from?: unknown | Date | number;
-    to?: unknown | Date | number;
-  };
-  url: "/project/count";
-};
-
-export type GetProjectCountResponses = {
-  200: ProjectCount;
-};
-
-export type GetProjectCountResponse =
-  GetProjectCountResponses[keyof GetProjectCountResponses];
-
-export type GetProjectData = {
+export type GetInvoicesData = {
   body?: never;
   path?: never;
   query?: never;
-  url: "/project";
+  url: "/invoices";
 };
 
-export type GetProjectResponses = {
-  200: Project2;
-};
-
-export type GetProjectResponse = GetProjectResponses[keyof GetProjectResponses];
-
-export type PostProjectData = {
-  body: {
-    clientId?: number | null;
-    title?: string | null;
-  };
-  path?: never;
-  query?: never;
-  url: "/project";
-};
-
-export type PostProjectResponses = {
-  200: Project;
-};
-
-export type PostProjectResponse =
-  PostProjectResponses[keyof PostProjectResponses];
-
-export type DeleteProjectByIdData = {
-  body?: never;
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/project/{id}";
-};
-
-export type DeleteProjectByIdResponses = {
-  200: unknown;
-};
-
-export type GetProjectByIdData = {
-  body?: never;
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/project/{id}";
-};
-
-export type GetProjectByIdResponses = {
-  200: Project;
-};
-
-export type GetProjectByIdResponse =
-  GetProjectByIdResponses[keyof GetProjectByIdResponses];
-
-export type PatchProjectByIdData = {
-  body: {
-    clientId?: number | null;
-    title?: string | null;
-  };
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/project/{id}";
-};
-
-export type PatchProjectByIdResponses = {
-  200: unknown;
-};
-
-export type GetTimeEntryActiveData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: "/time-entry/active";
-};
-
-export type GetTimeEntryActiveResponses = {
-  200: TimeEntry;
-};
-
-export type GetTimeEntryActiveResponse =
-  GetTimeEntryActiveResponses[keyof GetTimeEntryActiveResponses];
-
-export type DeleteTimeEntryByIdData = {
-  body?: never;
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/time-entry/{id}";
-};
-
-export type DeleteTimeEntryByIdErrors = {
-  /**
-   * Time entry not found
-   */
-  404: unknown;
-};
-
-export type DeleteTimeEntryByIdResponses = {
-  /**
-   * Time entry deleted
-   */
-  200: unknown;
-};
-
-export type GetTimeEntryByIdData = {
-  body?: never;
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/time-entry/{id}";
-};
-
-export type GetTimeEntryByIdResponses = {
-  200: TimeEntry;
-};
-
-export type GetTimeEntryByIdResponse =
-  GetTimeEntryByIdResponses[keyof GetTimeEntryByIdResponses];
-
-export type PatchTimeEntryByIdData = {
-  body: {
-    title?: string;
-    projectId?: number | null;
-    projectTaskId?: number | null;
-    startAt?: unknown | Date | number;
-    endAt?: (unknown | Date | number) | null;
-  };
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/time-entry/{id}";
-};
-
-export type PatchTimeEntryByIdResponses = {
-  200: TimeEntry;
-};
-
-export type PatchTimeEntryByIdResponse =
-  PatchTimeEntryByIdResponses[keyof PatchTimeEntryByIdResponses];
-
-export type GetTimeEntryData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: "/time-entry";
-};
-
-export type GetTimeEntryResponses = {
-  200: TimeEntry2;
-};
-
-export type GetTimeEntryResponse =
-  GetTimeEntryResponses[keyof GetTimeEntryResponses];
-
-export type PostTimeEntryData = {
-  body: {
-    title: string;
-    projectId: number | null;
-    projectTaskId?: number | null;
-    startAt: unknown | Date | number;
-    endAt: (unknown | Date | number) | null;
-  };
-  path?: never;
-  query?: never;
-  url: "/time-entry";
-};
-
-export type PostTimeEntryResponses = {
-  200: TimeEntry;
-};
-
-export type PostTimeEntryResponse =
-  PostTimeEntryResponses[keyof PostTimeEntryResponses];
-
-export type GetTimeEntryAnalyzeDurationByDateData = {
-  body?: never;
-  path?: never;
-  query?: {
-    projectId?: number | null;
-    from?: unknown | Date | number;
-    to?: unknown | Date | number;
-  };
-  url: "/time-entry/analyze/duration-by-date";
-};
-
-export type GetTimeEntryAnalyzeDurationByDateResponses = {
-  200: TimeEntryDurationByDate;
-};
-
-export type GetTimeEntryAnalyzeDurationByDateResponse =
-  GetTimeEntryAnalyzeDurationByDateResponses[keyof GetTimeEntryAnalyzeDurationByDateResponses];
-
-export type GetProjectTaskCountData = {
-  body?: never;
-  path?: never;
-  query?: {
-    project?: number;
-    from?: unknown | Date | number;
-    to?: unknown | Date | number;
-  };
-  url: "/project-task/count";
-};
-
-export type GetProjectTaskCountResponses = {
-  200: ProjectTaskCount;
-};
-
-export type GetProjectTaskCountResponse =
-  GetProjectTaskCountResponses[keyof GetProjectTaskCountResponses];
-
-export type GetProjectTaskData = {
-  body?: never;
-  path?: never;
-  query?: {
-    project?: number;
-  };
-  url: "/project-task";
-};
-
-export type GetProjectTaskResponses = {
-  200: ProjectTask2;
-};
-
-export type GetProjectTaskResponse =
-  GetProjectTaskResponses[keyof GetProjectTaskResponses];
-
-export type DeleteProjectTaskByIdData = {
-  body?: never;
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/project-task/{id}";
-};
-
-export type DeleteProjectTaskByIdResponses = {
-  200: unknown;
-};
-
-export type PatchProjectTaskByIdData = {
-  body: {
-    title?: string;
-    description?: string | null;
-  };
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/project-task/{id}";
-};
-
-export type PatchProjectTaskByIdResponses = {
-  200: unknown;
-};
-
-export type PostProjectTaskByIdData = {
-  body: {
-    title: string;
-    description?: string | null;
-  };
-  path: {
-    id: number;
-  };
-  query?: never;
-  url: "/project-task/{id}";
-};
-
-export type PostProjectTaskByIdResponses = {
-  200: ProjectTask;
-};
-
-export type PostProjectTaskByIdResponse =
-  PostProjectTaskByIdResponses[keyof PostProjectTaskByIdResponses];
-
-export type GetInvoiceData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: "/invoice";
-};
-
-export type GetInvoiceResponses = {
+export type GetInvoicesResponses = {
   200: Invoice2;
 };
 
-export type GetInvoiceResponse = GetInvoiceResponses[keyof GetInvoiceResponses];
+export type GetInvoicesResponse =
+  GetInvoicesResponses[keyof GetInvoicesResponses];
 
-export type PostInvoiceData = {
+export type PostInvoicesData = {
   body: {
     projectId: number;
     dueDate: unknown | Date | number;
@@ -689,49 +477,363 @@ export type PostInvoiceData = {
   };
   path?: never;
   query?: never;
-  url: "/invoice";
+  url: "/invoices";
 };
 
-export type PostInvoiceResponses = {
+export type PostInvoicesResponses = {
   200: Invoice;
 };
 
-export type PostInvoiceResponse =
-  PostInvoiceResponses[keyof PostInvoiceResponses];
+export type PostInvoicesResponse =
+  PostInvoicesResponses[keyof PostInvoicesResponses];
 
-export type DeleteInvoiceByIdData = {
+export type DeleteInvoicesByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/invoice/{id}";
+  url: "/invoices/{id}";
 };
 
-export type DeleteInvoiceByIdResponses = {
+export type DeleteInvoicesByIdResponses = {
   200: {
     success: boolean;
   };
 };
 
-export type DeleteInvoiceByIdResponse =
-  DeleteInvoiceByIdResponses[keyof DeleteInvoiceByIdResponses];
+export type DeleteInvoicesByIdResponse =
+  DeleteInvoicesByIdResponses[keyof DeleteInvoicesByIdResponses];
 
-export type GetInvoiceByIdData = {
+export type GetInvoicesByIdData = {
   body?: never;
   path: {
     id: number;
   };
   query?: never;
-  url: "/invoice/{id}";
+  url: "/invoices/{id}";
 };
 
-export type GetInvoiceByIdResponses = {
+export type GetInvoicesByIdResponses = {
   200: Invoice;
 };
 
-export type GetInvoiceByIdResponse =
-  GetInvoiceByIdResponses[keyof GetInvoiceByIdResponses];
+export type GetInvoicesByIdResponse =
+  GetInvoicesByIdResponses[keyof GetInvoicesByIdResponses];
+
+export type GetProjectTasksCountData = {
+  body?: never;
+  path?: never;
+  query?: {
+    project?: number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
+  };
+  url: "/project-tasks/count";
+};
+
+export type GetProjectTasksCountResponses = {
+  200: ProjectTaskCount;
+};
+
+export type GetProjectTasksCountResponse =
+  GetProjectTasksCountResponses[keyof GetProjectTasksCountResponses];
+
+export type GetProjectTasksData = {
+  body?: never;
+  path?: never;
+  query?: {
+    project?: number;
+  };
+  url: "/project-tasks";
+};
+
+export type GetProjectTasksResponses = {
+  200: ProjectTask2;
+};
+
+export type GetProjectTasksResponse =
+  GetProjectTasksResponses[keyof GetProjectTasksResponses];
+
+export type DeleteProjectTasksByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/project-tasks/{id}";
+};
+
+export type DeleteProjectTasksByIdResponses = {
+  200: unknown;
+};
+
+export type PatchProjectTasksByIdData = {
+  body: {
+    title?: string;
+    description?: string | null;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/project-tasks/{id}";
+};
+
+export type PatchProjectTasksByIdResponses = {
+  200: unknown;
+};
+
+export type PostProjectTasksByIdData = {
+  body: {
+    title: string;
+    description?: string | null;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/project-tasks/{id}";
+};
+
+export type PostProjectTasksByIdResponses = {
+  200: ProjectTask;
+};
+
+export type PostProjectTasksByIdResponse =
+  PostProjectTasksByIdResponses[keyof PostProjectTasksByIdResponses];
+
+export type GetProjectsCountData = {
+  body?: never;
+  path?: never;
+  query?: {
+    client?: number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
+  };
+  url: "/projects/count";
+};
+
+export type GetProjectsCountResponses = {
+  200: ProjectCount;
+};
+
+export type GetProjectsCountResponse =
+  GetProjectsCountResponses[keyof GetProjectsCountResponses];
+
+export type GetProjectsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/projects";
+};
+
+export type GetProjectsResponses = {
+  200: Project2;
+};
+
+export type GetProjectsResponse =
+  GetProjectsResponses[keyof GetProjectsResponses];
+
+export type PostProjectsData = {
+  body: {
+    clientId?: number | null;
+    title?: string | null;
+  };
+  path?: never;
+  query?: never;
+  url: "/projects";
+};
+
+export type PostProjectsResponses = {
+  200: Project;
+};
+
+export type PostProjectsResponse =
+  PostProjectsResponses[keyof PostProjectsResponses];
+
+export type DeleteProjectsByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/projects/{id}";
+};
+
+export type DeleteProjectsByIdResponses = {
+  200: unknown;
+};
+
+export type GetProjectsByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/projects/{id}";
+};
+
+export type GetProjectsByIdResponses = {
+  200: Project;
+};
+
+export type GetProjectsByIdResponse =
+  GetProjectsByIdResponses[keyof GetProjectsByIdResponses];
+
+export type PatchProjectsByIdData = {
+  body: {
+    clientId?: number | null;
+    title?: string | null;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/projects/{id}";
+};
+
+export type PatchProjectsByIdResponses = {
+  200: unknown;
+};
+
+export type GetTimeEntriesActiveData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/time-entries/active";
+};
+
+export type GetTimeEntriesActiveResponses = {
+  200: TimeEntry;
+};
+
+export type GetTimeEntriesActiveResponse =
+  GetTimeEntriesActiveResponses[keyof GetTimeEntriesActiveResponses];
+
+export type DeleteTimeEntriesByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/time-entries/{id}";
+};
+
+export type DeleteTimeEntriesByIdErrors = {
+  /**
+   * Time entry not found
+   */
+  404: unknown;
+};
+
+export type DeleteTimeEntriesByIdResponses = {
+  /**
+   * Time entry deleted
+   */
+  200: unknown;
+};
+
+export type GetTimeEntriesByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/time-entries/{id}";
+};
+
+export type GetTimeEntriesByIdResponses = {
+  200: TimeEntry;
+};
+
+export type GetTimeEntriesByIdResponse =
+  GetTimeEntriesByIdResponses[keyof GetTimeEntriesByIdResponses];
+
+export type PatchTimeEntriesByIdData = {
+  body: {
+    title?: string;
+    projectId?: number | null;
+    projectTaskId?: number | null;
+    startAt?: unknown | Date | number;
+    endAt?: (unknown | Date | number) | null;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/time-entries/{id}";
+};
+
+export type PatchTimeEntriesByIdResponses = {
+  200: TimeEntry;
+};
+
+export type PatchTimeEntriesByIdResponse =
+  PatchTimeEntriesByIdResponses[keyof PatchTimeEntriesByIdResponses];
+
+export type GetTimeEntriesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/time-entries";
+};
+
+export type GetTimeEntriesResponses = {
+  200: TimeEntry2;
+};
+
+export type GetTimeEntriesResponse =
+  GetTimeEntriesResponses[keyof GetTimeEntriesResponses];
+
+export type PostTimeEntriesData = {
+  body: {
+    title: string;
+    projectId: number | null;
+    projectTaskId?: number | null;
+    startAt: unknown | Date | number;
+    endAt: (unknown | Date | number) | null;
+  };
+  path?: never;
+  query?: never;
+  url: "/time-entries";
+};
+
+export type PostTimeEntriesResponses = {
+  200: TimeEntry;
+};
+
+export type PostTimeEntriesResponse =
+  PostTimeEntriesResponses[keyof PostTimeEntriesResponses];
+
+export type GetTimeEntriesAnalyzeDurationByDateData = {
+  body?: never;
+  path?: never;
+  query?: {
+    projectId?: number | null;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
+  };
+  url: "/time-entries/analyze/duration-by-date";
+};
+
+export type GetTimeEntriesAnalyzeDurationByDateResponses = {
+  200: TimeEntryDurationByDate;
+};
+
+export type GetTimeEntriesAnalyzeDurationByDateResponse =
+  GetTimeEntriesAnalyzeDurationByDateResponses[keyof GetTimeEntriesAnalyzeDurationByDateResponses];
+
+export type GetCalendarsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/calendars";
+};
+
+export type GetCalendarsResponses = {
+  200: unknown;
+};
 
 export type GetStatusData = {
   body?: never;
@@ -757,35 +859,14 @@ export type HeadStatusResponses = {
 
 export type SocialSignInData = {
   body: {
-    /**
-     * Callback URL to redirect to after the user has signed in
-     */
     callbackURL?: string;
     newUserCallbackURL?: string;
-    /**
-     * Callback URL to redirect to if an error happens
-     */
     errorCallbackURL?: string;
     provider: string;
-    /**
-     * Disable automatic redirection to the provider. Useful for handling the redirection yourself
-     */
     disableRedirect?: string;
-    /**
-     * ID token from the provider to sign in the user with id token
-     */
     idToken?: string;
-    /**
-     * Array of scopes to request from the provider. This will override the default scopes passed.
-     */
     scopes?: string;
-    /**
-     * Explicitly request sign-up. Useful when disableImplicitSignUp is true for this provider
-     */
     requestSignUp?: string;
-    /**
-     * The login hint to use for the authorization code request
-     */
     loginHint?: string;
   };
   path?: never;
@@ -990,9 +1071,17 @@ export type PostAuthSignUpEmailData = {
      */
     password: string;
     /**
+     * The profile image URL of the user
+     */
+    image?: string;
+    /**
      * The URL to use for email verification callback
      */
     callbackURL?: string;
+    /**
+     * If this is false, the session will not be remembered. Default is `true`.
+     */
+    rememberMe?: boolean;
   };
   path?: never;
   query?: never;
@@ -1096,13 +1185,7 @@ export type PostAuthSignInEmailData = {
      * Password of the user
      */
     password: string;
-    /**
-     * Callback URL to use as a redirect for email verification
-     */
     callbackURL?: string;
-    /**
-     * If this is false, the session will not be remembered. Default is `true`.
-     */
     rememberMe?: string;
   };
   path?: never;
@@ -1184,9 +1267,6 @@ export type PostAuthForgetPasswordData = {
      * The email address of the user to send a password reset email to
      */
     email: string;
-    /**
-     * The URL to redirect the user to reset their password. If the token isn't valid or expired, it'll be redirected with a query parameter `?error=INVALID_TOKEN`. If the token is valid, it'll be redirected with a query parameter `?token=VALID_TOKEN
-     */
     redirectTo?: string;
   };
   path?: never;
@@ -1255,9 +1335,6 @@ export type PostAuthResetPasswordData = {
      * The new password to set
      */
     newPassword: string;
-    /**
-     * The token to reset the password
-     */
     token?: string;
   };
   path?: never;
@@ -1501,12 +1578,9 @@ export type PostAuthSendVerificationEmailResponse =
 export type PostAuthChangeEmailData = {
   body: {
     /**
-     * The new email to set
+     * The new email address to set must be a valid email address
      */
     newEmail: string;
-    /**
-     * The URL to redirect to after email verification
-     */
     callbackURL?: string;
   };
   path?: never;
@@ -1582,12 +1656,9 @@ export type PostAuthChangePasswordData = {
      */
     newPassword: string;
     /**
-     * The current password
+     * The current password is required
      */
     currentPassword: string;
-    /**
-     * Revoke all other sessions
-     */
     revokeOtherSessions?: string;
   };
   path?: never;
@@ -1899,9 +1970,6 @@ export type PostAuthRequestPasswordResetData = {
      * The email address of the user to send a password reset email to
      */
     email: string;
-    /**
-     * The URL to redirect the user to reset their password. If the token isn't valid or expired, it'll be redirected with a query parameter `?error=INVALID_TOKEN`. If the token is valid, it'll be redirected with a query parameter `?token=VALID_TOKEN
-     */
     redirectTo?: string;
   };
   path?: never;
@@ -2226,20 +2294,11 @@ export type PostAuthRevokeOtherSessionsResponse =
 
 export type PostAuthLinkSocialData = {
   body: {
-    /**
-     * The URL to redirect to after the user has signed in
-     */
     callbackURL?: string;
     provider: string;
     idToken?: string;
     requestSignUp?: string;
-    /**
-     * Additional scopes to request from the provider
-     */
     scopes?: string;
-    /**
-     * The URL to redirect to if there is an error during the link process
-     */
     errorCallbackURL?: string;
   };
   path?: never;
@@ -2377,6 +2436,9 @@ export type GetAuthDeleteUserCallbackData = {
   body?: never;
   path?: never;
   query?: {
+    /**
+     * The token to verify the deletion request
+     */
     token?: string;
     callbackURL?: string;
   };
@@ -2514,13 +2576,7 @@ export type PostAuthRefreshTokenData = {
      * The provider ID for the OAuth provider
      */
     providerId: string;
-    /**
-     * The account ID associated with the refresh token
-     */
     accountId?: string;
-    /**
-     * The user ID associated with the account
-     */
     userId?: string;
   };
   path?: never;
@@ -2591,13 +2647,7 @@ export type PostAuthGetAccessTokenData = {
      * The provider ID for the OAuth provider
      */
     providerId: string;
-    /**
-     * The account ID associated with the refresh token
-     */
     accountId?: string;
-    /**
-     * The user ID associated with the account
-     */
     userId?: string;
   };
   path?: never;

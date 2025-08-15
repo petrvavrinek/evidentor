@@ -27,8 +27,8 @@ import SearchInput from "@/components/search-input";
 
 import useTitle from "@/hooks/use-title";
 import type { Invoice } from "@/lib/api";
-import { getInvoiceQueryKey } from "@/lib/api/@tanstack/react-query.gen";
-import { deleteInvoiceById, getInvoice } from "@/lib/api/sdk.gen";
+import { getInvoicesQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { deleteInvoicesById, getInvoices } from "@/lib/api/sdk.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -44,14 +44,14 @@ export default function InvoicesPage() {
 		refetch,
 	} = useQuery({
 		initialData: null,
-		queryKey: getInvoiceQueryKey(),
-		queryFn: () => getInvoice(),
+		queryKey: getInvoicesQueryKey(),
+		queryFn: () => getInvoices(),
 	});
 
 	const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 	const [createOpen, setCreateOpen] = useState(false);
 	const handleDelete = (id: number) => {
-		deleteInvoiceById({ path: { id } }).then(() => refetch());
+		deleteInvoicesById({ path: { id } }).then(() => refetch());
 	};
 	const handleCloseModal = () => setSelectedInvoice(null);
 

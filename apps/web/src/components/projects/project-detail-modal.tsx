@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Calendar, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { getProjectTask, type Project } from "@/lib/api";
-import { getProjectTaskQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getProjectTasks, type Project } from "@/lib/api";
+import { getProjectTasksQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
@@ -41,11 +41,11 @@ export default function ProjectDetailModal({
 	onClose,
 }: ProjectDetailModalProps) {
 	const tasksQuery = useQuery({
-		queryKey: getProjectTaskQueryKey({ query: { project: project?.id } }),
+		queryKey: getProjectTasksQueryKey({ query: { project: project?.id } }),
 		initialData: [],
 		queryFn: async () => {
 			if (!project?.id) return [];
-			const tasks = await getProjectTask({ query: { project: project.id } });
+			const tasks = await getProjectTasks({ query: { project: project.id } });
 			return tasks.data ?? [];
 		},
 		enabled: false,

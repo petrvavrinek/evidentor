@@ -8,10 +8,10 @@ import PageHeader from "@/components/page-header";
 import TimeEntriesTable from "@/components/time-entries/time-entries-table";
 import ManualTimeEntry from "@/components/time-tracker/manual-time-entry";
 import Stopwatch from "@/components/time-tracker/stopwatch";
-import { getTimeEntry, type TimeEntry } from "@/lib/api";
+import { getTimeEntries, type TimeEntry } from "@/lib/api";
 import {
-	deleteTimeEntryByIdMutation,
-	getProjectTaskQueryKey,
+	deleteTimeEntriesByIdMutation,
+	getProjectTasksQueryKey,
 } from "@/lib/api/@tanstack/react-query.gen";
 import { groupBy } from "@/lib/utils";
 import {
@@ -43,12 +43,12 @@ export default function TimeTrackerPage() {
 	useTitle(t("title"));
 
 	const { data, isLoading } = useQuery({
-		queryKey: getProjectTaskQueryKey(),
-		queryFn: () => getTimeEntry(),
+		queryKey: getProjectTasksQueryKey(),
+		queryFn: () => getTimeEntries(),
 	});
 
 	const deleteTimeEntry = useMutation({
-		...deleteTimeEntryByIdMutation(),
+		...deleteTimeEntriesByIdMutation(),
 	});
 
 	const onCreateTimeEntry = (timeEntry: TimeEntry) => {
@@ -83,8 +83,6 @@ export default function TimeTrackerPage() {
 			(a, b) => new Date(b).getTime() - new Date(a).getTime(),
 		);
 	};
-
-	const formatDate = (date: Date) => dateFormatter.format(date);
 
 	const onTimeEntryDelete = async (timeEntry: TimeEntry) => {
 		// delete and re-render
@@ -147,7 +145,7 @@ export default function TimeTrackerPage() {
 								<div className="flex items-center gap-2">
 									<Calendar className="w-4 h-4 text-muted-foreground" />
 									<TypographyH3 className="text-sm font-medium">
-										{formatDate(new Date(d))}
+										{dateFormatter.format(new Date(d))}
 									</TypographyH3>
 								</div>
 
