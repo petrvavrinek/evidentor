@@ -15,7 +15,7 @@ import { Label } from "@evidentor/ui/components/ui/label";
 import { Textarea } from "@evidentor/ui/components/ui/textarea";
 
 import type { ProjectTask } from "@/lib/api";
-import { patchProjectTaskByIdMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { patchProjectTasksByIdMutation } from "@/lib/api/@tanstack/react-query.gen";
 
 interface EditTaskModalProps {
   open: boolean;
@@ -31,7 +31,7 @@ export default function EditTaskModal({
   onUpdate,
 }: EditTaskModalProps) {
   const updateTask = useMutation({
-    ...patchProjectTaskByIdMutation(),
+    ...patchProjectTasksByIdMutation(),
   });
 
   const [title, setTitle] = useState(task.title);

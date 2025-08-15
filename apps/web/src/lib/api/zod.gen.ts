@@ -451,7 +451,7 @@ export const zUser = z.object({
   id: z.string().optional(),
   name: z.string(),
   email: z.string(),
-  emailVerified: z.boolean().default("Generated at runtime"),
+  emailVerified: z.boolean(),
   image: z.string().optional(),
   createdAt: z.string().default("Generated at runtime"),
   updatedAt: z.string().default("Generated at runtime"),

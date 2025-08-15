@@ -17,10 +17,10 @@ import PageHeader from "@/components/page-header";
 import TaskModal from "@/components/tasks/task-modal";
 import TaskTable from "@/components/tasks/task-table";
 
-import { getProjectById, type ProjectTask } from "@/lib/api";
+import { getProjectsById, type ProjectTask } from "@/lib/api";
 import {
-	getProjectByIdQueryKey,
-	getProjectTaskOptions,
+	getProjectsByIdQueryKey,
+	getProjectTasksOptions,
 } from "@/lib/api/@tanstack/react-query.gen";
 import EditTaskModal from "@/components/tasks/edit-task-modal";
 
@@ -48,11 +48,11 @@ export default function ProjectOverviewPage() {
 		isLoading: isProjectLoading,
 		// isError: isProjectError,
 	} = useQuery({
-		queryKey: getProjectByIdQueryKey({ path: { id: projectId } }),
-		queryFn: () => getProjectById({ path: { id: projectId } }),
+		queryKey: getProjectsByIdQueryKey({ path: { id: projectId } }),
+		queryFn: () => getProjectsById({ path: { id: projectId } }),
 	});
 
-	const { data: tasks } = useQuery(getProjectTaskOptions());
+	const { data: tasks } = useQuery(getProjectTasksOptions());
 
   // Prefer local edits, then remote
   const allProjectTasks = useMemo(() => {
