@@ -41,11 +41,14 @@ import {
 } from "@/lib/api/@tanstack/react-query.gen";
 import { useTranslations } from "next-intl";
 import useTitle from "@/hooks/use-title";
+import ClientDetailDialog from "@/components/clients/client-detail-dialog";
 
 export default function ClientsPage() {
 	const t = useTranslations("app.pages.clients");
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+	const [clientDetail, setClientDetail] = useState<Client>();
 
 	useTitle(t("title"));
 
@@ -116,7 +119,6 @@ export default function ClientsPage() {
 									<TableHead>Company</TableHead>
 									<TableHead>Contact</TableHead>
 									<TableHead className="hidden md:table-cell">Email</TableHead>
-									<TableHead className="hidden md:table-cell">Phone</TableHead>
 									<TableHead className="w-[80px]"></TableHead>
 								</TableRow>
 							</TableHeader>
@@ -136,6 +138,7 @@ export default function ClientsPage() {
 											key={client.id}
 											client={client}
 											onDelete={handleDelete}
+											onDetail={() => setClientDetail(client)}
 										/>
 									))
 								)}
@@ -145,8 +148,8 @@ export default function ClientsPage() {
 				</CardContent>
 			</Card>
 
-			<Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-				<DialogContent>
+			<Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} >
+				<DialogContent className="min-w-[500px]">
 					<DialogHeader>
 						<DialogTitle>Create new client</DialogTitle>
 					</DialogHeader>
@@ -155,18 +158,15 @@ export default function ClientsPage() {
 						onCancel={() => setIsCreateDialogOpen(false)}
 						onSubmit={(e) => {
 							createClientMutation.mutate(
-								{
-									body: {
-										companyName: e.contactName,
-										contactName: e.contactName,
-									},
-								},
+								{ body: e },
 								{ onSuccess: () => setIsCreateDialogOpen(false) },
 							);
 						}}
 					/>
 				</DialogContent>
 			</Dialog>
+
+			<ClientDetailDialog client={clientDetail} onClose={() => setClientDetail(undefined)} />
 		</>
 	);
 }

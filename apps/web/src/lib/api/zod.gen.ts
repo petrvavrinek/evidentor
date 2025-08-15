@@ -2,6 +2,18 @@
 
 import { z } from "zod";
 
+export const zAddress = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  streetLine1: z.string().max(255),
+  streetLine2: z.union([z.string().max(255), z.null()]),
+  city: z.string().max(100),
+  state: z.union([z.string().max(100), z.null()]),
+  postalCode: z.union([z.string().max(20), z.null()]),
+  country: z.string().max(100),
+  createdAt: z.unknown(),
+  updatedAt: z.unknown(),
+});
+
 export const zClient = z
   .object({
     id: z.number().int().gte(-2147483648).lte(2147483647),

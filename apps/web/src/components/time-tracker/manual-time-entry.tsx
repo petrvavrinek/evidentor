@@ -119,11 +119,11 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-2">
 					<Label htmlFor="startTime">Start Time</Label>
-					<TimeInput value={startTime} onChange={setStartTime} name="startTime" defaultValue="08:00:00" />
+					<TimeInput value={startTime} onChange={setStartTime} name="startTime" />
 				</div>
 				<div className="space-y-2">
 					<Label htmlFor="endTime">End Time</Label>
-					<TimeInput value={endTime} onChange={setEndTime} name="endTime" defaultValue="16:00:00" />
+					<TimeInput value={endTime} onChange={setEndTime} name="endTime" />
 				</div>
 			</div>
 

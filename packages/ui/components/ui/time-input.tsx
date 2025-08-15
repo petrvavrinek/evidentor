@@ -21,8 +21,8 @@ export function TimeInput(props: TimeInputProps) {
     props.onChange?.(date);
   }
 
-  const valueStr = useMemo(() => props.value ? `${props.value.getHours()}:${props.value.getMinutes()}:${props.value.getSeconds()}` : undefined, [props.value]);
-  console.log(props.defaultValue);
+  const timeToValue = (t: number) => t.toString().padStart(2, '0');
+  const valueStr = useMemo(() => props.value ? `${timeToValue(props.value.getHours())}:${timeToValue(props.value.getMinutes())}:${timeToValue(props.value.getSeconds())}` : undefined, [props.value]);
 
   return (
     <Input

@@ -11,6 +11,7 @@ import ProjectTaskRouter from "./modules/project-tasks";
 import ProjectsRouter from "./modules/projects";
 import TimeEntryRouter from "./modules/time-entries";
 import CalendarRouter from "./modules/calendar";
+import { AddressResponse } from "./modules/addresses/addresses.schema";
 
 const logger = new LoggerService("main");
 
@@ -26,6 +27,7 @@ const app = new Elysia()
 	.onRequest((handler) => {
 		logger.info(`[${handler.request.method}] ${handler.request.url}`);
 	})
+	.model("Address", AddressResponse)
 	.use(AuthRouter)
 	.use(ClientsRouter)
 	.use(InvoicesRouter)
