@@ -15,7 +15,7 @@ export const TimeEntriesService = {
 	 * @returns Entry or null
 	 */
 	getActiveByUserId(userId: string) {
-		return db.query.timeEntry.findFirst({
+		return db.query.timeEntries.findFirst({
 			where: (entry, { and, eq, isNull }) =>
 				and(eq(entry.userId, userId), isNull(entry.endAt)),
 			with: {
@@ -35,7 +35,7 @@ export const TimeEntriesService = {
 	 * @returns Array of entries
 	 */
 	findByUserId(userId: string) {
-		return db.query.timeEntry.findMany({
+		return db.query.timeEntries.findMany({
 			where: (entry, { eq }) => eq(entry.userId, userId),
 			with: {
 				project: {
@@ -54,7 +54,7 @@ export const TimeEntriesService = {
 	 * @returns
 	 */
 	findById(userId: string, id: number) {
-		return db.query.timeEntry.findFirst({
+		return db.query.timeEntries.findFirst({
 			where: (entry, { and, eq }) =>
 				and(eq(entry.userId, userId), eq(entry.id, id)),
 			with: {

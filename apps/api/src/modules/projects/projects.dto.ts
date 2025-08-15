@@ -3,7 +3,7 @@ import { type Static, t } from "elysia";
 
 import { projects } from "@/db/schema";
 
-import { ClientResponseSchema } from "../clients/clients.schema";
+import { RawClientSelectSchema } from "../clients/clients.schema";
 
 const InsertProject = createInsertSchema(projects);
 
@@ -29,7 +29,7 @@ export const ProjectIdParam = t.Object({
  */
 const SelectProject = t.Object({
   ...createSelectSchema(projects).properties,
-  client: t.Nullable(ClientResponseSchema),
+  client: t.Nullable(RawClientSelectSchema),
 });
 
 /**

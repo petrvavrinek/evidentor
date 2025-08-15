@@ -66,7 +66,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	};
 
 	const handleCreate = () => {
-		if(!startTime || !endTime) return;
+		if (!startTime || !endTime) return;
 
 		const startAt = new Date(date);
 		startAt.setHours(startTime.getHours());
@@ -119,11 +119,11 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-2">
 					<Label htmlFor="startTime">Start Time</Label>
-					<TimeInput date={startTime} setDate={setStartTime} />
+					<TimeInput value={startTime} onChange={setStartTime} name="startTime" defaultValue="08:00:00" />
 				</div>
 				<div className="space-y-2">
 					<Label htmlFor="endTime">End Time</Label>
-					<TimeInput date={endTime} setDate={setEndTime} />
+					<TimeInput value={endTime} onChange={setEndTime} name="endTime" defaultValue="16:00:00" />
 				</div>
 			</div>
 

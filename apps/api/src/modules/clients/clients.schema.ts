@@ -46,7 +46,7 @@ export const ClientIdParamSchema = t.Object({
 });
 
 
-const RawClientSelectSchema = createSelectSchema(clients);
+export const RawClientSelectSchema = createSelectSchema(clients);
 const ClientBillingResponseSchema = createSelectSchema(clientsBilling);
 
 /**

@@ -1,64 +1,39 @@
-"use client";
+import { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, useMemo } from "react";
+import { Input } from "./input";
+import { cn } from "@/lib/utils";
 
-import React from "react";
-
-import { Label } from "./label";
-import { TimePickerInput } from "./time-picker";
-
-interface TimeInputProps {
-	date: Date | undefined;
-	setDate: (date: Date | undefined) => void;
-  labels?: {
-    hours?: string,
-    minutes?: string,
-    seconds?: string;
-  }
+type TimeInputProps = Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "value" | "type" | "onChange"> &
+{
+  value?: Date,
+  onChange?: (newDate: Date) => void;
 }
 
-export function TimeInput({ date, setDate, labels }: TimeInputProps) {
-  const minuteRef = React.useRef<HTMLInputElement>(null);
-  const hourRef = React.useRef<HTMLInputElement>(null);
-  const secondRef = React.useRef<HTMLInputElement>(null);
- 
-	return (
-    <div className="flex items-end gap-2">
-      <div className="grid gap-1 text-center">
-        <Label htmlFor="hours" className="text-xs">
-          {labels?.hours ?? "Hours"}
-        </Label>
-        <TimePickerInput
-          picker="hours"
-          date={date}
-          setDate={setDate}
-          ref={hourRef}
-          onRightFocus={() => minuteRef.current?.focus()}
-        />
-      </div>
-      <div className="grid gap-1 text-center">
-        <Label htmlFor="minutes" className="text-xs">
-          {labels?.minutes ?? "Minutes"}
-        </Label>
-        <TimePickerInput
-          picker="minutes"
-          date={date}
-          setDate={setDate}
-          ref={minuteRef}
-          onLeftFocus={() => hourRef.current?.focus()}
-          onRightFocus={() => secondRef.current?.focus()}
-        />
-      </div>
-      <div className="grid gap-1 text-center">
-        <Label htmlFor="seconds" className="text-xs">
-          {labels?.seconds ?? "Seconds"}
-        </Label>
-        <TimePickerInput
-          picker="seconds"
-          date={date}
-          setDate={setDate}
-          ref={secondRef}
-          onLeftFocus={() => minuteRef.current?.focus()}
-        />
-      </div>
-    </div>
-	);
+export function TimeInput(props: TimeInputProps) {
+  const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const [hours, minutes, seconds] = value.split(":");
+
+    const date = new Date();
+    date.setHours(Number.parseInt(hours));
+    date.setMinutes(Number.parseInt(minutes));
+    date.setSeconds(Number.parseInt(seconds));
+    date.setMilliseconds(0);
+    props.onChange?.(date);
+  }
+
+  const valueStr = useMemo(() => props.value ? `${props.value.getHours()}:${props.value.getMinutes()}:${props.value.getSeconds()}` : undefined, [props.value]);
+  console.log(props.defaultValue);
+
+  return (
+    <Input
+      type="time"
+      value={valueStr}
+      onChange={onValueChange}
+      name={props.name}
+      step={props.step ?? "1"}
+      defaultValue={props.defaultValue}
+      className={cn("bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none", props.className)}
+    />
+  )
+
 }
