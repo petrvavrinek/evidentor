@@ -11,37 +11,40 @@ import Link from "next/link";
 
 import LanguageSwitch from "@/components/language-switch";
 import { Button } from "@evidentor/ui/components/ui/button";
+import AppLogo from "@/components/app-logo";
+import { useTranslations } from "next-intl";
 
 export default function LandingPage() {
+	const t = useTranslations("landing");
+
 	return (
 		<body>
 			<div className="flex min-h-screen flex-col">
 				<header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 					<div className="container mx-auto flex h-16 items-center justify-between">
 						<div className="flex items-center gap-2">
-							<Clock className="h-6 w-6 text-primary" />
-
-							<span className="text-xl font-bold">Evidentor</span>
+							<AppLogo className="w-8 h-8" />
+							<span className="text-xl font-bold">{t("header.brandName")}</span>
 						</div>
 						<nav className="hidden md:flex items-center gap-6">
 							<Link
 								href="#features"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Features
+								{t("header.nav.features")}
 							</Link>
 							<Link
 								href="#benefits"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Benefits
+								{t("header.nav.benefits")}
 							</Link>
 						</nav>
 						<div className="flex items-center gap-4">
 							<Button variant="outline" size="sm" className="hidden md:flex">
-								<Link href="/auth">Log in</Link>
+								<Link href="/auth">{t("header.buttons.login")}</Link>
 							</Button>
-							<Button size="sm">Get Started</Button>
+							<Button size="sm">{t("header.buttons.getStarted")}</Button>
 						</div>
 					</div>
 				</header>
@@ -52,17 +55,16 @@ export default function LandingPage() {
 								<div className="flex flex-col justify-center space-y-4">
 									<div className="space-y-2">
 										<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-											Organize Your Work, Maximize Your Time
+											{t("hero.title")}
 										</h1>
 										<p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-											Evidentor is your completely free, all-in-one solution for
-											time tracking, project management, and client invoicing.
+											{t("hero.subtitle")}
 										</p>
 									</div>
 									<div className="flex flex-col gap-2 min-[400px]:flex-row">
 										<Button size="lg" className="px-8">
 											<Link href="/auth" className="flex items-center">
-												Start for free
+												{t("hero.cta")}
 												<ArrowRight className="ml-2 h-4 w-4" />
 											</Link>
 										</Button>
@@ -74,34 +76,38 @@ export default function LandingPage() {
 											<div className="grid grid-cols-2 gap-4 p-4">
 												<div className="rounded-lg bg-background p-4 shadow-sm">
 													<Clock className="h-8 w-8 text-primary mb-2" />
-													<h3 className="text-lg font-medium">Time Tracking</h3>
+													<h3 className="text-lg font-medium">
+														{t("hero.cards.timeTracking.title")}
+													</h3>
 													<p className="text-sm text-muted-foreground">
-														Track hours with precision
+														{t("hero.cards.timeTracking.description")}
 													</p>
 												</div>
 												<div className="rounded-lg bg-background p-4 shadow-sm">
 													<Users className="h-8 w-8 text-primary mb-2" />
 													<h3 className="text-lg font-medium">
-														Client Management
+														{t("hero.cards.clientManagement.title")}
 													</h3>
 													<p className="text-sm text-muted-foreground">
-														Organize client information
+														{t("hero.cards.clientManagement.description")}
 													</p>
 												</div>
 												<div className="rounded-lg bg-background p-4 shadow-sm">
 													<FileText className="h-8 w-8 text-primary mb-2" />
 													<h3 className="text-lg font-medium">
-														Project Tracking
+														{t("hero.cards.projectTracking.title")}
 													</h3>
 													<p className="text-sm text-muted-foreground">
-														Monitor project progress
+														{t("hero.cards.projectTracking.description")}
 													</p>
 												</div>
 												<div className="rounded-lg bg-background p-4 shadow-sm">
 													<CreditCard className="h-8 w-8 text-primary mb-2" />
-													<h3 className="text-lg font-medium">Invoicing</h3>
+													<h3 className="text-lg font-medium">
+														{t("hero.cards.invoicing.title")}
+													</h3>
 													<p className="text-sm text-muted-foreground">
-														Generate & send invoices
+														{t("hero.cards.invoicing.description")}
 													</p>
 												</div>
 											</div>
@@ -116,64 +122,69 @@ export default function LandingPage() {
 							<div className="flex flex-col items-center justify-center space-y-4 text-center">
 								<div className="space-y-2">
 									<div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-										Features
+										{t("features.badge")}
 									</div>
 									<h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-										Powerful Features, Completely Free
+										{t("features.title")}
 									</h2>
 									<p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-										Evidentor combines powerful tools to streamline your
-										workflow and boost productivity - all at no cost.
+										{t("features.subtitle")}
 									</p>
 								</div>
 							</div>
 							<div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-3 md:gap-12">
 								<div className="grid gap-1">
 									<Clock className="h-8 w-8 text-primary mb-2" />
-									<h3 className="text-xl font-bold">Time Tracking</h3>
+									<h3 className="text-xl font-bold">
+										{t("features.items.timeTracking.title")}
+									</h3>
 									<p className="text-sm text-muted-foreground">
-										Track time spent on tasks and projects with precision. Set
-										timers, add manual entries, and categorize your work.
+										{t("features.items.timeTracking.description")}
 									</p>
 								</div>
 								<div className="grid gap-1">
 									<Users className="h-8 w-8 text-primary mb-2" />
-									<h3 className="text-xl font-bold">Client Management</h3>
+									<h3 className="text-xl font-bold">
+										{t("features.items.clientManagement.title")}
+									</h3>
 									<p className="text-sm text-muted-foreground">
-										Store client information, track communication history, and
-										manage relationships all in one place.
+										{t("features.items.clientManagement.description")}
 									</p>
 								</div>
 								<div className="grid gap-1">
 									<Layers className="h-8 w-8 text-primary mb-2" />
-									<h3 className="text-xl font-bold">Project Organization</h3>
+									<h3 className="text-xl font-bold">
+										{t("features.items.projectOrganization.title")}
+									</h3>
 									<p className="text-sm text-muted-foreground">
-										Create projects, assign tasks, set deadlines, and monitor
-										progress with intuitive tools.
+										{t("features.items.projectOrganization.description")}
 									</p>
 								</div>
 								<div className="grid gap-1">
 									<CreditCard className="h-8 w-8 text-primary mb-2" />
-									<h3 className="text-xl font-bold">Smart Invoicing</h3>
+									<h3 className="text-xl font-bold">
+										{t("features.items.smartInvoicing.title")}
+									</h3>
 									<p className="text-sm text-muted-foreground">
-										Generate professional invoices based on tracked time and
-										project milestones. Send directly to clients.
+										{t("features.items.smartInvoicing.description")}
 									</p>
 								</div>
 								<div className="grid gap-1">
 									<BarChart3 className="h-8 w-8 text-primary mb-2" />
-									<h3 className="text-xl font-bold">Insightful Reports</h3>
+									<h3 className="text-xl font-bold">
+										{t("features.items.insightfulReports.title")}
+									</h3>
 									<p className="text-sm text-muted-foreground">
-										Gain valuable insights with detailed reports on
-										productivity, billable hours, and project profitability.
+										{t("features.items.insightfulReports.description")}
 									</p>
 								</div>
 								<div className="grid gap-1">
 									<Users className="h-8 w-8 text-primary mb-2" />
-									<h3 className="text-xl font-bold">Team Collaboration</h3>
+									<h3 className="text-xl font-bold">
+										{t("features.items.teamCollaboration.title")}
+									</h3>
 									<p className="text-sm text-muted-foreground">
-										Share projects and collaborate with team members. Perfect
-										for agencies and teams. (Coming Soon)
+										{t("features.items.teamCollaboration.description")}
 									</p>
 								</div>
 							</div>
@@ -184,14 +195,13 @@ export default function LandingPage() {
 							<div className="flex flex-col items-center justify-center space-y-4 text-center">
 								<div className="space-y-2">
 									<div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-										Benefits
+										{t("benefits.badge")}
 									</div>
 									<h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-										Why Choose Evidentor?
+										{t("benefits.title")}
 									</h2>
 									<p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-										Discover how Evidentor transforms your work management and
-										boosts productivity.
+										{t("benefits.subtitle")}
 									</p>
 								</div>
 							</div>
@@ -200,20 +210,22 @@ export default function LandingPage() {
 									<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
 										<Clock className="h-6 w-6" />
 									</div>
-									<h3 className="mt-4 text-xl font-bold">Save Time</h3>
+									<h3 className="mt-4 text-xl font-bold">
+										{t("benefits.items.saveTime.title")}
+									</h3>
 									<p className="mt-2 text-muted-foreground">
-										Automate repetitive tasks and streamline your workflow to
-										focus on what matters most.
+										{t("benefits.items.saveTime.description")}
 									</p>
 								</div>
 								<div className="rounded-xl border bg-card p-6 shadow-sm">
 									<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
 										<CreditCard className="h-6 w-6" />
 									</div>
-									<h3 className="mt-4 text-xl font-bold">Get Paid Faster</h3>
+									<h3 className="mt-4 text-xl font-bold">
+										{t("benefits.items.getPaidFaster.title")}
+									</h3>
 									<p className="mt-2 text-muted-foreground">
-										Create professional invoices in seconds and send them
-										directly to clients with payment options.
+										{t("benefits.items.getPaidFaster.description")}
 									</p>
 								</div>
 								<div className="rounded-xl border bg-card p-6 shadow-sm">
@@ -221,11 +233,10 @@ export default function LandingPage() {
 										<BarChart3 className="h-6 w-6" />
 									</div>
 									<h3 className="mt-4 text-xl font-bold">
-										Increase Productivity
+										{t("benefits.items.increaseProductivity.title")}
 									</h3>
 									<p className="mt-2 text-muted-foreground">
-										Track your time and identify areas for improvement to
-										maximize your efficiency.
+										{t("benefits.items.increaseProductivity.description")}
 									</p>
 								</div>
 								<div className="rounded-xl border bg-card p-6 shadow-sm">
@@ -233,11 +244,10 @@ export default function LandingPage() {
 										<Users className="h-6 w-6" />
 									</div>
 									<h3 className="mt-4 text-xl font-bold">
-										Improve Client Relations
+										{t("benefits.items.improveClientRelations.title")}
 									</h3>
 									<p className="mt-2 text-muted-foreground">
-										Maintain transparent communication and deliver projects on
-										time with organized client management.
+										{t("benefits.items.improveClientRelations.description")}
 									</p>
 								</div>
 								<div className="rounded-xl border bg-card p-6 shadow-sm">
@@ -245,21 +255,21 @@ export default function LandingPage() {
 										<Layers className="h-6 w-6" />
 									</div>
 									<h3 className="mt-4 text-xl font-bold">
-										Centralize Your Work
+										{t("benefits.items.centralizeWork.title")}
 									</h3>
 									<p className="mt-2 text-muted-foreground">
-										Keep all your projects, clients, and tasks in one place for
-										seamless organization.
+										{t("benefits.items.centralizeWork.description")}
 									</p>
 								</div>
 								<div className="rounded-xl border bg-card p-6 shadow-sm">
 									<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
 										<FileText className="h-6 w-6" />
 									</div>
-									<h3 className="mt-4 text-xl font-bold">Detailed Reporting</h3>
+									<h3 className="mt-4 text-xl font-bold">
+										{t("benefits.items.detailedReporting.title")}
+									</h3>
 									<p className="mt-2 text-muted-foreground">
-										Generate comprehensive reports to analyze your work patterns
-										and make informed decisions.
+										{t("benefits.items.detailedReporting.description")}
 									</p>
 								</div>
 							</div>
@@ -270,19 +280,18 @@ export default function LandingPage() {
 							<div className="flex flex-col items-center justify-center space-y-4 text-center">
 								<div className="space-y-2">
 									<h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-										Ready to Transform Your Workflow?
+										{t("cta.title")}
 									</h2>
 									<p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-										Join professionals who use Evidentor to manage their work -
-										completely free, forever.
+										{t("cta.subtitle")}
 									</p>
 								</div>
 								<div className="flex flex-col gap-2 min-[400px]:flex-row">
 									<Button size="lg" className="px-8">
-										<Link href="/auth">{"Get Started - It's Free!"}</Link>
+										<Link href="/auth">{t("cta.buttons.getStarted")}</Link>
 									</Button>
 									<Button size="lg" variant="outline">
-										Learn More
+										{t("cta.buttons.learnMore")}
 									</Button>
 								</div>
 							</div>
@@ -292,31 +301,31 @@ export default function LandingPage() {
 				<footer className="border-t bg-muted">
 					<div className="container mx-auto flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between md:py-12">
 						<div className="flex items-center gap-2">
-							<Layers className="h-6 w-6 text-primary" />
-							<span className="text-xl font-bold">Evidentor</span>
+							<AppLogo className="w-8 h-8"/>
+							<span className="text-xl font-bold">{t("footer.brandName")}</span>
 						</div>
 						<nav className="flex flex-wrap gap-4 md:gap-6">
 							<Link
 								href="#"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Terms
+								{t("footer.nav.terms")}
 							</Link>
 							<Link
 								href="#"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Privacy
+								{t("footer.nav.privacy")}
 							</Link>
 							<Link
 								href="#"
 								className="text-sm font-medium hover:underline underline-offset-4"
 							>
-								Contact
+								{t("footer.nav.contact")}
 							</Link>
 						</nav>
 						<div className="text-sm text-muted-foreground flex flex-col">
-							<p>© 2025 Evidentor. All rights reserved.</p>
+							<p>{t("footer.copyright")}</p>
 							<LanguageSwitch className="mt-2" />
 						</div>
 					</div>

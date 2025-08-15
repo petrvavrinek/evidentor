@@ -1,6 +1,5 @@
-import { Body, Head, Html, Link } from "@react-email/components";
+import { Body, Head, Html, Img, Link } from "@react-email/components";
 import { Tailwind } from "@react-email/tailwind";
-import { Clock } from "lucide-react";
 
 import config from "../tailwind.config.mjs";
 
@@ -16,8 +15,8 @@ export default function Layout({ children }: LayoutProps) {
 				<Body>
 					<div className="font-sans max-w-2xl mt-8 mx-auto bg-white">
 						<Link href="https://evidentor.cz" className="text-primary">
-							<div className="w-fit flex items-center mx-auto">
-								<Clock className="pr-2" />
+							<div className="w-fit flex items-center mx-auto gap-2">
+								<Img src="https://evidentor.cz/logo-black.svg" width={32} height={32}/>
 								<h2>Evidentor</h2>
 							</div>
 						</Link>

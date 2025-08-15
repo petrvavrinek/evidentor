@@ -3,6 +3,7 @@
 import {
 	SidebarInset,
 	SidebarProvider,
+	SidebarTrigger,
 } from "@evidentor/ui/components/ui/sidebar";
 import { Toaster } from "@evidentor/ui/components/ui/sonner";
 
@@ -40,7 +41,9 @@ export default function Providers({
 							<div className="p-2 h-full">
 								<div className="flex-1 p-4 md:p-6 md:ml-0">{children}</div>
 							</div>
+							<SidebarTrigger className="absolute left-2 bottom-2 size-8"  size={"lg"} />
 						</SidebarInset>
+						
 						<ActiveTimeEntryContainer />
 						<VersionTag />
 						<Toaster />

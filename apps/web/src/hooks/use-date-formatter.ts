@@ -1,6 +1,6 @@
 import { useLocale } from "next-intl"
 
-export const useDateFormatter = () => {
+export const useDateFormatter = (options?: Intl.DateTimeFormatOptions) => {
   const locale = useLocale();
-  return new Intl.DateTimeFormat(locale);
+  return new Intl.DateTimeFormat(locale, options);
 }
