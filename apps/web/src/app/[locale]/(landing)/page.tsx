@@ -11,6 +11,7 @@ import Link from "next/link";
 
 import LanguageSwitch from "@/components/language-switch";
 import { Button } from "@evidentor/ui/components/ui/button";
+import AppLogo from "@/components/app-logo";
 
 export default function LandingPage() {
 	return (
@@ -19,8 +20,7 @@ export default function LandingPage() {
 				<header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 					<div className="container mx-auto flex h-16 items-center justify-between">
 						<div className="flex items-center gap-2">
-							<Clock className="h-6 w-6 text-primary" />
-
+							<AppLogo className="w-8 h-8" />
 							<span className="text-xl font-bold">Evidentor</span>
 						</div>
 						<nav className="hidden md:flex items-center gap-6">
