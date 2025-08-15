@@ -23,6 +23,7 @@ import {
 } from "@evidentor/ui/components/ui/dialog";
 
 import type { Event } from "@/schemas/event.schema";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
 
 const dot = new Date();
 dot.setHours(dot.getHours() - 1);
@@ -50,6 +51,12 @@ const ev: Event[] = [
 
 export default function CalendarPage() {
 	const [currentDate, setCurrentDate] = useState(new Date());
+	const dateFormatter = useDateFormatter({
+		weekday: "long",
+		month: "long",
+		day: "numeric"
+	});
+
 
 	return (
 		<>
@@ -98,11 +105,7 @@ export default function CalendarPage() {
 					<Card>
 						<CardHeader>
 							<CardTitle className="text-lg">
-								{currentDate.toLocaleDateString("en-US", {
-									weekday: "long",
-									month: "long",
-									day: "numeric",
-								})}
+								{dateFormatter.format(currentDate)}
 							</CardTitle>
 						</CardHeader>
 						<CardContent>

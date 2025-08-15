@@ -2,7 +2,7 @@ import pages from "./pages";
 
 export default {
   sidebar: {
-    dashboard: "Dashboard",
+    dashboard: "Hlavní panel",
     clients: "Klienti",
     projects: "Projekty",
     timeTracker: "Sledování času",
