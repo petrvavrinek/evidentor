@@ -12,8 +12,8 @@ import { Textarea } from "@evidentor/ui/components/ui/textarea";
 import useActiveTimeEntry from "@/hooks/use-active-time-entry";
 import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
 import {
-	patchTimeEntryByIdMutation,
-	postTimeEntryMutation,
+	patchTimeEntriesByIdMutation,
+	postTimeEntriesMutation,
 } from "@/lib/api/@tanstack/react-query.gen";
 import { formatTime } from "@/lib/format-time";
 
@@ -35,14 +35,14 @@ export default function Stopwatch({ onStop }: StopwatchProps) {
 	const canStartTimer = useMemo(() => title.length > 0, [title]);
 
 	const createTimeEntry = useMutation({
-		...postTimeEntryMutation(),
+		...postTimeEntriesMutation(),
 		onSuccess: (data) => {
 			setActiveTimeEntry(data);
 		},
 	});
 
 	const updateTimeEntry = useMutation({
-		...patchTimeEntryByIdMutation(),
+		...patchTimeEntriesByIdMutation(),
 	});
 
 	useEffect(() => {

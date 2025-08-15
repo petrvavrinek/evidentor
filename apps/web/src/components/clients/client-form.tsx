@@ -15,21 +15,18 @@ import {
 } from "@evidentor/ui/components/ui/form";
 import { Input } from "@evidentor/ui/components/ui/input";
 import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@evidentor/ui/components/ui/collapsible";
+import AddressForm from "../address/address-form";
+import { zPostClientsData } from "@/lib/api/zod.gen";
 
-const FormSchema = z.object({
-	companyName: z.string(),
-	contactName: z.string(),
-	email: z.string().email().nullable(),
-	phone: z.string().nullable(),
-	address: z.string().nullable(),
-});
 
-type FormData = z.infer<typeof FormSchema>;
+const CreateClientSchema = zPostClientsData.shape.body;
+type CreateClient = z.infer<typeof CreateClientSchema>;
 
 interface ClientFormProps {
 	onCancel?: () => void;
-	onSubmit?: (client: FormData) => void;
-	client?: FormData;
+	onSubmit?: (client: CreateClient) => void;
+	client?: CreateClient;
 	loading?: boolean;
 }
 
@@ -39,12 +36,14 @@ export function ClientForm({
 	client,
 	loading,
 }: ClientFormProps) {
-	const form = useForm<FormData>({
-		resolver: zodResolver(FormSchema),
+	const form = useForm<CreateClient>({
+		resolver: zodResolver(CreateClientSchema),
 		defaultValues: client,
+		criteriaMode: "firstError",
+		shouldFocusError: true,
 	});
 
-	const onSubmitComponent = async (e: FormData) => {
+	const onSubmitComponent = async (e: CreateClient) => {
 		onSubmit?.(e);
 	};
 
@@ -52,95 +51,31 @@ export function ClientForm({
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmitComponent)}
-				className="space-y-4"
+				className="space-y-2"
 			>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div className="space-y-2">
-						<FormField
-							control={form.control}
-							name="companyName"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Company Name</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
-					<div className="space-y-2">
-						<FormField
-							control={form.control}
-							name="contactName"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Contact Name</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
-				</div>
+				<div className="grid grid-cols-1 md:grid-cols-2 space-x-2">
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<div className="space-y-2">
-						<FormField
-							control={form.control}
-							rules={{ required: false }}
-							name="email"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Email</FormLabel>
-									<FormControl>
-										<Input
-											{...field}
-											type="email"
-											value={field.value ?? ""}
-											required={false}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
-					<div className="space-y-2">
-						<FormField
-							control={form.control}
-							name="phone"
-							rules={{ required: false }}
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Phone</FormLabel>
-									<FormControl>
-										<Input
-											{...field}
-											value={field.value ?? ""}
-											required={false}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
-				</div>
-
-				<div className="space-y-2">
 					<FormField
 						control={form.control}
-						name="address"
-						rules={{ required: false }}
+						name="companyName"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Address</FormLabel>
+								<FormLabel>Company Name</FormLabel>
 								<FormControl>
-									<Input {...field} value={field.value ?? ""} />
+									<Input {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="contactName"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Contact Name</FormLabel>
+								<FormControl>
+									<Input {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -148,6 +83,38 @@ export function ClientForm({
 					/>
 				</div>
 
+				<FormField
+					control={form.control}
+					rules={{ required: false }}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<Input
+									{...field}
+									type="email"
+									value={field.value ?? ""}
+									required={false}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<div className="w-full">
+					<Collapsible>
+						<CollapsibleTrigger asChild>
+							<Button variant="ghost" size="icon" className="w-full">
+								Address
+							</Button>
+						</CollapsibleTrigger>
+						<CollapsibleContent className="my-2">
+							<AddressForm control={form.control} name="address" />
+						</CollapsibleContent>
+					</Collapsible>
+				</div>
 				<div className="flex justify-end gap-2 pt-4">
 					<Button type="button" variant="outline" onClick={onCancel}>
 						Cancel

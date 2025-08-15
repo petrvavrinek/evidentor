@@ -1,9 +1,9 @@
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { cn } from "@/lib/utils";
 import {
 	Alert,
 	AlertDescription,
@@ -21,6 +21,7 @@ import { Input } from "@evidentor/ui/components/ui/input";
 import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
 
 import { authClient } from "@/lib/auth-client";
+import { useTranslations } from "next-intl";
 
 interface RegisterFormProps {
 	className?: React.ComponentProps<"div">["className"];
@@ -36,6 +37,8 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export function SignUpForm({ className, children }: RegisterFormProps) {
+	const t = useTranslations("auth.forms.signup");
+
 	const [loading, setLoading] = useState(false);
 	// const [createdUser, setCreatedUser] = useState<User | undefined>();
 	const [errorMessage, setErrorMessage] = useState<string | undefined>();
@@ -79,7 +82,7 @@ export function SignUpForm({ className, children }: RegisterFormProps) {
 								name="fullName"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Full Name</FormLabel>
+										<FormLabel>{t("fullName")}</FormLabel>
 										<FormControl>
 											<Input {...field} />
 										</FormControl>
@@ -93,7 +96,7 @@ export function SignUpForm({ className, children }: RegisterFormProps) {
 								name="email"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Email</FormLabel>
+										<FormLabel>{t("email")}</FormLabel>
 										<FormControl>
 											<Input placeholder="email@example.com" {...field} />
 										</FormControl>
@@ -107,7 +110,7 @@ export function SignUpForm({ className, children }: RegisterFormProps) {
 								name="password"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Password</FormLabel>
+										<FormLabel>{t("password")}</FormLabel>
 										<FormControl>
 											<Input placeholder="..." {...field} type="password" />
 										</FormControl>
@@ -121,7 +124,7 @@ export function SignUpForm({ className, children }: RegisterFormProps) {
 								type="submit"
 								className="w-full"
 							>
-								Sign up with Email
+								{t("submit")}
 							</LoadableButton>
 						</div>
 					</div>

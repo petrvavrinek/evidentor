@@ -1,5 +1,5 @@
 import { ProjectSelect } from "@/components/project-select";
-import { postInvoice } from "@/lib/api/sdk.gen";
+import { postInvoices } from "@/lib/api/sdk.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Dialog,
@@ -66,7 +66,7 @@ export default function InvoiceCreateModal({
 		setLoading(true);
 		setError(null);
 		try {
-			await postInvoice({
+			await postInvoices({
 				body: {
 					projectId: values.projectId,
 					currency: values.currency,

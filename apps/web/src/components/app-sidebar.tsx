@@ -1,6 +1,5 @@
 "use client";
 
-import { Clock } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -28,11 +27,12 @@ import { TypographyH1 } from "@evidentor/ui/components/ui/typography";
 import config from "@/config/app";
 import {
 	appRoutes,
-	getVisibleRoutes,
 	type RouteItem,
 } from "@/config/app-routes";
 import { authClient } from "@/lib/auth-client";
 
+import { useTranslations } from "next-intl";
+import AppLogo from "./app-logo";
 import { NavUser } from "./nav-user";
 
 interface SidebarItemProps {
@@ -42,6 +42,8 @@ interface SidebarItemProps {
 }
 
 function SidebarItem(props: SidebarItemProps) {
+	const t = useTranslations("app.sidebar");
+
 	const { item } = props;
 
 	// Skip rendering hidden items
@@ -57,7 +59,7 @@ function SidebarItem(props: SidebarItemProps) {
 					onClick={props.onClick}
 				>
 					{item.icon && <item.icon />}
-					<span>{item.name}</span>
+					<span>{t(item.id)}</span>
 				</SidebarMenuButton>
 			</Link>
 		);
@@ -75,7 +77,7 @@ function SidebarItem(props: SidebarItemProps) {
 					<CollapsibleTrigger asChild>
 						<SidebarMenuButton>
 							{item.icon && <item.icon />}
-							<span>{item.name}</span>
+							<span>{t(item.id)}</span>
 						</SidebarMenuButton>
 					</CollapsibleTrigger>
 					<CollapsibleContent>
@@ -103,14 +105,10 @@ export function AppSidebar() {
 	const sidebar = useSidebar();
 	const session = authClient.useSession();
 	const user = session.data?.user;
-
 	const onItemClick = () => sidebar.setOpenMobile(false);
 
 	const isActive = (item: RouteItem) =>
 		"href" in item ? item.href === currentPathname : false;
-
-	// Get only visible routes for the sidebar
-	const visibleRoutes = getVisibleRoutes(appRoutes);
 
 	if (!user) return <></>;
 
@@ -118,7 +116,7 @@ export function AppSidebar() {
 		<Sidebar variant="sidebar">
 			<SidebarHeader>
 				<TypographyH1 className="my-4 flex justify-center items-center">
-					<Clock className="mr-2" size={32} />
+					<AppLogo className="mr-2 size-[48px] select-none" />
 					<span>{config.AppName}</span>
 				</TypographyH1>
 			</SidebarHeader>
@@ -128,7 +126,7 @@ export function AppSidebar() {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupContent className="flex flex-col gap-2">
-						{visibleRoutes.map((e) => (
+						{appRoutes.map((e) => (
 							<SidebarItem
 								isActive={isActive}
 								item={e}

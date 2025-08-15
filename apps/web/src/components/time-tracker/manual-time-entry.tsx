@@ -15,23 +15,33 @@ import {
 	PopoverTrigger,
 } from "@evidentor/ui/components/ui/popover";
 import { Textarea } from "@evidentor/ui/components/ui/textarea";
-import { type Time, TimeInput } from "../time-input";
+import { TimeInput } from "@evidentor/ui/components/ui/time-input";
 
 import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
-import { postTimeEntryMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { postTimeEntriesMutation } from "@/lib/api/@tanstack/react-query.gen";
 
 import ProjectTaskSelect from "./project-task-select";
+
 interface ManualTimeEntryProps {
 	onCreate?: (newTimeEntry: TimeEntry) => void;
 }
+
+const defaultStart = new Date();
+defaultStart.setHours(8);
+defaultStart.setMinutes(0);
+defaultStart.setSeconds(0);
+defaultStart.setMilliseconds(0);
+
+const defaultEnd = new Date(defaultStart);
+defaultEnd.setHours(16);
 
 export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	const [title, setTitle] = useState("");
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 	const [selectedTask, setSelectedTask] = useState<ProjectTask | undefined>();
 
-	const [startTime, setStartTime] = useState<Time>({ hours: 8, minutes: 0 });
-	const [endTime, setEndTime] = useState<Time>({ hours: 16, minutes: 0 });
+	const [startTime, setStartTime] = useState<Date | undefined>(defaultStart);
+	const [endTime, setEndTime] = useState<Date | undefined>(defaultEnd);
 
 	const today = new Date();
 	today.setSeconds(0, 0); // Reset seconds and milliseconds
@@ -41,27 +51,32 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	const canAddTimeEntry = useMemo(() => title.length > 0, [title]);
 
 	const createTimeEntry = useMutation({
-		...postTimeEntryMutation(),
+		...postTimeEntriesMutation(),
 		onSuccess: (data) => onCreate(data),
 	});
 
 	const onCreate = (newTimeEntry: TimeEntry) => {
 		props.onCreate?.(newTimeEntry);
 		setTitle("");
-		setStartTime({ hours: 8, minutes: 0 });
-		setEndTime({ hours: 16, minutes: 0 });
+
+		setStartTime(undefined);
+		setEndTime(undefined);
 		setSelectedProject(undefined);
 		setSelectedTask(undefined);
 	};
 
 	const handleCreate = () => {
+		if (!startTime || !endTime) return;
+
 		const startAt = new Date(date);
-		startAt.setHours(startTime.hours);
-		startAt.setMinutes(startTime.minutes);
+		startAt.setHours(startTime.getHours());
+		startAt.setMinutes(startTime.getMinutes());
+		startAt.setSeconds(startTime.getSeconds());
 
 		const endAt = new Date(date);
-		endAt.setHours(endTime.hours);
-		endAt.setMinutes(endTime.minutes);
+		endAt.setHours(endTime.getHours());
+		endAt.setMinutes(endTime.getMinutes());
+		endAt.setSeconds(endTime.getSeconds());
 
 		createTimeEntry.mutateAsync({
 			body: {
@@ -92,7 +107,7 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 						<Calendar
 							mode="single"
 							selected={date}
-							initialFocus
+							autoFocus
 							onSelect={(e) => {
 								if (e) setDate(e);
 							}}
@@ -104,11 +119,11 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 			<div className="grid grid-cols-2 gap-4">
 				<div className="space-y-2">
 					<Label htmlFor="startTime">Start Time</Label>
-					<TimeInput value={startTime} onChange={setStartTime} />
+					<TimeInput value={startTime} onChange={setStartTime} name="startTime" />
 				</div>
 				<div className="space-y-2">
 					<Label htmlFor="endTime">End Time</Label>
-					<TimeInput value={endTime} onChange={setEndTime} />
+					<TimeInput value={endTime} onChange={setEndTime} name="endTime" />
 				</div>
 			</div>
 

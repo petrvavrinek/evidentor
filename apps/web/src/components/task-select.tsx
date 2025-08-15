@@ -12,8 +12,8 @@ import {
 } from "@evidentor/ui/components/ui/select";
 import { Skeleton } from "@evidentor/ui/components/ui/skeleton";
 
-import { getProjectTask, Project, ProjectTask } from "@/lib/api";
-import { getProjectTaskQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getProjectTasks, Project, ProjectTask } from "@/lib/api";
+import { getProjectTasksQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 
 interface TaskSelectProps {
 	/**
@@ -48,8 +48,8 @@ interface TaskSelectProps {
  */
 export default function TaskSelect(props: TaskSelectProps) {
 	const { data: tasks, isLoading } = useQuery({
-		queryKey: getProjectTaskQueryKey({ query: { project: props.project?.id } }),
-		queryFn: () => getProjectTask({ query: { project: props.project?.id } }),
+		queryKey: getProjectTasksQueryKey({ query: { project: props.project?.id } }),
+		queryFn: () => getProjectTasks({ query: { project: props.project?.id } }),
 	});
 
 	const [selectedTaskIdx, setSelectedTaskIdx] = useState<number | undefined>(

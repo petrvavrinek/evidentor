@@ -2,195 +2,96 @@
 
 import { z } from "zod";
 
-export const zClient = z.object({
+export const zAddress = z.object({
   id: z.number().int().gte(-2147483648).lte(2147483647),
-  companyName: z.string(),
-  contactName: z.string(),
-  email: z.union([z.string(), z.null()]),
+  streetLine1: z.string().max(255),
+  streetLine2: z.union([z.string().max(255), z.null()]),
+  city: z.string().max(100),
+  state: z.union([z.string().max(100), z.null()]),
+  postalCode: z.union([z.string().max(20), z.null()]),
+  country: z.string().max(100),
   createdAt: z.unknown(),
+  updatedAt: z.unknown(),
 });
 
-export const zClient2 = z.array(
-  z.object({
+export const zClient = z
+  .object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
     companyName: z.string(),
     contactName: z.string(),
     email: z.union([z.string(), z.null()]),
-    createdAt: z.unknown(),
-  }),
-);
+  })
+  .and(
+    z.object({
+      address: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          streetLine1: z.string().max(255),
+          streetLine2: z.union([z.string().max(255), z.null()]),
+          city: z.string().max(100),
+          state: z.union([z.string().max(100), z.null()]),
+          postalCode: z.union([z.string().max(20), z.null()]),
+          country: z.string().max(100),
+          createdAt: z.unknown(),
+          updatedAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+      billing: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          clientId: z.number().int().gte(-2147483648).lte(2147483647),
+          accountNumber: z.string().max(255),
+          iban: z.union([z.string().max(34), z.null()]),
+          swiftCode: z.union([z.string().max(11), z.null()]),
+          variableSymbol: z.union([z.string().max(10), z.null()]),
+          createdAt: z.unknown(),
+          updatedAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+    }),
+  );
 
-export const zProject = z.object({
-  id: z.number().int().gte(-2147483648).lte(2147483647),
-  title: z.union([z.string(), z.null()]),
-  createdAt: z.unknown(),
-  client: z.union([
+export const zClient2 = z.array(
+  z.union([
     z.object({
       id: z.number().int().gte(-2147483648).lte(2147483647),
       companyName: z.string(),
       contactName: z.string(),
       email: z.union([z.string(), z.null()]),
-      createdAt: z.unknown(),
     }),
-    z.null(),
-  ]),
-});
-
-export const zProject2 = z.array(
-  z.object({
-    id: z.number().int().gte(-2147483648).lte(2147483647),
-    title: z.union([z.string(), z.null()]),
-    createdAt: z.unknown(),
-    client: z.union([
-      z.object({
-        id: z.number().int().gte(-2147483648).lte(2147483647),
-        companyName: z.string(),
-        contactName: z.string(),
-        email: z.union([z.string(), z.null()]),
-        createdAt: z.unknown(),
-      }),
-      z.null(),
-    ]),
-  }),
-);
-
-export const zProjectCount = z.object({
-  count: z.number(),
-});
-
-export const zTimeEntry = z.object({
-  id: z.number().int().gte(-2147483648).lte(2147483647),
-  title: z.union([z.string(), z.null()]),
-  startAt: z.union([z.unknown(), z.null()]),
-  endAt: z.union([z.unknown(), z.null()]),
-  createdAt: z.unknown(),
-  project: z.union([
     z.object({
-      id: z.number().int().gte(-2147483648).lte(2147483647),
-      title: z.union([z.string(), z.null()]),
-      createdAt: z.unknown(),
-      client: z.union([
+      address: z.union([
         z.object({
           id: z.number().int().gte(-2147483648).lte(2147483647),
-          companyName: z.string(),
-          contactName: z.string(),
-          email: z.union([z.string(), z.null()]),
+          streetLine1: z.string().max(255),
+          streetLine2: z.union([z.string().max(255), z.null()]),
+          city: z.string().max(100),
+          state: z.union([z.string().max(100), z.null()]),
+          postalCode: z.union([z.string().max(20), z.null()]),
+          country: z.string().max(100),
           createdAt: z.unknown(),
+          updatedAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+      billing: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          clientId: z.number().int().gte(-2147483648).lte(2147483647),
+          accountNumber: z.string().max(255),
+          iban: z.union([z.string().max(34), z.null()]),
+          swiftCode: z.union([z.string().max(11), z.null()]),
+          variableSymbol: z.union([z.string().max(10), z.null()]),
+          createdAt: z.unknown(),
+          updatedAt: z.unknown(),
         }),
         z.null(),
       ]),
     }),
-    z.null(),
   ]),
-  projectTask: z.union([
-    z.object({
-      id: z.number().int().gte(-2147483648).lte(2147483647),
-      title: z.string(),
-      description: z.union([z.string(), z.null()]),
-      createdAt: z.unknown(),
-    }),
-    z.null(),
-  ]),
-});
-
-export const zTimeEntry2 = z.array(
-  z.object({
-    id: z.number().int().gte(-2147483648).lte(2147483647),
-    title: z.union([z.string(), z.null()]),
-    startAt: z.union([z.unknown(), z.null()]),
-    endAt: z.union([z.unknown(), z.null()]),
-    createdAt: z.unknown(),
-    project: z.union([
-      z.object({
-        id: z.number().int().gte(-2147483648).lte(2147483647),
-        title: z.union([z.string(), z.null()]),
-        createdAt: z.unknown(),
-        client: z.union([
-          z.object({
-            id: z.number().int().gte(-2147483648).lte(2147483647),
-            companyName: z.string(),
-            contactName: z.string(),
-            email: z.union([z.string(), z.null()]),
-            createdAt: z.unknown(),
-          }),
-          z.null(),
-        ]),
-      }),
-      z.null(),
-    ]),
-    projectTask: z.union([
-      z.object({
-        id: z.number().int().gte(-2147483648).lte(2147483647),
-        title: z.string(),
-        description: z.union([z.string(), z.null()]),
-        createdAt: z.unknown(),
-      }),
-      z.null(),
-    ]),
-  }),
 );
-
-export const zTimeEntryDurationByDate = z.array(
-  z.object({
-    date: z.union([
-      z.unknown(),
-      z.string().datetime(),
-      z.string().date(),
-      z.number(),
-    ]),
-    duration: z.number(),
-  }),
-);
-
-export const zProjectTask = z.object({
-  id: z.number().int().gte(-2147483648).lte(2147483647),
-  title: z.string(),
-  description: z.union([z.string(), z.null()]),
-  createdAt: z.unknown(),
-  project: z.object({
-    id: z.number().int().gte(-2147483648).lte(2147483647),
-    title: z.union([z.string(), z.null()]),
-    createdAt: z.unknown(),
-    client: z.union([
-      z.object({
-        id: z.number().int().gte(-2147483648).lte(2147483647),
-        companyName: z.string(),
-        contactName: z.string(),
-        email: z.union([z.string(), z.null()]),
-        createdAt: z.unknown(),
-      }),
-      z.null(),
-    ]),
-  }),
-});
-
-export const zProjectTask2 = z.array(
-  z.object({
-    id: z.number().int().gte(-2147483648).lte(2147483647),
-    title: z.string(),
-    description: z.union([z.string(), z.null()]),
-    createdAt: z.unknown(),
-    project: z.object({
-      id: z.number().int().gte(-2147483648).lte(2147483647),
-      title: z.union([z.string(), z.null()]),
-      createdAt: z.unknown(),
-      client: z.union([
-        z.object({
-          id: z.number().int().gte(-2147483648).lte(2147483647),
-          companyName: z.string(),
-          contactName: z.string(),
-          email: z.union([z.string(), z.null()]),
-          createdAt: z.unknown(),
-        }),
-        z.null(),
-      ]),
-    }),
-  }),
-);
-
-export const zProjectTaskCount = z.object({
-  count: z.number(),
-});
 
 export const zInvoice = z.object({
   id: z.number().int().gte(-2147483648).lte(2147483647),
@@ -231,6 +132,10 @@ export const zInvoice = z.object({
       contactName: z.string(),
       email: z.union([z.string(), z.null()]),
       ownerId: z.union([z.string(), z.null()]),
+      addressId: z.union([
+        z.number().int().gte(-2147483648).lte(2147483647),
+        z.null(),
+      ]),
       createdAt: z.unknown(),
     }),
     z.null(),
@@ -303,6 +208,10 @@ export const zInvoice2 = z.array(
         contactName: z.string(),
         email: z.union([z.string(), z.null()]),
         ownerId: z.union([z.string(), z.null()]),
+        addressId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
         createdAt: z.unknown(),
       }),
       z.null(),
@@ -336,73 +245,386 @@ export const zInvoice2 = z.array(
   }),
 );
 
+export const zProjectTask = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  title: z.string(),
+  description: z.union([z.string(), z.null()]),
+  createdAt: z.unknown(),
+  project: z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+    client: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        companyName: z.string(),
+        contactName: z.string(),
+        email: z.union([z.string(), z.null()]),
+        ownerId: z.union([z.string(), z.null()]),
+        addressId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+  }),
+});
+
+export const zProjectTask2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.string(),
+    description: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+    project: z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+      client: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          companyName: z.string(),
+          contactName: z.string(),
+          email: z.union([z.string(), z.null()]),
+          ownerId: z.union([z.string(), z.null()]),
+          addressId: z.union([
+            z.number().int().gte(-2147483648).lte(2147483647),
+            z.null(),
+          ]),
+          createdAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+    }),
+  }),
+);
+
+export const zProjectTaskCount = z.object({
+  count: z.number(),
+});
+
+export const zProject = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  title: z.union([z.string(), z.null()]),
+  createdAt: z.unknown(),
+  client: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      companyName: z.string(),
+      contactName: z.string(),
+      email: z.union([z.string(), z.null()]),
+      ownerId: z.union([z.string(), z.null()]),
+      addressId: z.union([
+        z.number().int().gte(-2147483648).lte(2147483647),
+        z.null(),
+      ]),
+      createdAt: z.unknown(),
+    }),
+    z.null(),
+  ]),
+});
+
+export const zProject2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.union([z.string(), z.null()]),
+    createdAt: z.unknown(),
+    client: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        companyName: z.string(),
+        contactName: z.string(),
+        email: z.union([z.string(), z.null()]),
+        ownerId: z.union([z.string(), z.null()]),
+        addressId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+  }),
+);
+
+export const zProjectCount = z.object({
+  count: z.number(),
+});
+
+export const zTimeEntry = z.object({
+  id: z.number().int().gte(-2147483648).lte(2147483647),
+  title: z.union([z.string(), z.null()]),
+  startAt: z.union([z.unknown(), z.null()]),
+  endAt: z.union([z.unknown(), z.null()]),
+  createdAt: z.unknown(),
+  project: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+      client: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          companyName: z.string(),
+          contactName: z.string(),
+          email: z.union([z.string(), z.null()]),
+          ownerId: z.union([z.string(), z.null()]),
+          addressId: z.union([
+            z.number().int().gte(-2147483648).lte(2147483647),
+            z.null(),
+          ]),
+          createdAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+    }),
+    z.null(),
+  ]),
+  projectTask: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.string(),
+      description: z.union([z.string(), z.null()]),
+      createdAt: z.unknown(),
+    }),
+    z.null(),
+  ]),
+});
+
+export const zTimeEntry2 = z.array(
+  z.object({
+    id: z.number().int().gte(-2147483648).lte(2147483647),
+    title: z.union([z.string(), z.null()]),
+    startAt: z.union([z.unknown(), z.null()]),
+    endAt: z.union([z.unknown(), z.null()]),
+    createdAt: z.unknown(),
+    project: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        title: z.union([z.string(), z.null()]),
+        createdAt: z.unknown(),
+        client: z.union([
+          z.object({
+            id: z.number().int().gte(-2147483648).lte(2147483647),
+            companyName: z.string(),
+            contactName: z.string(),
+            email: z.union([z.string(), z.null()]),
+            ownerId: z.union([z.string(), z.null()]),
+            addressId: z.union([
+              z.number().int().gte(-2147483648).lte(2147483647),
+              z.null(),
+            ]),
+            createdAt: z.unknown(),
+          }),
+          z.null(),
+        ]),
+      }),
+      z.null(),
+    ]),
+    projectTask: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        title: z.string(),
+        description: z.union([z.string(), z.null()]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+  }),
+);
+
+export const zTimeEntryDurationByDate = z.array(
+  z.object({
+    date: z.union([
+      z.unknown(),
+      z.string().datetime(),
+      z.string().date(),
+      z.number(),
+    ]),
+    duration: z.number(),
+  }),
+);
+
 export const zUser = z.object({
   id: z.string().optional(),
-  name: z.string().optional(),
-  email: z.string().optional(),
-  emailVerified: z.boolean().optional(),
+  name: z.string(),
+  email: z.string(),
+  emailVerified: z.boolean(),
   image: z.string().optional(),
-  createdAt: z.unknown().optional(),
-  updatedAt: z.unknown().optional(),
+  createdAt: z.string().default("Generated at runtime"),
+  updatedAt: z.string().default("Generated at runtime"),
 });
 
 export const zSession = z.object({
   id: z.string().optional(),
-  expiresAt: z.unknown().optional(),
-  token: z.string().optional(),
-  createdAt: z.unknown().optional(),
-  updatedAt: z.unknown().optional(),
+  expiresAt: z.string(),
+  token: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
   ipAddress: z.string().optional(),
   userAgent: z.string().optional(),
-  userId: z.string().optional(),
+  userId: z.string(),
 });
 
 export const zAccount = z.object({
   id: z.string().optional(),
-  accountId: z.string().optional(),
-  providerId: z.string().optional(),
-  userId: z.string().optional(),
+  accountId: z.string(),
+  providerId: z.string(),
+  userId: z.string(),
   accessToken: z.string().optional(),
   refreshToken: z.string().optional(),
   idToken: z.string().optional(),
-  accessTokenExpiresAt: z.unknown().optional(),
-  refreshTokenExpiresAt: z.unknown().optional(),
+  accessTokenExpiresAt: z.string().optional(),
+  refreshTokenExpiresAt: z.string().optional(),
   scope: z.string().optional(),
   password: z.string().optional(),
-  createdAt: z.unknown().optional(),
-  updatedAt: z.unknown().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export const zVerification = z.object({
   id: z.string().optional(),
-  identifier: z.string().optional(),
-  value: z.string().optional(),
-  expiresAt: z.unknown().optional(),
-  createdAt: z.unknown().optional(),
-  updatedAt: z.unknown().optional(),
+  identifier: z.string(),
+  value: z.string(),
+  expiresAt: z.string(),
+  createdAt: z.string().optional().default("Generated at runtime"),
+  updatedAt: z.string().optional().default("Generated at runtime"),
 });
 
-export const zGetClientData = z.object({
+export const zGetClientsData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zGetClientResponse = zClient2;
+export const zGetClientsResponse = zClient2;
 
-export const zPostClientData = z.object({
+export const zPostClientsData = z.object({
+  body: z
+    .object({
+      companyName: z.string(),
+      contactName: z.string(),
+      email: z.union([z.string(), z.null()]).optional(),
+    })
+    .and(
+      z.object({
+        address: z
+          .object({
+            streetLine1: z.string().max(255),
+            streetLine2: z.union([z.string().max(255), z.null()]).optional(),
+            city: z.string().max(100),
+            state: z.union([z.string().max(100), z.null()]).optional(),
+            postalCode: z.union([z.string().max(20), z.null()]).optional(),
+            country: z.string().max(100),
+          })
+          .optional(),
+        billing: z
+          .object({
+            accountNumber: z.string().max(255),
+            iban: z.union([z.string().max(34), z.null()]).optional(),
+            swiftCode: z.union([z.string().max(11), z.null()]).optional(),
+            variableSymbol: z.union([z.string().max(10), z.null()]).optional(),
+          })
+          .optional(),
+      }),
+    ),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+export const zPostClientsResponse = zClient;
+
+export const zDeleteClientsByIdData = z.object({
+  body: z.never().optional(),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zGetClientsByIdData = z.object({
+  body: z.never().optional(),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zGetClientsByIdResponse = zClient;
+
+export const zPatchClientsByIdData = z.object({
+  body: z
+    .object({
+      companyName: z.string().optional(),
+      contactName: z.string().optional(),
+      email: z.union([z.string(), z.null()]).optional(),
+    })
+    .and(
+      z.object({
+        address: z
+          .object({
+            streetLine1: z.string().max(255),
+            streetLine2: z.union([z.string().max(255), z.null()]).optional(),
+            city: z.string().max(100),
+            state: z.union([z.string().max(100), z.null()]).optional(),
+            postalCode: z.union([z.string().max(20), z.null()]).optional(),
+            country: z.string().max(100),
+          })
+          .optional(),
+        billing: z
+          .object({
+            accountNumber: z.string().max(255),
+            iban: z.union([z.string().max(34), z.null()]).optional(),
+            swiftCode: z.union([z.string().max(11), z.null()]).optional(),
+            variableSymbol: z.union([z.string().max(10), z.null()]).optional(),
+          })
+          .optional(),
+      }),
+    ),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zPatchClientsByIdResponse = zClient;
+
+export const zGetInvoicesData = z.object({
+  body: z.never().optional(),
+  path: z.never().optional(),
+  query: z.never().optional(),
+});
+
+export const zGetInvoicesResponse = zInvoice2;
+
+export const zPostInvoicesData = z.object({
   body: z.object({
-    companyName: z.string(),
-    contactName: z.string(),
-    email: z.union([z.string(), z.null()]).optional(),
+    projectId: z.number(),
+    dueDate: z.union([
+      z.unknown(),
+      z.string().datetime(),
+      z.string().date(),
+      z.number(),
+    ]),
+    currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
+    items: z.array(
+      z.object({
+        name: z.string(),
+        qty: z.number(),
+        unitPrice: z.number(),
+        projectTaskId: z.number().optional(),
+      }),
+    ),
   }),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zPostClientResponse = zClient;
+export const zPostInvoicesResponse = zInvoice;
 
-export const zDeleteClientByIdData = z.object({
+export const zDeleteInvoicesByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
     id: z.number(),
@@ -410,7 +632,11 @@ export const zDeleteClientByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetClientByIdData = z.object({
+export const zDeleteInvoicesByIdResponse = z.object({
+  success: z.boolean(),
+});
+
+export const zGetInvoicesByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
     id: z.number(),
@@ -418,13 +644,60 @@ export const zGetClientByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetClientByIdResponse = zClient;
+export const zGetInvoicesByIdResponse = zInvoice;
 
-export const zPatchClientByIdData = z.object({
+export const zGetProjectTasksCountData = z.object({
+  body: z.never().optional(),
+  path: z.never().optional(),
+  query: z
+    .object({
+      project: z.number().optional(),
+      from: z
+        .union([
+          z.unknown(),
+          z.string().datetime(),
+          z.string().date(),
+          z.number(),
+        ])
+        .optional(),
+      to: z
+        .union([
+          z.unknown(),
+          z.string().datetime(),
+          z.string().date(),
+          z.number(),
+        ])
+        .optional(),
+    })
+    .optional(),
+});
+
+export const zGetProjectTasksCountResponse = zProjectTaskCount;
+
+export const zGetProjectTasksData = z.object({
+  body: z.never().optional(),
+  path: z.never().optional(),
+  query: z
+    .object({
+      project: z.number().optional(),
+    })
+    .optional(),
+});
+
+export const zGetProjectTasksResponse = zProjectTask2;
+
+export const zDeleteProjectTasksByIdData = z.object({
+  body: z.never().optional(),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zPatchProjectTasksByIdData = z.object({
   body: z.object({
-    companyName: z.string().optional(),
-    contactName: z.string().optional(),
-    email: z.union([z.string(), z.null()]).optional(),
+    title: z.string().optional(),
+    description: z.union([z.string(), z.null()]).optional(),
   }),
   path: z.object({
     id: z.number(),
@@ -432,9 +705,20 @@ export const zPatchClientByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zPatchClientByIdResponse = zClient;
+export const zPostProjectTasksByIdData = z.object({
+  body: z.object({
+    title: z.string(),
+    description: z.union([z.string(), z.null()]).optional(),
+  }),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
 
-export const zGetProjectCountData = z.object({
+export const zPostProjectTasksByIdResponse = zProjectTask;
+
+export const zGetProjectsCountData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z
@@ -460,17 +744,17 @@ export const zGetProjectCountData = z.object({
     .optional(),
 });
 
-export const zGetProjectCountResponse = zProjectCount;
+export const zGetProjectsCountResponse = zProjectCount;
 
-export const zGetProjectData = z.object({
+export const zGetProjectsData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zGetProjectResponse = zProject2;
+export const zGetProjectsResponse = zProject2;
 
-export const zPostProjectData = z.object({
+export const zPostProjectsData = z.object({
   body: z.object({
     clientId: z
       .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
@@ -481,9 +765,9 @@ export const zPostProjectData = z.object({
   query: z.never().optional(),
 });
 
-export const zPostProjectResponse = zProject;
+export const zPostProjectsResponse = zProject;
 
-export const zDeleteProjectByIdData = z.object({
+export const zDeleteProjectsByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
     id: z.number(),
@@ -491,7 +775,7 @@ export const zDeleteProjectByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetProjectByIdData = z.object({
+export const zGetProjectsByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
     id: z.number(),
@@ -499,9 +783,9 @@ export const zGetProjectByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetProjectByIdResponse = zProject;
+export const zGetProjectsByIdResponse = zProject;
 
-export const zPatchProjectByIdData = z.object({
+export const zPatchProjectsByIdData = z.object({
   body: z.object({
     clientId: z
       .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
@@ -514,15 +798,15 @@ export const zPatchProjectByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetTimeEntryActiveData = z.object({
+export const zGetTimeEntriesActiveData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zGetTimeEntryActiveResponse = zTimeEntry;
+export const zGetTimeEntriesActiveResponse = zTimeEntry;
 
-export const zDeleteTimeEntryByIdData = z.object({
+export const zDeleteTimeEntriesByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
     id: z.number().default(0),
@@ -530,7 +814,7 @@ export const zDeleteTimeEntryByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetTimeEntryByIdData = z.object({
+export const zGetTimeEntriesByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
     id: z.number().default(0),
@@ -538,9 +822,9 @@ export const zGetTimeEntryByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zGetTimeEntryByIdResponse = zTimeEntry;
+export const zGetTimeEntriesByIdResponse = zTimeEntry;
 
-export const zPatchTimeEntryByIdData = z.object({
+export const zPatchTimeEntriesByIdData = z.object({
   body: z.object({
     title: z.string().optional(),
     projectId: z.union([z.number(), z.null()]).optional(),
@@ -573,17 +857,17 @@ export const zPatchTimeEntryByIdData = z.object({
   query: z.never().optional(),
 });
 
-export const zPatchTimeEntryByIdResponse = zTimeEntry;
+export const zPatchTimeEntriesByIdResponse = zTimeEntry;
 
-export const zGetTimeEntryData = z.object({
+export const zGetTimeEntriesData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
 
-export const zGetTimeEntryResponse = zTimeEntry2;
+export const zGetTimeEntriesResponse = zTimeEntry2;
 
-export const zPostTimeEntryData = z.object({
+export const zPostTimeEntriesData = z.object({
   body: z.object({
     title: z.string(),
     projectId: z.union([z.number(), z.null()]),
@@ -610,9 +894,9 @@ export const zPostTimeEntryData = z.object({
   query: z.never().optional(),
 });
 
-export const zPostTimeEntryResponse = zTimeEntry;
+export const zPostTimeEntriesResponse = zTimeEntry;
 
-export const zGetTimeEntryAnalyzeDurationByDateData = z.object({
+export const zGetTimeEntriesAnalyzeDurationByDateData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z
@@ -638,135 +922,14 @@ export const zGetTimeEntryAnalyzeDurationByDateData = z.object({
     .optional(),
 });
 
-export const zGetTimeEntryAnalyzeDurationByDateResponse =
+export const zGetTimeEntriesAnalyzeDurationByDateResponse =
   zTimeEntryDurationByDate;
 
-export const zGetProjectTaskCountData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      project: z.number().optional(),
-      from: z
-        .union([
-          z.unknown(),
-          z.string().datetime(),
-          z.string().date(),
-          z.number(),
-        ])
-        .optional(),
-      to: z
-        .union([
-          z.unknown(),
-          z.string().datetime(),
-          z.string().date(),
-          z.number(),
-        ])
-        .optional(),
-    })
-    .optional(),
-});
-
-export const zGetProjectTaskCountResponse = zProjectTaskCount;
-
-export const zGetProjectTaskData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      project: z.number().optional(),
-    })
-    .optional(),
-});
-
-export const zGetProjectTaskResponse = zProjectTask2;
-
-export const zDeleteProjectTaskByIdData = z.object({
-  body: z.never().optional(),
-  path: z.object({
-    id: z.number(),
-  }),
-  query: z.never().optional(),
-});
-
-export const zPatchProjectTaskByIdData = z.object({
-  body: z.object({
-    title: z.string().optional(),
-    description: z.union([z.string(), z.null()]).optional(),
-  }),
-  path: z.object({
-    id: z.number(),
-  }),
-  query: z.never().optional(),
-});
-
-export const zPostProjectTaskByIdData = z.object({
-  body: z.object({
-    title: z.string(),
-    description: z.union([z.string(), z.null()]).optional(),
-  }),
-  path: z.object({
-    id: z.number(),
-  }),
-  query: z.never().optional(),
-});
-
-export const zPostProjectTaskByIdResponse = zProjectTask;
-
-export const zGetInvoiceData = z.object({
+export const zGetCalendarsData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
-
-export const zGetInvoiceResponse = zInvoice2;
-
-export const zPostInvoiceData = z.object({
-  body: z.object({
-    projectId: z.number(),
-    dueDate: z.union([
-      z.unknown(),
-      z.string().datetime(),
-      z.string().date(),
-      z.number(),
-    ]),
-    currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
-    items: z.array(
-      z.object({
-        name: z.string(),
-        qty: z.number(),
-        unitPrice: z.number(),
-        projectTaskId: z.number().optional(),
-      }),
-    ),
-  }),
-  path: z.never().optional(),
-  query: z.never().optional(),
-});
-
-export const zPostInvoiceResponse = zInvoice;
-
-export const zDeleteInvoiceByIdData = z.object({
-  body: z.never().optional(),
-  path: z.object({
-    id: z.number(),
-  }),
-  query: z.never().optional(),
-});
-
-export const zDeleteInvoiceByIdResponse = z.object({
-  success: z.boolean(),
-});
-
-export const zGetInvoiceByIdData = z.object({
-  body: z.never().optional(),
-  path: z.object({
-    id: z.number(),
-  }),
-  query: z.never().optional(),
-});
-
-export const zGetInvoiceByIdResponse = zInvoice;
 
 export const zGetStatusData = z.object({
   body: z.never().optional(),
@@ -837,7 +1000,9 @@ export const zPostAuthSignUpEmailData = z.object({
       name: z.string(),
       email: z.string(),
       password: z.string(),
+      image: z.string().optional(),
       callbackURL: z.string().optional(),
+      rememberMe: z.boolean().optional(),
     })
     .optional(),
   path: z.never().optional(),

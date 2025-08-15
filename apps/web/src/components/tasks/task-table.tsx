@@ -11,10 +11,11 @@ import type { ProjectTask } from "@/lib/api";
 import TaskTableRow from "./task-table-row";
 
 interface TaskTableProps {
-	tasks: ProjectTask[];
+  tasks: ProjectTask[];
+  onTaskUpdate?: (task: ProjectTask) => void;
 }
 
-export default function TaskTable({ tasks }: TaskTableProps) {
+export default function TaskTable({ tasks, onTaskUpdate }: TaskTableProps) {
 	return (
 		<div className="rounded-md border">
 			<Table>
@@ -27,9 +28,9 @@ export default function TaskTable({ tasks }: TaskTableProps) {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{tasks.map((e) => (
-						<TaskTableRow key={e.id} task={e} />
-					))}
+          {tasks.map((e) => (
+            <TaskTableRow key={e.id} task={e} onTaskUpdateShow={onTaskUpdate} />
+          ))}
 				</TableBody>
 			</Table>
 		</div>

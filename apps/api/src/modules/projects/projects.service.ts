@@ -1,14 +1,14 @@
 import { and, count, eq, gte, lte } from "drizzle-orm";
 import { db } from "../../database";
-import { project } from "../../db/schema";
+import { projects } from "../../db/schema";
 import type { ProjectQueryFilterType } from "./projects.dto";
 
-type Project = typeof project.$inferInsert;
+type Project = typeof projects.$inferInsert;
 
 export const ProjectsService = {
 	findManyByUserId(userId: string) {
-		return db.query.project.findMany({
-			where: eq(project.ownerId, userId),
+		return db.query.projects.findMany({
+			where: eq(projects.ownerId, userId),
 			with: {
 				client: true,
 			},
@@ -16,8 +16,8 @@ export const ProjectsService = {
 	},
 
 	findById(userId: string, id: number) {
-		return db.query.project.findFirst({
-			where: and(eq(project.ownerId, userId), eq(project.id, id)),
+		return db.query.projects.findFirst({
+			where: and(eq(projects.ownerId, userId), eq(projects.id, id)),
 			with: {
 				client: true,
 			},
@@ -26,7 +26,7 @@ export const ProjectsService = {
 
 	async create(userId: string, data: Project) {
 		const [createdProject] = await db
-			.insert(project)
+			.insert(projects)
 			.values({
 				...data,
 				ownerId: userId,
@@ -37,9 +37,9 @@ export const ProjectsService = {
 
 	async updateById(userId: string, id: number, data: Partial<Project>) {
 		const updatedProject = await db
-			.update(project)
+			.update(projects)
 			.set(data)
-			.where(and(eq(project.id, id), eq(project.ownerId, userId)))
+			.where(and(eq(projects.id, id), eq(projects.ownerId, userId)))
 			.returning();
 
 		return updatedProject[0] ?? null;
@@ -47,8 +47,8 @@ export const ProjectsService = {
 
 	deleteById(userId: string, id: number) {
 		return db
-			.delete(project)
-			.where(and(eq(project.id, id), eq(project.ownerId, userId)))
+			.delete(projects)
+			.where(and(eq(projects.id, id), eq(projects.ownerId, userId)))
 			.returning();
 	},
 
@@ -58,15 +58,15 @@ export const ProjectsService = {
 	): Promise<number> {
 		const filters = [];
 
-		if (filter?.client) filters.push(eq(project.clientId, filter.client));
-		if (filter?.from) filters.push(gte(project.createdAt, filter.from));
-		if (filter?.to) filters.push(lte(project.createdAt, filter.to));
+		if (filter?.client) filters.push(eq(projects.clientId, filter.client));
+		if (filter?.from) filters.push(gte(projects.createdAt, filter.from));
+		if (filter?.to) filters.push(lte(projects.createdAt, filter.to));
 
 		const query = db
 			.select({ count: count() })
-			.from(project)
+			.from(projects)
 			.$dynamic()
-			.where(and(eq(project.ownerId, userId), ...filters));
+			.where(and(eq(projects.ownerId, userId), ...filters));
 
 		const result = await query;
 		return result[0]?.count ?? 0;

@@ -2,33 +2,34 @@
 
 import {
   type Options,
-  getClient,
-  postClient,
-  deleteClientById,
-  getClientById,
-  patchClientById,
-  getProjectCount,
-  getProject,
-  postProject,
-  deleteProjectById,
-  getProjectById,
-  patchProjectById,
-  getTimeEntryActive,
-  deleteTimeEntryById,
-  getTimeEntryById,
-  patchTimeEntryById,
-  getTimeEntry,
-  postTimeEntry,
-  getTimeEntryAnalyzeDurationByDate,
-  getProjectTaskCount,
-  getProjectTask,
-  deleteProjectTaskById,
-  patchProjectTaskById,
-  postProjectTaskById,
-  getInvoice,
-  postInvoice,
-  deleteInvoiceById,
-  getInvoiceById,
+  getClients,
+  postClients,
+  deleteClientsById,
+  getClientsById,
+  patchClientsById,
+  getInvoices,
+  postInvoices,
+  deleteInvoicesById,
+  getInvoicesById,
+  getProjectTasksCount,
+  getProjectTasks,
+  deleteProjectTasksById,
+  patchProjectTasksById,
+  postProjectTasksById,
+  getProjectsCount,
+  getProjects,
+  postProjects,
+  deleteProjectsById,
+  getProjectsById,
+  patchProjectsById,
+  getTimeEntriesActive,
+  deleteTimeEntriesById,
+  getTimeEntriesById,
+  patchTimeEntriesById,
+  getTimeEntries,
+  postTimeEntries,
+  getTimeEntriesAnalyzeDurationByDate,
+  getCalendars,
   getStatus,
   socialSignIn,
   getAuthGetSession,
@@ -65,41 +66,42 @@ import {
   type DefaultError,
 } from "@tanstack/react-query";
 import type {
-  GetClientData,
-  PostClientData,
-  PostClientResponse,
-  DeleteClientByIdData,
-  GetClientByIdData,
-  PatchClientByIdData,
-  PatchClientByIdResponse,
-  GetProjectCountData,
-  GetProjectData,
-  PostProjectData,
-  PostProjectResponse,
-  DeleteProjectByIdData,
-  GetProjectByIdData,
-  PatchProjectByIdData,
-  GetTimeEntryActiveData,
-  DeleteTimeEntryByIdData,
-  GetTimeEntryByIdData,
-  PatchTimeEntryByIdData,
-  PatchTimeEntryByIdResponse,
-  GetTimeEntryData,
-  PostTimeEntryData,
-  PostTimeEntryResponse,
-  GetTimeEntryAnalyzeDurationByDateData,
-  GetProjectTaskCountData,
-  GetProjectTaskData,
-  DeleteProjectTaskByIdData,
-  PatchProjectTaskByIdData,
-  PostProjectTaskByIdData,
-  PostProjectTaskByIdResponse,
-  GetInvoiceData,
-  PostInvoiceData,
-  PostInvoiceResponse,
-  DeleteInvoiceByIdData,
-  DeleteInvoiceByIdResponse,
-  GetInvoiceByIdData,
+  GetClientsData,
+  PostClientsData,
+  PostClientsResponse,
+  DeleteClientsByIdData,
+  GetClientsByIdData,
+  PatchClientsByIdData,
+  PatchClientsByIdResponse,
+  GetInvoicesData,
+  PostInvoicesData,
+  PostInvoicesResponse,
+  DeleteInvoicesByIdData,
+  DeleteInvoicesByIdResponse,
+  GetInvoicesByIdData,
+  GetProjectTasksCountData,
+  GetProjectTasksData,
+  DeleteProjectTasksByIdData,
+  PatchProjectTasksByIdData,
+  PostProjectTasksByIdData,
+  PostProjectTasksByIdResponse,
+  GetProjectsCountData,
+  GetProjectsData,
+  PostProjectsData,
+  PostProjectsResponse,
+  DeleteProjectsByIdData,
+  GetProjectsByIdData,
+  PatchProjectsByIdData,
+  GetTimeEntriesActiveData,
+  DeleteTimeEntriesByIdData,
+  GetTimeEntriesByIdData,
+  PatchTimeEntriesByIdData,
+  PatchTimeEntriesByIdResponse,
+  GetTimeEntriesData,
+  PostTimeEntriesData,
+  PostTimeEntriesResponse,
+  GetTimeEntriesAnalyzeDurationByDateData,
+  GetCalendarsData,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
@@ -206,16 +208,16 @@ const createQueryKey = <TOptions extends Options>(
   return [params];
 };
 
-export const getClientQueryKey = (options?: Options<GetClientData>) =>
-  createQueryKey("getClient", options);
+export const getClientsQueryKey = (options?: Options<GetClientsData>) =>
+  createQueryKey("getClients", options);
 
 /**
  * Get all user-defined clients
  */
-export const getClientOptions = (options?: Options<GetClientData>) => {
+export const getClientsOptions = (options?: Options<GetClientsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getClient({
+      const { data } = await getClients({
         ...options,
         ...queryKey[0],
         signal,
@@ -223,20 +225,20 @@ export const getClientOptions = (options?: Options<GetClientData>) => {
       });
       return data;
     },
-    queryKey: getClientQueryKey(options),
+    queryKey: getClientsQueryKey(options),
   });
 };
 
-export const postClientQueryKey = (options: Options<PostClientData>) =>
-  createQueryKey("postClient", options);
+export const postClientsQueryKey = (options: Options<PostClientsData>) =>
+  createQueryKey("postClients", options);
 
 /**
- * Create new user-defined client
+ * Create new client
  */
-export const postClientOptions = (options: Options<PostClientData>) => {
+export const postClientsOptions = (options: Options<PostClientsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postClient({
+      const { data } = await postClients({
         ...options,
         ...queryKey[0],
         signal,
@@ -244,27 +246,27 @@ export const postClientOptions = (options: Options<PostClientData>) => {
       });
       return data;
     },
-    queryKey: postClientQueryKey(options),
+    queryKey: postClientsQueryKey(options),
   });
 };
 
 /**
- * Create new user-defined client
+ * Create new client
  */
-export const postClientMutation = (
-  options?: Partial<Options<PostClientData>>,
+export const postClientsMutation = (
+  options?: Partial<Options<PostClientsData>>,
 ): UseMutationOptions<
-  PostClientResponse,
+  PostClientsResponse,
   DefaultError,
-  Options<PostClientData>
+  Options<PostClientsData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostClientResponse,
+    PostClientsResponse,
     DefaultError,
-    Options<PostClientData>
+    Options<PostClientsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postClient({
+      const { data } = await postClients({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -278,16 +280,20 @@ export const postClientMutation = (
 /**
  * Delete user-defined client, all projects containing this client will be unset
  */
-export const deleteClientByIdMutation = (
-  options?: Partial<Options<DeleteClientByIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteClientByIdData>> => {
+export const deleteClientsByIdMutation = (
+  options?: Partial<Options<DeleteClientsByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteClientsByIdData>
+> => {
   const mutationOptions: UseMutationOptions<
     unknown,
     DefaultError,
-    Options<DeleteClientByIdData>
+    Options<DeleteClientsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteClientById({
+      const { data } = await deleteClientsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -298,16 +304,16 @@ export const deleteClientByIdMutation = (
   return mutationOptions;
 };
 
-export const getClientByIdQueryKey = (options: Options<GetClientByIdData>) =>
-  createQueryKey("getClientById", options);
+export const getClientsByIdQueryKey = (options: Options<GetClientsByIdData>) =>
+  createQueryKey("getClientsById", options);
 
 /**
  * Get user-defined client by ID
  */
-export const getClientByIdOptions = (options: Options<GetClientByIdData>) => {
+export const getClientsByIdOptions = (options: Options<GetClientsByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getClientById({
+      const { data } = await getClientsById({
         ...options,
         ...queryKey[0],
         signal,
@@ -315,27 +321,27 @@ export const getClientByIdOptions = (options: Options<GetClientByIdData>) => {
       });
       return data;
     },
-    queryKey: getClientByIdQueryKey(options),
+    queryKey: getClientsByIdQueryKey(options),
   });
 };
 
 /**
  * Update user-defined client data
  */
-export const patchClientByIdMutation = (
-  options?: Partial<Options<PatchClientByIdData>>,
+export const patchClientsByIdMutation = (
+  options?: Partial<Options<PatchClientsByIdData>>,
 ): UseMutationOptions<
-  PatchClientByIdResponse,
+  PatchClientsByIdResponse,
   DefaultError,
-  Options<PatchClientByIdData>
+  Options<PatchClientsByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PatchClientByIdResponse,
+    PatchClientsByIdResponse,
     DefaultError,
-    Options<PatchClientByIdData>
+    Options<PatchClientsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchClientById({
+      const { data } = await patchClientsById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -346,509 +352,16 @@ export const patchClientByIdMutation = (
   return mutationOptions;
 };
 
-export const getProjectCountQueryKey = (
-  options?: Options<GetProjectCountData>,
-) => createQueryKey("getProjectCount", options);
-
-export const getProjectCountOptions = (
-  options?: Options<GetProjectCountData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectCount({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getProjectCountQueryKey(options),
-  });
-};
-
-export const getProjectQueryKey = (options?: Options<GetProjectData>) =>
-  createQueryKey("getProject", options);
-
-/**
- * Get all user projects
- */
-export const getProjectOptions = (options?: Options<GetProjectData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProject({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getProjectQueryKey(options),
-  });
-};
-
-export const postProjectQueryKey = (options: Options<PostProjectData>) =>
-  createQueryKey("postProject", options);
-
-/**
- * Create new user project
- */
-export const postProjectOptions = (options: Options<PostProjectData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postProject({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: postProjectQueryKey(options),
-  });
-};
-
-/**
- * Create new user project
- */
-export const postProjectMutation = (
-  options?: Partial<Options<PostProjectData>>,
-): UseMutationOptions<
-  PostProjectResponse,
-  DefaultError,
-  Options<PostProjectData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    PostProjectResponse,
-    DefaultError,
-    Options<PostProjectData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await postProject({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-/**
- * Delete user project, all time entries will be removed
- */
-export const deleteProjectByIdMutation = (
-  options?: Partial<Options<DeleteProjectByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<DeleteProjectByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    DefaultError,
-    Options<DeleteProjectByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await deleteProjectById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getProjectByIdQueryKey = (options: Options<GetProjectByIdData>) =>
-  createQueryKey("getProjectById", options);
-
-/**
- * Get user project by ID
- */
-export const getProjectByIdOptions = (options: Options<GetProjectByIdData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectById({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getProjectByIdQueryKey(options),
-  });
-};
-
-/**
- * Update user project data
- */
-export const patchProjectByIdMutation = (
-  options?: Partial<Options<PatchProjectByIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchProjectByIdData>> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    DefaultError,
-    Options<PatchProjectByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await patchProjectById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getTimeEntryActiveQueryKey = (
-  options?: Options<GetTimeEntryActiveData>,
-) => createQueryKey("getTimeEntryActive", options);
-
-/**
- * Get active time entry
- */
-export const getTimeEntryActiveOptions = (
-  options?: Options<GetTimeEntryActiveData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntryActive({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getTimeEntryActiveQueryKey(options),
-  });
-};
-
-/**
- * Delete time entry
- */
-export const deleteTimeEntryByIdMutation = (
-  options?: Partial<Options<DeleteTimeEntryByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<DeleteTimeEntryByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    DefaultError,
-    Options<DeleteTimeEntryByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await deleteTimeEntryById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getTimeEntryByIdQueryKey = (
-  options: Options<GetTimeEntryByIdData>,
-) => createQueryKey("getTimeEntryById", options);
-
-/**
- * Return time entry by ID
- */
-export const getTimeEntryByIdOptions = (
-  options: Options<GetTimeEntryByIdData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntryById({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getTimeEntryByIdQueryKey(options),
-  });
-};
-
-/**
- * Update existing time entry
- */
-export const patchTimeEntryByIdMutation = (
-  options?: Partial<Options<PatchTimeEntryByIdData>>,
-): UseMutationOptions<
-  PatchTimeEntryByIdResponse,
-  DefaultError,
-  Options<PatchTimeEntryByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    PatchTimeEntryByIdResponse,
-    DefaultError,
-    Options<PatchTimeEntryByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await patchTimeEntryById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getTimeEntryQueryKey = (options?: Options<GetTimeEntryData>) =>
-  createQueryKey("getTimeEntry", options);
-
-export const getTimeEntryOptions = (options?: Options<GetTimeEntryData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntry({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getTimeEntryQueryKey(options),
-  });
-};
-
-export const postTimeEntryQueryKey = (options: Options<PostTimeEntryData>) =>
-  createQueryKey("postTimeEntry", options);
-
-/**
- * Create new time entry
- */
-export const postTimeEntryOptions = (options: Options<PostTimeEntryData>) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postTimeEntry({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: postTimeEntryQueryKey(options),
-  });
-};
-
-/**
- * Create new time entry
- */
-export const postTimeEntryMutation = (
-  options?: Partial<Options<PostTimeEntryData>>,
-): UseMutationOptions<
-  PostTimeEntryResponse,
-  DefaultError,
-  Options<PostTimeEntryData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    PostTimeEntryResponse,
-    DefaultError,
-    Options<PostTimeEntryData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await postTimeEntry({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getTimeEntryAnalyzeDurationByDateQueryKey = (
-  options?: Options<GetTimeEntryAnalyzeDurationByDateData>,
-) => createQueryKey("getTimeEntryAnalyzeDurationByDate", options);
-
-export const getTimeEntryAnalyzeDurationByDateOptions = (
-  options?: Options<GetTimeEntryAnalyzeDurationByDateData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntryAnalyzeDurationByDate({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getTimeEntryAnalyzeDurationByDateQueryKey(options),
-  });
-};
-
-export const getProjectTaskCountQueryKey = (
-  options?: Options<GetProjectTaskCountData>,
-) => createQueryKey("getProjectTaskCount", options);
-
-export const getProjectTaskCountOptions = (
-  options?: Options<GetProjectTaskCountData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectTaskCount({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getProjectTaskCountQueryKey(options),
-  });
-};
-
-export const getProjectTaskQueryKey = (options?: Options<GetProjectTaskData>) =>
-  createQueryKey("getProjectTask", options);
-
-export const getProjectTaskOptions = (
-  options?: Options<GetProjectTaskData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectTask({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: getProjectTaskQueryKey(options),
-  });
-};
-
-/**
- * Delete project task by ID
- */
-export const deleteProjectTaskByIdMutation = (
-  options?: Partial<Options<DeleteProjectTaskByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<DeleteProjectTaskByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    DefaultError,
-    Options<DeleteProjectTaskByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await deleteProjectTaskById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const patchProjectTaskByIdMutation = (
-  options?: Partial<Options<PatchProjectTaskByIdData>>,
-): UseMutationOptions<
-  unknown,
-  DefaultError,
-  Options<PatchProjectTaskByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    unknown,
-    DefaultError,
-    Options<PatchProjectTaskByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await patchProjectTaskById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const postProjectTaskByIdQueryKey = (
-  options: Options<PostProjectTaskByIdData>,
-) => createQueryKey("postProjectTaskById", options);
-
-/**
- * Create new project task
- */
-export const postProjectTaskByIdOptions = (
-  options: Options<PostProjectTaskByIdData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postProjectTaskById({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: postProjectTaskByIdQueryKey(options),
-  });
-};
-
-/**
- * Create new project task
- */
-export const postProjectTaskByIdMutation = (
-  options?: Partial<Options<PostProjectTaskByIdData>>,
-): UseMutationOptions<
-  PostProjectTaskByIdResponse,
-  DefaultError,
-  Options<PostProjectTaskByIdData>
-> => {
-  const mutationOptions: UseMutationOptions<
-    PostProjectTaskByIdResponse,
-    DefaultError,
-    Options<PostProjectTaskByIdData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await postProjectTaskById({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
-};
-
-export const getInvoiceQueryKey = (options?: Options<GetInvoiceData>) =>
-  createQueryKey("getInvoice", options);
+export const getInvoicesQueryKey = (options?: Options<GetInvoicesData>) =>
+  createQueryKey("getInvoices", options);
 
 /**
  * Get all user invoices
  */
-export const getInvoiceOptions = (options?: Options<GetInvoiceData>) => {
+export const getInvoicesOptions = (options?: Options<GetInvoicesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getInvoice({
+      const { data } = await getInvoices({
         ...options,
         ...queryKey[0],
         signal,
@@ -856,20 +369,20 @@ export const getInvoiceOptions = (options?: Options<GetInvoiceData>) => {
       });
       return data;
     },
-    queryKey: getInvoiceQueryKey(options),
+    queryKey: getInvoicesQueryKey(options),
   });
 };
 
-export const postInvoiceQueryKey = (options: Options<PostInvoiceData>) =>
-  createQueryKey("postInvoice", options);
+export const postInvoicesQueryKey = (options: Options<PostInvoicesData>) =>
+  createQueryKey("postInvoices", options);
 
 /**
  * Create invoice
  */
-export const postInvoiceOptions = (options: Options<PostInvoiceData>) => {
+export const postInvoicesOptions = (options: Options<PostInvoicesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postInvoice({
+      const { data } = await postInvoices({
         ...options,
         ...queryKey[0],
         signal,
@@ -877,27 +390,27 @@ export const postInvoiceOptions = (options: Options<PostInvoiceData>) => {
       });
       return data;
     },
-    queryKey: postInvoiceQueryKey(options),
+    queryKey: postInvoicesQueryKey(options),
   });
 };
 
 /**
  * Create invoice
  */
-export const postInvoiceMutation = (
-  options?: Partial<Options<PostInvoiceData>>,
+export const postInvoicesMutation = (
+  options?: Partial<Options<PostInvoicesData>>,
 ): UseMutationOptions<
-  PostInvoiceResponse,
+  PostInvoicesResponse,
   DefaultError,
-  Options<PostInvoiceData>
+  Options<PostInvoicesData>
 > => {
   const mutationOptions: UseMutationOptions<
-    PostInvoiceResponse,
+    PostInvoicesResponse,
     DefaultError,
-    Options<PostInvoiceData>
+    Options<PostInvoicesData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postInvoice({
+      const { data } = await postInvoices({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -911,20 +424,20 @@ export const postInvoiceMutation = (
 /**
  * Delete invoice
  */
-export const deleteInvoiceByIdMutation = (
-  options?: Partial<Options<DeleteInvoiceByIdData>>,
+export const deleteInvoicesByIdMutation = (
+  options?: Partial<Options<DeleteInvoicesByIdData>>,
 ): UseMutationOptions<
-  DeleteInvoiceByIdResponse,
+  DeleteInvoicesByIdResponse,
   DefaultError,
-  Options<DeleteInvoiceByIdData>
+  Options<DeleteInvoicesByIdData>
 > => {
   const mutationOptions: UseMutationOptions<
-    DeleteInvoiceByIdResponse,
+    DeleteInvoicesByIdResponse,
     DefaultError,
-    Options<DeleteInvoiceByIdData>
+    Options<DeleteInvoicesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteInvoiceById({
+      const { data } = await deleteInvoicesById({
         ...options,
         ...localOptions,
         throwOnError: true,
@@ -935,16 +448,19 @@ export const deleteInvoiceByIdMutation = (
   return mutationOptions;
 };
 
-export const getInvoiceByIdQueryKey = (options: Options<GetInvoiceByIdData>) =>
-  createQueryKey("getInvoiceById", options);
+export const getInvoicesByIdQueryKey = (
+  options: Options<GetInvoicesByIdData>,
+) => createQueryKey("getInvoicesById", options);
 
 /**
  * Get invoice by id
  */
-export const getInvoiceByIdOptions = (options: Options<GetInvoiceByIdData>) => {
+export const getInvoicesByIdOptions = (
+  options: Options<GetInvoicesByIdData>,
+) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getInvoiceById({
+      const { data } = await getInvoicesById({
         ...options,
         ...queryKey[0],
         signal,
@@ -952,7 +468,531 @@ export const getInvoiceByIdOptions = (options: Options<GetInvoiceByIdData>) => {
       });
       return data;
     },
-    queryKey: getInvoiceByIdQueryKey(options),
+    queryKey: getInvoicesByIdQueryKey(options),
+  });
+};
+
+export const getProjectTasksCountQueryKey = (
+  options?: Options<GetProjectTasksCountData>,
+) => createQueryKey("getProjectTasksCount", options);
+
+export const getProjectTasksCountOptions = (
+  options?: Options<GetProjectTasksCountData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectTasksCount({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectTasksCountQueryKey(options),
+  });
+};
+
+export const getProjectTasksQueryKey = (
+  options?: Options<GetProjectTasksData>,
+) => createQueryKey("getProjectTasks", options);
+
+export const getProjectTasksOptions = (
+  options?: Options<GetProjectTasksData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectTasks({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectTasksQueryKey(options),
+  });
+};
+
+/**
+ * Delete project task by ID
+ */
+export const deleteProjectTasksByIdMutation = (
+  options?: Partial<Options<DeleteProjectTasksByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteProjectTasksByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<DeleteProjectTasksByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteProjectTasksById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const patchProjectTasksByIdMutation = (
+  options?: Partial<Options<PatchProjectTasksByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<PatchProjectTasksByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<PatchProjectTasksByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchProjectTasksById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const postProjectTasksByIdQueryKey = (
+  options: Options<PostProjectTasksByIdData>,
+) => createQueryKey("postProjectTasksById", options);
+
+/**
+ * Create new project task
+ */
+export const postProjectTasksByIdOptions = (
+  options: Options<PostProjectTasksByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postProjectTasksById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postProjectTasksByIdQueryKey(options),
+  });
+};
+
+/**
+ * Create new project task
+ */
+export const postProjectTasksByIdMutation = (
+  options?: Partial<Options<PostProjectTasksByIdData>>,
+): UseMutationOptions<
+  PostProjectTasksByIdResponse,
+  DefaultError,
+  Options<PostProjectTasksByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostProjectTasksByIdResponse,
+    DefaultError,
+    Options<PostProjectTasksByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postProjectTasksById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getProjectsCountQueryKey = (
+  options?: Options<GetProjectsCountData>,
+) => createQueryKey("getProjectsCount", options);
+
+export const getProjectsCountOptions = (
+  options?: Options<GetProjectsCountData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectsCount({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectsCountQueryKey(options),
+  });
+};
+
+export const getProjectsQueryKey = (options?: Options<GetProjectsData>) =>
+  createQueryKey("getProjects", options);
+
+/**
+ * Get all user projects
+ */
+export const getProjectsOptions = (options?: Options<GetProjectsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjects({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectsQueryKey(options),
+  });
+};
+
+export const postProjectsQueryKey = (options: Options<PostProjectsData>) =>
+  createQueryKey("postProjects", options);
+
+/**
+ * Create new user project
+ */
+export const postProjectsOptions = (options: Options<PostProjectsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postProjects({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postProjectsQueryKey(options),
+  });
+};
+
+/**
+ * Create new user project
+ */
+export const postProjectsMutation = (
+  options?: Partial<Options<PostProjectsData>>,
+): UseMutationOptions<
+  PostProjectsResponse,
+  DefaultError,
+  Options<PostProjectsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostProjectsResponse,
+    DefaultError,
+    Options<PostProjectsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postProjects({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+/**
+ * Delete user project, all time entries will be removed
+ */
+export const deleteProjectsByIdMutation = (
+  options?: Partial<Options<DeleteProjectsByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteProjectsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<DeleteProjectsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteProjectsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getProjectsByIdQueryKey = (
+  options: Options<GetProjectsByIdData>,
+) => createQueryKey("getProjectsById", options);
+
+/**
+ * Get user project by ID
+ */
+export const getProjectsByIdOptions = (
+  options: Options<GetProjectsByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getProjectsById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getProjectsByIdQueryKey(options),
+  });
+};
+
+/**
+ * Update user project data
+ */
+export const patchProjectsByIdMutation = (
+  options?: Partial<Options<PatchProjectsByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<PatchProjectsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<PatchProjectsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchProjectsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getTimeEntriesActiveQueryKey = (
+  options?: Options<GetTimeEntriesActiveData>,
+) => createQueryKey("getTimeEntriesActive", options);
+
+/**
+ * Get active time entry
+ */
+export const getTimeEntriesActiveOptions = (
+  options?: Options<GetTimeEntriesActiveData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getTimeEntriesActive({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getTimeEntriesActiveQueryKey(options),
+  });
+};
+
+/**
+ * Delete time entry
+ */
+export const deleteTimeEntriesByIdMutation = (
+  options?: Partial<Options<DeleteTimeEntriesByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteTimeEntriesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<DeleteTimeEntriesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await deleteTimeEntriesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getTimeEntriesByIdQueryKey = (
+  options: Options<GetTimeEntriesByIdData>,
+) => createQueryKey("getTimeEntriesById", options);
+
+/**
+ * Return time entry by ID
+ */
+export const getTimeEntriesByIdOptions = (
+  options: Options<GetTimeEntriesByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getTimeEntriesById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getTimeEntriesByIdQueryKey(options),
+  });
+};
+
+/**
+ * Update existing time entry
+ */
+export const patchTimeEntriesByIdMutation = (
+  options?: Partial<Options<PatchTimeEntriesByIdData>>,
+): UseMutationOptions<
+  PatchTimeEntriesByIdResponse,
+  DefaultError,
+  Options<PatchTimeEntriesByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchTimeEntriesByIdResponse,
+    DefaultError,
+    Options<PatchTimeEntriesByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await patchTimeEntriesById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getTimeEntriesQueryKey = (options?: Options<GetTimeEntriesData>) =>
+  createQueryKey("getTimeEntries", options);
+
+export const getTimeEntriesOptions = (
+  options?: Options<GetTimeEntriesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getTimeEntries({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getTimeEntriesQueryKey(options),
+  });
+};
+
+export const postTimeEntriesQueryKey = (
+  options: Options<PostTimeEntriesData>,
+) => createQueryKey("postTimeEntries", options);
+
+/**
+ * Create new time entry
+ */
+export const postTimeEntriesOptions = (
+  options: Options<PostTimeEntriesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await postTimeEntries({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: postTimeEntriesQueryKey(options),
+  });
+};
+
+/**
+ * Create new time entry
+ */
+export const postTimeEntriesMutation = (
+  options?: Partial<Options<PostTimeEntriesData>>,
+): UseMutationOptions<
+  PostTimeEntriesResponse,
+  DefaultError,
+  Options<PostTimeEntriesData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostTimeEntriesResponse,
+    DefaultError,
+    Options<PostTimeEntriesData>
+  > = {
+    mutationFn: async (localOptions) => {
+      const { data } = await postTimeEntries({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+      return data;
+    },
+  };
+  return mutationOptions;
+};
+
+export const getTimeEntriesAnalyzeDurationByDateQueryKey = (
+  options?: Options<GetTimeEntriesAnalyzeDurationByDateData>,
+) => createQueryKey("getTimeEntriesAnalyzeDurationByDate", options);
+
+export const getTimeEntriesAnalyzeDurationByDateOptions = (
+  options?: Options<GetTimeEntriesAnalyzeDurationByDateData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getTimeEntriesAnalyzeDurationByDate({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getTimeEntriesAnalyzeDurationByDateQueryKey(options),
+  });
+};
+
+export const getCalendarsQueryKey = (options?: Options<GetCalendarsData>) =>
+  createQueryKey("getCalendars", options);
+
+export const getCalendarsOptions = (options?: Options<GetCalendarsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCalendars({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCalendarsQueryKey(options),
   });
 };
 

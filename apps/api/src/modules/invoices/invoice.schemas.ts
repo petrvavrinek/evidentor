@@ -1,16 +1,16 @@
 import { createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 import {
-	client,
-	invoice,
-	invoiceItem,
-	project,
-	projectTask,
+	clients,
+	invoices,
+	invoiceItems,
+	projects,
+	projectTasks,
 } from "@/db/schema";
 
-const InvoiceSchema = createSelectSchema(invoice);
-const InvoiceItemSchema = createSelectSchema(invoiceItem);
-const ProjectTaskSchema = createSelectSchema(projectTask);
+const InvoiceSchema = createSelectSchema(invoices);
+const InvoiceItemSchema = createSelectSchema(invoiceItems);
+const ProjectTaskSchema = createSelectSchema(projectTasks);
 
 export const InvoiceCreateSchema = t.Object({
 	...t.Pick(InvoiceSchema, ["projectId", "dueDate", "currency"])
@@ -33,8 +33,8 @@ export const InvoiceIdParamSchema = t.Object({
 	id: t.Number(),
 });
 
-const ProjectSelectSchema = createSelectSchema(project);
-const ClientSelectSchema = createSelectSchema(client);
+const ProjectSelectSchema = createSelectSchema(projects);
+const ClientSelectSchema = createSelectSchema(clients);
 
 export const InvoiceSelectSchema = t.Object({
 	...InvoiceSchema.properties,

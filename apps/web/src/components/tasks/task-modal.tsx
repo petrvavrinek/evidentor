@@ -10,7 +10,7 @@ import {
 } from "@evidentor/ui/components/ui/dialog";
 
 import type { Project, ProjectTask } from "@/lib/api";
-import { postProjectTaskByIdMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { postProjectTasksByIdMutation } from "@/lib/api/@tanstack/react-query.gen";
 
 import NewTaskForm from "./new-task-form";
 
@@ -28,7 +28,7 @@ export default function TaskModal({
 	onCreate,
 }: TaskModalProps) {
 	const createTask = useMutation({
-		...postProjectTaskByIdMutation(),
+		...postProjectTasksByIdMutation(),
 	});
 
 	const onTaskCreated = (title: string, description: string) => {

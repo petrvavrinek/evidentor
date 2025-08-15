@@ -1,6 +1,6 @@
 import { and, count, eq, getTableColumns, gte, lte } from "drizzle-orm";
 
-import { client, project, projectTask } from "@/db/schema";
+import { clients, projects, projectTasks } from "@/db/schema";
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
 import type {
@@ -17,20 +17,20 @@ export const ProjectTasksService = {
 	getSelectQueryBuilder(userId: string) {
 		return db
 			.select({
-				...getTableColumns(projectTask),
+				...getTableColumns(projectTasks),
 				project: {
-					...getTableColumns(project),
+					...getTableColumns(projects),
 					// @ts-ignore
 					client: {
-						...getTableColumns(client),
+						...getTableColumns(clients),
 					},
 				},
 			})
-			.from(projectTask)
-			.leftJoin(project, eq(projectTask.projectId, project.id))
-			.innerJoin(client, eq(client.id, project.clientId))
+			.from(projectTasks)
+			.leftJoin(projects, eq(projectTasks.projectId, projects.id))
+			.innerJoin(clients, eq(clients.id, projects.clientId))
 			.$dynamic()
-			.where(eq(project.ownerId, userId));
+			.where(eq(projects.ownerId, userId));
 	},
 
 	/**
@@ -45,7 +45,7 @@ export const ProjectTasksService = {
 		let query = this.getSelectQueryBuilder(userId);
 
 		if (filter?.project)
-			query = query.where(eq(projectTask.projectId, filter.project));
+			query = query.where(eq(projectTasks.projectId, filter.project));
 
 		return (await query) as ProjectTaskResponseType[];
 	},
@@ -61,7 +61,7 @@ export const ProjectTasksService = {
 		projectId: number,
 	): Promise<ProjectTaskResponseType[]> {
 		const tasks = await this.getSelectQueryBuilder(userId).where(
-			eq(project.id, projectId),
+			eq(projects.id, projectId),
 		);
 
 		return tasks as ProjectTaskResponseType[];
@@ -86,7 +86,7 @@ export const ProjectTasksService = {
 		if (!project) throw `Project not found`;
 
 		const [task] = await db
-			.insert(projectTask)
+			.insert(projectTasks)
 			.values({
 				title: title,
 				description,
@@ -108,7 +108,7 @@ export const ProjectTasksService = {
 		userId: string,
 	): Promise<ProjectTaskResponseType | null> {
 		const task = await this.getSelectQueryBuilder(userId).where(
-			eq(projectTask.id, id),
+			eq(projectTasks.id, id),
 		);
 		if (!task[0]) return null;
 		return task[0] as never as ProjectTaskResponseType;
@@ -119,7 +119,7 @@ export const ProjectTasksService = {
 	 * @param id Project task ID
 	 */
 	async deleteTaskById(id: number) {
-		await db.delete(projectTask).where(eq(projectTask.id, id));
+		await db.delete(projectTasks).where(eq(projectTasks.id, id));
 	},
 
 	/**
@@ -134,15 +134,15 @@ export const ProjectTasksService = {
 	): Promise<number> {
 		const filters = [];
 
-		if (filter?.project) filters.push(eq(project.id, filter.project));
-		if (filter?.from) filters.push(gte(projectTask.createdAt, filter.from));
-		if (filter?.to) filters.push(lte(projectTask.createdAt, filter.to));
+		if (filter?.project) filters.push(eq(projects.id, filter.project));
+		if (filter?.from) filters.push(gte(projectTasks.createdAt, filter.from));
+		if (filter?.to) filters.push(lte(projectTasks.createdAt, filter.to));
 
 		const query = db
 			.select({ count: count() })
-			.from(projectTask)
-			.leftJoin(project, eq(projectTask.projectId, project.id))
-			.where(and(eq(project.ownerId, userId), ...filters));
+			.from(projectTasks)
+			.leftJoin(projects, eq(projectTasks.projectId, projects.id))
+			.where(and(eq(projects.ownerId, userId), ...filters));
 
 		const r = await query;
 		return r[0]?.count ?? 0;

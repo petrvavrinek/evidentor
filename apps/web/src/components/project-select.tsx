@@ -3,8 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { type Key, useEffect, useState } from "react";
 
-import { getProject, type Project } from "@/lib/api";
-import { getProjectQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getProjects, type Project } from "@/lib/api";
+import { getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 
 import {
 	Select,
@@ -48,8 +48,8 @@ interface ProjectSelectProps {
  */
 export const ProjectSelect = (props: ProjectSelectProps) => {
 	const { data: projects, isLoading } = useQuery({
-		queryFn: () => getProject(),
-		queryKey: getProjectQueryKey(),
+		queryFn: () => getProjects(),
+		queryKey: getProjectsQueryKey(),
 	});
 
 	const [selectedProjectIdx, setSelectedProjectIdx] = useState<
