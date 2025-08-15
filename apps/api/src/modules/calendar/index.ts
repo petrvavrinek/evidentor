@@ -3,7 +3,7 @@ import { BetterAuthMacro } from "../auth";
 import { CalendarService } from "./calendar.service";
 
 const router = new Elysia({
-	prefix: "/calendar",
+	prefix: "/calendars",
 	detail: { tags: ["Calendar"] },
 })
 	.use(BetterAuthMacro)

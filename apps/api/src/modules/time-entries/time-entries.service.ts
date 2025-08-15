@@ -1,12 +1,12 @@
 import { and, eq, gte, lte, sql } from "drizzle-orm";
 
-import { timeEntry } from "@/db/schema";
+import { timeEntries } from "@/db/schema";
 
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
 import type { TimeEntryFilterType } from "./time-entries.dto";
 
-type TimeEntry = typeof timeEntry.$inferSelect;
+type TimeEntry = typeof timeEntries.$inferSelect;
 
 export const TimeEntriesService = {
 	/**
@@ -81,9 +81,9 @@ export const TimeEntriesService = {
 		data: Partial<Omit<TimeEntry, "userId" | "id" | "createdAt">>,
 	) {
 		const entry = await db
-			.update(timeEntry)
+			.update(timeEntries)
 			.set(data)
-			.where(and(eq(timeEntry.userId, userId), eq(timeEntry.id, id)))
+			.where(and(eq(timeEntries.userId, userId), eq(timeEntries.id, id)))
 			.returning();
 
 		return entry[0] ?? null;
@@ -97,8 +97,8 @@ export const TimeEntriesService = {
 	 */
 	deleteById(userId: string, id: number) {
 		return db
-			.delete(timeEntry)
-			.where(and(eq(timeEntry.userId, userId), eq(timeEntry.id, id)))
+			.delete(timeEntries)
+			.where(and(eq(timeEntries.userId, userId), eq(timeEntries.id, id)))
 			.returning();
 	},
 
@@ -122,7 +122,7 @@ export const TimeEntriesService = {
 		}
 
 		const entry = await db
-			.insert(timeEntry)
+			.insert(timeEntries)
 			.values({
 				...data,
 				userId,
@@ -141,32 +141,32 @@ export const TimeEntriesService = {
 		const filters = [];
 
 		if (filter?.projectId)
-			filters.push(eq(timeEntry.projectId, filter.projectId));
+			filters.push(eq(timeEntries.projectId, filter.projectId));
 
 		if (filter?.from) {
 			filters.push(
 				and(
-					gte(timeEntry.startAt, filter.from),
-					gte(timeEntry.endAt, filter.from),
+					gte(timeEntries.startAt, filter.from),
+					gte(timeEntries.endAt, filter.from),
 				),
 			);
 		}
 
 		if (filter?.to) {
 			filters.push(
-				and(lte(timeEntry.startAt, filter.to), lte(timeEntry.endAt, filter.to)),
+				and(lte(timeEntries.startAt, filter.to), lte(timeEntries.endAt, filter.to)),
 			);
 		}
 
 		const query = db
 			.select({
-				date: sql<Date>`DATE(${timeEntry.startAt})`,
-				duration: sql<number>`ROUND(SUM(EXTRACT(EPOCH FROM (${timeEntry.endAt} - ${timeEntry.startAt}))))`,
+				date: sql<Date>`DATE(${timeEntries.startAt})`,
+				duration: sql<number>`ROUND(SUM(EXTRACT(EPOCH FROM (${timeEntries.endAt} - ${timeEntries.startAt}))))`,
 			})
-			.from(timeEntry)
-			.where(and(eq(timeEntry.userId, userId), ...filters));
+			.from(timeEntries)
+			.where(and(eq(timeEntries.userId, userId), ...filters));
 
-		const result = await query.groupBy(sql`DATE(${timeEntry.startAt})`);
+		const result = await query.groupBy(sql`DATE(${timeEntries.startAt})`);
 		return result.map((e) => ({ date: e.date, duration: Number(e.duration) }));
 	},
 };

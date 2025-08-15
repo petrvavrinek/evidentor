@@ -15,7 +15,7 @@ import {
 import { ProjectTasksService } from "./project-tasks.service";
 
 const router = new Elysia({
-	prefix: "/project-task",
+	prefix: "/project-tasks",
 	detail: { tags: ["ProjectTask"] },
 })
 	.use(BetterAuthMacro)

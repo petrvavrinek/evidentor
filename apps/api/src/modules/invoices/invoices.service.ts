@@ -1,6 +1,8 @@
 import { and, eq, type SQL, inArray } from "drizzle-orm";
+
 import { db } from "../../database";
-import { invoice, invoiceItem, project, projectTask } from "../../db/schema";
+import { invoices, invoiceItems, projects, projectTasks } from "@/db/schema";
+
 import type { InvoiceCreateType } from "./invoice.schemas";
 
 interface CreateInvoiceQueryOptions {
@@ -12,7 +14,7 @@ export const InvoicesService = {
 	 * Find many invoice with options
 	 */
 	findByOptions(options?: CreateInvoiceQueryOptions) {
-		return db.query.invoice.findMany({
+		return db.query.invoices.findMany({
 			with: {
 				client: true,
 				items: {
@@ -34,7 +36,7 @@ export const InvoicesService = {
 	 */
 	async findOneByOptions(id: number, options?: CreateInvoiceQueryOptions) {
 		const result = await this.findByOptions({
-			filters: [eq(invoice.id, id), ...(options?.filters ?? [])],
+			filters: [eq(invoices.id, id), ...(options?.filters ?? [])],
 		});
 		return result?.[0] ?? null;
 	},
@@ -45,7 +47,7 @@ export const InvoicesService = {
 	 * @returns Array of invoices
 	 */
 	findManyByUserId(userId: string) {
-		return this.findByOptions({ filters: [eq(invoice.ownerId, userId)] });
+		return this.findByOptions({ filters: [eq(invoices.ownerId, userId)] });
 	},
 
 	/**
@@ -54,9 +56,9 @@ export const InvoicesService = {
 	 * @param id Invoice ID
 	 * @returns Invoice or null
 	 */
-	async findById(userId: string, id: number) {
+	async findById(userId: string, id: number) {		
 		const results = await this.findByOptions({
-			filters: [eq(invoice.id, id), eq(invoice.ownerId, userId)],
+			filters: [eq(invoices.id, id), eq(invoices.ownerId, userId)],
 		});
 
 		return results?.[0] ?? null;
@@ -65,20 +67,20 @@ export const InvoicesService = {
 	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
 		return db.transaction(async (tx) => {
 			// Find project tasks if any
-			const projectTasks = data.items
+			const projectTaskIds = data.items
 				.filter((e) => !!e.projectTaskId)
 				.map((e) => e.projectTaskId as number);
 
 			// Check if project tasks are accessible by user
 			const invoiceProjectTaskItems = await tx
-				.select({ id: projectTask.id })
-				.from(projectTask)
-				.leftJoin(project, eq(projectTask.projectId, project.id))
+				.select({ id: projectTasks.id })
+				.from(projectTasks)
+				.leftJoin(projects, eq(projectTasks.projectId, projects.id))
 				.where(
 					and(
-						eq(project.ownerId, userId),
-						eq(project.id, data.projectId),
-						inArray(projectTask.id, projectTasks),
+						eq(projects.ownerId, userId),
+						eq(projects.id, data.projectId),
+						inArray(projectTasks.id, projectTaskIds),
 					),
 				);
 			// Map task ids to array
@@ -92,12 +94,12 @@ export const InvoicesService = {
 
 			// Create invoice
 			const [createdInvoice] = await tx
-				.insert(invoice)
+				.insert(invoices)
 				.values({ ...data, ownerId: userId, amount })
 				.returning();
 
 			// Create invoice items
-			await tx.insert(invoiceItem).values(
+			await tx.insert(invoiceItems).values(
 				data.items.map((e) => ({
 					name: e.name,
 					qty: e.qty,
@@ -119,13 +121,13 @@ export const InvoicesService = {
 		userId: string,
 		id: number,
 		data: Partial<
-			Omit<typeof invoice.$inferInsert, "id" | "ownerId" | "createdAt">
+			Omit<typeof invoices.$inferInsert, "id" | "ownerId" | "createdAt">
 		>,
 	) {
 		const [updated] = await db
-			.update(invoice)
+			.update(invoices)
 			.set(data)
-			.where(and(eq(invoice.ownerId, userId), eq(invoice.id, id)))
+			.where(and(eq(invoices.ownerId, userId), eq(invoices.id, id)))
 			.returning();
 		return updated;
 	},
@@ -137,7 +139,7 @@ export const InvoicesService = {
 	 */
 	async deleteById(userId: string, id: number) {
 		await db
-			.delete(invoice)
-			.where(and(eq(invoice.ownerId, userId), eq(invoice.id, id)));
+			.delete(invoices)
+			.where(and(eq(invoices.ownerId, userId), eq(invoices.id, id)));
 	},
 };

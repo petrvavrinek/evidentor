@@ -1,51 +1,158 @@
 import { and, eq } from "drizzle-orm";
-import { db } from "../../database";
-import { client } from "../../db/schema";
 
-type Client = typeof client.$inferSelect;
+import { db } from "../../database";
+import type { CreateClient, UpdateClient } from "./clients.types";
+
+import { addresses } from "@/db/address.schema";
+import { clients, clientsBilling } from "@/db/clients.schema";
+
+type Client = typeof clients.$inferSelect;
 
 export const ClientsService = {
   findById(userId: string, id: number) {
-    return db.query.client.findFirst({
-      where: and(eq(client.ownerId, userId), eq(client.id, id)),
+    return db.query.clients.findFirst({
+      where: and(eq(clients.ownerId, userId), eq(clients.id, id)),
+      with: {
+        address: true,
+        billing: true
+      }
     });
   },
 
   findManyByUserId(userId: string) {
-    return db.query.client.findMany({
-      where: eq(client.ownerId, userId),
+    return db.query.clients.findMany({
+      where: eq(clients.ownerId, userId),
+      with: {
+        address: true,
+        billing: true
+      }
     });
   },
 
-  async create(userId: string, data: Partial<Omit<Client, "id">>) {
-    const [newClient] = await db
-      .insert(client)
-      .values({
-        ...data,
+  async create(userId: string, data: CreateClient) {
+    return db.transaction(async tx => {
+      let addressId: number | undefined = undefined;
+
+      if (data.address) {
+        const { address: a } = data;
+        const [newAddress] = await tx.insert(addresses).values({
+          streetLine1: a.streetLine1,
+          streetLine2: a.streetLine2,
+          city: a.city,
+          country: a.country,
+          postalCode: a.postalCode,
+          state: a.state,
+        }).returning()
+        if (newAddress) addressId = newAddress.id;
+      }
+
+
+      const [newClient] = await tx.insert(clients).values({
+        companyName: data.companyName,
+        contactName: data.contactName,
+        email: data.email,
         ownerId: userId,
+        addressId
       })
-      .returning();
-    return newClient;
+        .returning();
+
+      if (!newClient) return null;
+
+      if (data.billing) {
+        const { billing } = data;
+        await tx.insert(clientsBilling).values({
+          accountNumber: billing.accountNumber,
+          clientId: newClient.id,
+          iban: billing.iban,
+          swiftCode: billing.swiftCode,
+          variableSymbol: billing.variableSymbol
+        });
+      }
+
+      return tx.query.clients.findFirst({
+        where: eq(clients.id, newClient!.id),
+        with: {
+          address: true,
+          billing: true
+        }
+      });
+    });
   },
 
   async updateById(
     userId: string,
     id: number,
-    data: Partial<Omit<Client, "id" | "ownerId" | "createdAt">>
+    data: UpdateClient
   ) {
-    const updatedClient = await db
-      .update(client)
-      .set(data)
-      .where(and(eq(client.ownerId, userId), eq(client.id, id)))
-      .returning();
+    const client = await this.findById(userId, id);
+    // Client not found
+    if (!client) return null;
 
-    return updatedClient[0] ?? null;
+    return db.transaction(async tx => {
+      let addressId = client.address?.id;
+
+      // Address update
+      if (!client.address && data.address) {
+        const { address } = data;
+        const [newAddress] = await tx.insert(addresses).values({
+          city: address.city,
+          country: address.country,
+          streetLine1: address.streetLine1,
+          streetLine2: address.streetLine2,
+          postalCode: address.postalCode,
+          state: address.state,
+        }).returning();
+
+        if (!newAddress) return null;
+        addressId = newAddress.id;
+      } else if (client.address && data.address) {
+        const { address } = data;
+        await tx.update(addresses).set({
+          city: address.city,
+          country: address.country,
+          streetLine1: address.streetLine1,
+          streetLine2: address.streetLine2,
+          postalCode: address.postalCode,
+          state: address.state,
+        }).where(eq(addresses.id, client.address.id));
+      }
+
+      const [updatedClient] = await tx.update(clients).set({
+        addressId,
+        companyName: data.companyName,
+        contactName: data.contactName,
+        email: data.email
+      }).returning();
+
+      if (!updatedClient) return;
+
+      if (data.billing && client.billing) {
+        const { billing } = data;
+        await tx.update(clientsBilling).set({
+          accountNumber: billing.accountNumber,
+          iban: billing.iban,
+          swiftCode: billing.swiftCode,
+          variableSymbol: billing.variableSymbol
+        }).where(eq(clientsBilling.id, client.billing.id));
+      } else if (data.billing) {
+        const { billing } = data;
+        await tx.insert(clientsBilling).values({
+          accountNumber: billing.accountNumber,
+          iban: billing.iban,
+          swiftCode: billing.swiftCode,
+          variableSymbol: billing.variableSymbol,
+          clientId: updatedClient.id,
+        });
+      }
+
+      return updatedClient ?? null;
+    });
   },
 
   async deleteById(userId: string, id: number) {
     const deletedClient = await db
-      .delete(client)
-      .where(and(eq(client.ownerId, userId), eq(client.id, id)))
+      .delete(clients)
+      .where(and(eq(clients.ownerId, userId), eq(clients.id, id)))
       .returning();
     return deletedClient[0] ?? null;
   },

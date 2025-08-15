@@ -10,7 +10,7 @@ import { user } from "./auth.schema";
 /**
  * User-defined calendar
  */
-export const calendar = pgTable("calendar", {
+export const calendars = pgTable("calendar", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	userId: text()
 		.references(() => user.id, { onDelete: "cascade" })
@@ -24,12 +24,12 @@ export const calendar = pgTable("calendar", {
 /**
  * Calendar event
  */
-export const calendarEvent = pgTable("calendar_event", {
+export const calendarEvents = pgTable("calendar_event", {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	title: varchar().notNull(),
 	description: text(),
 	calendarId: integer()
-		.references(() => calendar.id, { onDelete: "cascade" })
+		.references(() => calendars.id, { onDelete: "cascade" })
 		.notNull(),
 	createdAt: timestamp()
 		.$defaultFn(() => new Date())

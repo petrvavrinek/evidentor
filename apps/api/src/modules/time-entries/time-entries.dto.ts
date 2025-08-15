@@ -1,14 +1,14 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 
-import { timeEntry } from "@/db/schema";
+import { timeEntries } from "@/db/schema";
 import { ProjectTaskResponse } from "../project-tasks/project-tasks.dto";
 import { ProjectResponse } from "../projects/projects.dto";
 
 /**
  * Base time entry insert schema with refined values
  */
-const InsertTimeEntry = createInsertSchema(timeEntry, {
+const InsertTimeEntry = createInsertSchema(timeEntries, {
 	startAt: t.Date(),
 	endAt: t.Nullable(t.Optional(t.Date())),
 	title: t.String(),
@@ -36,7 +36,7 @@ export const TimeEntryIdParam = t.Object({
  * Select time entry with project
  */
 const SelectTimeEntry = t.Object({
-	...createSelectSchema(timeEntry).properties,
+	...createSelectSchema(timeEntries).properties,
 	// Project, nullable
 	project: t.Union([ProjectResponse, t.Null()]),
 	// Project task without project, nullable

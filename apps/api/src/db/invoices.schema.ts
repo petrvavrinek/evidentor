@@ -9,9 +9,9 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { user } from "./auth.schema";
-import { client } from "./client.schema";
-import { project } from "./project.schema";
-import { projectTask } from "./project-task.schema";
+import { clients } from "./clients.schema";
+import { projects } from "./projects.schema";
+import { projectTasks } from "./project-tasks.schema";
 
 // Available currencies
 // TODO: Maybe move this to some config?
@@ -21,10 +21,10 @@ export type Currency = (typeof Currencies)[number];
 export const CurrencyEnum = pgEnum("currency", Currencies);
 
 // Invoice table
-export const invoice = pgTable("invoice", {
+export const invoices = pgTable("invoice", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	clientId: integer().references(() => client.id, { onDelete: "set null" }),
-	projectId: integer().references(() => project.id, { onDelete: "set null" }),
+	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
+	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	amount: integer().notNull(),
 	currency: CurrencyEnum().notNull(),
 	dueDate: timestamp(),
@@ -42,41 +42,41 @@ export const invoice = pgTable("invoice", {
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
 });
 
-export const invoiceRelations = relations(invoice, ({ one, many }) => ({
-	client: one(client, {
-		fields: [invoice.clientId],
-		references: [client.id],
+export const invoicesRelations = relations(invoices, ({ one, many }) => ({
+	client: one(clients, {
+		fields: [invoices.clientId],
+		references: [clients.id],
 	}),
-	project: one(project, {
-		fields: [invoice.projectId],
-		references: [project.id],
+	project: one(projects, {
+		fields: [invoices.projectId],
+		references: [projects.id],
 	}),
 	owner: one(user, {
-		fields: [invoice.ownerId],
+		fields: [invoices.ownerId],
 		references: [user.id],
 	}),
-	items: many(invoiceItem),
+	items: many(invoiceItems),
 }));
 
-export const invoiceItem = pgTable("invoice_item", {
+export const invoiceItems = pgTable("invoice_item", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	projectTaskId: integer().references(() => projectTask.id, {
+	projectTaskId: integer().references(() => projectTasks.id, {
 		onDelete: "set null",
 	}),
 	name: varchar().notNull(),
 	// TODO: Unsigned int
 	qty: integer().notNull(),
 	unitPrice: integer().notNull(),
-	invoiceId: integer().references(() => invoice.id, { onDelete: "cascade" }),
+	invoiceId: integer().references(() => invoices.id, { onDelete: "cascade" }),
 });
 
-export const invoiceItemRelations = relations(invoiceItem, ({ one }) => ({
-	invoice: one(invoice, {
-		fields: [invoiceItem.invoiceId],
-		references: [invoice.id],
+export const invoiceItemsRelations = relations(invoiceItems, ({ one }) => ({
+	invoice: one(invoices, {
+		fields: [invoiceItems.invoiceId],
+		references: [invoices.id],
 	}),
-	projectTask: one(projectTask, {
-		fields: [invoiceItem.projectTaskId],
-		references: [projectTask.id],
+	projectTask: one(projectTasks, {
+		fields: [invoiceItems.projectTaskId],
+		references: [projectTasks.id],
 	}),
 }));

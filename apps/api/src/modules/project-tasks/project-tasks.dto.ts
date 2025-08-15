@@ -1,10 +1,10 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 
-import { projectTask } from "@/db/schema";
+import { projectTasks } from "@/db/schema";
 import { ProjectResponse } from "../projects/projects.dto";
 
-const InsertProjectTask = createInsertSchema(projectTask);
+const InsertProjectTask = createInsertSchema(projectTasks);
 
 /**
  * Create project task schema
@@ -31,7 +31,7 @@ export const ProjectTaskIdParam = t.Object({
  */
 const SelectProjectTask = t.Object({
 	id: t.Number(),
-	...createSelectSchema(projectTask).properties,
+	...createSelectSchema(projectTasks).properties,
 	project: ProjectResponse,
 });
 

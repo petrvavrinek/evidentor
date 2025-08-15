@@ -2,25 +2,25 @@ import { relations } from "drizzle-orm";
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 import { user } from "./auth.schema";
-import { client } from "./client.schema";
+import { clients } from "./clients.schema";
 
-export const project = pgTable("project", {
+export const projects = pgTable("project", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
 	title: text(),
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
-	clientId: integer().references(() => client.id, { onDelete: "cascade" }),
+	clientId: integer().references(() => clients.id, { onDelete: "cascade" }),
 	createdAt: timestamp()
 		.$defaultFn(() => new Date())
 		.notNull(),
 });
 
-export const projectRelations = relations(project, ({ one }) => ({
-	client: one(client, {
-		fields: [project.clientId],
-		references: [client.id],
+export const projectsRelations = relations(projects, ({ one }) => ({
+	client: one(clients, {
+		fields: [projects.clientId],
+		references: [clients.id],
 	}),
 	owner: one(user, {
-		fields: [project.ownerId],
+		fields: [projects.ownerId],
 		references: [user.id],
 	}),
 }));

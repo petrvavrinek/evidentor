@@ -14,7 +14,7 @@ import {
 import { ProjectsService } from "./projects.service";
 
 const router = new Elysia({
-	prefix: "/project",
+	prefix: "/projects",
 	detail: { tags: ["Project"] },
 })
 	.use(BetterAuthMacro)

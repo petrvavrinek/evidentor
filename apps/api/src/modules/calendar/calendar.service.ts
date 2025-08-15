@@ -1,4 +1,4 @@
-import { calendar } from "@/db/calendar.schema";
+import { calendars } from "@/db/calendars.schema";
 import { eq } from "drizzle-orm";
 import { db } from "../../database";
 
@@ -9,6 +9,6 @@ export const CalendarService = {
 	 * @returns Array calendars
 	 */
 	findByUser(userId: string) {
-		return db.query.calendar.findMany({ where: eq(calendar.userId, userId) });
+		return db.query.calendars.findMany({ where: eq(calendars.userId, userId) });
 	},
 };

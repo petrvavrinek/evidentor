@@ -1,13 +1,13 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-import { project } from "./project.schema";
+import { projects } from "./projects.schema";
 
-export const projectTask = pgTable("project_task", {
+export const projectTasks = pgTable("project_task", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
 	title: text().notNull(),
 	projectId: integer()
-		.references(() => project.id, { onDelete: "cascade" })
+		.references(() => projects.id, { onDelete: "cascade" })
 		.notNull(),
 	description: text(),
 	createdAt: timestamp()
@@ -15,9 +15,9 @@ export const projectTask = pgTable("project_task", {
 		.notNull(),
 });
 
-export const projectTaskRelations = relations(projectTask, ({ one }) => ({
-	project: one(project, {
-		fields: [projectTask.projectId],
-		references: [project.id],
+export const projectTasksRelations = relations(projectTasks, ({ one }) => ({
+	project: one(projects, {
+		fields: [projectTasks.projectId],
+		references: [projects.id],
 	}),
 }));

@@ -15,7 +15,7 @@ import { InvoicesService } from "./invoices.service";
 import { convertInvoiceToQueueType } from "./utils/convert-queue";
 
 const router = new Elysia({
-	prefix: "/invoice",
+	prefix: "/invoices",
 	detail: { tags: ["Invoice"] },
 })
 	.use(BetterAuthMacro)
