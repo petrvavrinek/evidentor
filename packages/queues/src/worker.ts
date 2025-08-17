@@ -23,10 +23,7 @@ export const createWorker = <
 ) => {
 	const worker = new Worker<DataType, ResultType, NameType>(name, processor, {
 		connection: {
-			host: envConfig.REDIS_HOST,
-			port: envConfig.REDIS_PORT,
-			username: envConfig.REDIS_USER,
-			password: envConfig.REDIS_PASSWORD,
+			url: envConfig.REDIS_URI
 		},
 		...options,
 	});
