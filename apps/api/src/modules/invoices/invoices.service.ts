@@ -134,4 +134,12 @@ export const InvoicesService = {
 			.delete(invoices)
 			.where(and(eq(invoices.ownerId, userId), eq(invoices.id, id)));
 	},
+
+	async updateInvoiceGeneratedFilePath(id: number, fileId: string) {
+		await db.update(invoices).set({ generatedFileId: fileId }).where(eq(invoices.id, id));
+	},
+
+	findInvoicesWithoutGeneratedFile() {
+		return this.findByOptions({ filters: [isNull(invoices.generatedFileId)]})
+	}
 };

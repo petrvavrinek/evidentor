@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+
 import { LoggerService } from "@evidentor/logging";
 import {
 	createWorker,
@@ -8,11 +9,18 @@ import {
 	type InvoiceQueueResultType,
 } from "@evidentor/queues";
 import { storage } from "@evidentor/storage";
-import { renderToStream } from "@react-pdf/renderer";
+import { renderToBuffer } from "@react-pdf/renderer";
 
 import { InvoiceDocument } from "./renderer/Invoice";
 
 const logger = new LoggerService("InvoiceWorker");
+
+logger.info("Waiting for jobs...");
+
+if (!await storage.directoryExists("invoices")) {
+	storage.createDirectory("invoices");
+	logger.info("Created invoices storage directory")
+}
 
 export const InvoiceWorker = createWorker<
 	InvoiceQueueDataType,
@@ -23,11 +31,17 @@ export const InvoiceWorker = createWorker<
 	const { data: invoiceData } = job.data;
 	logger.info(`Received invoice generate job for invoice ${invoiceData.id}`);
 
+	const fileId = randomUUID();
 	const doc = InvoiceDocument(invoiceData);
-	const filePath = path.join("invoices", `${randomUUID()}.pdf`);
-	const stream = await renderToStream(doc);
-	await storage.write(filePath, stream, { mimeType: "application/pdf" });
+	const filePath = path.join("invoices", `${fileId}.pdf`);
+	const buffer = await renderToBuffer(doc);
+
+	await storage.write(filePath, buffer, { mimeType: "application/pdf" });
 
 	logger.info(`Invoice ${invoiceData.id} generated to "${filePath}"`);
-	return { ok: true, filePath: filePath };
+	return { ok: true, filePath: filePath, id: invoiceData.id, fileId };
+});
+
+InvoiceWorker.on("error", e => {
+	logger.error(e.name, e.message);
 });

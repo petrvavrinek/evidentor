@@ -168,3 +168,6 @@ compile_commands.json
 
 # Ignore turbopack
 .turbo/
+
+# Local development storage
+storage/

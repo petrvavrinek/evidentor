@@ -127,6 +127,13 @@
       "when": 1755432740528,
       "tag": "0017_update_invoice_add_project",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1755438439604,
+      "tag": "0018_update_invoice_add_generated_file_id",
+      "breakpoints": true
     }
   ]
 }

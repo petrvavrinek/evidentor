@@ -1,0 +1,1 @@
+ALTER TABLE "invoice" ADD COLUMN "generated_file_id" text;

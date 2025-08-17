@@ -13,7 +13,7 @@ export const convertInvoiceToQueueType = (
 ): GenerateInvoiceData => {
 	return {
 		currency: invoice.currency,
-		id: "ID",
+		id: invoice.id.toString(),
 		items: invoice.items.map((e) => ({
 			amount: e.qty,
 			name: e.name,

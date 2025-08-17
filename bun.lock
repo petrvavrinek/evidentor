@@ -15,6 +15,7 @@
         "@elysiajs/swagger": "^1.3.1",
         "@evidentor/logging": "workspace:*",
         "@evidentor/queues": "workspace:*",
+        "@evidentor/storage": "workspace:*",
         "@otherguy/elysia-logging": "^0.0.17",
         "better-auth": "^1.3.4",
         "dotenv": "^16.6.1",
@@ -38,7 +39,7 @@
         "@evidentor/logging": "workspace:*",
         "@evidentor/queues": "workspace:*",
         "@react-email/components": "0.2.0",
-        "@tailwindcss/postcss": "^4.1.11",
+        "@tailwindcss/postcss": "^4.1.12",
         "lucide-react": "^0.525.0",
         "nodemailer": "^7.0.5",
         "react": "19.1.0",
@@ -46,14 +47,14 @@
         "zod": "^3.25.76",
       },
       "devDependencies": {
-        "@react-email/preview-server": "^4.1.0",
+        "@react-email/preview-server": "^4.2.8",
         "@types/bun": "latest",
-        "@types/nodemailer": "^6.4.17",
-        "react-email": "^4.1.0",
-        "tailwindcss": "^4.1.11",
+        "@types/nodemailer": "^6.4.18",
+        "react-email": "^4.2.8",
+        "tailwindcss": "^4.1.12",
       },
       "peerDependencies": {
-        "typescript": "^5",
+        "typescript": "^5.8.3",
       },
     },
     "apps/invoice-service": {
@@ -91,6 +92,7 @@
         "next-intl": "^4.3.4",
         "next-themes": "^0.4.6",
         "react": "^19.1.0",
+        "react-documents": "^1.2.1",
         "react-dom": "^19.1.0",
         "react-hook-form": "^7.60.0",
         "recharts": "^3.1.0",
@@ -1406,6 +1408,8 @@
 
     "doctrine": ["doctrine@2.1.0", "", { "dependencies": { "esutils": "^2.0.2" } }, "sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw=="],
 
+    "docviewhelper": ["docviewhelper@0.0.2", "", {}, "sha512-4ETJdDT//5Q8qcEGY9UjYo6dZiFzn3CHXAoSli4w35uehVdkKschIoRjG3exesc5jyVc9Zrch3oZKZR/5i4ZQQ=="],
+
     "dom-serializer": ["dom-serializer@2.0.0", "", { "dependencies": { "domelementtype": "^2.3.0", "domhandler": "^5.0.2", "entities": "^4.2.0" } }, "sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg=="],
 
     "domelementtype": ["domelementtype@2.3.0", "", {}, "sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw=="],
@@ -2113,6 +2117,8 @@
     "react": ["react@19.1.0", "", {}, "sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg=="],
 
     "react-day-picker": ["react-day-picker@9.8.0", "", { "dependencies": { "@date-fns/tz": "1.2.0", "date-fns": "4.1.0", "date-fns-jalali": "4.1.0-0" }, "peerDependencies": { "react": ">=16.8.0" } }, "sha512-E0yhhg7R+pdgbl/2toTb0xBhsEAtmAx1l7qjIWYfcxOy8w4rTSVfbtBoSzVVhPwKP/5E9iL38LivzoE3AQDhCQ=="],
+
+    "react-documents": ["react-documents@1.2.1", "", { "dependencies": { "docviewhelper": ">= 0.0.1" }, "peerDependencies": { "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-Ciea+BozydpMwzWrE6NFdl//YPSx/7H1rLjYjZmwmuFwESuDWa6eQRObqvaihWmg8i/4Jy+qYRIRgbfvXrB1GA=="],
 
     "react-dom": ["react-dom@19.1.0", "", { "dependencies": { "scheduler": "^0.26.0" }, "peerDependencies": { "react": "^19.1.0" } }, "sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g=="],
 

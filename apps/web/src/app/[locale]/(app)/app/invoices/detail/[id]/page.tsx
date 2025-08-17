@@ -1,18 +1,21 @@
 "use client";
 
+import InvoiceItemTableRow from "@/components/invoices/invoice-item-table-row";
+import InvoicePdfModal from "@/components/invoices/invoice-pdf-modal";
 import PageHeader from "@/components/page-header";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import useTitle from "@/hooks/use-title";
-import { getInvoicesById, GetInvoicesByIdData, Invoice } from "@/lib/api";
+import { getInvoicesById, Invoice } from "@/lib/api";
 import { getInvoicesByIdQueryKey } from "@/lib/api/@tanstack/react-query.gen";
-import { Alert, AlertDescription, AlertTitle } from "@evidentor/ui/components/ui/alert";
+import { Alert, AlertDescription } from "@evidentor/ui/components/ui/alert";
+import { Button } from "@evidentor/ui/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
+import { Dialog } from "@evidentor/ui/components/ui/dialog";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
+import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { useQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "next/navigation";
-import { FileQuestion } from "lucide-react";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
-import InvoiceItemTableRow from "@/components/invoices/invoice-item-table-row";
-import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
+import { useState } from "react";
 
 const ProjectNotFoundAlert = () => (
   <Alert variant="destructive">
@@ -53,12 +56,14 @@ const ClientDetail = (client: NonNullable<Required<Invoice["client"]>>) => (
 
 const InvoiceDetails = (invoice: Invoice) => {
   const dateFormatter = useDateFormatter({ day: "2-digit", month: "2-digit", year: "numeric" });
+  const status = invoice.paidAt ? "Paid" : "Unpaid";
   return (
     <>
       <p><span className="font-semibold">Invoice ID:</span> {invoice.id}</p>
       <p><span className="font-semibold">Issued at:</span> {dateFormatter.format(new Date(invoice.issuedAt as string))}</p>
       <p><span className="font-semibold">Created at:</span> {dateFormatter.format(new Date(invoice.createdAt as string))}</p>
       <p><span className="font-semibold">Paid at:</span> {invoice.paidAt ? dateFormatter.format(new Date(invoice.createdAt as string)) : "-"}</p>
+      <p><span className="font-semibold">Status:</span> {status}</p>
       <p><span className="font-semibold">Currency:</span> {invoice.currency}</p>
       <p><span className="font-semibold">Number of items:</span> {invoice.items.length}</p>
     </>
@@ -72,6 +77,8 @@ export default function InvoiceDetailPage() {
   if (!params.id)
     return notFound();
 
+  const [openPdf, setOpenPdf] = useState(false);
+
   const { data: invoice, isLoading } = useQuery({
     initialData: null,
     queryKey: getInvoicesByIdQueryKey({ path: { id } }),
@@ -82,15 +89,20 @@ export default function InvoiceDetailPage() {
 
   if (!invoice?.data || isLoading) return <>Loading..</>;
 
-
   const { data: invoiceData } = invoice;
   const { client, project, items, currency } = invoiceData;
+
+
+
 
   return (
     <>
       <PageHeader
         title="Invoice detail"
         subtitle={`Invoice: ${invoiceData.id}`}
+        controls={
+          invoiceData.generatedFileId && <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>
+        }
       />
 
       <div className="grid grid-cols-3 gap-4">
@@ -129,10 +141,10 @@ export default function InvoiceDetailPage() {
             <TableHeader>
               <TableRow className="">
                 <TableHead>Title</TableHead>
+                <TableHead className="w-[120px]">Time entry</TableHead>
                 <TableHead>Qty</TableHead>
                 <TableHead>Unit price</TableHead>
                 <TableHead>Total</TableHead>
-                <TableHead className="w-fit">Time entry</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -143,6 +155,7 @@ export default function InvoiceDetailPage() {
           </Table>
         </div>
       </div>
+      <InvoicePdfModal invoice={invoiceData} open={openPdf} onOpenChange={setOpenPdf} />
     </>
 
   )

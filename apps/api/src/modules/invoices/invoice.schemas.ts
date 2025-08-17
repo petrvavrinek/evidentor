@@ -41,17 +41,22 @@ const InvoiceItemSchema = createSelectSchema(invoiceItems);
 const TimeEntrySchema = createSelectSchema(timeEntries);
 const ProjectSelectSchema = createSelectSchema(projects);
 
-export const InvoiceSelectSchema = t.Object({
-	...InvoiceSchema.properties,
-	client: t.Nullable(ClientSelectSchema),
-	project: t.Nullable(ProjectSelectSchema),
-	items: t.Array(
-		t.Object({
-			...InvoiceItemSchema.properties,
-			timeEntry: t.Nullable(TimeEntrySchema),
-		}),
-	),
-});
+export const InvoiceSelectSchema = t.Intersect([
+	InvoiceSchema,
+	t.Object({
+		id: t.Number(),
+		client: t.Nullable(ClientSelectSchema),
+		project: t.Nullable(ProjectSelectSchema),
+		items: t.Array(
+			t.Object({
+				...InvoiceItemSchema.properties,
+				timeEntry: t.Nullable(TimeEntrySchema),
+			}),
+		),
+	})
+]);
+
+
 
 export const InvoiceResponseSchema = t.Omit(InvoiceSelectSchema, []);
 export const InvoicesResponseSchema = t.Array(InvoiceSelectSchema);

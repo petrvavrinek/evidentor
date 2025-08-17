@@ -467,229 +467,434 @@ export const Client__Schema = {
 
 export const InvoiceSchema = {
   type: "object",
-  properties: {
-    id: {
-      minimum: -2147483648,
-      maximum: 2147483647,
-      type: "integer",
-    },
-    amount: {
-      minimum: -2147483648,
-      maximum: 2147483647,
-      type: "integer",
-    },
-    currency: {
-      anyOf: [
-        {
-          const: "czk",
-          type: "string",
-        },
-        {
-          const: "eur",
-          type: "string",
-        },
-        {
-          const: "usd",
-          type: "string",
-        },
-      ],
-    },
-    dueDate: {
-      anyOf: [
-        {
-          type: "Date",
-        },
-        {
-          type: "null",
-        },
-      ],
-    },
-    paidAt: {
-      anyOf: [
-        {
-          type: "Date",
-        },
-        {
-          type: "null",
-        },
-      ],
-    },
-    sentAt: {
-      anyOf: [
-        {
-          type: "Date",
-        },
-        {
-          type: "null",
-        },
-      ],
-    },
-    issuedAt: {
-      type: "Date",
-    },
-    createdAt: {
-      type: "Date",
-    },
-    updatedAt: {
-      type: "Date",
-    },
-    ownerId: {
-      anyOf: [
-        {
-          type: "string",
-        },
-        {
-          type: "null",
-        },
-      ],
-    },
-    clientId: {
-      anyOf: [
-        {
+  allOf: [
+    {
+      type: "object",
+      properties: {
+        id: {
           minimum: -2147483648,
           maximum: 2147483647,
           type: "integer",
         },
-        {
-          type: "null",
-        },
-      ],
-    },
-    projectId: {
-      anyOf: [
-        {
+        amount: {
           minimum: -2147483648,
           maximum: 2147483647,
           type: "integer",
         },
-        {
-          type: "null",
-        },
-      ],
-    },
-    client: {
-      anyOf: [
-        {
-          type: "object",
-          properties: {
-            id: {
-              minimum: -2147483648,
-              maximum: 2147483647,
-              type: "integer",
-            },
-            companyName: {
+        currency: {
+          anyOf: [
+            {
+              const: "czk",
               type: "string",
             },
-            contactName: {
+            {
+              const: "eur",
               type: "string",
             },
-            email: {
-              anyOf: [
-                {
-                  type: "string",
-                },
-                {
-                  type: "null",
-                },
-              ],
+            {
+              const: "usd",
+              type: "string",
             },
-            ownerId: {
-              anyOf: [
-                {
-                  type: "string",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            addressId: {
-              anyOf: [
-                {
-                  minimum: -2147483648,
-                  maximum: 2147483647,
-                  type: "integer",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            createdAt: {
-              type: "Date",
-            },
-          },
-          required: [
-            "id",
-            "companyName",
-            "contactName",
-            "email",
-            "ownerId",
-            "addressId",
-            "createdAt",
           ],
         },
-        {
-          type: "null",
+        dueDate: {
+          anyOf: [
+            {
+              type: "Date",
+            },
+            {
+              type: "null",
+            },
+          ],
         },
-      ],
-    },
-    project: {
-      anyOf: [
-        {
-          type: "object",
-          properties: {
-            id: {
+        paidAt: {
+          anyOf: [
+            {
+              type: "Date",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        sentAt: {
+          anyOf: [
+            {
+              type: "Date",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        issuedAt: {
+          type: "Date",
+        },
+        createdAt: {
+          type: "Date",
+        },
+        updatedAt: {
+          type: "Date",
+        },
+        ownerId: {
+          anyOf: [
+            {
+              type: "string",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        clientId: {
+          anyOf: [
+            {
               minimum: -2147483648,
               maximum: 2147483647,
               type: "integer",
             },
-            title: {
-              anyOf: [
-                {
-                  type: "string",
-                },
-                {
-                  type: "null",
-                },
-              ],
+            {
+              type: "null",
             },
-            ownerId: {
-              anyOf: [
-                {
-                  type: "string",
-                },
-                {
-                  type: "null",
-                },
-              ],
+          ],
+        },
+        projectId: {
+          anyOf: [
+            {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
             },
-            clientId: {
-              anyOf: [
-                {
+            {
+              type: "null",
+            },
+          ],
+        },
+        generatedFileId: {
+          anyOf: [
+            {
+              type: "string",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+      },
+      required: [
+        "id",
+        "amount",
+        "currency",
+        "dueDate",
+        "paidAt",
+        "sentAt",
+        "issuedAt",
+        "createdAt",
+        "updatedAt",
+        "ownerId",
+        "clientId",
+        "projectId",
+        "generatedFileId",
+      ],
+    },
+    {
+      type: "object",
+      properties: {
+        id: {
+          type: "number",
+        },
+        client: {
+          anyOf: [
+            {
+              type: "object",
+              properties: {
+                id: {
                   minimum: -2147483648,
                   maximum: 2147483647,
                   type: "integer",
                 },
-                {
-                  type: "null",
+                companyName: {
+                  type: "string",
                 },
+                contactName: {
+                  type: "string",
+                },
+                email: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                ownerId: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                addressId: {
+                  anyOf: [
+                    {
+                      minimum: -2147483648,
+                      maximum: 2147483647,
+                      type: "integer",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                createdAt: {
+                  type: "Date",
+                },
+              },
+              required: [
+                "id",
+                "companyName",
+                "contactName",
+                "email",
+                "ownerId",
+                "addressId",
+                "createdAt",
               ],
             },
-            createdAt: {
-              type: "Date",
+            {
+              type: "null",
             },
+          ],
+        },
+        project: {
+          anyOf: [
+            {
+              type: "object",
+              properties: {
+                id: {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                title: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                ownerId: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                clientId: {
+                  anyOf: [
+                    {
+                      minimum: -2147483648,
+                      maximum: 2147483647,
+                      type: "integer",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                createdAt: {
+                  type: "Date",
+                },
+              },
+              required: ["id", "title", "ownerId", "clientId", "createdAt"],
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        items: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              timeEntryId: {
+                anyOf: [
+                  {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              name: {
+                type: "string",
+              },
+              qty: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              unitPrice: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              invoiceId: {
+                anyOf: [
+                  {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              timeEntry: {
+                anyOf: [
+                  {
+                    type: "object",
+                    properties: {
+                      id: {
+                        minimum: -2147483648,
+                        maximum: 2147483647,
+                        type: "integer",
+                      },
+                      title: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      userId: {
+                        type: "string",
+                      },
+                      projectId: {
+                        anyOf: [
+                          {
+                            minimum: -2147483648,
+                            maximum: 2147483647,
+                            type: "integer",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      projectTaskId: {
+                        anyOf: [
+                          {
+                            minimum: -2147483648,
+                            maximum: 2147483647,
+                            type: "integer",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      invoiceId: {
+                        anyOf: [
+                          {
+                            minimum: -2147483648,
+                            maximum: 2147483647,
+                            type: "integer",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      startAt: {
+                        anyOf: [
+                          {
+                            type: "Date",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      endAt: {
+                        anyOf: [
+                          {
+                            type: "Date",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      createdAt: {
+                        type: "Date",
+                      },
+                    },
+                    required: [
+                      "id",
+                      "title",
+                      "userId",
+                      "projectId",
+                      "projectTaskId",
+                      "invoiceId",
+                      "startAt",
+                      "endAt",
+                      "createdAt",
+                    ],
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+            },
+            required: [
+              "id",
+              "timeEntryId",
+              "name",
+              "qty",
+              "unitPrice",
+              "invoiceId",
+              "timeEntry",
+            ],
           },
-          required: ["id", "title", "ownerId", "clientId", "createdAt"],
         },
-        {
-          type: "null",
-        },
-      ],
+      },
+      required: ["id", "client", "project", "items"],
     },
-    items: {
-      type: "array",
-      items: {
+  ],
+  $id: "#/components/schemas/Invoice",
+} as const;
+
+export const Invoice__Schema = {
+  type: "array",
+  items: {
+    type: "object",
+    allOf: [
+      {
         type: "object",
         properties: {
           id: {
@@ -697,7 +902,77 @@ export const InvoiceSchema = {
             maximum: 2147483647,
             type: "integer",
           },
-          timeEntryId: {
+          amount: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          currency: {
+            anyOf: [
+              {
+                const: "czk",
+                type: "string",
+              },
+              {
+                const: "eur",
+                type: "string",
+              },
+              {
+                const: "usd",
+                type: "string",
+              },
+            ],
+          },
+          dueDate: {
+            anyOf: [
+              {
+                type: "Date",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          paidAt: {
+            anyOf: [
+              {
+                type: "Date",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          sentAt: {
+            anyOf: [
+              {
+                type: "Date",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          issuedAt: {
+            type: "Date",
+          },
+          createdAt: {
+            type: "Date",
+          },
+          updatedAt: {
+            type: "Date",
+          },
+          ownerId: {
+            anyOf: [
+              {
+                type: "string",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          clientId: {
             anyOf: [
               {
                 minimum: -2147483648,
@@ -709,20 +984,7 @@ export const InvoiceSchema = {
               },
             ],
           },
-          name: {
-            type: "string",
-          },
-          qty: {
-            minimum: -2147483648,
-            maximum: 2147483647,
-            type: "integer",
-          },
-          unitPrice: {
-            minimum: -2147483648,
-            maximum: 2147483647,
-            type: "integer",
-          },
-          invoiceId: {
+          projectId: {
             anyOf: [
               {
                 minimum: -2147483648,
@@ -734,7 +996,107 @@ export const InvoiceSchema = {
               },
             ],
           },
-          timeEntry: {
+          generatedFileId: {
+            anyOf: [
+              {
+                type: "string",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+        },
+        required: [
+          "id",
+          "amount",
+          "currency",
+          "dueDate",
+          "paidAt",
+          "sentAt",
+          "issuedAt",
+          "createdAt",
+          "updatedAt",
+          "ownerId",
+          "clientId",
+          "projectId",
+          "generatedFileId",
+        ],
+      },
+      {
+        type: "object",
+        properties: {
+          id: {
+            type: "number",
+          },
+          client: {
+            anyOf: [
+              {
+                type: "object",
+                properties: {
+                  id: {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  companyName: {
+                    type: "string",
+                  },
+                  contactName: {
+                    type: "string",
+                  },
+                  email: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  ownerId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  addressId: {
+                    anyOf: [
+                      {
+                        minimum: -2147483648,
+                        maximum: 2147483647,
+                        type: "integer",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  createdAt: {
+                    type: "Date",
+                  },
+                },
+                required: [
+                  "id",
+                  "companyName",
+                  "contactName",
+                  "email",
+                  "ownerId",
+                  "addressId",
+                  "createdAt",
+                ],
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          project: {
             anyOf: [
               {
                 type: "object",
@@ -754,59 +1116,22 @@ export const InvoiceSchema = {
                       },
                     ],
                   },
-                  userId: {
-                    type: "string",
+                  ownerId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
                   },
-                  projectId: {
+                  clientId: {
                     anyOf: [
                       {
                         minimum: -2147483648,
                         maximum: 2147483647,
                         type: "integer",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  projectTaskId: {
-                    anyOf: [
-                      {
-                        minimum: -2147483648,
-                        maximum: 2147483647,
-                        type: "integer",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  invoiceId: {
-                    anyOf: [
-                      {
-                        minimum: -2147483648,
-                        maximum: 2147483647,
-                        type: "integer",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  startAt: {
-                    anyOf: [
-                      {
-                        type: "Date",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  endAt: {
-                    anyOf: [
-                      {
-                        type: "Date",
                       },
                       {
                         type: "null",
@@ -817,456 +1142,175 @@ export const InvoiceSchema = {
                     type: "Date",
                   },
                 },
-                required: [
-                  "id",
-                  "title",
-                  "userId",
-                  "projectId",
-                  "projectTaskId",
-                  "invoiceId",
-                  "startAt",
-                  "endAt",
-                  "createdAt",
-                ],
+                required: ["id", "title", "ownerId", "clientId", "createdAt"],
               },
               {
                 type: "null",
               },
             ],
           },
-        },
-        required: [
-          "id",
-          "timeEntryId",
-          "name",
-          "qty",
-          "unitPrice",
-          "invoiceId",
-          "timeEntry",
-        ],
-      },
-    },
-  },
-  required: [
-    "id",
-    "amount",
-    "currency",
-    "dueDate",
-    "paidAt",
-    "sentAt",
-    "issuedAt",
-    "createdAt",
-    "updatedAt",
-    "ownerId",
-    "clientId",
-    "projectId",
-    "client",
-    "project",
-    "items",
-  ],
-  $id: "#/components/schemas/Invoice",
-} as const;
-
-export const Invoice__Schema = {
-  type: "array",
-  items: {
-    type: "object",
-    properties: {
-      id: {
-        minimum: -2147483648,
-        maximum: 2147483647,
-        type: "integer",
-      },
-      amount: {
-        minimum: -2147483648,
-        maximum: 2147483647,
-        type: "integer",
-      },
-      currency: {
-        anyOf: [
-          {
-            const: "czk",
-            type: "string",
-          },
-          {
-            const: "eur",
-            type: "string",
-          },
-          {
-            const: "usd",
-            type: "string",
-          },
-        ],
-      },
-      dueDate: {
-        anyOf: [
-          {
-            type: "Date",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      paidAt: {
-        anyOf: [
-          {
-            type: "Date",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      sentAt: {
-        anyOf: [
-          {
-            type: "Date",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      issuedAt: {
-        type: "Date",
-      },
-      createdAt: {
-        type: "Date",
-      },
-      updatedAt: {
-        type: "Date",
-      },
-      ownerId: {
-        anyOf: [
-          {
-            type: "string",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      clientId: {
-        anyOf: [
-          {
-            minimum: -2147483648,
-            maximum: 2147483647,
-            type: "integer",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      projectId: {
-        anyOf: [
-          {
-            minimum: -2147483648,
-            maximum: 2147483647,
-            type: "integer",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      client: {
-        anyOf: [
-          {
-            type: "object",
-            properties: {
-              id: {
-                minimum: -2147483648,
-                maximum: 2147483647,
-                type: "integer",
-              },
-              companyName: {
-                type: "string",
-              },
-              contactName: {
-                type: "string",
-              },
-              email: {
-                anyOf: [
-                  {
-                    type: "string",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              ownerId: {
-                anyOf: [
-                  {
-                    type: "string",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              addressId: {
-                anyOf: [
-                  {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              createdAt: {
-                type: "Date",
-              },
-            },
-            required: [
-              "id",
-              "companyName",
-              "contactName",
-              "email",
-              "ownerId",
-              "addressId",
-              "createdAt",
-            ],
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      project: {
-        anyOf: [
-          {
-            type: "object",
-            properties: {
-              id: {
-                minimum: -2147483648,
-                maximum: 2147483647,
-                type: "integer",
-              },
-              title: {
-                anyOf: [
-                  {
-                    type: "string",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              ownerId: {
-                anyOf: [
-                  {
-                    type: "string",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              clientId: {
-                anyOf: [
-                  {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              createdAt: {
-                type: "Date",
-              },
-            },
-            required: ["id", "title", "ownerId", "clientId", "createdAt"],
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      items: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            id: {
-              minimum: -2147483648,
-              maximum: 2147483647,
-              type: "integer",
-            },
-            timeEntryId: {
-              anyOf: [
-                {
+          items: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id: {
                   minimum: -2147483648,
                   maximum: 2147483647,
                   type: "integer",
                 },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            name: {
-              type: "string",
-            },
-            qty: {
-              minimum: -2147483648,
-              maximum: 2147483647,
-              type: "integer",
-            },
-            unitPrice: {
-              minimum: -2147483648,
-              maximum: 2147483647,
-              type: "integer",
-            },
-            invoiceId: {
-              anyOf: [
-                {
-                  minimum: -2147483648,
-                  maximum: 2147483647,
-                  type: "integer",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            timeEntry: {
-              anyOf: [
-                {
-                  type: "object",
-                  properties: {
-                    id: {
+                timeEntryId: {
+                  anyOf: [
+                    {
                       minimum: -2147483648,
                       maximum: 2147483647,
                       type: "integer",
                     },
-                    title: {
-                      anyOf: [
-                        {
-                          type: "string",
-                        },
-                        {
-                          type: "null",
-                        },
-                      ],
+                    {
+                      type: "null",
                     },
-                    userId: {
-                      type: "string",
-                    },
-                    projectId: {
-                      anyOf: [
-                        {
-                          minimum: -2147483648,
-                          maximum: 2147483647,
-                          type: "integer",
-                        },
-                        {
-                          type: "null",
-                        },
-                      ],
-                    },
-                    projectTaskId: {
-                      anyOf: [
-                        {
-                          minimum: -2147483648,
-                          maximum: 2147483647,
-                          type: "integer",
-                        },
-                        {
-                          type: "null",
-                        },
-                      ],
-                    },
-                    invoiceId: {
-                      anyOf: [
-                        {
-                          minimum: -2147483648,
-                          maximum: 2147483647,
-                          type: "integer",
-                        },
-                        {
-                          type: "null",
-                        },
-                      ],
-                    },
-                    startAt: {
-                      anyOf: [
-                        {
-                          type: "Date",
-                        },
-                        {
-                          type: "null",
-                        },
-                      ],
-                    },
-                    endAt: {
-                      anyOf: [
-                        {
-                          type: "Date",
-                        },
-                        {
-                          type: "null",
-                        },
-                      ],
-                    },
-                    createdAt: {
-                      type: "Date",
-                    },
-                  },
-                  required: [
-                    "id",
-                    "title",
-                    "userId",
-                    "projectId",
-                    "projectTaskId",
-                    "invoiceId",
-                    "startAt",
-                    "endAt",
-                    "createdAt",
                   ],
                 },
-                {
-                  type: "null",
+                name: {
+                  type: "string",
                 },
+                qty: {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                unitPrice: {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                invoiceId: {
+                  anyOf: [
+                    {
+                      minimum: -2147483648,
+                      maximum: 2147483647,
+                      type: "integer",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                timeEntry: {
+                  anyOf: [
+                    {
+                      type: "object",
+                      properties: {
+                        id: {
+                          minimum: -2147483648,
+                          maximum: 2147483647,
+                          type: "integer",
+                        },
+                        title: {
+                          anyOf: [
+                            {
+                              type: "string",
+                            },
+                            {
+                              type: "null",
+                            },
+                          ],
+                        },
+                        userId: {
+                          type: "string",
+                        },
+                        projectId: {
+                          anyOf: [
+                            {
+                              minimum: -2147483648,
+                              maximum: 2147483647,
+                              type: "integer",
+                            },
+                            {
+                              type: "null",
+                            },
+                          ],
+                        },
+                        projectTaskId: {
+                          anyOf: [
+                            {
+                              minimum: -2147483648,
+                              maximum: 2147483647,
+                              type: "integer",
+                            },
+                            {
+                              type: "null",
+                            },
+                          ],
+                        },
+                        invoiceId: {
+                          anyOf: [
+                            {
+                              minimum: -2147483648,
+                              maximum: 2147483647,
+                              type: "integer",
+                            },
+                            {
+                              type: "null",
+                            },
+                          ],
+                        },
+                        startAt: {
+                          anyOf: [
+                            {
+                              type: "Date",
+                            },
+                            {
+                              type: "null",
+                            },
+                          ],
+                        },
+                        endAt: {
+                          anyOf: [
+                            {
+                              type: "Date",
+                            },
+                            {
+                              type: "null",
+                            },
+                          ],
+                        },
+                        createdAt: {
+                          type: "Date",
+                        },
+                      },
+                      required: [
+                        "id",
+                        "title",
+                        "userId",
+                        "projectId",
+                        "projectTaskId",
+                        "invoiceId",
+                        "startAt",
+                        "endAt",
+                        "createdAt",
+                      ],
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+              },
+              required: [
+                "id",
+                "timeEntryId",
+                "name",
+                "qty",
+                "unitPrice",
+                "invoiceId",
+                "timeEntry",
               ],
             },
           },
-          required: [
-            "id",
-            "timeEntryId",
-            "name",
-            "qty",
-            "unitPrice",
-            "invoiceId",
-            "timeEntry",
-          ],
         },
+        required: ["id", "client", "project", "items"],
       },
-    },
-    required: [
-      "id",
-      "amount",
-      "currency",
-      "dueDate",
-      "paidAt",
-      "sentAt",
-      "issuedAt",
-      "createdAt",
-      "updatedAt",
-      "ownerId",
-      "clientId",
-      "projectId",
-      "client",
-      "project",
-      "items",
     ],
   },
   $id: "#/components/schemas/Invoice[]",

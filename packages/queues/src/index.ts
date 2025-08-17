@@ -6,8 +6,10 @@ export {
 
 export {
 	InvoiceQueue,
+	InvoiceQueueEvents,
 	type InvoiceQueueDataType,
 	type InvoiceQueueResultType,
 } from "./queues/invoice.queue";
 
+export { Job } from "bullmq";
 export { createWorker } from "./worker";

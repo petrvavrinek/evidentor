@@ -1,11 +1,13 @@
 import {
   BarChart3,
   Calendar,
+  ClipboardPlus,
   Clock,
   DollarSign,
   FileText,
   FolderKanban,
   Home,
+  List,
   type LucideIcon,
   Palette,
   Settings,
@@ -41,9 +43,20 @@ export const appRoutes: RouteItem[] = [
     id: "timeTracker",
   },
   {
-    href: "/app/invoices",
     icon: FileText,
     id: "invoices",
+    items: [
+      {
+        href: "/app/invoices",
+        id: "invoices/listing",
+        icon: List
+      },
+      {
+        href: "/app/invoices/rules",
+        id: "invoices/rules",
+        icon: ClipboardPlus
+      }
+    ]
   },
   {
     href: "/app/reports",

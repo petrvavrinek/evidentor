@@ -39,7 +39,8 @@ export const invoices = pgTable("invoice", {
 		.notNull(),
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
-	projectId: integer().references(() => projects.id, { onDelete: "set null" })
+	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
+	generatedFileId: text()
 });
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({

@@ -1,3 +1,4 @@
+import { QueueEvents } from "bullmq";
 import { createQueue } from "../queue";
 
 interface PaymentSubject {
@@ -69,7 +70,7 @@ export type InvoiceQueueResultType =
 	| {
 			ok: false;
 	  }
-	| { ok: true; filePath: string };
+	| { ok: true; filePath: string, fileId: string, id: string };
 
 // Define queues here at the moment
 export const InvoiceQueue = createQueue<
@@ -77,3 +78,5 @@ export const InvoiceQueue = createQueue<
 	InvoiceQueueResultType,
 	""
 >("Invoices");
+
+export const InvoiceQueueEvents = new QueueEvents("Invoices");
