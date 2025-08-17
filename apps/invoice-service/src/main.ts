@@ -15,8 +15,6 @@ import { InvoiceDocument } from "./renderer/Invoice";
 
 const logger = new LoggerService("InvoiceWorker");
 
-logger.info("Waiting for jobs...");
-
 if (!await storage.directoryExists("invoices")) {
 	storage.createDirectory("invoices");
 	logger.info("Created invoices storage directory")
@@ -45,3 +43,14 @@ export const InvoiceWorker = createWorker<
 InvoiceWorker.on("error", e => {
 	logger.error(e.name, e.message);
 });
+
+const server = Bun.serve({
+	routes: {
+		"/status": new Response("OK"),
+	},
+	port: process.env.PORT ?? 3000,
+	hostname: "0.0.0.0",
+});
+
+logger.info(`Listening for healthchecks on ${server.hostname}:${server.port}`);
+logger.info(`Connected and waiting for jobs...`);
