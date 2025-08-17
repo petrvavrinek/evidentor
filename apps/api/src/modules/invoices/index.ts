@@ -91,6 +91,13 @@ const router = new Elysia({
 	.delete(
 		":id",
 		async ({ user, params }) => {
+			const invoice = await InvoicesService.findById(user.id, params.id);
+			if (!invoice) throw status(404, "Invoice not found");
+
+			const filePath = path.join("invoices", `${invoice.generatedFileId}.pdf`);
+			if (await storage.fileExists(filePath))
+				await storage.deleteFile(filePath);
+
 			await InvoicesService.deleteById(user.id, params.id);
 			return { success: true };
 		},
