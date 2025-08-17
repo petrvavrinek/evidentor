@@ -106,6 +106,34 @@
       "when": 1755263971863,
       "tag": "0014_create_address_and_client_billing_table",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1755431451497,
+      "tag": "0015_update_invoice_item_add_time_entry_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1755431730619,
+      "tag": "0016_update_invoice_add_client",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1755432740528,
+      "tag": "0017_update_invoice_add_project",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1755438439604,
+      "tag": "0018_update_invoice_add_generated_file_id",
+      "breakpoints": true
     }
   ]
 }

@@ -20,6 +20,8 @@ import type {
   DeleteInvoicesByIdResponses,
   GetInvoicesByIdData,
   GetInvoicesByIdResponses,
+  GetInvoicesByIdGeneratedData,
+  GetInvoicesByIdGeneratedResponses,
   GetProjectTasksCountData,
   GetProjectTasksCountResponses,
   GetProjectTasksData,
@@ -166,6 +168,7 @@ import {
   zDeleteInvoicesByIdResponse,
   zGetInvoicesByIdData,
   zGetInvoicesByIdResponse,
+  zGetInvoicesByIdGeneratedData,
   zGetProjectTasksCountData,
   zGetProjectTasksCountResponse,
   zGetProjectTasksData,
@@ -479,6 +482,22 @@ export const getInvoicesById = <ThrowOnError extends boolean = false>(
       return await zGetInvoicesByIdResponse.parseAsync(data);
     },
     url: "/invoices/{id}",
+    ...options,
+  });
+};
+
+export const getInvoicesByIdGenerated = <ThrowOnError extends boolean = false>(
+  options: Options<GetInvoicesByIdGeneratedData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetInvoicesByIdGeneratedResponses,
+    unknown,
+    ThrowOnError
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoicesByIdGeneratedData.parseAsync(data);
+    },
+    url: "/invoices/{id}/generated",
     ...options,
   });
 };

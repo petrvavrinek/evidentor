@@ -12,7 +12,9 @@ export default {
     settings: "Nastavení",
     "settings/user": "Uživatel",
     "settings/billing": "Fakturace",
-    "settings/appearance": "Vzhled a jazyk"
+    "settings/appearance": "Vzhled a jazyk",
+    "invoices/listing": "Procházení faktur",
+    "invoices/rules": "Automatické faktury"
   },
   pages
 }

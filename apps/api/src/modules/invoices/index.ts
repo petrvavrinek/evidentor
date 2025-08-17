@@ -1,5 +1,7 @@
-import { InvoiceQueue } from "@evidentor/queues";
+import { InvoiceQueue, InvoiceQueueEvents, Job, type InvoiceQueueDataType, type InvoiceQueueResultType } from "@evidentor/queues";
 import Elysia, { status, t } from "elysia";
+import path from "node:path";
+
 
 import { BetterAuthMacro } from "../auth";
 import {
@@ -10,9 +12,14 @@ import {
 } from "./invoice.schemas";
 
 // TODO: REWORK IMPORTS THIS!
+import { storage } from "@evidentor/storage";
 import { ProjectsService } from "../projects/projects.service";
 import { InvoicesService } from "./invoices.service";
 import { convertInvoiceToQueueType } from "./utils/convert-queue";
+import { LoggerService } from "@evidentor/logging";
+
+
+const logger = new LoggerService("invoices");
 
 const router = new Elysia({
 	prefix: "/invoices",
@@ -44,15 +51,10 @@ const router = new Elysia({
 		"",
 		async ({ user, body }) => {
 			const project = await ProjectsService.findById(user.id, body.projectId);
-			if (!project) throw status(404, "Project not found");
+			if (!project) throw status(400, "Project not found");
+			if (!project.client) throw status(400, "Project does not have client assigned");
 
-			if (!project.clientId)
-				throw status(400, "Project does not have assigned client");
-
-			const invoice = await InvoicesService.create(user.id, {
-				...body,
-				clientId: project.clientId,
-			});
+			const invoice = await InvoicesService.create(user.id, { ...body, clientId: project.client.id });
 			const newInvoice = (await InvoicesService.findById(
 				user.id,
 				invoice!.id,
@@ -60,7 +62,7 @@ const router = new Elysia({
 
 			// Generate invoice in the background
 			const invoiceQueueData = convertInvoiceToQueueType(newInvoice);
-			await InvoiceQueue.add("", {
+			const job = await InvoiceQueue.add("", {
 				type: "generate-invoice",
 				data: invoiceQueueData,
 			});
@@ -98,6 +100,50 @@ const router = new Elysia({
 			response: t.Object({ success: t.Boolean() }),
 			detail: { description: "Delete invoice" },
 		},
-	);
+	)
+	.get(":id/generated", async ({ user, params }) => {
+		const invoice = await InvoicesService.findById(user.id, params.id);
+		if (!invoice) throw status(404, "Invoice not found");
+
+		const filePath = path.join("invoices", `${invoice.generatedFileId}.pdf`);
+		const exist = await storage.fileExists(filePath);
+		if (!exist) throw status(404, "File not found");
+		return storage.read(filePath);
+	}, {
+		auth: true,
+		params: InvoiceIdParamSchema
+	});
+
+
+router.on("start", async () => {
+	logger.info("Listening for invoice file generation");
+	InvoiceQueueEvents.on("completed", async ({ jobId }) => {
+		const job = await Job.fromId<InvoiceQueueDataType, InvoiceQueueResultType>(InvoiceQueue, jobId);
+		if (!job?.returnvalue) {
+			logger.warn(`Could not get return returnvalue from job: ${jobId}`)
+			return;
+		}
+		const { returnvalue: result } = job;
+		if (!result.ok) {
+			logger.warn(`Could not generate invoice for job: ${jobId}`)
+			return;
+		}
+		const id = Number.parseInt(result.id);
+		await InvoicesService.updateInvoiceGeneratedFilePath(id, result.fileId);
+		logger.info(`Invoice ${id} generated to file ${result.fileId}`);
+	});
+
+	const invoices = await InvoicesService.findInvoicesWithoutGeneratedFile();
+	logger.info(`Found ${invoices.length} invoices without generated file`);
+	const convertedInvoices = invoices.map(e => convertInvoiceToQueueType(e));
+
+	for (const convertedInvoice of convertedInvoices) {
+		InvoiceQueue.add("", {
+			type: "generate-invoice",
+			data: convertedInvoice,
+		});
+	}
+});
+
 
 export default router;

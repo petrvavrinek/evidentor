@@ -4,6 +4,7 @@ import { index, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { user } from "./auth.schema";
 import { projects } from "./projects.schema";
 import { projectTasks } from "./project-tasks.schema";
+import { invoices } from "./invoices.schema";
 
 export const timeEntries = pgTable(
 	"time_entry",
@@ -17,6 +18,7 @@ export const timeEntries = pgTable(
 		projectTaskId: integer().references(() => projectTasks.id, {
 			onDelete: "set null",
 		}),
+		invoiceId: integer().references(() => invoices.id),
 		startAt: timestamp({ withTimezone: true }),
 		endAt: timestamp({ withTimezone: true }),
 		createdAt: timestamp({ withTimezone: true })
@@ -35,4 +37,8 @@ export const timeEntriesRelations = relations(timeEntries, ({ one }) => ({
 		fields: [timeEntries.projectTaskId],
 		references: [projectTasks.id],
 	}),
+	invoice: one(invoices, {
+		fields: [timeEntries.invoiceId],
+		references: [invoices.id]
+	})
 }));

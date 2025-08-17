@@ -74,8 +74,6 @@ export type Client2 = Array<
 
 export type Invoice = {
   id: number;
-  clientId: number | null;
-  projectId: number | null;
   amount: number;
   currency: "czk" | "eur" | "usd";
   dueDate: unknown | null;
@@ -85,13 +83,11 @@ export type Invoice = {
   createdAt: unknown;
   updatedAt: unknown;
   ownerId: string | null;
-  project: {
-    id: number;
-    title: string | null;
-    ownerId: string | null;
-    clientId: number | null;
-    createdAt: unknown;
-  } | null;
+  clientId: number | null;
+  projectId: number | null;
+  generatedFileId: string | null;
+} & {
+  id: number;
   client: {
     id: number;
     companyName: string;
@@ -101,68 +97,88 @@ export type Invoice = {
     addressId: number | null;
     createdAt: unknown;
   } | null;
+  project: {
+    id: number;
+    title: string | null;
+    ownerId: string | null;
+    clientId: number | null;
+    createdAt: unknown;
+  } | null;
   items: Array<{
     id: number;
-    projectTaskId: number | null;
+    timeEntryId: number | null;
     name: string;
     qty: number;
     unitPrice: number;
     invoiceId: number | null;
-    projectTask: {
+    timeEntry: {
       id: number;
-      title: string;
-      projectId: number;
-      description: string | null;
+      title: string | null;
+      userId: string;
+      projectId: number | null;
+      projectTaskId: number | null;
+      invoiceId: number | null;
+      startAt: unknown | null;
+      endAt: unknown | null;
       createdAt: unknown;
     } | null;
   }>;
 };
 
-export type Invoice2 = Array<{
-  id: number;
-  clientId: number | null;
-  projectId: number | null;
-  amount: number;
-  currency: "czk" | "eur" | "usd";
-  dueDate: unknown | null;
-  paidAt: unknown | null;
-  sentAt: unknown | null;
-  issuedAt: unknown;
-  createdAt: unknown;
-  updatedAt: unknown;
-  ownerId: string | null;
-  project: {
+export type Invoice2 = Array<
+  {
     id: number;
-    title: string | null;
+    amount: number;
+    currency: "czk" | "eur" | "usd";
+    dueDate: unknown | null;
+    paidAt: unknown | null;
+    sentAt: unknown | null;
+    issuedAt: unknown;
+    createdAt: unknown;
+    updatedAt: unknown;
     ownerId: string | null;
     clientId: number | null;
-    createdAt: unknown;
-  } | null;
-  client: {
+    projectId: number | null;
+    generatedFileId: string | null;
+  } & {
     id: number;
-    companyName: string;
-    contactName: string;
-    email: string | null;
-    ownerId: string | null;
-    addressId: number | null;
-    createdAt: unknown;
-  } | null;
-  items: Array<{
-    id: number;
-    projectTaskId: number | null;
-    name: string;
-    qty: number;
-    unitPrice: number;
-    invoiceId: number | null;
-    projectTask: {
+    client: {
       id: number;
-      title: string;
-      projectId: number;
-      description: string | null;
+      companyName: string;
+      contactName: string;
+      email: string | null;
+      ownerId: string | null;
+      addressId: number | null;
       createdAt: unknown;
     } | null;
-  }>;
-}>;
+    project: {
+      id: number;
+      title: string | null;
+      ownerId: string | null;
+      clientId: number | null;
+      createdAt: unknown;
+    } | null;
+    items: Array<{
+      id: number;
+      timeEntryId: number | null;
+      name: string;
+      qty: number;
+      unitPrice: number;
+      invoiceId: number | null;
+      timeEntry: {
+        id: number;
+        title: string | null;
+        userId: string;
+        projectId: number | null;
+        projectTaskId: number | null;
+        invoiceId: number | null;
+        startAt: unknown | null;
+        endAt: unknown | null;
+        createdAt: unknown;
+      } | null;
+    }>;
+  }
+>;
 
 export type ProjectTask = {
   id: number;
@@ -247,6 +263,7 @@ export type ProjectCount = {
 export type TimeEntry = {
   id: number;
   title: string | null;
+  invoiceId: number | null;
   startAt: unknown | null;
   endAt: unknown | null;
   createdAt: unknown;
@@ -275,6 +292,7 @@ export type TimeEntry = {
 export type TimeEntry2 = Array<{
   id: number;
   title: string | null;
+  invoiceId: number | null;
   startAt: unknown | null;
   endAt: unknown | null;
   createdAt: unknown;
@@ -477,14 +495,15 @@ export type GetInvoicesResponse =
 
 export type PostInvoicesData = {
   body: {
-    projectId: number;
     dueDate: unknown | Date | number;
     currency: "czk" | "eur" | "usd";
+    projectId: number;
+  } & {
     items: Array<{
       name: string;
       qty: number;
       unitPrice: number;
-      projectTaskId?: number;
+      timeEntryId?: number | null;
     }>;
   };
   path?: never;
@@ -532,6 +551,19 @@ export type GetInvoicesByIdResponses = {
 
 export type GetInvoicesByIdResponse =
   GetInvoicesByIdResponses[keyof GetInvoicesByIdResponses];
+
+export type GetInvoicesByIdGeneratedData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoices/{id}/generated";
+};
+
+export type GetInvoicesByIdGeneratedResponses = {
+  200: unknown;
+};
 
 export type GetProjectTasksCountData = {
   body?: never;
@@ -767,6 +799,7 @@ export type PatchTimeEntriesByIdData = {
     title?: string;
     projectId?: number | null;
     projectTaskId?: number | null;
+    invoiceId?: number | null;
     startAt?: unknown | Date | number;
     endAt?: (unknown | Date | number) | null;
   };
@@ -803,6 +836,7 @@ export type PostTimeEntriesData = {
     title: string;
     projectId: number | null;
     projectTaskId?: number | null;
+    invoiceId?: number | null;
     startAt: unknown | Date | number;
     endAt: (unknown | Date | number) | null;
   };

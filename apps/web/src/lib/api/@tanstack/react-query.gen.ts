@@ -11,6 +11,7 @@ import {
   postInvoices,
   deleteInvoicesById,
   getInvoicesById,
+  getInvoicesByIdGenerated,
   getProjectTasksCount,
   getProjectTasks,
   deleteProjectTasksById,
@@ -79,6 +80,7 @@ import type {
   DeleteInvoicesByIdData,
   DeleteInvoicesByIdResponse,
   GetInvoicesByIdData,
+  GetInvoicesByIdGeneratedData,
   GetProjectTasksCountData,
   GetProjectTasksData,
   DeleteProjectTasksByIdData,
@@ -469,6 +471,27 @@ export const getInvoicesByIdOptions = (
       return data;
     },
     queryKey: getInvoicesByIdQueryKey(options),
+  });
+};
+
+export const getInvoicesByIdGeneratedQueryKey = (
+  options: Options<GetInvoicesByIdGeneratedData>,
+) => createQueryKey("getInvoicesByIdGenerated", options);
+
+export const getInvoicesByIdGeneratedOptions = (
+  options: Options<GetInvoicesByIdGeneratedData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getInvoicesByIdGenerated({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getInvoicesByIdGeneratedQueryKey(options),
   });
 };
 

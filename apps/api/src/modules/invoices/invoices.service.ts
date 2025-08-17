@@ -1,7 +1,7 @@
-import { and, eq, type SQL, inArray } from "drizzle-orm";
+import { and, eq, type SQL, inArray, isNull } from "drizzle-orm";
 
 import { db } from "../../database";
-import { invoices, invoiceItems, projects, projectTasks } from "@/db/schema";
+import { invoices, invoiceItems, timeEntries, projects } from "@/db/schema";
 
 import type { InvoiceCreateType } from "./invoice.schemas";
 
@@ -16,13 +16,13 @@ export const InvoicesService = {
 	findByOptions(options?: CreateInvoiceQueryOptions) {
 		return db.query.invoices.findMany({
 			with: {
-				client: true,
 				items: {
 					with: {
-						projectTask: true,
+						timeEntry: true
 					},
 				},
-				project: true,
+				client: true,
+				project: true
 			},
 			where: options?.filters ? and(...options.filters) : undefined,
 		});
@@ -56,7 +56,7 @@ export const InvoicesService = {
 	 * @param id Invoice ID
 	 * @returns Invoice or null
 	 */
-	async findById(userId: string, id: number) {		
+	async findById(userId: string, id: number) {
 		const results = await this.findByOptions({
 			filters: [eq(invoices.id, id), eq(invoices.ownerId, userId)],
 		});
@@ -66,25 +66,21 @@ export const InvoicesService = {
 
 	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
 		return db.transaction(async (tx) => {
-			// Find project tasks if any
-			const projectTaskIds = data.items
-				.filter((e) => !!e.projectTaskId)
-				.map((e) => e.projectTaskId as number);
+			const timeEntryIds = data.items.filter(e => !!e.timeEntryId).map(e => e.timeEntryId as number);
 
-			// Check if project tasks are accessible by user
-			const invoiceProjectTaskItems = await tx
-				.select({ id: projectTasks.id })
-				.from(projectTasks)
-				.leftJoin(projects, eq(projectTasks.projectId, projects.id))
+			const timeEntryItems = await tx
+				.select({ id: timeEntries.id, invoiceId: timeEntries.invoiceId })
+				.from(timeEntries)
+				.leftJoin(projects, eq(projects.id, data.projectId))
 				.where(
 					and(
-						eq(projects.ownerId, userId),
-						eq(projects.id, data.projectId),
-						inArray(projectTasks.id, projectTaskIds),
-					),
+						eq(timeEntries.userId, userId),
+						inArray(timeEntries.id, timeEntryIds),
+						isNull(timeEntries.invoiceId)
+					)
 				);
-			// Map task ids to array
-			const invoiceProjectTaskIds = invoiceProjectTaskItems.map((e) => e.id);
+
+			const invoiceTimeEntryIds = timeEntryItems.map(e => e.id);
 
 			// Calculate total amount
 			const amount = data.items.reduce(
@@ -105,12 +101,8 @@ export const InvoicesService = {
 					qty: e.qty,
 					unitPrice: e.unitPrice,
 					invoiceId: createdInvoice?.id,
-					// Check if project task exist, otherwise fallback to null
-					projectTaskId:
-						e.projectTaskId && invoiceProjectTaskIds.includes(e.projectTaskId)
-							? e.projectTaskId
-							: null,
-				})),
+					timeEntryId: e.timeEntryId && invoiceTimeEntryIds.includes(e.timeEntryId) ? e.timeEntryId : null
+				}))
 			);
 
 			return createdInvoice;
@@ -142,4 +134,12 @@ export const InvoicesService = {
 			.delete(invoices)
 			.where(and(eq(invoices.ownerId, userId), eq(invoices.id, id)));
 	},
+
+	async updateInvoiceGeneratedFilePath(id: number, fileId: string) {
+		await db.update(invoices).set({ generatedFileId: fileId }).where(eq(invoices.id, id));
+	},
+
+	findInvoicesWithoutGeneratedFile() {
+		return this.findByOptions({ filters: [isNull(invoices.generatedFileId)]})
+	}
 };

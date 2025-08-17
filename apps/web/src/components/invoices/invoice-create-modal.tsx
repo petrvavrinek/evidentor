@@ -70,7 +70,7 @@ export default function InvoiceCreateModal({
 				body: {
 					projectId: values.projectId,
 					currency: values.currency,
-					dueDate: values.dueDate || null,
+					dueDate: values.dueDate ? new Date(values.dueDate) : null,
 					items: values.items,
 				},
 			});

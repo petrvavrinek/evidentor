@@ -13,7 +13,9 @@ export default {
     timeTracker: "Time tracking",
     "settings/appearance": "Appearance and language",
     "settings/billing": "Billing",
-    "settings/user": "User"
+    "settings/user": "User",
+    "invoices/listing": "Invoice listing",
+    "invoices/rules": "Automatic invoices"
   },
   pages
 } satisfies typeof csApp;

@@ -1,10 +1,10 @@
 import AppConfig from "@/config/app";
-import { useEffect } from "react"
+import { DependencyList, useEffect } from "react"
 
-const useTitle = (title: string) => {
+const useTitle = (title: string, deps?: unknown[]) => {
   useEffect(() => {
     document.title = `${title} | ${AppConfig.AppName}`;
-  }, [title]);
+  }, [title, ...[deps ?? []]]);
 }
 
 export default useTitle;

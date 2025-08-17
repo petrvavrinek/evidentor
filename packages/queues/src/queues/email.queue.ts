@@ -1,3 +1,4 @@
+import { QueueEvents } from "bullmq";
 import { createQueue } from "../queue";
 
 type EmailQueueEvent<Event extends string, Data> = {

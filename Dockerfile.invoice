@@ -15,10 +15,11 @@ RUN apt-get update && \
     apt-get install -y python3 make gcc g++
 
 # Copy everything into image
-COPY ./apps/api ./apps/api
-COPY ./packages/queues ./packages/queues
+COPY ./apps/invoice-service ./apps/invoice-service
 COPY ./packages/storage ./packages/storage
+COPY ./packages/queues ./packages/queues
 COPY ./packages/logging ./packages/logging
+
 COPY ./bun.lock .
 COPY ./package.json .
 
@@ -35,15 +36,13 @@ RUN bun install
 
 ENV NODE_ENV=production
 
-RUN echo "Target arch: ${TARGETARCH}"
-
 # Build application
 RUN bun build \
     --compile \
     --minify \
     --target bun-linux-${TARGETARCH} \
     --outfile server \
-    ./apps/api/src/main.ts
+    ./apps/invoice-service/src/main.ts
 
 RUN echo "Build stage" ; ls -l
 
@@ -64,6 +63,7 @@ COPY --from=build /app/server server
 RUN echo "Run stage" ; ls -l
 
 ENV NODE_ENV=production
+ENV PORT=3000
 
 CMD ["./server"]
 
