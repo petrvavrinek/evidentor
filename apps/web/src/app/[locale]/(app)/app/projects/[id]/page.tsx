@@ -26,7 +26,7 @@ import EditTaskModal from "@/components/tasks/edit-task-modal";
 
 export default function ProjectOverviewPage() {
 	const params = useParams();
-	const projectId = Number(params.projectId);
+	const projectId = Number(params.id);
 
   const [projectTasks, setProjectTasks] = useState<ProjectTask[]>([]);
   const [newTaskDialogOpen, setNewTaskDialogOpen] = useState(false);

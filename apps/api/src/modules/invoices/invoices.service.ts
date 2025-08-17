@@ -21,7 +21,8 @@ export const InvoicesService = {
 						timeEntry: true
 					},
 				},
-				client: true
+				client: true,
+				project: true
 			},
 			where: options?.filters ? and(...options.filters) : undefined,
 		});

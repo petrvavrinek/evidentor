@@ -127,6 +127,19 @@ export const zInvoice = z.object({
     }),
     z.null(),
   ]),
+  project: z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.union([z.string(), z.null()]),
+      ownerId: z.union([z.string(), z.null()]),
+      clientId: z.union([
+        z.number().int().gte(-2147483648).lte(2147483647),
+        z.null(),
+      ]),
+      createdAt: z.unknown(),
+    }),
+    z.null(),
+  ]),
   items: z.array(
     z.object({
       id: z.number().int().gte(-2147483648).lte(2147483647),
@@ -196,6 +209,19 @@ export const zInvoice2 = z.array(
         email: z.union([z.string(), z.null()]),
         ownerId: z.union([z.string(), z.null()]),
         addressId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
+        createdAt: z.unknown(),
+      }),
+      z.null(),
+    ]),
+    project: z.union([
+      z.object({
+        id: z.number().int().gte(-2147483648).lte(2147483647),
+        title: z.union([z.string(), z.null()]),
+        ownerId: z.union([z.string(), z.null()]),
+        clientId: z.union([
           z.number().int().gte(-2147483648).lte(2147483647),
           z.null(),
         ]),
@@ -610,10 +636,14 @@ export const zGetInvoicesResponse = zInvoice2;
 export const zPostInvoicesData = z.object({
   body: z
     .object({
-      dueDate: z.union([z.unknown(), z.null()]).optional(),
+      dueDate: z.union([
+        z.unknown(),
+        z.string().datetime(),
+        z.string().date(),
+        z.number(),
+      ]),
       currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
       projectId: z.number(),
-      clientId: z.number(),
     })
     .and(
       z.object({

@@ -20,23 +20,23 @@ import {
 } from "@evidentor/ui/components/ui/table";
 
 import InvoiceCreateModal from "@/components/invoices/invoice-create-modal";
-import InvoiceDetailModal from "@/components/invoices/invoice-detail-modal";
 import { InvoiceTableRow } from "@/components/invoices/invoice-table-row";
 import PageHeader from "@/components/page-header";
 import SearchInput from "@/components/search-input";
 
 import useTitle from "@/hooks/use-title";
-import type { Invoice } from "@/lib/api";
 import { getInvoicesQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { deleteInvoicesById, getInvoices } from "@/lib/api/sdk.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function InvoicesPage() {
 	const t = useTranslations("app.pages.invoices");
 	useTitle(t("title"));
-
+	const router = useRouter();
+	
 	const {
 		data: invoices,
 		isLoading,
@@ -48,12 +48,10 @@ export default function InvoicesPage() {
 		queryFn: () => getInvoices(),
 	});
 
-	const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 	const [createOpen, setCreateOpen] = useState(false);
 	const handleDelete = (id: number) => {
 		deleteInvoicesById({ path: { id } }).then(() => refetch());
 	};
-	const handleCloseModal = () => setSelectedInvoice(null);
 
 	return (
 		<>
@@ -135,7 +133,7 @@ export default function InvoicesPage() {
 											key={invoice.id}
 											invoice={invoice}
 											onDelete={() => handleDelete(invoice.id)}
-											onViewDetails={() => setSelectedInvoice(invoice)}
+											onViewDetails={() => router.push(`detail/${invoice.id}`)}
 										/>
 									))
 								)}
@@ -144,11 +142,6 @@ export default function InvoicesPage() {
 					</div>
 				</CardContent>
 			</Card>
-			<InvoiceDetailModal
-				invoice={selectedInvoice}
-				isOpen={!!selectedInvoice}
-				onClose={handleCloseModal}
-			/>
 			<InvoiceCreateModal
 				isOpen={createOpen}
 				onClose={() => setCreateOpen(false)}

@@ -94,6 +94,13 @@ export type Invoice = {
     addressId: number | null;
     createdAt: unknown;
   } | null;
+  project: {
+    id: number;
+    title: string | null;
+    ownerId: string | null;
+    clientId: number | null;
+    createdAt: unknown;
+  } | null;
   items: Array<{
     id: number;
     timeEntryId: number | null;
@@ -135,6 +142,13 @@ export type Invoice2 = Array<{
     email: string | null;
     ownerId: string | null;
     addressId: number | null;
+    createdAt: unknown;
+  } | null;
+  project: {
+    id: number;
+    title: string | null;
+    ownerId: string | null;
+    clientId: number | null;
     createdAt: unknown;
   } | null;
   items: Array<{
@@ -473,10 +487,9 @@ export type GetInvoicesResponse =
 
 export type PostInvoicesData = {
   body: {
-    dueDate?: unknown | null;
+    dueDate: unknown | Date | number;
     currency: "czk" | "eur" | "usd";
     projectId: number;
-    clientId: number;
   } & {
     items: Array<{
       name: string;

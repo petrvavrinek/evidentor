@@ -5,6 +5,7 @@ import {
 	invoices,
 	invoiceItems,
 	timeEntries,
+	projects,
 } from "@/db/schema";
 
 const CreateInvoiceSchema = createInsertSchema(invoices, {
@@ -38,10 +39,12 @@ const ClientSelectSchema = createSelectSchema(clients);
 const InvoiceSchema = createSelectSchema(invoices);
 const InvoiceItemSchema = createSelectSchema(invoiceItems);
 const TimeEntrySchema = createSelectSchema(timeEntries);
+const ProjectSelectSchema = createSelectSchema(projects);
 
 export const InvoiceSelectSchema = t.Object({
 	...InvoiceSchema.properties,
 	client: t.Nullable(ClientSelectSchema),
+	project: t.Nullable(ProjectSelectSchema),
 	items: t.Array(
 		t.Object({
 			...InvoiceItemSchema.properties,

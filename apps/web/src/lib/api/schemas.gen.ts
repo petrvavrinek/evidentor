@@ -634,6 +634,59 @@ export const InvoiceSchema = {
         },
       ],
     },
+    project: {
+      anyOf: [
+        {
+          type: "object",
+          properties: {
+            id: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            title: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            ownerId: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            clientId: {
+              anyOf: [
+                {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            createdAt: {
+              type: "Date",
+            },
+          },
+          required: ["id", "title", "ownerId", "clientId", "createdAt"],
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
     items: {
       type: "array",
       items: {
@@ -808,6 +861,7 @@ export const InvoiceSchema = {
     "clientId",
     "projectId",
     "client",
+    "project",
     "items",
   ],
   $id: "#/components/schemas/Invoice",
@@ -978,6 +1032,59 @@ export const Invoice__Schema = {
               "addressId",
               "createdAt",
             ],
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      project: {
+        anyOf: [
+          {
+            type: "object",
+            properties: {
+              id: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              title: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              ownerId: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              clientId: {
+                anyOf: [
+                  {
+                    minimum: -2147483648,
+                    maximum: 2147483647,
+                    type: "integer",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              createdAt: {
+                type: "Date",
+              },
+            },
+            required: ["id", "title", "ownerId", "clientId", "createdAt"],
           },
           {
             type: "null",
@@ -1158,6 +1265,7 @@ export const Invoice__Schema = {
       "clientId",
       "projectId",
       "client",
+      "project",
       "items",
     ],
   },

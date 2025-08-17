@@ -72,7 +72,6 @@ export default function InvoiceCreateModal({
 					currency: values.currency,
 					dueDate: values.dueDate ? new Date(values.dueDate) : null,
 					items: values.items,
-					clientId: 1
 				},
 			});
 			onCreated();
