@@ -19,15 +19,11 @@ export const createQueue = <
 	name: string,
 	options?: CreateQueueOptions,
 ) => {
-	console.log("Redis config: ", envConfig);
 	const queue = new Queue<DataTypeOrJob, DefaultResultType, DefaultNameType>(
 		name,
 		{
 			connection: {
-				host: envConfig.REDIS_HOST,
-				port: envConfig.REDIS_PORT,
-				username: envConfig.REDIS_USER,
-				password: envConfig.REDIS_PASSWORD,
+				url: envConfig.REDIS_URI
 			},
 			...options,
 		},
