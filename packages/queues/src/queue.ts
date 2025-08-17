@@ -1,5 +1,5 @@
 import { Queue, type QueueOptions } from "bullmq";
-import { envConfig } from "./config";
+import { createConnection } from "./create-connection";
 
 type CreateQueueOptions = Omit<QueueOptions, "connection">;
 
@@ -22,9 +22,7 @@ export const createQueue = <
 	const queue = new Queue<DataTypeOrJob, DefaultResultType, DefaultNameType>(
 		name,
 		{
-			connection: {
-				url: envConfig.REDIS_URI
-			},
+			connection: createConnection(),
 			...options,
 		},
 	);

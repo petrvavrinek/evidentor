@@ -1,5 +1,6 @@
 import { QueueEvents } from "bullmq";
 import { createQueue } from "../queue";
+import { createConnection } from "../create-connection";
 
 interface PaymentSubject {
 	name: string;
@@ -51,9 +52,9 @@ export interface GenerateInvoice {
 export type GenerateInvoiceResult =
 	| { success: true }
 	| {
-			success: false;
-			error: string;
-	  };
+		success: false;
+		error: string;
+	};
 
 type InvoiceQueueEvent<Event extends string, Data> = {
 	type: Event;
@@ -68,8 +69,8 @@ export type InvoiceQueueDataType = InvoiceQueueEvent<
 
 export type InvoiceQueueResultType =
 	| {
-			ok: false;
-	  }
+		ok: false;
+	}
 	| { ok: true; filePath: string, fileId: string, id: string };
 
 // Define queues here at the moment
@@ -79,4 +80,4 @@ export const InvoiceQueue = createQueue<
 	""
 >("Invoices");
 
-export const InvoiceQueueEvents = new QueueEvents("Invoices");
+export const InvoiceQueueEvents = new QueueEvents("Invoices", { connection: createConnection() });
