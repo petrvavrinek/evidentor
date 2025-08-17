@@ -1,4 +1,4 @@
-import { createSelectSchema } from "drizzle-typebox";
+import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { type Static, t } from "elysia";
 import {
 	clients,
@@ -7,23 +7,26 @@ import {
 	timeEntries,
 } from "@/db/schema";
 
-const InvoiceSchema = createSelectSchema(invoices);
-const InvoiceItemSchema = createSelectSchema(invoiceItems);
-const TimeEntrySchema = createSelectSchema(timeEntries);
-
-export const InvoiceCreateSchema = t.Object({
-	...t.Pick(InvoiceSchema, ["dueDate", "currency", "clientId"])
-		.properties,
-	items: t.Array(
-		t.Object({
-			name: t.String(),
-			qty: t.Number(),
-			unitPrice: t.Number(),
-			timeEntryId: t.Optional(t.Nullable(t.Number())),
-		}),
-	),
-	dueDate: t.Date()
+const CreateInvoiceSchema = createInsertSchema(invoices, {
+	projectId: t.Number(),
+	dueDate: t.Transform(t.Date())
+		.Decode(e => new Date(e))
+		.Encode(e => e)
 });
+
+export const InvoiceCreateSchema = t.Intersect([
+	t.Pick(CreateInvoiceSchema, ["dueDate", "currency", "projectId"]),
+	t.Object({
+		items: t.Array(
+			t.Object({
+				name: t.String(),
+				qty: t.Number(),
+				unitPrice: t.Number(),
+				timeEntryId: t.Optional(t.Nullable(t.Number())),
+			}),
+		),
+	})
+]);
 
 export type InvoiceCreateType = Static<typeof InvoiceCreateSchema>;
 
@@ -32,6 +35,9 @@ export const InvoiceIdParamSchema = t.Object({
 });
 
 const ClientSelectSchema = createSelectSchema(clients);
+const InvoiceSchema = createSelectSchema(invoices);
+const InvoiceItemSchema = createSelectSchema(invoiceItems);
+const TimeEntrySchema = createSelectSchema(timeEntries);
 
 export const InvoiceSelectSchema = t.Object({
 	...InvoiceSchema.properties,

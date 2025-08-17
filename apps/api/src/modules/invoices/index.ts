@@ -13,6 +13,7 @@ import {
 import { ProjectsService } from "../projects/projects.service";
 import { InvoicesService } from "./invoices.service";
 import { convertInvoiceToQueueType } from "./utils/convert-queue";
+import { ClientsService } from "../clients/clients.service";
 
 const router = new Elysia({
 	prefix: "/invoices",
@@ -43,9 +44,12 @@ const router = new Elysia({
 	.post(
 		"",
 		async ({ user, body }) => {
-			const invoice = await InvoicesService.create(user.id, {
-				...body,
-			});
+			const project = await ProjectsService.findById(user.id, body.projectId);
+			if (!project) throw status(400, "Project not found");
+
+			if (!project.client) throw status(400, "Project does not have client assigned");
+
+			const invoice = await InvoicesService.create(user.id, { ...body, clientId: project.client.id });
 			const newInvoice = (await InvoicesService.findById(
 				user.id,
 				invoice!.id,

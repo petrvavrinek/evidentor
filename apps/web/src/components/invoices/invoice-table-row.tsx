@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@evidentor/ui/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@evidentor/ui/components/ui/table";
+import { useNumberFormatter } from "@/hooks/use-number-formatter";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
 
 interface InvoiceTableRowProps {
   invoice: Invoice;
@@ -20,30 +22,9 @@ interface InvoiceTableRowProps {
 }
 
 export function InvoiceTableRow({ invoice, onDelete, onViewDetails }: InvoiceTableRowProps) {
-  // Format dates (unknown | null)
-  const formatDate = (date: unknown) => {
-    if (!date) return "-";
-    try {
-      const d = new Date(date as string);
-      return Number.isNaN(d.getTime()) ? "-" : d.toLocaleDateString();
-    } catch {
-      return "-";
-    }
-  };
-  // Format amount with currency using Intl.NumberFormat
-  const formatAmount = (amount: number, currency: string) => {
-    if (typeof amount !== "number") return "-";
-    let code = currency.toUpperCase();
-    // Map backend codes to standard ISO codes if needed
-    if (code === "CZK") code = "CZK";
-    if (code === "EUR") code = "EUR";
-    if (code === "USD") code = "USD";
-    try {
-      return new Intl.NumberFormat("en-US", { style: "currency", currency: code }).format(amount);
-    } catch {
-      return `${amount} ${code}`;
-    }
-  };
+  const dateFormatter = useDateFormatter({ day: "2-digit", month: "2-digit", year: "numeric" });
+  const numberFormatter = useNumberFormatter({ currency: invoice.currency.toUpperCase(), style: "currency" });
+
   // Status: Paid if paidAt is set
   const status = invoice.paidAt ? "Paid" : "Unpaid";
 
@@ -51,10 +32,10 @@ export function InvoiceTableRow({ invoice, onDelete, onViewDetails }: InvoiceTab
     <TableRow key={invoice.id}>
       <TableCell className="font-medium">{invoice.id.toString().padStart(4, "0")}</TableCell>
       <TableCell>{invoice.client?.companyName || "-"}</TableCell>
-      <TableCell className="hidden md:table-cell">{invoice.project?.title || "-"}</TableCell>
-      <TableCell className="hidden md:table-cell">{formatDate(invoice.issuedAt)}</TableCell>
-      <TableCell className="hidden md:table-cell">{formatDate(invoice.dueDate)}</TableCell>
-      <TableCell>{formatAmount(invoice.amount, invoice.currency)}</TableCell>
+      <TableCell className="hidden md:table-cell">-</TableCell>
+      <TableCell className="hidden md:table-cell">{dateFormatter.format(new Date(invoice.issuedAt as string))}</TableCell>
+      <TableCell className="hidden md:table-cell">{dateFormatter.format(new Date(invoice.dueDate as string))}</TableCell>
+      <TableCell>{numberFormatter.format(invoice.amount)}</TableCell>
       <TableCell>{status}</TableCell>
       <TableCell>
         <DropdownMenu>
@@ -67,7 +48,7 @@ export function InvoiceTableRow({ invoice, onDelete, onViewDetails }: InvoiceTab
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={onViewDetails}>View Details</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {}}>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => { }}>Edit</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"

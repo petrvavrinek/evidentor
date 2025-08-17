@@ -1,3 +1,5 @@
+import { useNumberFormatter } from "@/hooks/use-number-formatter";
+import type { Invoice } from "@/lib/api";
 import {
 	Card,
 	CardContent,
@@ -14,7 +16,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@evidentor/ui/components/ui/table";
-import type { Invoice } from "@/lib/api/types.gen";
 
 interface InvoiceDetailModalProps {
 	invoice?: Invoice | null;
@@ -27,6 +28,11 @@ export default function InvoiceDetailModal({
 	isOpen,
 	onClose,
 }: InvoiceDetailModalProps) {
+	const numberFormatter = useNumberFormatter({
+		style: "currency",
+		currency: invoice?.currency?.toUpperCase() ?? "eur"
+	})
+
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
 			<DialogContent className="max-w-2xl">
@@ -38,7 +44,7 @@ export default function InvoiceDetailModal({
 							</CardTitle>
 							<CardDescription>
 								Client: {invoice.client?.companyName || "-"} <br />
-								Project: {invoice.project?.title || "-"} <br />
+								{/* Project: {invoice.project?.title || "-"} <br /> */}
 								Issued:{" "}
 								{invoice.issuedAt
 									? new Date(invoice.issuedAt as string).toLocaleDateString()
@@ -73,16 +79,10 @@ export default function InvoiceDetailModal({
 											<TableCell>{item.name}</TableCell>
 											<TableCell>{item.qty}</TableCell>
 											<TableCell>
-												{new Intl.NumberFormat("en-US", {
-													style: "currency",
-													currency: invoice.currency.toUpperCase(),
-												}).format(item.unitPrice)}
+												{numberFormatter.format(item.unitPrice)}
 											</TableCell>
 											<TableCell>
-												{new Intl.NumberFormat("en-US", {
-													style: "currency",
-													currency: invoice.currency.toUpperCase(),
-												}).format(item.unitPrice * item.qty)}
+												{numberFormatter.format(item.unitPrice * item.qty)}
 											</TableCell>
 										</TableRow>
 									))}
@@ -91,10 +91,7 @@ export default function InvoiceDetailModal({
 											Total
 										</TableCell>
 										<TableCell className="font-bold">
-											{new Intl.NumberFormat("en-US", {
-												style: "currency",
-												currency: invoice.currency.toUpperCase(),
-											}).format(invoice.amount)}
+											{numberFormatter.format(invoice.amount)}
 										</TableCell>
 									</TableRow>
 								</TableBody>

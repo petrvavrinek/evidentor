@@ -473,30 +473,6 @@ export const InvoiceSchema = {
       maximum: 2147483647,
       type: "integer",
     },
-    clientId: {
-      anyOf: [
-        {
-          minimum: -2147483648,
-          maximum: 2147483647,
-          type: "integer",
-        },
-        {
-          type: "null",
-        },
-      ],
-    },
-    projectId: {
-      anyOf: [
-        {
-          minimum: -2147483648,
-          maximum: 2147483647,
-          type: "integer",
-        },
-        {
-          type: "null",
-        },
-      ],
-    },
     amount: {
       minimum: -2147483648,
       maximum: 2147483647,
@@ -567,53 +543,24 @@ export const InvoiceSchema = {
         },
       ],
     },
-    project: {
+    clientId: {
       anyOf: [
         {
-          type: "object",
-          properties: {
-            id: {
-              minimum: -2147483648,
-              maximum: 2147483647,
-              type: "integer",
-            },
-            title: {
-              anyOf: [
-                {
-                  type: "string",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            ownerId: {
-              anyOf: [
-                {
-                  type: "string",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            clientId: {
-              anyOf: [
-                {
-                  minimum: -2147483648,
-                  maximum: 2147483647,
-                  type: "integer",
-                },
-                {
-                  type: "null",
-                },
-              ],
-            },
-            createdAt: {
-              type: "Date",
-            },
-          },
-          required: ["id", "title", "ownerId", "clientId", "createdAt"],
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
+    projectId: {
+      anyOf: [
+        {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
         },
         {
           type: "null",
@@ -697,7 +644,7 @@ export const InvoiceSchema = {
             maximum: 2147483647,
             type: "integer",
           },
-          projectTaskId: {
+          timeEntryId: {
             anyOf: [
               {
                 minimum: -2147483648,
@@ -734,7 +681,7 @@ export const InvoiceSchema = {
               },
             ],
           },
-          projectTask: {
+          timeEntry: {
             anyOf: [
               {
                 type: "object",
@@ -745,17 +692,68 @@ export const InvoiceSchema = {
                     type: "integer",
                   },
                   title: {
-                    type: "string",
-                  },
-                  projectId: {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  description: {
                     anyOf: [
                       {
                         type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  userId: {
+                    type: "string",
+                  },
+                  projectId: {
+                    anyOf: [
+                      {
+                        minimum: -2147483648,
+                        maximum: 2147483647,
+                        type: "integer",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  projectTaskId: {
+                    anyOf: [
+                      {
+                        minimum: -2147483648,
+                        maximum: 2147483647,
+                        type: "integer",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  invoiceId: {
+                    anyOf: [
+                      {
+                        minimum: -2147483648,
+                        maximum: 2147483647,
+                        type: "integer",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  startAt: {
+                    anyOf: [
+                      {
+                        type: "Date",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  endAt: {
+                    anyOf: [
+                      {
+                        type: "Date",
                       },
                       {
                         type: "null",
@@ -769,8 +767,12 @@ export const InvoiceSchema = {
                 required: [
                   "id",
                   "title",
+                  "userId",
                   "projectId",
-                  "description",
+                  "projectTaskId",
+                  "invoiceId",
+                  "startAt",
+                  "endAt",
                   "createdAt",
                 ],
               },
@@ -782,20 +784,18 @@ export const InvoiceSchema = {
         },
         required: [
           "id",
-          "projectTaskId",
+          "timeEntryId",
           "name",
           "qty",
           "unitPrice",
           "invoiceId",
-          "projectTask",
+          "timeEntry",
         ],
       },
     },
   },
   required: [
     "id",
-    "clientId",
-    "projectId",
     "amount",
     "currency",
     "dueDate",
@@ -805,7 +805,8 @@ export const InvoiceSchema = {
     "createdAt",
     "updatedAt",
     "ownerId",
-    "project",
+    "clientId",
+    "projectId",
     "client",
     "items",
   ],
@@ -821,30 +822,6 @@ export const Invoice__Schema = {
         minimum: -2147483648,
         maximum: 2147483647,
         type: "integer",
-      },
-      clientId: {
-        anyOf: [
-          {
-            minimum: -2147483648,
-            maximum: 2147483647,
-            type: "integer",
-          },
-          {
-            type: "null",
-          },
-        ],
-      },
-      projectId: {
-        anyOf: [
-          {
-            minimum: -2147483648,
-            maximum: 2147483647,
-            type: "integer",
-          },
-          {
-            type: "null",
-          },
-        ],
       },
       amount: {
         minimum: -2147483648,
@@ -916,53 +893,24 @@ export const Invoice__Schema = {
           },
         ],
       },
-      project: {
+      clientId: {
         anyOf: [
           {
-            type: "object",
-            properties: {
-              id: {
-                minimum: -2147483648,
-                maximum: 2147483647,
-                type: "integer",
-              },
-              title: {
-                anyOf: [
-                  {
-                    type: "string",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              ownerId: {
-                anyOf: [
-                  {
-                    type: "string",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              clientId: {
-                anyOf: [
-                  {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  {
-                    type: "null",
-                  },
-                ],
-              },
-              createdAt: {
-                type: "Date",
-              },
-            },
-            required: ["id", "title", "ownerId", "clientId", "createdAt"],
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      projectId: {
+        anyOf: [
+          {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
           },
           {
             type: "null",
@@ -1046,7 +994,7 @@ export const Invoice__Schema = {
               maximum: 2147483647,
               type: "integer",
             },
-            projectTaskId: {
+            timeEntryId: {
               anyOf: [
                 {
                   minimum: -2147483648,
@@ -1083,7 +1031,7 @@ export const Invoice__Schema = {
                 },
               ],
             },
-            projectTask: {
+            timeEntry: {
               anyOf: [
                 {
                   type: "object",
@@ -1094,17 +1042,68 @@ export const Invoice__Schema = {
                       type: "integer",
                     },
                     title: {
-                      type: "string",
-                    },
-                    projectId: {
-                      minimum: -2147483648,
-                      maximum: 2147483647,
-                      type: "integer",
-                    },
-                    description: {
                       anyOf: [
                         {
                           type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    userId: {
+                      type: "string",
+                    },
+                    projectId: {
+                      anyOf: [
+                        {
+                          minimum: -2147483648,
+                          maximum: 2147483647,
+                          type: "integer",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    projectTaskId: {
+                      anyOf: [
+                        {
+                          minimum: -2147483648,
+                          maximum: 2147483647,
+                          type: "integer",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    invoiceId: {
+                      anyOf: [
+                        {
+                          minimum: -2147483648,
+                          maximum: 2147483647,
+                          type: "integer",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    startAt: {
+                      anyOf: [
+                        {
+                          type: "Date",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    endAt: {
+                      anyOf: [
+                        {
+                          type: "Date",
                         },
                         {
                           type: "null",
@@ -1118,8 +1117,12 @@ export const Invoice__Schema = {
                   required: [
                     "id",
                     "title",
+                    "userId",
                     "projectId",
-                    "description",
+                    "projectTaskId",
+                    "invoiceId",
+                    "startAt",
+                    "endAt",
                     "createdAt",
                   ],
                 },
@@ -1131,20 +1134,18 @@ export const Invoice__Schema = {
           },
           required: [
             "id",
-            "projectTaskId",
+            "timeEntryId",
             "name",
             "qty",
             "unitPrice",
             "invoiceId",
-            "projectTask",
+            "timeEntry",
           ],
         },
       },
     },
     required: [
       "id",
-      "clientId",
-      "projectId",
       "amount",
       "currency",
       "dueDate",
@@ -1154,7 +1155,8 @@ export const Invoice__Schema = {
       "createdAt",
       "updatedAt",
       "ownerId",
-      "project",
+      "clientId",
+      "projectId",
       "client",
       "items",
     ],
@@ -1638,6 +1640,18 @@ export const TimeEntrySchema = {
         },
       ],
     },
+    invoiceId: {
+      anyOf: [
+        {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        {
+          type: "null",
+        },
+      ],
+    },
     startAt: {
       anyOf: [
         {
@@ -1798,6 +1812,7 @@ export const TimeEntrySchema = {
   required: [
     "id",
     "title",
+    "invoiceId",
     "startAt",
     "endAt",
     "createdAt",
@@ -1821,6 +1836,18 @@ export const TimeEntry__Schema = {
         anyOf: [
           {
             type: "string",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      invoiceId: {
+        anyOf: [
+          {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
           },
           {
             type: "null",
@@ -1987,6 +2014,7 @@ export const TimeEntry__Schema = {
     required: [
       "id",
       "title",
+      "invoiceId",
       "startAt",
       "endAt",
       "createdAt",

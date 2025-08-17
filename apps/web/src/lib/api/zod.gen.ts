@@ -95,14 +95,6 @@ export const zClient2 = z.array(
 
 export const zInvoice = z.object({
   id: z.number().int().gte(-2147483648).lte(2147483647),
-  clientId: z.union([
-    z.number().int().gte(-2147483648).lte(2147483647),
-    z.null(),
-  ]),
-  projectId: z.union([
-    z.number().int().gte(-2147483648).lte(2147483647),
-    z.null(),
-  ]),
   amount: z.number().int().gte(-2147483648).lte(2147483647),
   currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
   dueDate: z.union([z.unknown(), z.null()]),
@@ -112,17 +104,12 @@ export const zInvoice = z.object({
   createdAt: z.unknown(),
   updatedAt: z.unknown(),
   ownerId: z.union([z.string(), z.null()]),
-  project: z.union([
-    z.object({
-      id: z.number().int().gte(-2147483648).lte(2147483647),
-      title: z.union([z.string(), z.null()]),
-      ownerId: z.union([z.string(), z.null()]),
-      clientId: z.union([
-        z.number().int().gte(-2147483648).lte(2147483647),
-        z.null(),
-      ]),
-      createdAt: z.unknown(),
-    }),
+  clientId: z.union([
+    z.number().int().gte(-2147483648).lte(2147483647),
+    z.null(),
+  ]),
+  projectId: z.union([
+    z.number().int().gte(-2147483648).lte(2147483647),
     z.null(),
   ]),
   client: z.union([
@@ -143,7 +130,7 @@ export const zInvoice = z.object({
   items: z.array(
     z.object({
       id: z.number().int().gte(-2147483648).lte(2147483647),
-      projectTaskId: z.union([
+      timeEntryId: z.union([
         z.number().int().gte(-2147483648).lte(2147483647),
         z.null(),
       ]),
@@ -154,12 +141,25 @@ export const zInvoice = z.object({
         z.number().int().gte(-2147483648).lte(2147483647),
         z.null(),
       ]),
-      projectTask: z.union([
+      timeEntry: z.union([
         z.object({
           id: z.number().int().gte(-2147483648).lte(2147483647),
-          title: z.string(),
-          projectId: z.number().int().gte(-2147483648).lte(2147483647),
-          description: z.union([z.string(), z.null()]),
+          title: z.union([z.string(), z.null()]),
+          userId: z.string(),
+          projectId: z.union([
+            z.number().int().gte(-2147483648).lte(2147483647),
+            z.null(),
+          ]),
+          projectTaskId: z.union([
+            z.number().int().gte(-2147483648).lte(2147483647),
+            z.null(),
+          ]),
+          invoiceId: z.union([
+            z.number().int().gte(-2147483648).lte(2147483647),
+            z.null(),
+          ]),
+          startAt: z.union([z.unknown(), z.null()]),
+          endAt: z.union([z.unknown(), z.null()]),
           createdAt: z.unknown(),
         }),
         z.null(),
@@ -171,14 +171,6 @@ export const zInvoice = z.object({
 export const zInvoice2 = z.array(
   z.object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
-    clientId: z.union([
-      z.number().int().gte(-2147483648).lte(2147483647),
-      z.null(),
-    ]),
-    projectId: z.union([
-      z.number().int().gte(-2147483648).lte(2147483647),
-      z.null(),
-    ]),
     amount: z.number().int().gte(-2147483648).lte(2147483647),
     currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
     dueDate: z.union([z.unknown(), z.null()]),
@@ -188,17 +180,12 @@ export const zInvoice2 = z.array(
     createdAt: z.unknown(),
     updatedAt: z.unknown(),
     ownerId: z.union([z.string(), z.null()]),
-    project: z.union([
-      z.object({
-        id: z.number().int().gte(-2147483648).lte(2147483647),
-        title: z.union([z.string(), z.null()]),
-        ownerId: z.union([z.string(), z.null()]),
-        clientId: z.union([
-          z.number().int().gte(-2147483648).lte(2147483647),
-          z.null(),
-        ]),
-        createdAt: z.unknown(),
-      }),
+    clientId: z.union([
+      z.number().int().gte(-2147483648).lte(2147483647),
+      z.null(),
+    ]),
+    projectId: z.union([
+      z.number().int().gte(-2147483648).lte(2147483647),
       z.null(),
     ]),
     client: z.union([
@@ -219,7 +206,7 @@ export const zInvoice2 = z.array(
     items: z.array(
       z.object({
         id: z.number().int().gte(-2147483648).lte(2147483647),
-        projectTaskId: z.union([
+        timeEntryId: z.union([
           z.number().int().gte(-2147483648).lte(2147483647),
           z.null(),
         ]),
@@ -230,12 +217,25 @@ export const zInvoice2 = z.array(
           z.number().int().gte(-2147483648).lte(2147483647),
           z.null(),
         ]),
-        projectTask: z.union([
+        timeEntry: z.union([
           z.object({
             id: z.number().int().gte(-2147483648).lte(2147483647),
-            title: z.string(),
-            projectId: z.number().int().gte(-2147483648).lte(2147483647),
-            description: z.union([z.string(), z.null()]),
+            title: z.union([z.string(), z.null()]),
+            userId: z.string(),
+            projectId: z.union([
+              z.number().int().gte(-2147483648).lte(2147483647),
+              z.null(),
+            ]),
+            projectTaskId: z.union([
+              z.number().int().gte(-2147483648).lte(2147483647),
+              z.null(),
+            ]),
+            invoiceId: z.union([
+              z.number().int().gte(-2147483648).lte(2147483647),
+              z.null(),
+            ]),
+            startAt: z.union([z.unknown(), z.null()]),
+            endAt: z.union([z.unknown(), z.null()]),
             createdAt: z.unknown(),
           }),
           z.null(),
@@ -356,6 +356,10 @@ export const zProjectCount = z.object({
 export const zTimeEntry = z.object({
   id: z.number().int().gte(-2147483648).lte(2147483647),
   title: z.union([z.string(), z.null()]),
+  invoiceId: z.union([
+    z.number().int().gte(-2147483648).lte(2147483647),
+    z.null(),
+  ]),
   startAt: z.union([z.unknown(), z.null()]),
   endAt: z.union([z.unknown(), z.null()]),
   createdAt: z.unknown(),
@@ -397,6 +401,10 @@ export const zTimeEntry2 = z.array(
   z.object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
     title: z.union([z.string(), z.null()]),
+    invoiceId: z.union([
+      z.number().int().gte(-2147483648).lte(2147483647),
+      z.null(),
+    ]),
     startAt: z.union([z.unknown(), z.null()]),
     endAt: z.union([z.unknown(), z.null()]),
     createdAt: z.unknown(),
@@ -451,7 +459,7 @@ export const zUser = z.object({
   id: z.string().optional(),
   name: z.string(),
   email: z.string(),
-  emailVerified: z.boolean(),
+  emailVerified: z.boolean().default("Generated at runtime"),
   image: z.string().optional(),
   createdAt: z.string().default("Generated at runtime"),
   updatedAt: z.string().default("Generated at runtime"),
@@ -600,24 +608,25 @@ export const zGetInvoicesData = z.object({
 export const zGetInvoicesResponse = zInvoice2;
 
 export const zPostInvoicesData = z.object({
-  body: z.object({
-    projectId: z.number(),
-    dueDate: z.union([
-      z.unknown(),
-      z.string().datetime(),
-      z.string().date(),
-      z.number(),
-    ]),
-    currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
-    items: z.array(
+  body: z
+    .object({
+      dueDate: z.union([z.unknown(), z.null()]).optional(),
+      currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
+      projectId: z.number(),
+      clientId: z.number(),
+    })
+    .and(
       z.object({
-        name: z.string(),
-        qty: z.number(),
-        unitPrice: z.number(),
-        projectTaskId: z.number().optional(),
+        items: z.array(
+          z.object({
+            name: z.string(),
+            qty: z.number(),
+            unitPrice: z.number(),
+            timeEntryId: z.union([z.number(), z.null()]).optional(),
+          }),
+        ),
       }),
     ),
-  }),
   path: z.never().optional(),
   query: z.never().optional(),
 });
@@ -831,6 +840,9 @@ export const zPatchTimeEntriesByIdData = z.object({
     projectTaskId: z
       .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
       .optional(),
+    invoiceId: z
+      .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+      .optional(),
     startAt: z
       .union([
         z.unknown(),
@@ -872,6 +884,9 @@ export const zPostTimeEntriesData = z.object({
     title: z.string(),
     projectId: z.union([z.number(), z.null()]),
     projectTaskId: z
+      .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+      .optional(),
+    invoiceId: z
       .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
       .optional(),
     startAt: z.union([

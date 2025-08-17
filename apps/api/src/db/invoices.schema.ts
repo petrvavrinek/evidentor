@@ -11,6 +11,7 @@ import {
 import { user } from "./auth.schema";
 import { timeEntries } from "./time-entries.schema";
 import { clients } from "./clients.schema";
+import { projects } from "./projects.schema";
 
 // Available currencies
 // TODO: Maybe move this to some config?
@@ -37,7 +38,8 @@ export const invoices = pgTable("invoice", {
 		.$defaultFn(() => new Date())
 		.notNull(),
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
-	clientId: integer().references(() => clients.id, { onDelete: "set null" })
+	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
+	projectId: integer().references(() => projects.id, { onDelete: "set null" })
 });
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({
@@ -49,6 +51,10 @@ export const invoicesRelations = relations(invoices, ({ one, many }) => ({
 	client: one(clients, {
 		fields: [invoices.clientId],
 		references: [clients.id]
+	}),
+	project: one(projects, {
+		fields: [invoices.projectId],
+		references: [projects.id]
 	})
 }));
 

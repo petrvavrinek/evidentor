@@ -1,7 +1,7 @@
 import { and, eq, type SQL, inArray, isNull } from "drizzle-orm";
 
 import { db } from "../../database";
-import { invoices, invoiceItems, timeEntries } from "@/db/schema";
+import { invoices, invoiceItems, timeEntries, projects } from "@/db/schema";
 
 import type { InvoiceCreateType } from "./invoice.schemas";
 
@@ -63,13 +63,14 @@ export const InvoicesService = {
 		return results?.[0] ?? null;
 	},
 
-	async create(userId: string, data: InvoiceCreateType) {
+	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
 		return db.transaction(async (tx) => {
 			const timeEntryIds = data.items.filter(e => !!e.timeEntryId).map(e => e.timeEntryId as number);
 
 			const timeEntryItems = await tx
 				.select({ id: timeEntries.id, invoiceId: timeEntries.invoiceId })
 				.from(timeEntries)
+				.leftJoin(projects, eq(projects.id, data.projectId))
 				.where(
 					and(
 						eq(timeEntries.userId, userId),
