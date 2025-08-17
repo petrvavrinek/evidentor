@@ -9,9 +9,6 @@ ARG TARGETARCH
 # /app workdir
 
 WORKDIR /app
-# Install Python, make, compiler and musl headers for building native modules
-RUN apt-get update && \
-  apt-get install -y python3 make gcc g++
 
 # Copy all files into image
 COPY ./apps/api ./apps/api

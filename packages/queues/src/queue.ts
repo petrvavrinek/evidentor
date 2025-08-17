@@ -19,6 +19,7 @@ export const createQueue = <
 	name: string,
 	options?: CreateQueueOptions,
 ) => {
+	console.log("Redis config: ", envConfig);
 	const queue = new Queue<DataTypeOrJob, DefaultResultType, DefaultNameType>(
 		name,
 		{
