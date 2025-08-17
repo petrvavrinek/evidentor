@@ -1,5 +1,5 @@
 import { type Processor, Worker } from "bullmq";
-import { envConfig } from "./config";
+import { createConnection } from "./create-connection";
 
 type CreateWorkerOptions = Omit<WorkerOptions, "connection">;
 
@@ -22,9 +22,7 @@ export const createWorker = <
 	options?: CreateWorkerOptions,
 ) => {
 	const worker = new Worker<DataType, ResultType, NameType>(name, processor, {
-		connection: {
-			url: envConfig.REDIS_URI
-		},
+		connection: createConnection(),
 		...options,
 	});
 	return worker;
