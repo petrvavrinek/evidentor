@@ -1,0 +1,2 @@
+ALTER TABLE "invoice" ADD COLUMN "client_id" integer;--> statement-breakpoint
+ALTER TABLE "invoice" ADD CONSTRAINT "invoice_client_id_client_id_fk" FOREIGN KEY ("client_id") REFERENCES "public"."client"("id") ON DELETE set null ON UPDATE no action;

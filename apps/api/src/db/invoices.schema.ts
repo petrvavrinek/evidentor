@@ -9,9 +9,8 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { user } from "./auth.schema";
+import { timeEntries } from "./time-entries.schema";
 import { clients } from "./clients.schema";
-import { projects } from "./projects.schema";
-import { projectTasks } from "./project-tasks.schema";
 
 // Available currencies
 // TODO: Maybe move this to some config?
@@ -23,8 +22,6 @@ export const CurrencyEnum = pgEnum("currency", Currencies);
 // Invoice table
 export const invoices = pgTable("invoice", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
-	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	amount: integer().notNull(),
 	currency: CurrencyEnum().notNull(),
 	dueDate: timestamp(),
@@ -40,27 +37,24 @@ export const invoices = pgTable("invoice", {
 		.$defaultFn(() => new Date())
 		.notNull(),
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
+	clientId: integer().references(() => clients.id, { onDelete: "set null" })
 });
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({
-	client: one(clients, {
-		fields: [invoices.clientId],
-		references: [clients.id],
-	}),
-	project: one(projects, {
-		fields: [invoices.projectId],
-		references: [projects.id],
-	}),
 	owner: one(user, {
 		fields: [invoices.ownerId],
 		references: [user.id],
 	}),
 	items: many(invoiceItems),
+	client: one(clients, {
+		fields: [invoices.clientId],
+		references: [clients.id]
+	})
 }));
 
 export const invoiceItems = pgTable("invoice_item", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	projectTaskId: integer().references(() => projectTasks.id, {
+	timeEntryId: integer().references(() => timeEntries.id, {
 		onDelete: "set null",
 	}),
 	name: varchar().notNull(),
@@ -75,8 +69,8 @@ export const invoiceItemsRelations = relations(invoiceItems, ({ one }) => ({
 		fields: [invoiceItems.invoiceId],
 		references: [invoices.id],
 	}),
-	projectTask: one(projectTasks, {
-		fields: [invoiceItems.projectTaskId],
-		references: [projectTasks.id],
+	timeEntry: one(timeEntries, {
+		fields: [invoiceItems.timeEntryId],
+		references: [timeEntries.id],
 	}),
 }));

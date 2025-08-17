@@ -4,26 +4,24 @@ import {
 	clients,
 	invoices,
 	invoiceItems,
-	projects,
-	projectTasks,
+	timeEntries,
 } from "@/db/schema";
 
 const InvoiceSchema = createSelectSchema(invoices);
 const InvoiceItemSchema = createSelectSchema(invoiceItems);
-const ProjectTaskSchema = createSelectSchema(projectTasks);
+const TimeEntrySchema = createSelectSchema(timeEntries);
 
 export const InvoiceCreateSchema = t.Object({
-	...t.Pick(InvoiceSchema, ["projectId", "dueDate", "currency"])
+	...t.Pick(InvoiceSchema, ["dueDate", "currency", "clientId"])
 		.properties,
 	items: t.Array(
 		t.Object({
 			name: t.String(),
 			qty: t.Number(),
 			unitPrice: t.Number(),
-			projectTaskId: t.Optional(t.Number()),
+			timeEntryId: t.Optional(t.Nullable(t.Number())),
 		}),
 	),
-	projectId: t.Number(),
 	dueDate: t.Date()
 });
 
@@ -33,17 +31,15 @@ export const InvoiceIdParamSchema = t.Object({
 	id: t.Number(),
 });
 
-const ProjectSelectSchema = createSelectSchema(projects);
 const ClientSelectSchema = createSelectSchema(clients);
 
 export const InvoiceSelectSchema = t.Object({
 	...InvoiceSchema.properties,
-	project: t.Nullable(ProjectSelectSchema),
 	client: t.Nullable(ClientSelectSchema),
 	items: t.Array(
 		t.Object({
 			...InvoiceItemSchema.properties,
-			projectTask: t.Nullable(ProjectTaskSchema),
+			timeEntry: t.Nullable(TimeEntrySchema),
 		}),
 	),
 });

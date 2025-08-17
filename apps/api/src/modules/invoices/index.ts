@@ -43,15 +43,8 @@ const router = new Elysia({
 	.post(
 		"",
 		async ({ user, body }) => {
-			const project = await ProjectsService.findById(user.id, body.projectId);
-			if (!project) throw status(404, "Project not found");
-
-			if (!project.clientId)
-				throw status(400, "Project does not have assigned client");
-
 			const invoice = await InvoicesService.create(user.id, {
 				...body,
-				clientId: project.clientId,
 			});
 			const newInvoice = (await InvoicesService.findById(
 				user.id,
