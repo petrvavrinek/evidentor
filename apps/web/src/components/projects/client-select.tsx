@@ -13,9 +13,10 @@ import { getClientsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 interface ClientSelectProps {
 	value: number | null;
 	onChange: (value: number | null) => void;
+	disabled?: boolean;
 }
 
-export default function ClientSelect({ value, onChange }: ClientSelectProps) {
+export default function ClientSelect({ value, onChange, disabled }: ClientSelectProps) {
 	const { data: clients } = useQuery({
 		queryKey: getClientsQueryKey(),
 		queryFn: () => getClients(),

@@ -22,6 +22,7 @@ interface SearchSuggestProps {
 	onValueChange: (value: string, suggestion?: SearchSuggestionResult) => void;
 	suggest: (value: string) => Promise<SearchSuggestionResult[]>;
 	placeholder?: string;
+	disabled?: boolean;
 }
 
 export default function SearchSuggest({

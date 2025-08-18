@@ -2,7 +2,7 @@ import type { InvoiceQueueDataType } from "@evidentor/queues";
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 import CurrencyAmount from "./CurrencyAmount";
-import { t } from "./translations";
+import type { Language, Translations } from "../translations";
 
 type GenerateInvoiceData = InvoiceQueueDataType["data"];
 
@@ -32,18 +32,20 @@ const styles = StyleSheet.create({
 export const InvoiceItemsTable = ({
 	items,
 	currency,
-	language,
+	translations,
+	language
 }: {
 	items: GenerateInvoiceData["items"];
 	currency: string;
-	language: string;
+	translations: Translations,
+	language: Language
 }) => (
 	<View style={styles.root}>
 		<View style={styles.header}>
-			<Text style={[styles.headerCell, styles.name]}>{t("name")}</Text>
-			<Text style={[styles.headerCell, styles.amount]}>{t("amount")}</Text>
-			<Text style={[styles.headerCell, styles.price]}>{t("price")}</Text>
-			<Text style={[styles.headerCell, styles.total]}>{t("items_total")}</Text>
+			<Text style={[styles.headerCell, styles.name]}>{translations.name}</Text>
+			<Text style={[styles.headerCell, styles.amount]}>{translations.amount}</Text>
+			<Text style={[styles.headerCell, styles.price]}>{translations.price}</Text>
+			<Text style={[styles.headerCell, styles.total]}>{translations.items_total}</Text>
 		</View>
 		{items.map((item) => (
 			<View key={`${item.name}_${item.amount}`} style={styles.row}>

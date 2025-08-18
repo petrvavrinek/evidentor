@@ -2,21 +2,19 @@ import { InvoiceQueue, InvoiceQueueEvents, Job, type InvoiceQueueDataType, type 
 import Elysia, { status, t } from "elysia";
 import path from "node:path";
 
+import { LoggerService } from "@evidentor/logging";
+import { storage } from "@evidentor/storage";
 
 import { BetterAuthMacro } from "../auth";
+import { ProjectsService } from "../projects/projects.service";
 import {
 	InvoiceCreateSchema,
 	InvoiceIdParamSchema,
 	InvoiceResponseSchema,
 	InvoicesResponseSchema,
 } from "./invoice.schemas";
-
-// TODO: REWORK IMPORTS THIS!
-import { storage } from "@evidentor/storage";
-import { ProjectsService } from "../projects/projects.service";
 import { InvoicesService } from "./invoices.service";
 import { convertInvoiceToQueueType } from "./utils/convert-queue";
-import { LoggerService } from "@evidentor/logging";
 
 
 const logger = new LoggerService("invoices");
@@ -62,7 +60,7 @@ const router = new Elysia({
 
 			// Generate invoice in the background
 			const invoiceQueueData = convertInvoiceToQueueType(newInvoice);
-			const job = await InvoiceQueue.add("", {
+			await InvoiceQueue.add("", {
 				type: "generate-invoice",
 				data: invoiceQueueData,
 			});

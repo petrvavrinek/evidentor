@@ -1,5 +1,10 @@
-import { ProjectSelect } from "@/components/project-select";
-import { postInvoices } from "@/lib/api/sdk.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash } from "lucide-react";
+import { useLocale } from "next-intl";
+import { useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Dialog,
@@ -16,10 +21,13 @@ import {
 } from "@evidentor/ui/components/ui/form";
 import { Input } from "@evidentor/ui/components/ui/input";
 import { Label } from "@evidentor/ui/components/ui/label";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
+
+import { ProjectSelect } from "@/components/project-select";
+import { Language } from "@/i18n/routing";
+import { postInvoices } from "@/lib/api/sdk.gen";
+import { zPostInvoicesData } from "@/lib/api/zod.gen";
+
+import LocaleInput from "../locale-input";
 
 interface InvoiceCreateModalProps {
 	isOpen: boolean;
@@ -27,20 +35,8 @@ interface InvoiceCreateModalProps {
 	onCreated: () => void;
 }
 
-const InvoiceItemSchema = z.object({
-	name: z.string().min(1, "Required"),
-	qty: z.coerce.number().min(1, "Minimum 1"),
-	unitPrice: z.coerce.number().min(0, "Minimum 0"),
-});
-
-const InvoiceSchema = z.object({
-	projectId: z.number(),
-	dueDate: z.string().optional(),
-	currency: z.enum(["czk", "eur", "usd"]),
-	items: z.array(InvoiceItemSchema).min(1, "At least one item"),
-});
-
-type InvoiceFormValues = z.infer<typeof InvoiceSchema>;
+const FormSchema = zPostInvoicesData.shape.body;
+type FormData = z.infer<typeof FormSchema>;
 
 export default function InvoiceCreateModal({
 	isOpen,
@@ -49,20 +45,25 @@ export default function InvoiceCreateModal({
 }: InvoiceCreateModalProps) {
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
-	const form = useForm<InvoiceFormValues>({
-		resolver: zodResolver(InvoiceSchema),
+	const locale = useLocale();
+	const form = useForm<FormData>({
+		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			dueDate: "",
 			currency: "czk",
 			items: [{ name: "", qty: 1, unitPrice: 0 }],
+			language: locale as Language
 		},
+		shouldFocusError: true,
+		criteriaMode: "all"
 	});
+
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
 		name: "items",
 	});
 
-	const handleSubmit = async (values: InvoiceFormValues) => {
+	const handleSubmit = async (values: FormData) => {
 		setLoading(true);
 		setError(null);
 		try {
@@ -70,9 +71,10 @@ export default function InvoiceCreateModal({
 				body: {
 					projectId: values.projectId,
 					currency: values.currency,
-					dueDate: values.dueDate ? new Date(values.dueDate) : null,
+					dueDate: values.dueDate ? new Date(values.dueDate as never) : null,
 					items: values.items,
-				},
+					language: values.language
+				}
 			});
 			onCreated();
 			onClose();
@@ -88,7 +90,6 @@ export default function InvoiceCreateModal({
 		<Dialog open={isOpen} onOpenChange={onClose}>
 			<DialogContent className="max-w-xl">
 				<DialogTitle>New Invoice</DialogTitle>
-
 				<Form {...form}>
 					<form
 						className="space-y-4"
@@ -120,7 +121,7 @@ export default function InvoiceCreateModal({
 									<FormItem className="flex-1">
 										<FormLabel>Due Date</FormLabel>
 										<FormControl>
-											<Input type="date" {...field} />
+											<Input type="date" {...field} required />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -148,51 +149,84 @@ export default function InvoiceCreateModal({
 							/>
 						</div>
 						<div>
+							<FormField
+								control={form.control}
+								name="language"
+								render={({ field }) => (
+									<FormItem className="flex-1">
+										<FormLabel>Language</FormLabel>
+										<FormControl>
+											<LocaleInput {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div>
 							<Label className="font-semibold mb-2">Items</Label>
 							{fields.map((item, idx) => (
-								<div key={item.id} className="flex gap-2 mb-2 items-center">
-									<Controller
-										name={`items.${idx}.name`}
-										control={form.control}
-										render={({ field }) => (
-											<Input placeholder="Name" {...field} required />
-										)}
-									/>
-									<Controller
-										name={`items.${idx}.qty`}
-										control={form.control}
-										render={({ field }) => (
-											<Input
-												placeholder="Qty"
-												type="number"
-												min={1}
-												{...field}
-												required
-											/>
-										)}
-									/>
-									<Controller
-										name={`items.${idx}.unitPrice`}
-										control={form.control}
-										render={({ field }) => (
-											<Input
-												placeholder="Unit Price"
-												type="number"
-												min={0}
-												{...field}
-												required
-											/>
-										)}
-									/>
-									<Button
-										type="button"
-										variant="outline"
-										onClick={() => remove(idx)}
-										disabled={fields.length === 1}
-									>
-										Remove
-									</Button>
-								</div>
+								<FormItem>
+									<div key={item.id} className="flex gap-2 mb-2 items-center">
+										<Controller
+											name={`items.${idx}.name`}
+											control={form.control}
+											render={({ field }) => (
+												<FormItem>
+													<FormControl>
+														<Input placeholder="Name" {...field} required />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<Controller
+											name={`items.${idx}.qty`}
+											control={form.control}
+											render={({ field }) => (
+												<FormItem>
+													<FormControl>
+														<Input
+															placeholder="Qty"
+															type="number"
+															min={1}
+															{...field}
+															required
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<Controller
+											name={`items.${idx}.unitPrice`}
+											control={form.control}
+											render={({ field }) => (
+												<FormItem>
+													<FormControl>
+														<Input
+															placeholder="Unit Price"
+															type="number"
+															min={0}
+															{...field}
+															required
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<Button
+											type="button"
+											variant="outline"
+											onClick={() => remove(idx)}
+											disabled={fields.length === 1}
+										>
+											<Trash />
+										</Button>
+										<FormMessage />
+									</div>
+								</FormItem>
 							))}
 							<Button
 								type="button"
