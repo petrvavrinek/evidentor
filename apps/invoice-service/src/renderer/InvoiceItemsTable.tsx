@@ -27,6 +27,13 @@ const styles = StyleSheet.create({
 		borderBottomColor: "#ccc",
 		fontSize: 11,
 	},
+	rowTotal: {
+		borderBottom: 0
+	},
+	columnTotal: {
+		borderBottomWidth: 0.5,
+		borderBottomColor: "#ccc",
+	}
 });
 
 export const InvoiceItemsTable = ({
@@ -39,33 +46,45 @@ export const InvoiceItemsTable = ({
 	currency: string;
 	translations: Translations,
 	language: Language
-}) => (
-	<View style={styles.root}>
-		<View style={styles.header}>
-			<Text style={[styles.headerCell, styles.name]}>{translations.name}</Text>
-			<Text style={[styles.headerCell, styles.amount]}>{translations.amount}</Text>
-			<Text style={[styles.headerCell, styles.price]}>{translations.price}</Text>
-			<Text style={[styles.headerCell, styles.total]}>{translations.items_total}</Text>
-		</View>
-		{items.map((item) => (
-			<View key={`${item.name}_${item.amount}`} style={styles.row}>
-				<Text style={styles.name}>{item.name}</Text>
-				<Text style={styles.amount}>{item.amount}</Text>
-				<Text style={styles.price}>
-					<CurrencyAmount
-						amount={item.price}
-						language={language}
-						currency={currency}
-					/>
-				</Text>
-				<Text style={styles.total}>
-					<CurrencyAmount
-						amount={(item.price * item.amount) / 100}
-						language={language}
-						currency={currency}
-					/>
+}) => {
+	const totalAmount = items.reduce((prev, current) => prev + current.amount * current.price, 0);
+
+	return (
+		<View style={styles.root}>
+			<View style={styles.header}>
+				<Text style={[styles.headerCell, styles.name]}>{translations.name}</Text>
+				<Text style={[styles.headerCell, styles.amount]}>{translations.amount}</Text>
+				<Text style={[styles.headerCell, styles.price]}>{translations.price}</Text>
+				<Text style={[styles.headerCell, styles.total]}>{translations.items_total}</Text>
+			</View>
+			{items.map((item) => (
+				<View key={`${item.name}_${item.amount}`} style={styles.row}>
+					<Text style={styles.name}>{item.name}</Text>
+					<Text style={styles.amount}>{item.amount}</Text>
+					<Text style={styles.price}>
+						<CurrencyAmount
+							amount={item.price}
+							language={language}
+							currency={currency}
+						/>
+					</Text>
+					<Text style={styles.total}>
+						<CurrencyAmount
+							amount={(item.price * item.amount)}
+							language={language}
+							currency={currency}
+						/>
+					</Text>
+				</View>
+			))}
+			<View style={[styles.row, styles.rowTotal]}>
+				<Text style={styles.name}></Text>
+				<Text style={styles.amount}></Text>
+				<Text style={styles.price}></Text>
+				<Text style={[styles.total, styles.columnTotal]}>
+					<CurrencyAmount amount={totalAmount} language={language} currency={currency} />
 				</Text>
 			</View>
-		))}
-	</View>
-);
+		</View>
+	)
+};

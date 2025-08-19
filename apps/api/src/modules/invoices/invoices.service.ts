@@ -69,7 +69,7 @@ export const InvoicesService = {
 			const timeEntryIds = data.items.filter(e => !!e.timeEntryId).map(e => e.timeEntryId as number);
 
 			const timeEntryItems = await tx
-				.select({ id: timeEntries.id, invoiceId: timeEntries.invoiceId })
+				.select({ id: timeEntries.id })
 				.from(timeEntries)
 				.leftJoin(projects, eq(projects.id, data.projectId))
 				.where(
@@ -93,6 +93,12 @@ export const InvoicesService = {
 				.insert(invoices)
 				.values({ ...data, ownerId: userId, amount })
 				.returning();
+
+			// Set invoice into time entries
+			await tx.update(timeEntries).set({
+				invoiceId: createdInvoice?.id,
+			})
+			.where(inArray(timeEntries.id, timeEntryItems.map(e => e.id)))
 
 			// Create invoice items
 			await tx.insert(invoiceItems).values(
@@ -140,6 +146,6 @@ export const InvoicesService = {
 	},
 
 	findInvoicesWithoutGeneratedFile() {
-		return this.findByOptions({ filters: [isNull(invoices.generatedFileId)]})
+		return this.findByOptions({ filters: [isNull(invoices.generatedFileId)] })
 	}
 };
