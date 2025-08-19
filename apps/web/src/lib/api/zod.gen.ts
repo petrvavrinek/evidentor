@@ -501,7 +501,7 @@ export const zUser = z.object({
   id: z.string().optional(),
   name: z.string(),
   email: z.string(),
-  emailVerified: z.boolean(),
+  emailVerified: z.boolean().default("Generated at runtime"),
   image: z.string().optional(),
   createdAt: z.string().default("Generated at runtime"),
   updatedAt: z.string().default("Generated at runtime"),
@@ -683,7 +683,7 @@ export const zPostInvoicesResponse = zInvoice;
 export const zDeleteInvoicesByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
-    id: z.union([z.string().default(0), z.number()]),
+    id: z.number(),
   }),
   query: z.never().optional(),
 });
@@ -695,7 +695,7 @@ export const zDeleteInvoicesByIdResponse = z.object({
 export const zGetInvoicesByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
-    id: z.union([z.string().default(0), z.number()]),
+    id: z.number(),
   }),
   query: z.never().optional(),
 });
@@ -705,7 +705,7 @@ export const zGetInvoicesByIdResponse = zInvoice;
 export const zGetInvoicesByIdGeneratedData = z.object({
   body: z.never().optional(),
   path: z.object({
-    id: z.union([z.string().default(0), z.number()]),
+    id: z.number(),
   }),
   query: z.never().optional(),
 });
@@ -715,13 +715,13 @@ export const zGetProjectTasksCountData = z.object({
   path: z.never().optional(),
   query: z
     .object({
-      project: z.union([z.string().default(0), z.number()]).optional(),
+      project: z.number().optional(),
       from: z
         .union([
           z.unknown(),
           z.string().datetime(),
           z.string().date(),
-          z.union([z.string().default(0), z.number()]),
+          z.number(),
         ])
         .optional(),
       to: z
@@ -729,7 +729,7 @@ export const zGetProjectTasksCountData = z.object({
           z.unknown(),
           z.string().datetime(),
           z.string().date(),
-          z.union([z.string().default(0), z.number()]),
+          z.number(),
         ])
         .optional(),
     })
@@ -787,15 +787,13 @@ export const zGetProjectsCountData = z.object({
   path: z.never().optional(),
   query: z
     .object({
-      client: z
-        .union([z.string().default(0), z.number().default(0)])
-        .optional(),
+      client: z.number().optional().default(0),
       from: z
         .union([
           z.unknown(),
           z.string().datetime(),
           z.string().date(),
-          z.union([z.string().default(0), z.number()]),
+          z.number(),
         ])
         .optional(),
       to: z
@@ -803,7 +801,7 @@ export const zGetProjectsCountData = z.object({
           z.unknown(),
           z.string().datetime(),
           z.string().date(),
-          z.union([z.string().default(0), z.number()]),
+          z.number(),
         ])
         .optional(),
     })
@@ -893,9 +891,7 @@ export const zGetTimeEntriesByIdResponse = zTimeEntry;
 export const zPatchTimeEntriesByIdData = z.object({
   body: z.object({
     title: z.string().optional(),
-    projectId: z
-      .union([z.union([z.string().default(0), z.number()]), z.null()])
-      .optional(),
+    projectId: z.union([z.number(), z.null()]).optional(),
     projectTaskId: z
       .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
       .optional(),
@@ -933,7 +929,28 @@ export const zPatchTimeEntriesByIdResponse = zTimeEntry;
 export const zGetTimeEntriesData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
-  query: z.never().optional(),
+  query: z
+    .object({
+      projectId: z.union([z.number(), z.null()]).optional(),
+      from: z
+        .union([
+          z.unknown(),
+          z.string().datetime(),
+          z.string().date(),
+          z.number(),
+        ])
+        .optional(),
+      to: z
+        .union([
+          z.unknown(),
+          z.string().datetime(),
+          z.string().date(),
+          z.number(),
+        ])
+        .optional(),
+      billed: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 export const zGetTimeEntriesResponse = zTimeEntry2;
@@ -941,10 +958,7 @@ export const zGetTimeEntriesResponse = zTimeEntry2;
 export const zPostTimeEntriesData = z.object({
   body: z.object({
     title: z.string(),
-    projectId: z.union([
-      z.union([z.string().default(0), z.number()]),
-      z.null(),
-    ]),
+    projectId: z.union([z.number(), z.null()]),
     projectTaskId: z
       .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
       .optional(),
@@ -978,15 +992,13 @@ export const zGetTimeEntriesAnalyzeDurationByDateData = z.object({
   path: z.never().optional(),
   query: z
     .object({
-      projectId: z
-        .union([z.union([z.string().default(0), z.number()]), z.null()])
-        .optional(),
+      projectId: z.union([z.number(), z.null()]).optional(),
       from: z
         .union([
           z.unknown(),
           z.string().datetime(),
           z.string().date(),
-          z.union([z.string().default(0), z.number()]),
+          z.number(),
         ])
         .optional(),
       to: z
@@ -994,9 +1006,10 @@ export const zGetTimeEntriesAnalyzeDurationByDateData = z.object({
           z.unknown(),
           z.string().datetime(),
           z.string().date(),
-          z.union([z.string().default(0), z.number()]),
+          z.number(),
         ])
         .optional(),
+      billed: z.boolean().optional(),
     })
     .optional(),
 });

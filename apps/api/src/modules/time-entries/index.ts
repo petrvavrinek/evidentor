@@ -57,12 +57,13 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		async ({ user }) => {
-			return await TimeEntriesService.findByUserId(user.id);
+		async ({ user, query }) => {
+			return await TimeEntriesService.findByUserId(user.id, query);
 		},
 		{
 			auth: true,
 			response: "TimeEntry[]",
+			query: TimeEntryFilter
 		},
 	)
 	.post(

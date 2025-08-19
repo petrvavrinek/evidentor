@@ -1,4 +1,4 @@
-import { and, eq, gte, lte, sql } from "drizzle-orm";
+import { and, eq, gte, isNull, lte, sql } from "drizzle-orm";
 
 import { timeEntries } from "@/db/schema";
 
@@ -34,9 +34,20 @@ export const TimeEntriesService = {
 	 * @param userId User ID
 	 * @returns Array of entries
 	 */
-	findByUserId(userId: string) {
+	findByUserId(userId: string, filter?: TimeEntryFilterType) {
 		return db.query.timeEntries.findMany({
-			where: (entry, { eq }) => eq(entry.userId, userId),
+			where: (entry, { eq, gte, lte, isNotNull, isNull }) => {
+				const filters = [eq(entry.userId, userId)];
+				if (!filter) return filters[0];
+
+				if (filter.from) filters.push(gte(timeEntries.createdAt, filter.from));
+				if (filter.to) filters.push(lte(timeEntries.createdAt, filter.to));
+				if (filter.projectId) filters.push(eq(timeEntries.projectId, filter.projectId));
+				if ("billed" in filter) filters.push(filter.billed ? isNotNull(timeEntries.invoiceId) : isNull(timeEntries.invoiceId))
+
+				return and(...filters);
+
+			},
 			with: {
 				project: {
 					with: {
