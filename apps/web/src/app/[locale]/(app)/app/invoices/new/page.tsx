@@ -77,7 +77,7 @@ export default function NewInvoicePage() {
     const newItems: InvoiceItem[] = [...formItemWatch];
     for (const timeEntry of selectedTimeEntries) {
       newItems.push({
-        name: `${timeEntry.title} (${timeEntry.projectTask?.title})`,
+        name: `${timeEntry.title} ${timeEntry.projectTask?.title ? `(${timeEntry.projectTask.title})` : ""}`,
         qty: 1,
         unitPrice: 100,
         timeEntryId: timeEntry.id
@@ -138,7 +138,6 @@ export default function NewInvoicePage() {
                   </FormItem>
                 )}
               />
-
               <FormItem>
                 <FormLabel>Client</FormLabel>
                 <Select disabled >
@@ -227,7 +226,7 @@ export default function NewInvoicePage() {
                 Total: {numberFormatter.format(total)}
               </CardContent>
             </Card>
-            <Button type="submit" disabled={false}>
+            <Button type="submit" disabled={!form.formState.isValid || items.length === 0}>
               Create invoice
             </Button>
 
