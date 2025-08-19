@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Clock, DollarSign, Link, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
@@ -15,6 +15,8 @@ import { TableCell, TableRow } from "@evidentor/ui/components/ui/table";
 
 import type { TimeEntry } from "@/lib/api";
 import { formatTime } from "@/lib/format-time";
+import { Badge } from "@evidentor/ui/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 interface TimeEntryRowProps {
 	timeEntry: TimeEntry;
@@ -25,6 +27,7 @@ export default function TimeEntryRow({
 	timeEntry,
 	onDelete,
 }: TimeEntryRowProps) {
+	const router = useRouter();
 	const formatDateTime = (date: Date) => {
 		const h = date.getHours().toString().padStart(2, "0");
 		const m = date.getMinutes().toString().padStart(2, "0");
@@ -60,6 +63,17 @@ export default function TimeEntryRow({
 				<span className="font-medium">{formatTime(getDuration())}</span>
 			</TableCell>
 			<TableCell className="md:table-cell">
+				{
+					timeEntry.invoiceId && (
+						<Button className="w-fit h-fit rounded-xl" onClick={() => {
+							router.push(`/app/invoices/detail/${timeEntry.invoiceId}`)
+						}}>
+							<Link size={16} className="p-0" />
+						</Button>
+					)
+				}
+			</TableCell>
+			<TableCell className="md:table-cell">
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="ghost" size="icon">
@@ -69,7 +83,7 @@ export default function TimeEntryRow({
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
-						<DropdownMenuItem onClick={() => {}}>
+						<DropdownMenuItem onClick={() => { }}>
 							<Pencil className="h-4 w-4 mr-2" />
 							Edit
 						</DropdownMenuItem>

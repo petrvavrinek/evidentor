@@ -20,7 +20,8 @@ const BoxMessage = ({ title }: { title: string }) => <div className="text-center
 </div>
 
 export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelect, onUnselect }: InvoiceCreateTimeEntriesProps) {
-  const dateFormatter = useDateFormatter({ hour: "numeric", minute: "numeric", second: "numeric" });
+  const timeFormatter = useDateFormatter({ hour: "numeric", minute: "numeric", second: "numeric" });
+  const dateFormatter = useDateFormatter({ day: "numeric", month: "numeric", year: "numeric" });
   const { data, isLoading } = useQuery({
     queryKey: getTimeEntriesQueryKey({ query: { projectId: project?.id, billed: false } }),
     // TODO: Filtering by project and client, whatever
@@ -54,6 +55,7 @@ export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelec
                     <TableHead>Title</TableHead>
                     <TableHead>Project task</TableHead>
                     <TableHead>Tracked time</TableHead>
+                    <TableHead>Date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -69,7 +71,8 @@ export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelec
                         </TableCell>
                         <TableCell>{item.title}</TableCell>
                         <TableCell>{item.projectTask?.title ?? "-"}</TableCell>
-                        <TableCell>{dateFormatter.format(diffDate(new Date(item.startAt as string), new Date(item.endAt as string)))}</TableCell>
+                        <TableCell>{timeFormatter.format(diffDate(new Date(item.startAt as string), new Date(item.endAt as string)))}</TableCell>
+                        <TableCell>{dateFormatter.format(new Date(item.endAt as string))}</TableCell>
                       </TableRow>
                     ))
                   }

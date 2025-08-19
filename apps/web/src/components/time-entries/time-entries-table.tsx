@@ -11,6 +11,7 @@ import {
 import type { TimeEntry } from "@/lib/api";
 
 import TimeEntryRow from "./time-entry-row";
+import { DollarSign } from "lucide-react";
 
 interface TimeEntriesTableProps {
 	timeEntries: TimeEntry[];
@@ -31,6 +32,7 @@ export default function TimeEntriesTable({
 						<TableHead>Client</TableHead>
 						<TableHead>Time</TableHead>
 						<TableHead className="hidden md:table-cell">Duration</TableHead>
+						<TableHead className="w-[80px]"><DollarSign size={16} /></TableHead>
 						<TableHead className="w-[80px]"></TableHead>
 					</TableRow>
 				</TableHeader>
