@@ -18,7 +18,7 @@ export const timeEntries = pgTable(
 		projectTaskId: integer().references(() => projectTasks.id, {
 			onDelete: "set null",
 		}),
-		invoiceId: integer().references(() => invoices.id),
+		invoiceId: integer().references(() => invoices.id, { onDelete: "set null" }),
 		startAt: timestamp({ withTimezone: true }),
 		endAt: timestamp({ withTimezone: true }),
 		createdAt: timestamp({ withTimezone: true })
