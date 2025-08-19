@@ -35,7 +35,7 @@ export default function LocaleInput({ className, onChange, value }: LanguageSwit
       <SelectContent>
         {
           Object.keys(localeTexts).map(locale =>
-            <SelectItem value={locale}>{localeTexts[locale as Language]}</SelectItem>
+            <SelectItem key={locale} value={locale}>{localeTexts[locale as Language]}</SelectItem>
           )
         }
       </SelectContent>

@@ -4,36 +4,43 @@ import CurrencyInput from "@/components/currency-input";
 import LocaleInput from "@/components/locale-input";
 import PageHeader from "@/components/page-header";
 import { ProjectSelect } from "@/components/project-select";
-import ClientSelect from "@/components/projects/client-select";
 import { Language } from "@/i18n/routing";
-import { Project, ProjectTask, TimeEntry } from "@/lib/api";
+import { Project, TimeEntry } from "@/lib/api";
 import { zPostInvoicesData } from "@/lib/api/zod.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@evidentor/ui/components/ui/form";
-import { Input } from "@evidentor/ui/components/ui/input";
 import { Select, SelectTrigger, SelectValue } from "@evidentor/ui/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import z from "zod";
 
-import DatePicker from "@evidentor/ui/components/ui/date-picker";
-import { useDateFormatter } from "@/hooks/use-date-formatter";
-import InvoiceCreateTimeEntries from "@/components/invoices/new/invoice-create-time-entries";
 import InvoiceCreateManualEntries from "@/components/invoices/new/invoice-create-manual-entries";
-import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@evidentor/ui/components/ui/tooltip";
+import InvoiceCreateTimeEntries from "@/components/invoices/new/invoice-create-time-entries";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { useNumberFormatter } from "@/hooks/use-number-formatter";
 import useTitle from "@/hooks/use-title";
-import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "@/i18n/navigation";
 import { postInvoicesMutation } from "@/lib/api/@tanstack/react-query.gen";
 import { Card, CardContent } from "@evidentor/ui/components/ui/card";
-import { useNumberFormatter } from "@/hooks/use-number-formatter";
-import { useRouter } from "@/i18n/navigation";
+import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
+import DatePicker from "@evidentor/ui/components/ui/date-picker";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@evidentor/ui/components/ui/tooltip";
+import { useMutation } from "@tanstack/react-query";
 
 const InvoiceCreateSchema = zPostInvoicesData.shape.body;
 type InvoiceCreate = z.infer<typeof InvoiceCreateSchema>;
 type InvoiceItem = InvoiceCreate["items"][number];
+
+
+const dueDate = new Date();
+dueDate.setHours(0);
+dueDate.setMinutes(0);
+dueDate.setSeconds(0);
+dueDate.setMilliseconds(0);
+dueDate.setDate(dueDate.getDate() + 14);
+
 
 export default function NewInvoicePage() {
   const locale = useLocale();
@@ -47,16 +54,22 @@ export default function NewInvoicePage() {
 
   useTitle("Create new invoice");
 
+  useEffect(() => {
+    setSelectedTimeEntries([]);
+
+  }, [project]);
+
   const form = useForm<InvoiceCreate>({
     resolver: zodResolver(InvoiceCreateSchema),
     defaultValues: {
       language: locale as Language,
       currency: "czk",
-      items: []
+      items: [],
+      dueDate
     },
   });
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     ...postInvoicesMutation(),
     onSuccess: (data) => {
       router.push(`/app/invoices/detail/${data.id}`);
@@ -219,17 +232,14 @@ export default function NewInvoicePage() {
                 <InvoiceCreateManualEntries control={form.control} name="items" />
               </div>
             </div>
-
-
             <Card>
               <CardContent>
                 Total: {numberFormatter.format(total)}
               </CardContent>
             </Card>
-            <Button type="submit" disabled={!form.formState.isValid || items.length === 0}>
+            <Button type="submit" disabled={(!form.formState.isValid || items.length === 0) || isPending}>
               Create invoice
             </Button>
-
           </div>
         </form>
       </Form>

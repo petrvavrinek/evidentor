@@ -524,7 +524,7 @@ export type PostInvoicesResponse =
 export type DeleteInvoicesByIdData = {
   body?: never;
   path: {
-    id: string | number;
+    id: number;
   };
   query?: never;
   url: "/invoices/{id}";
@@ -542,7 +542,7 @@ export type DeleteInvoicesByIdResponse =
 export type GetInvoicesByIdData = {
   body?: never;
   path: {
-    id: string | number;
+    id: number;
   };
   query?: never;
   url: "/invoices/{id}";
@@ -558,7 +558,7 @@ export type GetInvoicesByIdResponse =
 export type GetInvoicesByIdGeneratedData = {
   body?: never;
   path: {
-    id: string | number;
+    id: number;
   };
   query?: never;
   url: "/invoices/{id}/generated";
@@ -572,9 +572,9 @@ export type GetProjectTasksCountData = {
   body?: never;
   path?: never;
   query?: {
-    project?: string | number;
-    from?: unknown | Date | (string | number);
-    to?: unknown | Date | (string | number);
+    project?: number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
   };
   url: "/project-tasks/count";
 };
@@ -654,9 +654,9 @@ export type GetProjectsCountData = {
   body?: never;
   path?: never;
   query?: {
-    client?: string | number;
-    from?: unknown | Date | (string | number);
-    to?: unknown | Date | (string | number);
+    client?: number;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
   };
   url: "/projects/count";
 };
@@ -800,7 +800,7 @@ export type GetTimeEntriesByIdResponse =
 export type PatchTimeEntriesByIdData = {
   body: {
     title?: string;
-    projectId?: (string | number) | null;
+    projectId?: number | null;
     projectTaskId?: number | null;
     invoiceId?: number | null;
     startAt?: unknown | Date | number;
@@ -823,7 +823,12 @@ export type PatchTimeEntriesByIdResponse =
 export type GetTimeEntriesData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    projectId?: number | null;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
+    billed?: boolean;
+  };
   url: "/time-entries";
 };
 
@@ -837,7 +842,7 @@ export type GetTimeEntriesResponse =
 export type PostTimeEntriesData = {
   body: {
     title: string;
-    projectId: (string | number) | null;
+    projectId: number | null;
     projectTaskId?: number | null;
     invoiceId?: number | null;
     startAt: unknown | Date | number;
@@ -859,9 +864,10 @@ export type GetTimeEntriesAnalyzeDurationByDateData = {
   body?: never;
   path?: never;
   query?: {
-    projectId?: (string | number) | null;
-    from?: unknown | Date | (string | number);
-    to?: unknown | Date | (string | number);
+    projectId?: number | null;
+    from?: unknown | Date | number;
+    to?: unknown | Date | number;
+    billed?: boolean;
   };
   url: "/time-entries/analyze/duration-by-date";
 };

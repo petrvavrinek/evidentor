@@ -62,6 +62,7 @@ export const TimeEntryFilter = t.Object({
 	...t.Pick(t.Partial(InsertTimeEntry), ["projectId"]).properties,
 	from: t.Optional(t.Date()),
 	to: t.Optional(t.Date()),
+	billed: t.Optional(t.Boolean())
 });
 
 export type TimeEntryFilterType = Static<typeof TimeEntryFilter>;

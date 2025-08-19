@@ -14,16 +14,22 @@ interface InvoiceCreateTimeEntriesProps {
   selectedIds?: number[]
 }
 
+const BoxMessage = ({ title }: { title: string }) => <div className="text-center py-8 text-muted-foreground">
+  <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+  <p>{title}</p>
+</div>
+
 export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelect, onUnselect }: InvoiceCreateTimeEntriesProps) {
   const dateFormatter = useDateFormatter({ hour: "numeric", minute: "numeric", second: "numeric" });
   const { data, isLoading } = useQuery({
-    queryKey: getTimeEntriesQueryKey(),
+    queryKey: getTimeEntriesQueryKey({ query: { projectId: project?.id, billed: false } }),
     // TODO: Filtering by project and client, whatever
-    queryFn: () => getTimeEntries(),
+    queryFn: () => getTimeEntries({ query: { projectId: project?.id, billed: false } }),
     enabled: !!project
   });
 
   const diffDate = (start: Date, end: Date) => new Date(end.getTime() - start.getTime());
+
 
   return (
     <Card className="py-4">
@@ -36,16 +42,10 @@ export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelec
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
+        {!isLoading && !project && <BoxMessage title="No project selected" />}
+        {!isLoading && project && !data?.data?.length && <BoxMessage title="No time entries recorded" />}
         {
-          !isLoading && !project && (
-            <div className="text-center py-8 text-muted-foreground">
-              <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>{data?.data === undefined ? "No project selected" : "No time entries recorded"}</p>
-            </div>
-          )
-        }
-        {
-          project && data?.data?.length && (
+          project && data?.data?.length ? (
             <div className="w-full rounded-md border">
               <Table className="w-full">
                 <TableHeader>
@@ -76,7 +76,7 @@ export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelec
                 </TableBody>
               </Table>
             </div>
-          )
+          ) : undefined
         }
       </CardContent>
     </Card>
