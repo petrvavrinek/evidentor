@@ -14,8 +14,8 @@ import { Input } from "@evidentor/ui/components/ui/input";
 import { Select, SelectTrigger, SelectValue } from "@evidentor/ui/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale } from "next-intl";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useMemo, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import z from "zod";
 
 import DatePicker from "@evidentor/ui/components/ui/date-picker";
@@ -24,14 +24,28 @@ import InvoiceCreateTimeEntries from "@/components/invoices/new/invoice-create-t
 import InvoiceCreateManualEntries from "@/components/invoices/new/invoice-create-manual-entries";
 import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@evidentor/ui/components/ui/tooltip";
+import useTitle from "@/hooks/use-title";
+import { useMutation } from "@tanstack/react-query";
+import { postInvoicesMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { Card, CardContent } from "@evidentor/ui/components/ui/card";
+import { useNumberFormatter } from "@/hooks/use-number-formatter";
+import { useRouter } from "@/i18n/navigation";
 
 const InvoiceCreateSchema = zPostInvoicesData.shape.body;
 type InvoiceCreate = z.infer<typeof InvoiceCreateSchema>;
+type InvoiceItem = InvoiceCreate["items"][number];
 
 export default function NewInvoicePage() {
   const locale = useLocale();
+  const router = useRouter();
+  const dateFormatter = useDateFormatter({ day: "2-digit", month: "2-digit", year: "2-digit" });
+
+
   const [project, setProject] = useState<Project>();
   const [selectedTimeEntries, setSelectedTimeEntries] = useState<TimeEntry[]>([]);
+  const [groupByTask, setGroupByTask] = useState(false);
+
+  useTitle("Create new invoice");
 
   const form = useForm<InvoiceCreate>({
     resolver: zodResolver(InvoiceCreateSchema),
@@ -39,12 +53,52 @@ export default function NewInvoicePage() {
       language: locale as Language,
       currency: "czk",
       items: []
-    }
+    },
   });
 
-  const dateFormatter = useDateFormatter({ day: "2-digit", month: "2-digit", year: "2-digit" });
+  const { mutateAsync } = useMutation({
+    ...postInvoicesMutation(),
+    onSuccess: (data) => {
+      router.push(`/app/invoices/detail/${data.id}`);
+    },
+  });
 
-  const handleSubmit = async (values: InvoiceCreate) => { }
+  const [formItemWatch] = useWatch({
+    name: ["items"],
+    control: form.control
+  });
+  const [currencyWatch] = useWatch({
+    name: ["currency"],
+    control: form.control
+  });
+  const numberFormatter = useNumberFormatter({ currency: currencyWatch, style: "currency" })
+
+  const items = useMemo<InvoiceItem[]>(() => {
+    const newItems: InvoiceItem[] = [...formItemWatch];
+    for (const timeEntry of selectedTimeEntries) {
+      newItems.push({
+        name: `${timeEntry.title} (${timeEntry.projectTask?.title})`,
+        qty: 1,
+        unitPrice: 100,
+        timeEntryId: timeEntry.id
+      })
+    }
+
+    return newItems;
+  }, [selectedTimeEntries, formItemWatch]);
+  const total = useMemo<number>(() => items.reduce((prev, c) => prev + c.qty * c.unitPrice, 0), [items]);
+
+  const handleSubmit = async (values: InvoiceCreate) => {
+    await mutateAsync({
+      body: {
+        currency: values.currency,
+        dueDate: new Date(values.dueDate as string),
+        language: values.language,
+        projectId: values.projectId,
+        items: items
+      }
+    });
+  }
 
   const addSelectedTask = (entry: TimeEntry) => {
     setSelectedTimeEntries(_ => {
@@ -64,34 +118,36 @@ export default function NewInvoicePage() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="projectId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Project</FormLabel>
-                  <FormControl>
-                    <ProjectSelect
-                      projectId={field.value}
-                      onSelect={(project) => {
-                        setProject(project);
-                        field.onChange(project?.id ?? null)
-                      }
-                      } />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="projectId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Project</FormLabel>
+                    <FormControl>
+                      <ProjectSelect
+                        projectId={field.value}
+                        onSelect={(project) => {
+                          setProject(project);
+                          field.onChange(project?.id ?? null)
+                        }
+                        } />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormItem>
-              <FormLabel>Client</FormLabel>
-              <Select disabled >
-                <SelectTrigger className="w-full" >
-                  <SelectValue placeholder={project?.client?.companyName ?? "Select project"} />
-                </SelectTrigger>
-              </Select>
-            </FormItem>
+              <FormItem>
+                <FormLabel>Client</FormLabel>
+                <Select disabled >
+                  <SelectTrigger className="w-full" >
+                    <SelectValue placeholder={project?.client?.companyName ?? "Select project"} />
+                  </SelectTrigger>
+                </Select>
+              </FormItem>
+            </div>
 
             <div className="flex gap-2">
               <FormField
@@ -142,15 +198,16 @@ export default function NewInvoicePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <p>Time entries</p>
                 <InvoiceCreateTimeEntries project={project} onSelect={addSelectedTask} onUnselect={removeSelectedTask} selectedIds={selectedTimeEntries.map(e => e.id)} />
-
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <FormItem className="border rounded-md p-2 flex w-fit">
                       <FormLabel>Group by task</FormLabel>
                       <FormControl>
-                        <Checkbox />
+                        <Checkbox
+                          checked={groupByTask}
+                          onCheckedChange={e => setGroupByTask(e as boolean)}
+                        />
                       </FormControl>
                     </FormItem>
                   </TooltipTrigger>
@@ -158,13 +215,18 @@ export default function NewInvoicePage() {
                     Invoice will contain only task title with time instead of each time entry.
                   </TooltipContent>
                 </Tooltip>
-
               </div>
               <div>
-                <InvoiceCreateManualEntries />
+                <InvoiceCreateManualEntries control={form.control} name="items" />
               </div>
             </div>
 
+
+            <Card>
+              <CardContent>
+                Total: {numberFormatter.format(total)}
+              </CardContent>
+            </Card>
             <Button type="submit" disabled={false}>
               Create invoice
             </Button>
