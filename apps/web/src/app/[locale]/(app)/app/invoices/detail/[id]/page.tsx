@@ -66,6 +66,7 @@ const InvoiceDetails = (invoice: Invoice) => {
       <p><span className="font-semibold">Status:</span> {status}</p>
       <p><span className="font-semibold">Currency:</span> {invoice.currency}</p>
       <p><span className="font-semibold">Number of items:</span> {invoice.items.length}</p>
+      <p><span className="font-semibold">Language:</span> {invoice.language}</p>
     </>
   )
 }
@@ -91,9 +92,6 @@ export default function InvoiceDetailPage() {
 
   const { data: invoiceData } = invoice;
   const { client, project, items, currency } = invoiceData;
-
-
-
 
   return (
     <>

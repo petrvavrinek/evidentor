@@ -134,6 +134,13 @@
       "when": 1755438439604,
       "tag": "0018_update_invoice_add_generated_file_id",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1755549439789,
+      "tag": "0019_update_invoice_add_language",
+      "breakpoints": true
     }
   ]
 }

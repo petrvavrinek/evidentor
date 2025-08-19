@@ -49,5 +49,6 @@ export const convertInvoiceToQueueType = (
 			cin: "cin",
 			vatId: "vatId",
 		},
+		language: invoice.language
 	};
 };

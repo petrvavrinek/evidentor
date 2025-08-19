@@ -47,6 +47,9 @@ export interface GenerateInvoice {
 	 * ISO 4217
 	 */
 	currency: string;
+
+	// cs, en
+	language: string;
 }
 
 export type GenerateInvoiceResult =

@@ -19,7 +19,6 @@ import {
 	TableRow,
 } from "@evidentor/ui/components/ui/table";
 
-import InvoiceCreateModal from "@/components/invoices/invoice-create-modal";
 import { InvoiceTableRow } from "@/components/invoices/invoice-table-row";
 import PageHeader from "@/components/page-header";
 import SearchInput from "@/components/search-input";
@@ -36,7 +35,7 @@ export default function InvoicesPage() {
 	const t = useTranslations("app.pages.invoices");
 	useTitle(t("title"));
 	const router = useRouter();
-	
+
 	const {
 		data: invoices,
 		isLoading,
@@ -47,6 +46,7 @@ export default function InvoicesPage() {
 		queryKey: getInvoicesQueryKey(),
 		queryFn: () => getInvoices(),
 	});
+
 
 	const [createOpen, setCreateOpen] = useState(false);
 	const handleDelete = (id: number) => {
@@ -59,7 +59,7 @@ export default function InvoicesPage() {
 				title="Invoices"
 				subtitle="Manage your invoices"
 				controls={
-					<Button className="mt-4 md:mt-0" onClick={() => setCreateOpen(true)}>
+					<Button className="mt-4 md:mt-0" onClick={() => router.push("new")}>
 						<Plus className="mr-2 h-4 w-4" />
 						Create invoice
 					</Button>
@@ -142,11 +142,6 @@ export default function InvoicesPage() {
 					</div>
 				</CardContent>
 			</Card>
-			<InvoiceCreateModal
-				isOpen={createOpen}
-				onClose={() => setCreateOpen(false)}
-				onCreated={refetch}
-			/>
 		</>
 	);
 }

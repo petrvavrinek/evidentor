@@ -12,13 +12,10 @@ import { user } from "./auth.schema";
 import { timeEntries } from "./time-entries.schema";
 import { clients } from "./clients.schema";
 import { projects } from "./projects.schema";
-
-// Available currencies
-// TODO: Maybe move this to some config?
-export const Currencies = ["czk", "eur", "usd"] as const;
-export type Currency = (typeof Currencies)[number];
+import { Currencies, Languages } from "../constants";
 
 export const CurrencyEnum = pgEnum("currency", Currencies);
+export const LanguageEnum = pgEnum("language", Languages);
 
 // Invoice table
 export const invoices = pgTable("invoice", {
@@ -40,7 +37,8 @@ export const invoices = pgTable("invoice", {
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
 	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
-	generatedFileId: text()
+	generatedFileId: text(),
+	language: LanguageEnum().notNull()
 });
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({

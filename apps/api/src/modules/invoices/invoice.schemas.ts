@@ -16,7 +16,7 @@ const CreateInvoiceSchema = createInsertSchema(invoices, {
 });
 
 export const InvoiceCreateSchema = t.Intersect([
-	t.Pick(CreateInvoiceSchema, ["dueDate", "currency", "projectId"]),
+	t.Pick(CreateInvoiceSchema, ["dueDate", "currency", "projectId", "language"]),
 	t.Object({
 		items: t.Array(
 			t.Object({

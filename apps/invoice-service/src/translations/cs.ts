@@ -1,0 +1,18 @@
+export default {
+  invoice: "Faktura",
+  invoice_id: "Č.",
+  supplier: "Dodavatel",
+  subscriber: "Odběratel",
+  payment_information: "Platební informace",
+  iban: "IBAN",
+  swift: "SWIFT",
+  variable_symbol: "Variabilní symbol",
+  total: "Celková částka",
+  name: "Jméno",
+  amount: "Množství",
+  price: "Částka",
+  items_total: "Celková částka",
+  cin: "CIN",
+  vat: "VAT",
+  address: "Adresa",
+} 

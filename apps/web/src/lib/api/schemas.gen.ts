@@ -580,6 +580,18 @@ export const InvoiceSchema = {
             },
           ],
         },
+        language: {
+          anyOf: [
+            {
+              const: "cs",
+              type: "string",
+            },
+            {
+              const: "en",
+              type: "string",
+            },
+          ],
+        },
       },
       required: [
         "id",
@@ -595,6 +607,7 @@ export const InvoiceSchema = {
         "clientId",
         "projectId",
         "generatedFileId",
+        "language",
       ],
     },
     {
@@ -1006,6 +1019,18 @@ export const Invoice__Schema = {
               },
             ],
           },
+          language: {
+            anyOf: [
+              {
+                const: "cs",
+                type: "string",
+              },
+              {
+                const: "en",
+                type: "string",
+              },
+            ],
+          },
         },
         required: [
           "id",
@@ -1021,6 +1046,7 @@ export const Invoice__Schema = {
           "clientId",
           "projectId",
           "generatedFileId",
+          "language",
         ],
       },
       {
