@@ -141,6 +141,13 @@
       "when": 1755549439789,
       "tag": "0019_update_invoice_add_language",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1755607919787,
+      "tag": "0020_update_time_entry_invoice_on_delete",
+      "breakpoints": true
     }
   ]
 }
