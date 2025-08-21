@@ -81,7 +81,7 @@ export default function InvoicesPage() {
 							? "Loading..."
 							: error
 								? "Failed to load invoices"
-								: `${invoices?.data?.length ?? 0} invoice${invoices?.data?.length !== 1 ? "s" : ""} found`}
+								: `${invoices?.length ?? 0} invoice${invoices?.length !== 1 ? "s" : ""} found`}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="px-6">
@@ -121,14 +121,14 @@ export default function InvoicesPage() {
 											{error instanceof Error ? error.message : String(error)}
 										</TableCell>
 									</TableRow>
-								) : invoices?.data?.length === 0 ? (
+								) : invoices?.length === 0 ? (
 									<TableRow>
 										<TableCell colSpan={8} className="text-center">
 											No invoices found
 										</TableCell>
 									</TableRow>
 								) : (
-									invoices?.data?.map((invoice) => (
+									invoices?.map((invoice) => (
 										<InvoiceTableRow
 											key={invoice.id}
 											invoice={invoice}

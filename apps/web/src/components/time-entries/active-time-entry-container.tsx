@@ -13,7 +13,7 @@ import { ActiveTimeEntryCard } from "./active-time-entry-card";
 
 export default function ActiveTimeEntryContainer() {
 	const { active, setActive } = useActiveTimeEntry();
-	const { data, isLoading } = useQuery({
+	const { data: timeEntry, isLoading } = useQuery({
 		queryKey: getTimeEntriesActiveQueryKey(),
 		queryFn: () => getTimeEntriesActive(),
 	});
@@ -24,12 +24,8 @@ export default function ActiveTimeEntryContainer() {
 	});
 
 	useEffect(() => {
-		// Loading or error
-		if (!data) return;
-		const { data: timeEntry } = data;
-
 		setActive(timeEntry ?? null);
-	}, [data, setActive]);
+	}, [timeEntry, setActive]);
 
 	const handleStop = () => {
 		if (!active) return;

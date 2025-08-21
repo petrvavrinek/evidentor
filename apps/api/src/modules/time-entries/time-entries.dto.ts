@@ -35,6 +35,7 @@ export const TimeEntryIdParam = t.Object({
 /**
  * Select time entry with project
  */
+
 const SelectTimeEntry = t.Object({
 	...createSelectSchema(timeEntries).properties,
 	// Project, nullable

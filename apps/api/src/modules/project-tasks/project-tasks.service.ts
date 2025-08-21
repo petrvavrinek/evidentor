@@ -8,6 +8,7 @@ import type {
 	ProjectTaskFilter,
 	ProjectTaskResponseType,
 } from "./project-tasks.dto";
+import type { Pagination } from "../../schemas/pagination.schema";
 
 export const ProjectTasksService = {
 	/**
@@ -40,7 +41,7 @@ export const ProjectTasksService = {
 	 */
 	async findAllByUserId(
 		userId: string,
-		filter?: ProjectTaskFilter,
+		filter?: ProjectTaskFilter
 	): Promise<ProjectTaskResponseType[]> {
 		let query = this.getSelectQueryBuilder(userId);
 

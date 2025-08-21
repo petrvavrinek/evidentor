@@ -53,7 +53,7 @@ export default function ClientsPage() {
 	useTitle(t("title"));
 
 	const {
-		data: { data: clients = [] } = {},
+		data: clients,
 		isLoading,
 		refetch,
 	} = useQuery({
@@ -108,7 +108,7 @@ export default function ClientsPage() {
 				<CardHeader className="px-6">
 					<CardTitle>Client List</CardTitle>
 					<CardDescription>
-						{clients.length} {clients.length === 1 ? "client" : "clients"} found
+						{clients?.length} {clients?.length === 1 ? "client" : "clients"} found
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="px-6">
@@ -123,7 +123,7 @@ export default function ClientsPage() {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{clients.length === 0 ? (
+								{clients?.length === 0 ? (
 									<TableRow>
 										<TableCell
 											colSpan={6}

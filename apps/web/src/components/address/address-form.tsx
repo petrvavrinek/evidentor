@@ -1,18 +1,6 @@
-import { zAddress } from "@/lib/api/zod.gen";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@evidentor/ui/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@evidentor/ui/components/ui/form";
 import { Input } from "@evidentor/ui/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Control, FieldPath, FieldValues, useForm } from "react-hook-form";
-import z from "zod";
-
-const AddressSchema = zAddress.omit({ updatedAt: true, createdAt: true, id: true });
-type Address = z.infer<typeof AddressSchema>;
-
-// interface AddressFormProps {
-//   value?: Address;
-//   onChange?: (newAddress: Address) => void;
-// }
-
+import { Control, FieldPath, FieldValues } from "react-hook-form";
 
 interface AddressFormProps<T extends FieldValues> {
   control: Control<T>;

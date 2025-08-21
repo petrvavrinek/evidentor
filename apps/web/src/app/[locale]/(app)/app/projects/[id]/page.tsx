@@ -1,9 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader, Plus } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
@@ -15,33 +15,25 @@ import {
 
 import PageHeader from "@/components/page-header";
 import TaskModal from "@/components/tasks/task-modal";
-import TaskTable from "@/components/tasks/task-table";
 
-import { getProjectsById, type ProjectTask } from "@/lib/api";
-import {
-	getProjectsByIdQueryKey,
-	getProjectTasksOptions,
-} from "@/lib/api/@tanstack/react-query.gen";
+import QueryDataTable from "@/components/query-data-table";
+import TableItemDetailMenu from "@/components/table-item-detail-menu";
 import EditTaskModal from "@/components/tasks/edit-task-modal";
+import { getProjectsById, getProjectTasks, type ProjectTask } from "@/lib/api";
+import {
+	deleteProjectTasksByIdMutation,
+	getProjectsByIdQueryKey,
+	getProjectTasksQueryKey
+} from "@/lib/api/@tanstack/react-query.gen";
+import { ColumnDef } from "@tanstack/react-table";
 
 export default function ProjectOverviewPage() {
 	const params = useParams();
 	const projectId = Number(params.id);
 
-  const [projectTasks, setProjectTasks] = useState<ProjectTask[]>([]);
-  const [newTaskDialogOpen, setNewTaskDialogOpen] = useState(false);
+	const [projectTasks, setProjectTasks] = useState<ProjectTask[]>([]);
+	const [newTaskDialogOpen, setNewTaskDialogOpen] = useState(false);
 	const [editTask, setEditTask] = useState<ProjectTask>();
-
-  // Update a task in local state
-  const handleTaskUpdate = (updatedTask: ProjectTask) => {
-    setProjectTasks((prev) => {
-      const idx = prev.findIndex((t) => t.id === updatedTask.id);
-      if (idx === -1) return prev;
-      const newTasks = [...prev];
-      newTasks[idx] = updatedTask;
-      return newTasks;
-    });
-  };
 
 	const {
 		data: project,
@@ -51,28 +43,42 @@ export default function ProjectOverviewPage() {
 		queryKey: getProjectsByIdQueryKey({ path: { id: projectId } }),
 		queryFn: () => getProjectsById({ path: { id: projectId } }),
 	});
-
-	const { data: tasks } = useQuery(getProjectTasksOptions());
-
-  // Prefer local edits, then remote
-  const allProjectTasks = useMemo(() => {
-    const remoteTasks = (tasks ?? []).filter(rt => !projectTasks.some(lt => lt.id === rt.id));
-    return [...projectTasks, ...remoteTasks];
-  }, [projectTasks, tasks]);
+	const deleteProjectTaskMutation = useMutation(deleteProjectTasksByIdMutation());
 
 	if (isProjectLoading) return <Loader />;
-	if (!project?.data) return "Project not found";
+	if (!project) return "Project not found";
 
 	const onProjectTaskCreate = (task: ProjectTask) => {
 		setNewTaskDialogOpen(false);
 		setProjectTasks([task, ...projectTasks]);
 	};
 
-  return (
-    <>
-      <PageHeader
-        title={`Project Overview`}
-				subtitle={project.data.title ?? ""}
+	const columns: ColumnDef<ProjectTask>[] = [
+		{
+			accessorKey: "title",
+			header: "Title"
+		},
+		{
+			accessorKey: "description",
+			header: "Description",
+		},
+		{
+			id: "actions",
+			cell: ({ row, table }) => (
+				<TableItemDetailMenu
+					onEdit={() => setEditTask(row.original)}
+					onDelete={() => {
+						deleteProjectTaskMutation.mutate({ path: { id: row.original.id } })
+					}}
+				/>)
+		}
+	]
+
+	return (
+		<>
+			<PageHeader
+				title={`Project Overview`}
+				subtitle={project.title ?? ""}
 			/>
 			<div className="space-y-6">
 				<Card>
@@ -89,7 +95,13 @@ export default function ProjectOverviewPage() {
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						{tasks && <TaskTable tasks={allProjectTasks} onTaskUpdate={setEditTask} />}
+						<QueryDataTable
+							columns={columns}
+							pagination={{ pageSize: 16 }}
+							queryFn={getProjectTasks}
+							queryKey={getProjectTasksQueryKey({ query: { project: projectId }})}
+							queryOptions={{ query: { project: projectId} } as never}
+						/>
 					</CardContent>
 				</Card>
 
@@ -97,7 +109,7 @@ export default function ProjectOverviewPage() {
 					open={newTaskDialogOpen}
 					onClose={() => setNewTaskDialogOpen(false)}
 					onCreate={onProjectTaskCreate}
-					project={project.data}
+					project={project}
 				/>
 				{
 					editTask && (
@@ -105,11 +117,11 @@ export default function ProjectOverviewPage() {
 							task={editTask}
 							open
 							onClose={() => setEditTask(undefined)}
-							onUpdate={handleTaskUpdate}
+							onUpdate={() => { }}
 						/>
 					)
 				}
-				
+
 			</div>
 		</>
 	);

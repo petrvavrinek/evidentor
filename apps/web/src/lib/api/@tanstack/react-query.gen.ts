@@ -219,13 +219,12 @@ export const getClientsQueryKey = (options?: Options<GetClientsData>) =>
 export const getClientsOptions = (options?: Options<GetClientsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getClients({
+      return await getClients({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getClientsQueryKey(options),
   });
@@ -240,13 +239,12 @@ export const postClientsQueryKey = (options: Options<PostClientsData>) =>
 export const postClientsOptions = (options: Options<PostClientsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postClients({
+      return await postClients({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postClientsQueryKey(options),
   });
@@ -268,12 +266,11 @@ export const postClientsMutation = (
     Options<PostClientsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postClients({
+      return await postClients({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -295,12 +292,11 @@ export const deleteClientsByIdMutation = (
     Options<DeleteClientsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteClientsById({
+      return await deleteClientsById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -315,13 +311,12 @@ export const getClientsByIdQueryKey = (options: Options<GetClientsByIdData>) =>
 export const getClientsByIdOptions = (options: Options<GetClientsByIdData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getClientsById({
+      return await getClientsById({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getClientsByIdQueryKey(options),
   });
@@ -343,12 +338,11 @@ export const patchClientsByIdMutation = (
     Options<PatchClientsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchClientsById({
+      return await patchClientsById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -363,13 +357,12 @@ export const getInvoicesQueryKey = (options?: Options<GetInvoicesData>) =>
 export const getInvoicesOptions = (options?: Options<GetInvoicesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getInvoices({
+      return await getInvoices({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getInvoicesQueryKey(options),
   });
@@ -384,13 +377,12 @@ export const postInvoicesQueryKey = (options: Options<PostInvoicesData>) =>
 export const postInvoicesOptions = (options: Options<PostInvoicesData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postInvoices({
+      return await postInvoices({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postInvoicesQueryKey(options),
   });
@@ -412,12 +404,11 @@ export const postInvoicesMutation = (
     Options<PostInvoicesData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postInvoices({
+      return await postInvoices({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -439,12 +430,11 @@ export const deleteInvoicesByIdMutation = (
     Options<DeleteInvoicesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteInvoicesById({
+      return await deleteInvoicesById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -462,13 +452,12 @@ export const getInvoicesByIdOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getInvoicesById({
+      return await getInvoicesById({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getInvoicesByIdQueryKey(options),
   });
@@ -483,13 +472,12 @@ export const getInvoicesByIdGeneratedOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getInvoicesByIdGenerated({
+      return await getInvoicesByIdGenerated({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getInvoicesByIdGeneratedQueryKey(options),
   });
@@ -504,13 +492,12 @@ export const getProjectTasksCountOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectTasksCount({
+      return await getProjectTasksCount({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getProjectTasksCountQueryKey(options),
   });
@@ -525,13 +512,12 @@ export const getProjectTasksOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectTasks({
+      return await getProjectTasks({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getProjectTasksQueryKey(options),
   });
@@ -553,12 +539,11 @@ export const deleteProjectTasksByIdMutation = (
     Options<DeleteProjectTasksByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteProjectTasksById({
+      return await deleteProjectTasksById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -577,12 +562,11 @@ export const patchProjectTasksByIdMutation = (
     Options<PatchProjectTasksByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchProjectTasksById({
+      return await patchProjectTasksById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -600,13 +584,12 @@ export const postProjectTasksByIdOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postProjectTasksById({
+      return await postProjectTasksById({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postProjectTasksByIdQueryKey(options),
   });
@@ -628,12 +611,11 @@ export const postProjectTasksByIdMutation = (
     Options<PostProjectTasksByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postProjectTasksById({
+      return await postProjectTasksById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -648,13 +630,12 @@ export const getProjectsCountOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectsCount({
+      return await getProjectsCount({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getProjectsCountQueryKey(options),
   });
@@ -669,13 +650,12 @@ export const getProjectsQueryKey = (options?: Options<GetProjectsData>) =>
 export const getProjectsOptions = (options?: Options<GetProjectsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjects({
+      return await getProjects({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getProjectsQueryKey(options),
   });
@@ -690,13 +670,12 @@ export const postProjectsQueryKey = (options: Options<PostProjectsData>) =>
 export const postProjectsOptions = (options: Options<PostProjectsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postProjects({
+      return await postProjects({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postProjectsQueryKey(options),
   });
@@ -718,12 +697,11 @@ export const postProjectsMutation = (
     Options<PostProjectsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postProjects({
+      return await postProjects({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -745,12 +723,11 @@ export const deleteProjectsByIdMutation = (
     Options<DeleteProjectsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteProjectsById({
+      return await deleteProjectsById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -768,13 +745,12 @@ export const getProjectsByIdOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getProjectsById({
+      return await getProjectsById({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getProjectsByIdQueryKey(options),
   });
@@ -796,12 +772,11 @@ export const patchProjectsByIdMutation = (
     Options<PatchProjectsByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchProjectsById({
+      return await patchProjectsById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -819,13 +794,12 @@ export const getTimeEntriesActiveOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntriesActive({
+      return await getTimeEntriesActive({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getTimeEntriesActiveQueryKey(options),
   });
@@ -847,12 +821,11 @@ export const deleteTimeEntriesByIdMutation = (
     Options<DeleteTimeEntriesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await deleteTimeEntriesById({
+      return await deleteTimeEntriesById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -870,13 +843,12 @@ export const getTimeEntriesByIdOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntriesById({
+      return await getTimeEntriesById({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getTimeEntriesByIdQueryKey(options),
   });
@@ -898,12 +870,11 @@ export const patchTimeEntriesByIdMutation = (
     Options<PatchTimeEntriesByIdData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await patchTimeEntriesById({
+      return await patchTimeEntriesById({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -917,13 +888,12 @@ export const getTimeEntriesOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntries({
+      return await getTimeEntries({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getTimeEntriesQueryKey(options),
   });
@@ -941,13 +911,12 @@ export const postTimeEntriesOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postTimeEntries({
+      return await postTimeEntries({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postTimeEntriesQueryKey(options),
   });
@@ -969,12 +938,11 @@ export const postTimeEntriesMutation = (
     Options<PostTimeEntriesData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postTimeEntries({
+      return await postTimeEntries({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -989,13 +957,12 @@ export const getTimeEntriesAnalyzeDurationByDateOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getTimeEntriesAnalyzeDurationByDate({
+      return await getTimeEntriesAnalyzeDurationByDate({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getTimeEntriesAnalyzeDurationByDateQueryKey(options),
   });
@@ -1007,13 +974,12 @@ export const getCalendarsQueryKey = (options?: Options<GetCalendarsData>) =>
 export const getCalendarsOptions = (options?: Options<GetCalendarsData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getCalendars({
+      return await getCalendars({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getCalendarsQueryKey(options),
   });
@@ -1025,13 +991,12 @@ export const getStatusQueryKey = (options?: Options<GetStatusData>) =>
 export const getStatusOptions = (options?: Options<GetStatusData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getStatus({
+      return await getStatus({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getStatusQueryKey(options),
   });
@@ -1046,13 +1011,12 @@ export const socialSignInQueryKey = (options: Options<SocialSignInData>) =>
 export const socialSignInOptions = (options: Options<SocialSignInData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await socialSignIn({
+      return await socialSignIn({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: socialSignInQueryKey(options),
   });
@@ -1074,12 +1038,11 @@ export const socialSignInMutation = (
     Options<SocialSignInData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await socialSignIn({
+      return await socialSignIn({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1097,13 +1060,12 @@ export const getAuthGetSessionOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthGetSession({
+      return await getAuthGetSession({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthGetSessionQueryKey(options),
   });
@@ -1121,13 +1083,12 @@ export const postAuthSignOutOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthSignOut({
+      return await postAuthSignOut({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthSignOutQueryKey(options),
   });
@@ -1149,12 +1110,11 @@ export const postAuthSignOutMutation = (
     Options<PostAuthSignOutData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthSignOut({
+      return await postAuthSignOut({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1172,13 +1132,12 @@ export const postAuthSignUpEmailOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthSignUpEmail({
+      return await postAuthSignUpEmail({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthSignUpEmailQueryKey(options),
   });
@@ -1200,12 +1159,11 @@ export const postAuthSignUpEmailMutation = (
     Options<PostAuthSignUpEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthSignUpEmail({
+      return await postAuthSignUpEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1223,13 +1181,12 @@ export const postAuthSignInEmailOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthSignInEmail({
+      return await postAuthSignInEmail({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthSignInEmailQueryKey(options),
   });
@@ -1251,12 +1208,11 @@ export const postAuthSignInEmailMutation = (
     Options<PostAuthSignInEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthSignInEmail({
+      return await postAuthSignInEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1274,13 +1230,12 @@ export const postAuthForgetPasswordOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthForgetPassword({
+      return await postAuthForgetPassword({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthForgetPasswordQueryKey(options),
   });
@@ -1302,12 +1257,11 @@ export const postAuthForgetPasswordMutation = (
     Options<PostAuthForgetPasswordData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthForgetPassword({
+      return await postAuthForgetPassword({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1325,13 +1279,12 @@ export const postAuthResetPasswordOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthResetPassword({
+      return await postAuthResetPassword({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthResetPasswordQueryKey(options),
   });
@@ -1353,12 +1306,11 @@ export const postAuthResetPasswordMutation = (
     Options<PostAuthResetPasswordData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthResetPassword({
+      return await postAuthResetPassword({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1376,13 +1328,12 @@ export const getAuthVerifyEmailOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthVerifyEmail({
+      return await getAuthVerifyEmail({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthVerifyEmailQueryKey(options),
   });
@@ -1400,13 +1351,12 @@ export const postAuthSendVerificationEmailOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthSendVerificationEmail({
+      return await postAuthSendVerificationEmail({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthSendVerificationEmailQueryKey(options),
   });
@@ -1428,12 +1378,11 @@ export const postAuthSendVerificationEmailMutation = (
     Options<PostAuthSendVerificationEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthSendVerificationEmail({
+      return await postAuthSendVerificationEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1448,13 +1397,12 @@ export const postAuthChangeEmailOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthChangeEmail({
+      return await postAuthChangeEmail({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthChangeEmailQueryKey(options),
   });
@@ -1473,12 +1421,11 @@ export const postAuthChangeEmailMutation = (
     Options<PostAuthChangeEmailData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthChangeEmail({
+      return await postAuthChangeEmail({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1496,13 +1443,12 @@ export const postAuthChangePasswordOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthChangePassword({
+      return await postAuthChangePassword({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthChangePasswordQueryKey(options),
   });
@@ -1524,12 +1470,11 @@ export const postAuthChangePasswordMutation = (
     Options<PostAuthChangePasswordData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthChangePassword({
+      return await postAuthChangePassword({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1547,13 +1492,12 @@ export const postAuthUpdateUserOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthUpdateUser({
+      return await postAuthUpdateUser({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthUpdateUserQueryKey(options),
   });
@@ -1575,12 +1519,11 @@ export const postAuthUpdateUserMutation = (
     Options<PostAuthUpdateUserData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthUpdateUser({
+      return await postAuthUpdateUser({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1598,13 +1541,12 @@ export const postAuthDeleteUserOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthDeleteUser({
+      return await postAuthDeleteUser({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthDeleteUserQueryKey(options),
   });
@@ -1626,12 +1568,11 @@ export const postAuthDeleteUserMutation = (
     Options<PostAuthDeleteUserData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthDeleteUser({
+      return await postAuthDeleteUser({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1649,13 +1590,12 @@ export const getAuthResetPasswordByTokenOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthResetPasswordByToken({
+      return await getAuthResetPasswordByToken({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthResetPasswordByTokenQueryKey(options),
   });
@@ -1673,13 +1613,12 @@ export const postAuthRequestPasswordResetOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRequestPasswordReset({
+      return await postAuthRequestPasswordReset({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthRequestPasswordResetQueryKey(options),
   });
@@ -1701,12 +1640,11 @@ export const postAuthRequestPasswordResetMutation = (
     Options<PostAuthRequestPasswordResetData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRequestPasswordReset({
+      return await postAuthRequestPasswordReset({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1724,13 +1662,12 @@ export const getAuthListSessionsOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthListSessions({
+      return await getAuthListSessions({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthListSessionsQueryKey(options),
   });
@@ -1748,13 +1685,12 @@ export const postAuthRevokeSessionOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRevokeSession({
+      return await postAuthRevokeSession({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthRevokeSessionQueryKey(options),
   });
@@ -1776,12 +1712,11 @@ export const postAuthRevokeSessionMutation = (
     Options<PostAuthRevokeSessionData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRevokeSession({
+      return await postAuthRevokeSession({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1799,13 +1734,12 @@ export const postAuthRevokeSessionsOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRevokeSessions({
+      return await postAuthRevokeSessions({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthRevokeSessionsQueryKey(options),
   });
@@ -1827,12 +1761,11 @@ export const postAuthRevokeSessionsMutation = (
     Options<PostAuthRevokeSessionsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRevokeSessions({
+      return await postAuthRevokeSessions({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1850,13 +1783,12 @@ export const postAuthRevokeOtherSessionsOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRevokeOtherSessions({
+      return await postAuthRevokeOtherSessions({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthRevokeOtherSessionsQueryKey(options),
   });
@@ -1878,12 +1810,11 @@ export const postAuthRevokeOtherSessionsMutation = (
     Options<PostAuthRevokeOtherSessionsData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRevokeOtherSessions({
+      return await postAuthRevokeOtherSessions({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1901,13 +1832,12 @@ export const postAuthLinkSocialOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthLinkSocial({
+      return await postAuthLinkSocial({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthLinkSocialQueryKey(options),
   });
@@ -1929,12 +1859,11 @@ export const postAuthLinkSocialMutation = (
     Options<PostAuthLinkSocialData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthLinkSocial({
+      return await postAuthLinkSocial({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -1952,13 +1881,12 @@ export const getAuthListAccountsOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthListAccounts({
+      return await getAuthListAccounts({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthListAccountsQueryKey(options),
   });
@@ -1976,13 +1904,12 @@ export const getAuthDeleteUserCallbackOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthDeleteUserCallback({
+      return await getAuthDeleteUserCallback({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthDeleteUserCallbackQueryKey(options),
   });
@@ -2000,13 +1927,12 @@ export const postAuthUnlinkAccountOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthUnlinkAccount({
+      return await postAuthUnlinkAccount({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthUnlinkAccountQueryKey(options),
   });
@@ -2028,12 +1954,11 @@ export const postAuthUnlinkAccountMutation = (
     Options<PostAuthUnlinkAccountData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthUnlinkAccount({
+      return await postAuthUnlinkAccount({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -2051,13 +1976,12 @@ export const postAuthRefreshTokenOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthRefreshToken({
+      return await postAuthRefreshToken({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthRefreshTokenQueryKey(options),
   });
@@ -2079,12 +2003,11 @@ export const postAuthRefreshTokenMutation = (
     Options<PostAuthRefreshTokenData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthRefreshToken({
+      return await postAuthRefreshToken({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -2102,13 +2025,12 @@ export const postAuthGetAccessTokenOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthGetAccessToken({
+      return await postAuthGetAccessToken({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthGetAccessTokenQueryKey(options),
   });
@@ -2130,12 +2052,11 @@ export const postAuthGetAccessTokenMutation = (
     Options<PostAuthGetAccessTokenData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthGetAccessToken({
+      return await postAuthGetAccessToken({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -2153,13 +2074,12 @@ export const postAuthAccountInfoOptions = (
 ) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await postAuthAccountInfo({
+      return await postAuthAccountInfo({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: postAuthAccountInfoQueryKey(options),
   });
@@ -2181,12 +2101,11 @@ export const postAuthAccountInfoMutation = (
     Options<PostAuthAccountInfoData>
   > = {
     mutationFn: async (localOptions) => {
-      const { data } = await postAuthAccountInfo({
+      return await postAuthAccountInfo({
         ...options,
         ...localOptions,
         throwOnError: true,
       });
-      return data;
     },
   };
   return mutationOptions;
@@ -2201,13 +2120,12 @@ export const getAuthOkQueryKey = (options?: Options<GetAuthOkData>) =>
 export const getAuthOkOptions = (options?: Options<GetAuthOkData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthOk({
+      return await getAuthOk({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthOkQueryKey(options),
   });
@@ -2222,13 +2140,12 @@ export const getAuthErrorQueryKey = (options?: Options<GetAuthErrorData>) =>
 export const getAuthErrorOptions = (options?: Options<GetAuthErrorData>) => {
   return queryOptions({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getAuthError({
+      return await getAuthError({
         ...options,
         ...queryKey[0],
         signal,
         throwOnError: true,
       });
-      return data;
     },
     queryKey: getAuthErrorQueryKey(options),
   });

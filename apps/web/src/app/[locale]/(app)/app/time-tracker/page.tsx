@@ -32,6 +32,7 @@ import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useTranslations } from "next-intl";
 import useTitle from "@/hooks/use-title";
 
+// TODO: Rework
 
 export default function TimeTrackerPage() {
 	const t = useTranslations("app.pages.timeTracker");
@@ -42,7 +43,7 @@ export default function TimeTrackerPage() {
 
 	useTitle(t("title"));
 
-	const { data, isLoading } = useQuery({
+	const { data: projectTasks, isLoading } = useQuery({
 		queryKey: getProjectTasksQueryKey(),
 		queryFn: () => getTimeEntries(),
 	});
@@ -65,13 +66,12 @@ export default function TimeTrackerPage() {
 	};
 
 	useEffect(() => {
-		if (!data?.data) return;
-		setFetchedTimeEntries(data.data);
-	}, [data]);
+		setFetchedTimeEntries(projectTasks ?? []);
+	}, [projectTasks]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: getDateKey is static
 	const grouppedTimeEntries = useMemo(() => {
-		const allTimeEntries = [...createdTimeEntries, ...fetchedTimeEntreis];
+		const allTimeEntries = [...createdTimeEntries, ...(projectTasks ?? [])];
 		return groupBy(allTimeEntries, (e) =>
 			getDateKey(new Date(e.startAt as string)),
 		);
@@ -138,7 +138,7 @@ export default function TimeTrackerPage() {
 						<CardDescription>Your recent tracked time</CardDescription>
 					</CardHeader>
 					<CardContent>
-						{(!data || isLoading) && <Loader />}
+						{(!projectTasks || isLoading) && <Loader />}
 
 						{getGrouppedTimeEntriesSorted().map((d) => (
 							<div key={d} className="space-y-2 py-2">

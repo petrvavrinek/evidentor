@@ -590,6 +590,8 @@ export type GetProjectTasksData = {
   body?: never;
   path?: never;
   query?: {
+    take?: number;
+    skip?: number;
     project?: number;
   };
   url: "/project-tasks";
@@ -671,7 +673,10 @@ export type GetProjectsCountResponse =
 export type GetProjectsData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    take?: number;
+    skip?: number;
+  };
   url: "/projects";
 };
 
@@ -824,6 +829,8 @@ export type GetTimeEntriesData = {
   body?: never;
   path?: never;
   query?: {
+    take?: number;
+    skip?: number;
     projectId?: number | null;
     from?: unknown | Date | number;
     to?: unknown | Date | number;

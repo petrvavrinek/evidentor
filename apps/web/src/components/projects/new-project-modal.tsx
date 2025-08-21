@@ -37,12 +37,8 @@ export default function NewProjectModal({
 		PostProjectsData["body"]
 	>({
 		mutationFn: async (variables) => {
-			const { data, error } = await postProjects({ body: variables });
-			if (error) {
-				// biome-ignore lint/suspicious/noExplicitAny: Remove this
-				throw new Error((error as any).detail || "Failed to create project");
-			}
-			return data as Project;
+			const project = await postProjects({ body: variables });
+			return project as Project;
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: getProjectsQueryKey() });

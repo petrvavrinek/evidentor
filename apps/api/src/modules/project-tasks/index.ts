@@ -13,12 +13,14 @@ import {
 	UpdateProjectTask,
 } from "./project-tasks.dto";
 import { ProjectTasksService } from "./project-tasks.service";
+import { pagination, withPagination } from "../../macros/pagination.macro";
 
 const router = new Elysia({
 	prefix: "/project-tasks",
 	detail: { tags: ["ProjectTask"] },
 })
 	.use(BetterAuthMacro)
+	.use(pagination)
 	.model("ProjectTask", ProjectTaskResponse)
 	.model("ProjectTask[]", ProjectTasksResponse)
 	.model("ProjectTaskCount", ProjectTaskCountReponse)
@@ -40,7 +42,12 @@ const router = new Elysia({
 			const task = await ProjectTasksService.findAllByUserId(user.id, query);
 			return task;
 		},
-		{ auth: true, response: "ProjectTask[]", query: ProjectTaskQueryFilter },
+		{
+			auth: true,
+			response: "ProjectTask[]",
+			query: withPagination(ProjectTaskQueryFilter),
+			paginate: { defaultPageSize: 16 }
+		},
 	)
 	.post(
 		":id",

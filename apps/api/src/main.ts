@@ -12,10 +12,12 @@ import ProjectsRouter from "./modules/projects";
 import TimeEntryRouter from "./modules/time-entries";
 import CalendarRouter from "./modules/calendar";
 import { AddressResponse } from "./modules/addresses/addresses.schema";
+import { pagination } from "./macros/pagination.macro";
 
 const logger = new LoggerService("main");
 
 const app = new Elysia()
+
 	.use(
 		cors({
 			origin: env.CORS_ORIGINS ?? "*",
@@ -24,6 +26,7 @@ const app = new Elysia()
 			allowedHeaders: ["Content-Type", "Authorization"],
 		}),
 	)
+	.use(pagination)
 	.onRequest((handler) => {
 		logger.info(`[${handler.request.method}] ${handler.request.url}`);
 	})
@@ -57,6 +60,7 @@ const handleShutdown = () => {
 	db.$client.end();
 	process.exit(0);
 };
+
 
 // According to docs: graceful shutdown
 // Source: https://hono.dev/docs/getting-started/nodejs
