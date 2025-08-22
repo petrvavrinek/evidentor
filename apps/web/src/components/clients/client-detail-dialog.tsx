@@ -1,9 +1,8 @@
 import { Client } from "@/lib/api";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@evidentor/ui/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { Badge } from "@evidentor/ui/components/ui/badge";
-import { Separator } from "@evidentor/ui/components/ui/separator";
-import { Building2, User, Mail, MapPin, CreditCard } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@evidentor/ui/components/ui/dialog";
+import { Building2, CreditCard, Mail, MapPin, User } from "lucide-react";
 
 interface ClientDetailDialogProps {
   client?: Client;
@@ -106,44 +105,7 @@ export default function ClientDetailDialog({ client, onClose }: ClientDetailDial
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {client.billing ? (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-sm font-medium text-muted-foreground">Account Number</label>
-                        <p className="text-base font-mono">{client.billing.accountNumber}</p>
-                      </div>
-                      {client.billing.variableSymbol && (
-                        <div>
-                          <label className="text-sm font-medium text-muted-foreground">Variable Symbol</label>
-                          <p className="text-base font-mono">{client.billing.variableSymbol}</p>
-                        </div>
-                      )}
-                    </div>
-
-                    {(client.billing.iban || client.billing.swiftCode) && (
-                      <>
-                        <Separator />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {client.billing.iban && (
-                            <div>
-                              <label className="text-sm font-medium text-muted-foreground">IBAN</label>
-                              <p className="text-base font-mono break-all">{client.billing.iban}</p>
-                            </div>
-                          )}
-                          {client.billing.swiftCode && (
-                            <div>
-                              <label className="text-sm font-medium text-muted-foreground">SWIFT Code</label>
-                              <p className="text-base font-mono">{client.billing.swiftCode}</p>
-                            </div>
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground italic">No billing information available</p>
-                )}
+                Billing
               </CardContent>
             </Card>
             <div className="flex justify-between items-center pt-4 border-t">

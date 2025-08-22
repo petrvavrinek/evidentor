@@ -36,7 +36,7 @@ export default function HoursSummaryCard() {
 
 	const transformedDates = useMemo<TimeEntryDurationByDate>(() => {
 		return dates.map((e) => {
-			const d = data?.data ?? [];
+			const d = data ?? [];
 			const sameDate = d.find((d) => isDateSame(new Date(d.date as string), e));
 
 			return {
@@ -44,11 +44,11 @@ export default function HoursSummaryCard() {
 				duration: sameDate?.duration ?? 0,
 			};
 		});
-	}, [data?.data, dates]);
+	}, [data, dates]);
 
 	return (
 		<DashboardCard title="Hours summary" subtitle="Your working hours overview">
-			{data?.data && (
+			{data && (
 				<TimeEntryDurationChart durations={transformedDates} displayType="day" />
 			)}
 			{isLoading && "..."}
