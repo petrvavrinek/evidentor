@@ -13,12 +13,12 @@ export default function Home() {
 
 	const getProjectTaskCountFn = async () => {
 		const c = await getProjectTasksCount();
-		return c.data?.count ?? 0;
+		return c?.count ?? 0;
 	};
 
 	const getProjectCountFn = async () => {
 		const c = await getProjectsCount();
-		return c.data?.count ?? 0;
+		return c?.count ?? 0;
 	};
 
 	return (

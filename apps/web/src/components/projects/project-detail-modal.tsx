@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Calendar, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { getProjectTasks, type Project } from "@/lib/api";
-import { getProjectTasksQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { type Project } from "@/lib/api";
+import { getProjectTasksOptions } from "@/lib/api/@tanstack/react-query.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
@@ -40,24 +40,15 @@ export default function ProjectDetailModal({
 	isOpen,
 	onClose,
 }: ProjectDetailModalProps) {
-	const tasksQuery = useQuery({
-		queryKey: getProjectTasksQueryKey({ query: { project: project?.id } }),
-		initialData: [],
-		queryFn: async () => {
-			if (!project?.id) return [];
-			const tasks = await getProjectTasks({ query: { project: project.id } });
-			return tasks.data ?? [];
-		},
-		enabled: false,
-	});
+
+	const { data, refetch } = useQuery(getProjectTasksOptions({ query: { project: project?.id }}));
 
 	const [activeTab, setActiveTab] = useState<string>();
 
 	// Fetch
 	useEffect(() => {
-		console.log(activeTab);
-		if (activeTab === "tasks") tasksQuery.refetch();
-	}, [activeTab, tasksQuery]);
+		if (activeTab === "tasks") refetch();
+	}, [activeTab]);
 
 	// Nothing to render
 	if (!project) return;
@@ -115,7 +106,7 @@ export default function ProjectDetailModal({
 								</Button>
 							</CardHeader>
 							<CardContent>
-								{tasksQuery.data.length === 0 ? (
+								{data?.length === 0 ? (
 									<div className="text-center py-6 text-muted-foreground">
 										No tasks found for this project.
 									</div>
@@ -130,7 +121,7 @@ export default function ProjectDetailModal({
 											</TableRow>
 										</TableHeader>
 										<TableBody>
-											{tasksQuery.data.map((task) => (
+											{data?.map((task) => (
 												<TableRow key={task.id}>
 													<TableCell className="font-medium">
 														{task.title}
