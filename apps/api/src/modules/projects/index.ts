@@ -12,12 +12,15 @@ import {
 	UpdateProject,
 } from "./projects.dto";
 import { ProjectsService } from "./projects.service";
+import { pagination, withPagination } from "../../macros/pagination.macro";
+import { PaginationSchema } from "../../schemas/pagination.schema";
 
 const router = new Elysia({
 	prefix: "/projects",
 	detail: { tags: ["Project"] },
 })
 	.use(BetterAuthMacro)
+	.use(pagination)
 	.model("Project", ProjectResponse)
 	.model("Project[]", ProjectsResponse)
 	.model("ProjectCount", ProjectCountReponse)
@@ -44,6 +47,10 @@ const router = new Elysia({
 				description: "Get all user projects",
 			},
 			response: "Project[]",
+			paginate: {
+				defaultPageSize: 10
+			},
+			query: PaginationSchema
 		},
 	)
 	.post(

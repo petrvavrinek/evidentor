@@ -148,6 +148,20 @@
       "when": 1755607919787,
       "tag": "0020_update_time_entry_invoice_on_delete",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1755894760383,
+      "tag": "0021_create_user_billing_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1755894995732,
+      "tag": "0022_update_user_billing_table_add_company_id_vat",
+      "breakpoints": true
     }
   ]
 }

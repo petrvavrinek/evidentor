@@ -1,4 +1,4 @@
-import { Elysia, status } from "elysia";
+import { Elysia, status, t } from "elysia";
 import { BetterAuthMacro } from "../auth";
 import {
 	CreateTimeEntry,
@@ -10,12 +10,15 @@ import {
 	UpdateTimeEntry,
 } from "./time-entries.dto";
 import { TimeEntriesService } from "./time-entries.service";
+import { pagination, withPagination } from '../../macros/pagination.macro';
+
 
 const router = new Elysia({
 	prefix: "/time-entries",
 	detail: { tags: ["Timer"] },
 })
 	.use(BetterAuthMacro)
+	.use(pagination)
 	.model("TimeEntry", TimeEntryResponse)
 	.model("TimeEntry[]", TimeEntriesResponse)
 	.model("TimeEntryDurationByDate", TimeEntryDurationByDate)
@@ -57,13 +60,15 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		async ({ user, query }) => {
-			return await TimeEntriesService.findByUserId(user.id, query);
+		async ({ user, query, pagination }) => {
+			return await TimeEntriesService.findByUserId(user.id, query, pagination);
 		},
 		{
 			auth: true,
+			paginate: { defaultPageSize: 10 },
 			response: "TimeEntry[]",
-			query: TimeEntryFilter
+			query: withPagination(TimeEntryFilter),
+			
 		},
 	)
 	.post(

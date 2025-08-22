@@ -1,21 +1,10 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t } from "elysia";
 
-import { clients, clientsBilling } from "@/db/schema";
+import { clients } from "@/db/schema";
 import { AddressResponse, CreateAddressSchema } from "../addresses/addresses.schema";
 
-
-// Clients billing
-const InsertClientBilling = createInsertSchema(clientsBilling);
-const CreateClientBilling = t.Pick(InsertClientBilling, [
-  "accountNumber",
-  "iban",
-  "swiftCode",
-  "variableSymbol",
-])
-
 // Clients
-
 const InsertClient = createInsertSchema(clients);
 
 /**
@@ -29,7 +18,6 @@ export const CreateClientSchema = t.Intersect([
   ]),
   t.Object({
     address: t.Optional(CreateAddressSchema),
-    billing: t.Optional(CreateClientBilling)
   })
 ]);
 
@@ -47,7 +35,6 @@ export const ClientIdParamSchema = t.Object({
 
 
 export const RawClientSelectSchema = createSelectSchema(clients);
-const ClientBillingResponseSchema = createSelectSchema(clientsBilling);
 
 /**
  * Select client schema
@@ -62,7 +49,6 @@ const SelectClient = t.Intersect(
     ]),
     t.Object({
       address: t.Nullable(AddressResponse),
-      billing: t.Nullable(ClientBillingResponseSchema)
     })
   ]);
 

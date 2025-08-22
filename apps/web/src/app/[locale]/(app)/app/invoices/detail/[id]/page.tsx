@@ -86,20 +86,19 @@ export default function InvoiceDetailPage() {
     queryFn: () => getInvoicesById({ path: { id } })
   });
 
-  useTitle(invoice?.data?.id ? "Loading" : `Invoice: ${invoice?.data?.id}`, [isLoading]);
+  useTitle(invoice?.id ? "Loading" : `Invoice: ${invoice?.id}`, [isLoading]);
 
-  if (!invoice?.data || isLoading) return <>Loading..</>;
+  if (!invoice || isLoading) return <>Loading..</>;
 
-  const { data: invoiceData } = invoice;
-  const { client, project, items, currency } = invoiceData;
+  const { client, project, items, currency } = invoice;
 
   return (
     <>
       <PageHeader
         title="Invoice detail"
-        subtitle={`Invoice: ${invoiceData.id}`}
+        subtitle={`Invoice: ${invoice.id}`}
         controls={
-          invoiceData.generatedFileId && <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>
+          invoice.generatedFileId && <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>
         }
       />
 
@@ -109,7 +108,7 @@ export default function InvoiceDetailPage() {
             <CardTitle>Invoice details</CardTitle>
           </CardHeader>
           <CardContent>
-            <InvoiceDetails {...invoiceData} />
+            <InvoiceDetails {...invoice} />
           </CardContent>
         </Card>
         <Card>
@@ -153,7 +152,7 @@ export default function InvoiceDetailPage() {
           </Table>
         </div>
       </div>
-      <InvoicePdfModal invoice={invoiceData} open={openPdf} onOpenChange={setOpenPdf} />
+      <InvoicePdfModal invoice={invoice} open={openPdf} onOpenChange={setOpenPdf} />
     </>
 
   )

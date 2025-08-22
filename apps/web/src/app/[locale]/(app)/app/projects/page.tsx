@@ -23,33 +23,28 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@evidentor/ui/components/ui/card";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@evidentor/ui/components/ui/table";
 
 import PageHeader from "@/components/page-header";
 import NewProjectModal from "@/components/projects/new-project-modal";
-import ProjectTableRow from "@/components/projects/project-table-row";
 import ProjectsOverviewError from "@/components/projects/projects-overview-error";
 import ProjectsOverviewLoading from "@/components/projects/projects-overview-loading";
 import SearchInput from "@/components/search-input";
 
-import { deleteProjectsById, getProjects, type Project } from "@/lib/api";
-import { getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import ProjectDetailModal from "@/components/projects/project-detail-modal";
-import { useTranslations } from "next-intl";
+import QueryDataTable from "@/components/query-data-table";
+import TableItemDetailMenu from "@/components/table-item-detail-menu";
 import useTitle from "@/hooks/use-title";
+import { deleteProjectsById, getProjects, type Project } from "@/lib/api";
+import { getProjectsOptions, getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { ColumnDef } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
+
 
 export default function ProjectsPage() {
 	const t = useTranslations("app.pages.projects");
 	useTitle(t("title"));
 
-	const { data, isLoading, error } = useQuery({
+	const { data: projects, isLoading, error } = useQuery({
 		initialData: null,
 		queryKey: getProjectsQueryKey(),
 		queryFn: () => getProjects(),
@@ -76,22 +71,39 @@ export default function ProjectsPage() {
 	});
 
 	const handleDelete = (id: number) => {
-		const project = projects.find((p) => p.id === id);
+		const project = projects?.find((p) => p.id === id);
 		if (project) {
 			setProjectToDelete(project);
 		}
-	};
-
-	const handleUpdate = (id: number) => {
-		// TODO: Implement update functionality
-		console.log(`Update project ${id}`);
 	};
 
 	const handleDetailShow = (project: Project) => {
 		setShowProjectDetail(project);
 	};
 
-	const projects = data?.data || [];
+	const columns: ColumnDef<Project>[] = [
+		{
+			accessorKey: "title",
+			header: "Title"
+		},
+		{
+			accessorKey: "client.companyName",
+			header: "Client",
+		},
+		{
+			id: "actions",
+			cell: ({ row }) => {
+				return (
+					<TableItemDetailMenu
+						onDelete={() => handleDelete(row.original.id)}
+						onDetail={() => handleDetailShow(row.original)}
+					/>
+				);
+			},
+			size: 80
+		}
+	]
+
 
 	return (
 		<>
@@ -123,53 +135,16 @@ export default function ProjectsPage() {
 					<CardHeader className="px-6">
 						<CardTitle>Project List</CardTitle>
 						<CardDescription>
-							{projects.length} project{projects.length !== 1 ? "s" : ""} found
+							{projects?.length} project{projects?.length !== 1 ? "s" : ""} found
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="px-6">
-						<div className="rounded-md border">
-							<Table>
-								<TableHeader>
-									<TableRow>
-										<TableHead>Project</TableHead>
-										<TableHead>Client</TableHead>
-										<TableHead>Status</TableHead>
-										<TableHead className="hidden md:table-cell">
-											Priority
-										</TableHead>
-										<TableHead className="hidden lg:table-cell">
-											Deadline
-										</TableHead>
-										<TableHead className="hidden lg:table-cell">
-											Progress
-										</TableHead>
-										<TableHead className="w-[80px]"></TableHead>
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									{projects.length === 0 ? (
-										<TableRow>
-											<TableCell
-												colSpan={7}
-												className="text-center py-8 text-muted-foreground"
-											>
-												No projects found.
-											</TableCell>
-										</TableRow>
-									) : (
-										projects.map((project: Project) => (
-											<ProjectTableRow
-												key={project.id}
-												project={project}
-												onUpdate={handleUpdate}
-												onDelete={handleDelete}
-												onDetailShow={() => handleDetailShow(project)}
-											/>
-										))
-									)}
-								</TableBody>
-							</Table>
-						</div>
+						<QueryDataTable
+							queryFn={getProjects}
+							queryKey={getProjectsQueryKey()}
+							columns={columns}
+							pagination={{ pageSize: 10 }}
+						/>
 					</CardContent>
 				</Card>
 			)}

@@ -22,7 +22,7 @@ const BoxMessage = ({ title }: { title: string }) => <div className="text-center
 export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelect, onUnselect }: InvoiceCreateTimeEntriesProps) {
   const timeFormatter = useDateFormatter({ hour: "numeric", minute: "numeric", second: "numeric" });
   const dateFormatter = useDateFormatter({ day: "numeric", month: "numeric", year: "numeric" });
-  const { data, isLoading } = useQuery({
+  const { data: timeEntries, isLoading } = useQuery({
     queryKey: getTimeEntriesQueryKey({ query: { projectId: project?.id, billed: false } }),
     // TODO: Filtering by project and client, whatever
     queryFn: () => getTimeEntries({ query: { projectId: project?.id, billed: false } }),
@@ -44,9 +44,9 @@ export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelec
       </CardHeader>
       <CardContent className="space-y-2">
         {!isLoading && !project && <BoxMessage title="No project selected" />}
-        {!isLoading && project && !data?.data?.length && <BoxMessage title="No time entries recorded" />}
+        {!isLoading && project && !timeEntries?.length && <BoxMessage title="No time entries recorded" />}
         {
-          project && data?.data?.length ? (
+          project && timeEntries?.length ? (
             <div className="w-full rounded-md border">
               <Table className="w-full">
                 <TableHeader>
@@ -61,7 +61,7 @@ export default function InvoiceCreateTimeEntries({ project, selectedIds, onSelec
                 <TableBody>
                   {isLoading && "Loading..."}
                   {
-                    data?.data?.map(item => (
+                    timeEntries?.map(item => (
                       <TableRow key={item.id} data-state={selectedIds?.includes(item.id) ? "selected" : undefined}>
                         <TableCell className="w-[32px]">
                           <Checkbox

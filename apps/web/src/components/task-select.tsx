@@ -57,14 +57,14 @@ export default function TaskSelect(props: TaskSelectProps) {
 	);
 
 	useEffect(() => {
-		if (selectedTaskIdx !== undefined && tasks?.data)
-			props.onSelect?.(tasks.data[selectedTaskIdx]);
+		if (selectedTaskIdx !== undefined && tasks)
+			props.onSelect?.(tasks[selectedTaskIdx]);
 	}, [selectedTaskIdx, tasks, props]);
 
 	useEffect(() => {
 		if (!props.taskId) return;
 
-		const selectedTaskIdx = tasks?.data?.findIndex(
+		const selectedTaskIdx = tasks?.findIndex(
 			(e) => e.id === props.taskId,
 		);
 		if (selectedTaskIdx && selectedTaskIdx < 0) return;
@@ -72,26 +72,26 @@ export default function TaskSelect(props: TaskSelectProps) {
 		setSelectedTaskIdx(selectedTaskIdx);
 	}, [props.taskId, tasks]);
 
-	if (isLoading || !tasks?.data)
+	if (isLoading || !tasks)
 		return <Skeleton className="rounded-md w-full h-[36px]" />;
 
 	return (
 		<Select
 			value={selectedTaskIdx !== undefined ? `${selectedTaskIdx}` : ""}
-			disabled={props.disabled || isLoading || tasks.data.length === 0}
+			disabled={props.disabled || isLoading || tasks.length === 0}
 			onValueChange={(e) => setSelectedTaskIdx(Number.parseInt(e))}
 		>
 			<SelectTrigger id={props.id ?? "task"} className="w-full h-[36px]">
 				<SelectValue
 					placeholder={
-						(!isLoading && !tasks.data.length)
+						(!isLoading && !tasks.length)
 							? "No project tasks"
 							: "Select a task"
 					}
 				/>
 			</SelectTrigger>
 			<SelectContent>
-				{tasks.data.map((e, i) => (
+				{tasks.map((e, i) => (
 					<SelectItem key={e.id} value={`${i}`}>
 						{e.title}
 					</SelectItem>

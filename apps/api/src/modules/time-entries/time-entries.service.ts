@@ -1,10 +1,11 @@
-import { and, eq, gte, isNull, lte, sql } from "drizzle-orm";
+import { and, desc, eq, gt, gte, isNull, lte, sql } from "drizzle-orm";
 
 import { timeEntries } from "@/db/schema";
 
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
 import type { TimeEntryFilterType } from "./time-entries.dto";
+import type { Pagination } from "../../schemas/pagination.schema";
 
 type TimeEntry = typeof timeEntries.$inferSelect;
 
@@ -34,9 +35,9 @@ export const TimeEntriesService = {
 	 * @param userId User ID
 	 * @returns Array of entries
 	 */
-	findByUserId(userId: string, filter?: TimeEntryFilterType) {
+	findByUserId(userId: string, filter?: TimeEntryFilterType, pagination?: Pagination) {
 		return db.query.timeEntries.findMany({
-			where: (entry, { eq, gte, lte, isNotNull, isNull }) => {
+			where: (entry, { eq, gte, lte, isNotNull, isNull, gt }) => {
 				const filters = [eq(entry.userId, userId)];
 				if (!filter) return filters[0];
 
@@ -56,6 +57,9 @@ export const TimeEntriesService = {
 				},
 				projectTask: true,
 			},
+			orderBy: desc(timeEntries.id),
+			limit: pagination?.take,
+			offset: pagination?.skip
 		});
 	},
 	/**

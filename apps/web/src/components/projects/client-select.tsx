@@ -25,14 +25,14 @@ export default function ClientSelect({ value, onChange, disabled }: ClientSelect
 	const [inputValue, setInputValue] = useState("");
 
 	useEffect(() => {
-		const selectedClient = clients?.data?.find((c) => c.id === value);
+		const selectedClient = clients?.find((c) => c.id === value);
 		setInputValue(selectedClient?.companyName || "");
 	}, [value, clients]);
 
 	const handleSuggest = async (query: string) => {
 		if (!query) return [];
 		const filteredClients =
-			clients?.data?.filter((client) =>
+			clients?.filter((client) =>
 				client.companyName.toLowerCase().includes(query.toLowerCase()),
 			) ?? [];
 

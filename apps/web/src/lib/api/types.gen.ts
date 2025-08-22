@@ -29,16 +29,6 @@ export type Client = {
     createdAt: unknown;
     updatedAt: unknown;
   } | null;
-  billing: {
-    id: number;
-    clientId: number;
-    accountNumber: string;
-    iban: string | null;
-    swiftCode: string | null;
-    variableSymbol: string | null;
-    createdAt: unknown;
-    updatedAt: unknown;
-  } | null;
 };
 
 export type Client2 = Array<
@@ -56,16 +46,6 @@ export type Client2 = Array<
       state: string | null;
       postalCode: string | null;
       country: string;
-      createdAt: unknown;
-      updatedAt: unknown;
-    } | null;
-    billing: {
-      id: number;
-      clientId: number;
-      accountNumber: string;
-      iban: string | null;
-      swiftCode: string | null;
-      variableSymbol: string | null;
       createdAt: unknown;
       updatedAt: unknown;
     } | null;
@@ -96,6 +76,9 @@ export type Invoice = {
     email: string | null;
     ownerId: string | null;
     addressId: number | null;
+    companyId: string | null;
+    vatNumber: string | null;
+    vatPayer: boolean | null;
     createdAt: unknown;
   } | null;
   project: {
@@ -151,6 +134,9 @@ export type Invoice2 = Array<
       email: string | null;
       ownerId: string | null;
       addressId: number | null;
+      companyId: string | null;
+      vatNumber: string | null;
+      vatPayer: boolean | null;
       createdAt: unknown;
     } | null;
     project: {
@@ -198,6 +184,9 @@ export type ProjectTask = {
       email: string | null;
       ownerId: string | null;
       addressId: number | null;
+      companyId: string | null;
+      vatNumber: string | null;
+      vatPayer: boolean | null;
       createdAt: unknown;
     } | null;
   };
@@ -219,6 +208,9 @@ export type ProjectTask2 = Array<{
       email: string | null;
       ownerId: string | null;
       addressId: number | null;
+      companyId: string | null;
+      vatNumber: string | null;
+      vatPayer: boolean | null;
       createdAt: unknown;
     } | null;
   };
@@ -239,6 +231,9 @@ export type Project = {
     email: string | null;
     ownerId: string | null;
     addressId: number | null;
+    companyId: string | null;
+    vatNumber: string | null;
+    vatPayer: boolean | null;
     createdAt: unknown;
   } | null;
 };
@@ -254,6 +249,9 @@ export type Project2 = Array<{
     email: string | null;
     ownerId: string | null;
     addressId: number | null;
+    companyId: string | null;
+    vatNumber: string | null;
+    vatPayer: boolean | null;
     createdAt: unknown;
   } | null;
 }>;
@@ -280,6 +278,9 @@ export type TimeEntry = {
       email: string | null;
       ownerId: string | null;
       addressId: number | null;
+      companyId: string | null;
+      vatNumber: string | null;
+      vatPayer: boolean | null;
       createdAt: unknown;
     } | null;
   } | null;
@@ -309,6 +310,9 @@ export type TimeEntry2 = Array<{
       email: string | null;
       ownerId: string | null;
       addressId: number | null;
+      companyId: string | null;
+      vatNumber: string | null;
+      vatPayer: boolean | null;
       createdAt: unknown;
     } | null;
   } | null;
@@ -324,6 +328,28 @@ export type TimeEntryDurationByDate = Array<{
   date: unknown | Date | number;
   duration: number;
 }>;
+
+export type UserBilling = {
+  userId: string;
+  addressId: number;
+  bankAccount: string;
+  companyName: string;
+  companyId: string;
+  vatNumber: string | null;
+  vatPayer: boolean | null;
+} & {
+  address: {
+    id: number;
+    streetLine1: string;
+    streetLine2: string | null;
+    city: string;
+    state: string | null;
+    postalCode: string | null;
+    country: string;
+    createdAt: unknown;
+    updatedAt: unknown;
+  };
+};
 
 export type User = {
   id?: string;
@@ -398,12 +424,6 @@ export type PostClientsData = {
       postalCode?: string | null;
       country: string;
     };
-    billing?: {
-      accountNumber: string;
-      iban?: string | null;
-      swiftCode?: string | null;
-      variableSymbol?: string | null;
-    };
   };
   path?: never;
   query?: never;
@@ -459,12 +479,6 @@ export type PatchClientsByIdData = {
       state?: string | null;
       postalCode?: string | null;
       country: string;
-    };
-    billing?: {
-      accountNumber: string;
-      iban?: string | null;
-      swiftCode?: string | null;
-      variableSymbol?: string | null;
     };
   };
   path: {
@@ -590,6 +604,8 @@ export type GetProjectTasksData = {
   body?: never;
   path?: never;
   query?: {
+    take?: number;
+    skip?: number;
     project?: number;
   };
   url: "/project-tasks";
@@ -671,7 +687,10 @@ export type GetProjectsCountResponse =
 export type GetProjectsData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    take?: number;
+    skip?: number;
+  };
   url: "/projects";
 };
 
@@ -824,6 +843,8 @@ export type GetTimeEntriesData = {
   body?: never;
   path?: never;
   query?: {
+    take?: number;
+    skip?: number;
     projectId?: number | null;
     from?: unknown | Date | number;
     to?: unknown | Date | number;
@@ -889,6 +910,49 @@ export type GetCalendarsData = {
 export type GetCalendarsResponses = {
   200: unknown;
 };
+
+export type GetUserBillingData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/user-billing";
+};
+
+export type GetUserBillingResponses = {
+  200: UserBilling;
+};
+
+export type GetUserBillingResponse =
+  GetUserBillingResponses[keyof GetUserBillingResponses];
+
+export type PutUserBillingData = {
+  body: {
+    bankAccount: string;
+    companyName: string;
+    companyId: string;
+    vatNumber?: string | null;
+    vatPayer?: boolean | null;
+  } & {
+    address: {
+      streetLine1: string;
+      streetLine2?: string | null;
+      city: string;
+      state?: string | null;
+      postalCode?: string | null;
+      country: string;
+    };
+  };
+  path?: never;
+  query?: never;
+  url: "/user-billing";
+};
+
+export type PutUserBillingResponses = {
+  200: UserBilling;
+};
+
+export type PutUserBillingResponse =
+  PutUserBillingResponses[keyof PutUserBillingResponses];
 
 export type GetStatusData = {
   body?: never;

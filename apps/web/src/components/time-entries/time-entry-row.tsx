@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, DollarSign, Link, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Clock, Link, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
@@ -15,7 +15,6 @@ import { TableCell, TableRow } from "@evidentor/ui/components/ui/table";
 
 import type { TimeEntry } from "@/lib/api";
 import { formatTime } from "@/lib/format-time";
-import { Badge } from "@evidentor/ui/components/ui/badge";
 import { useRouter } from "next/navigation";
 
 interface TimeEntryRowProps {
@@ -49,7 +48,7 @@ export default function TimeEntryRow({
 					{timeEntry.projectTask?.title ?? "-"}
 				</div>
 			</TableCell>
-			<TableCell>Client name</TableCell>
+			<TableCell>{timeEntry.project?.client?.companyName ?? "-"}</TableCell>
 			<TableCell>
 				<div className="flex items-center">
 					<Clock className="h-3 w-3 mr-1 text-muted-foreground" />

@@ -58,16 +58,16 @@ export const appRoutes: RouteItem[] = [
       }
     ]
   },
-  {
-    href: "/app/reports",
-    icon: BarChart3,
-    id: "statistics",
-  },
-  {
-    href: "/app/calendar",
-    icon: Calendar,
-    id: "calendar",
-  },
+  // {
+  //   href: "/app/reports",
+  //   icon: BarChart3,
+  //   id: "statistics",
+  // },
+  // {
+  //   href: "/app/calendar",
+  //   icon: Calendar,
+  //   id: "calendar",
+  // },
   {
     icon: Settings,
     id: "settings",

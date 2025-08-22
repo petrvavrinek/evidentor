@@ -57,14 +57,14 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
 	>(undefined);
 
 	useEffect(() => {
-		if (selectedProjectIdx !== undefined && projects?.data)
-			props.onSelect?.(projects.data[selectedProjectIdx]);
+		if (selectedProjectIdx !== undefined && projects)
+			props.onSelect?.(projects[selectedProjectIdx]);
 	}, [selectedProjectIdx, projects, props.onSelect]);
 
 	useEffect(() => {
 		if (!props.projectId) return;
 
-		const foundProject = projects?.data?.findIndex(
+		const foundProject = projects?.findIndex(
 			(e) => e.id === props.projectId,
 		);
 		if (foundProject && foundProject < 0) return;
@@ -84,7 +84,7 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
 				<SelectValue placeholder="Select a project" />
 			</SelectTrigger>
 			<SelectContent>
-				{projects?.data?.map((e, i) => (
+				{projects?.map((e, i) => (
 					<SelectItem key={e.id} value={`${i}`}>
 						{e.title}
 					</SelectItem>

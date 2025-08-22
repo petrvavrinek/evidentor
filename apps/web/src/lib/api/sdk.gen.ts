@@ -61,6 +61,10 @@ import type {
   GetTimeEntriesAnalyzeDurationByDateResponses,
   GetCalendarsData,
   GetCalendarsResponses,
+  GetUserBillingData,
+  GetUserBillingResponses,
+  PutUserBillingData,
+  PutUserBillingResponses,
   GetStatusData,
   GetStatusResponses,
   HeadStatusData,
@@ -201,6 +205,10 @@ import {
   zGetTimeEntriesAnalyzeDurationByDateData,
   zGetTimeEntriesAnalyzeDurationByDateResponse,
   zGetCalendarsData,
+  zGetUserBillingData,
+  zGetUserBillingResponse,
+  zPutUserBillingData,
+  zPutUserBillingResponse,
   zGetStatusData,
   zHeadStatusData,
   zSocialSignInData,
@@ -288,7 +296,8 @@ export const getClients = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetClientsResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetClientsData.parseAsync(data);
@@ -296,6 +305,7 @@ export const getClients = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetClientsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/clients",
     ...options,
   });
@@ -310,7 +320,8 @@ export const postClients = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostClientsResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostClientsData.parseAsync(data);
@@ -318,6 +329,7 @@ export const postClients = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostClientsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/clients",
     ...options,
     headers: {
@@ -336,11 +348,13 @@ export const deleteClientsById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).delete<
     DeleteClientsByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zDeleteClientsByIdData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/clients/{id}",
     ...options,
   });
@@ -355,7 +369,8 @@ export const getClientsById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).get<
     GetClientsByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetClientsByIdData.parseAsync(data);
@@ -363,6 +378,7 @@ export const getClientsById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetClientsByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/clients/{id}",
     ...options,
   });
@@ -377,7 +393,8 @@ export const patchClientsById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).patch<
     PatchClientsByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPatchClientsByIdData.parseAsync(data);
@@ -385,6 +402,7 @@ export const patchClientsById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPatchClientsByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/clients/{id}",
     ...options,
     headers: {
@@ -403,7 +421,8 @@ export const getInvoices = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetInvoicesResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetInvoicesData.parseAsync(data);
@@ -411,6 +430,7 @@ export const getInvoices = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetInvoicesResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/invoices",
     ...options,
   });
@@ -425,7 +445,8 @@ export const postInvoices = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostInvoicesResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostInvoicesData.parseAsync(data);
@@ -433,6 +454,7 @@ export const postInvoices = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostInvoicesResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/invoices",
     ...options,
     headers: {
@@ -451,7 +473,8 @@ export const deleteInvoicesById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).delete<
     DeleteInvoicesByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zDeleteInvoicesByIdData.parseAsync(data);
@@ -459,6 +482,7 @@ export const deleteInvoicesById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zDeleteInvoicesByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/invoices/{id}",
     ...options,
   });
@@ -473,7 +497,8 @@ export const getInvoicesById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).get<
     GetInvoicesByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetInvoicesByIdData.parseAsync(data);
@@ -481,6 +506,7 @@ export const getInvoicesById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetInvoicesByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/invoices/{id}",
     ...options,
   });
@@ -492,11 +518,13 @@ export const getInvoicesByIdGenerated = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).get<
     GetInvoicesByIdGeneratedResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetInvoicesByIdGeneratedData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/invoices/{id}/generated",
     ...options,
   });
@@ -508,7 +536,8 @@ export const getProjectTasksCount = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetProjectTasksCountResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetProjectTasksCountData.parseAsync(data);
@@ -516,6 +545,7 @@ export const getProjectTasksCount = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetProjectTasksCountResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/project-tasks/count",
     ...options,
   });
@@ -527,7 +557,8 @@ export const getProjectTasks = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetProjectTasksResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetProjectTasksData.parseAsync(data);
@@ -535,6 +566,7 @@ export const getProjectTasks = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetProjectTasksResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/project-tasks",
     ...options,
   });
@@ -549,11 +581,13 @@ export const deleteProjectTasksById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).delete<
     DeleteProjectTasksByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zDeleteProjectTasksByIdData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/project-tasks/{id}",
     ...options,
   });
@@ -565,11 +599,13 @@ export const patchProjectTasksById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).patch<
     PatchProjectTasksByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPatchProjectTasksByIdData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/project-tasks/{id}",
     ...options,
     headers: {
@@ -588,7 +624,8 @@ export const postProjectTasksById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostProjectTasksByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostProjectTasksByIdData.parseAsync(data);
@@ -596,6 +633,7 @@ export const postProjectTasksById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostProjectTasksByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/project-tasks/{id}",
     ...options,
     headers: {
@@ -611,7 +649,8 @@ export const getProjectsCount = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetProjectsCountResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetProjectsCountData.parseAsync(data);
@@ -619,6 +658,7 @@ export const getProjectsCount = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetProjectsCountResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/projects/count",
     ...options,
   });
@@ -633,7 +673,8 @@ export const getProjects = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetProjectsResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetProjectsData.parseAsync(data);
@@ -641,6 +682,7 @@ export const getProjects = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetProjectsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/projects",
     ...options,
   });
@@ -655,7 +697,8 @@ export const postProjects = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostProjectsResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostProjectsData.parseAsync(data);
@@ -663,6 +706,7 @@ export const postProjects = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostProjectsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/projects",
     ...options,
     headers: {
@@ -681,11 +725,13 @@ export const deleteProjectsById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).delete<
     DeleteProjectsByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zDeleteProjectsByIdData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/projects/{id}",
     ...options,
   });
@@ -700,7 +746,8 @@ export const getProjectsById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).get<
     GetProjectsByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetProjectsByIdData.parseAsync(data);
@@ -708,6 +755,7 @@ export const getProjectsById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetProjectsByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/projects/{id}",
     ...options,
   });
@@ -722,11 +770,13 @@ export const patchProjectsById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).patch<
     PatchProjectsByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPatchProjectsByIdData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/projects/{id}",
     ...options,
     headers: {
@@ -745,7 +795,8 @@ export const getTimeEntriesActive = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetTimeEntriesActiveResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetTimeEntriesActiveData.parseAsync(data);
@@ -753,6 +804,7 @@ export const getTimeEntriesActive = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetTimeEntriesActiveResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/time-entries/active",
     ...options,
   });
@@ -767,11 +819,13 @@ export const deleteTimeEntriesById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).delete<
     DeleteTimeEntriesByIdResponses,
     DeleteTimeEntriesByIdErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zDeleteTimeEntriesByIdData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/time-entries/{id}",
     ...options,
   });
@@ -786,7 +840,8 @@ export const getTimeEntriesById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).get<
     GetTimeEntriesByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetTimeEntriesByIdData.parseAsync(data);
@@ -794,6 +849,7 @@ export const getTimeEntriesById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetTimeEntriesByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/time-entries/{id}",
     ...options,
   });
@@ -808,7 +864,8 @@ export const patchTimeEntriesById = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).patch<
     PatchTimeEntriesByIdResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPatchTimeEntriesByIdData.parseAsync(data);
@@ -816,6 +873,7 @@ export const patchTimeEntriesById = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPatchTimeEntriesByIdResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/time-entries/{id}",
     ...options,
     headers: {
@@ -831,7 +889,8 @@ export const getTimeEntries = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetTimeEntriesResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetTimeEntriesData.parseAsync(data);
@@ -839,6 +898,7 @@ export const getTimeEntries = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetTimeEntriesResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/time-entries",
     ...options,
   });
@@ -853,7 +913,8 @@ export const postTimeEntries = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostTimeEntriesResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostTimeEntriesData.parseAsync(data);
@@ -861,6 +922,7 @@ export const postTimeEntries = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostTimeEntriesResponse.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/time-entries",
     ...options,
     headers: {
@@ -878,7 +940,8 @@ export const getTimeEntriesAnalyzeDurationByDate = <
   return (options?.client ?? _heyApiClient).get<
     GetTimeEntriesAnalyzeDurationByDateResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetTimeEntriesAnalyzeDurationByDateData.parseAsync(data);
@@ -888,6 +951,7 @@ export const getTimeEntriesAnalyzeDurationByDate = <
         data,
       );
     },
+    responseStyle: "data",
     url: "/time-entries/analyze/duration-by-date",
     ...options,
   });
@@ -899,13 +963,61 @@ export const getCalendars = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetCalendarsResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetCalendarsData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/calendars",
     ...options,
+  });
+};
+
+export const getUserBilling = <ThrowOnError extends boolean = false>(
+  options?: Options<GetUserBillingData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetUserBillingResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zGetUserBillingData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetUserBillingResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/user-billing",
+    ...options,
+  });
+};
+
+export const putUserBilling = <ThrowOnError extends boolean = false>(
+  options: Options<PutUserBillingData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).put<
+    PutUserBillingResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zPutUserBillingData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPutUserBillingResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/user-billing",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 
@@ -915,11 +1027,13 @@ export const getStatus = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetStatusResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetStatusData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/status",
     ...options,
   });
@@ -931,11 +1045,13 @@ export const headStatus = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).head<
     HeadStatusResponses,
     unknown,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zHeadStatusData.parseAsync(data);
     },
+    responseStyle: "data",
     url: "/status",
     ...options,
   });
@@ -950,7 +1066,8 @@ export const socialSignIn = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     SocialSignInResponses,
     SocialSignInErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zSocialSignInData.parseAsync(data);
@@ -958,6 +1075,7 @@ export const socialSignIn = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zSocialSignInResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -982,7 +1100,8 @@ export const getAuthGetSession = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetAuthGetSessionResponses,
     GetAuthGetSessionErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthGetSessionData.parseAsync(data);
@@ -990,6 +1109,7 @@ export const getAuthGetSession = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthGetSessionResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1010,7 +1130,8 @@ export const postAuthSignOut = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).post<
     PostAuthSignOutResponses,
     PostAuthSignOutErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthSignOutData.parseAsync(data);
@@ -1018,6 +1139,7 @@ export const postAuthSignOut = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthSignOutResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1042,7 +1164,8 @@ export const postAuthSignUpEmail = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).post<
     PostAuthSignUpEmailResponses,
     PostAuthSignUpEmailErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthSignUpEmailData.parseAsync(data);
@@ -1050,6 +1173,7 @@ export const postAuthSignUpEmail = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthSignUpEmailResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1074,7 +1198,8 @@ export const postAuthSignInEmail = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthSignInEmailResponses,
     PostAuthSignInEmailErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthSignInEmailData.parseAsync(data);
@@ -1082,6 +1207,7 @@ export const postAuthSignInEmail = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthSignInEmailResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1106,7 +1232,8 @@ export const postAuthForgetPassword = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthForgetPasswordResponses,
     PostAuthForgetPasswordErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthForgetPasswordData.parseAsync(data);
@@ -1114,6 +1241,7 @@ export const postAuthForgetPassword = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthForgetPasswordResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1138,7 +1266,8 @@ export const postAuthResetPassword = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthResetPasswordResponses,
     PostAuthResetPasswordErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthResetPasswordData.parseAsync(data);
@@ -1146,6 +1275,7 @@ export const postAuthResetPassword = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthResetPasswordResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1170,7 +1300,8 @@ export const getAuthVerifyEmail = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).get<
     GetAuthVerifyEmailResponses,
     GetAuthVerifyEmailErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthVerifyEmailData.parseAsync(data);
@@ -1178,6 +1309,7 @@ export const getAuthVerifyEmail = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthVerifyEmailResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1200,7 +1332,8 @@ export const postAuthSendVerificationEmail = <
   return (options?.client ?? _heyApiClient).post<
     PostAuthSendVerificationEmailResponses,
     PostAuthSendVerificationEmailErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthSendVerificationEmailData.parseAsync(data);
@@ -1208,6 +1341,7 @@ export const postAuthSendVerificationEmail = <
     responseValidator: async (data) => {
       return await zPostAuthSendVerificationEmailResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1229,7 +1363,8 @@ export const postAuthChangeEmail = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthChangeEmailResponses,
     PostAuthChangeEmailErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthChangeEmailData.parseAsync(data);
@@ -1237,6 +1372,7 @@ export const postAuthChangeEmail = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthChangeEmailResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1261,7 +1397,8 @@ export const postAuthChangePassword = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthChangePasswordResponses,
     PostAuthChangePasswordErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthChangePasswordData.parseAsync(data);
@@ -1269,6 +1406,7 @@ export const postAuthChangePassword = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthChangePasswordResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1293,7 +1431,8 @@ export const postAuthUpdateUser = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).post<
     PostAuthUpdateUserResponses,
     PostAuthUpdateUserErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthUpdateUserData.parseAsync(data);
@@ -1301,6 +1440,7 @@ export const postAuthUpdateUser = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthUpdateUserResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1325,7 +1465,8 @@ export const postAuthDeleteUser = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthDeleteUserResponses,
     PostAuthDeleteUserErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthDeleteUserData.parseAsync(data);
@@ -1333,6 +1474,7 @@ export const postAuthDeleteUser = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthDeleteUserResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1359,7 +1501,8 @@ export const getAuthResetPasswordByToken = <
   return (options?.client ?? _heyApiClient).get<
     GetAuthResetPasswordByTokenResponses,
     GetAuthResetPasswordByTokenErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthResetPasswordByTokenData.parseAsync(data);
@@ -1367,6 +1510,7 @@ export const getAuthResetPasswordByToken = <
     responseValidator: async (data) => {
       return await zGetAuthResetPasswordByTokenResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1389,7 +1533,8 @@ export const postAuthRequestPasswordReset = <
   return (options.client ?? _heyApiClient).post<
     PostAuthRequestPasswordResetResponses,
     PostAuthRequestPasswordResetErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthRequestPasswordResetData.parseAsync(data);
@@ -1397,6 +1542,7 @@ export const postAuthRequestPasswordReset = <
     responseValidator: async (data) => {
       return await zPostAuthRequestPasswordResetResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1421,7 +1567,8 @@ export const getAuthListSessions = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetAuthListSessionsResponses,
     GetAuthListSessionsErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthListSessionsData.parseAsync(data);
@@ -1429,6 +1576,7 @@ export const getAuthListSessions = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthListSessionsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1449,7 +1597,8 @@ export const postAuthRevokeSession = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).post<
     PostAuthRevokeSessionResponses,
     PostAuthRevokeSessionErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthRevokeSessionData.parseAsync(data);
@@ -1457,6 +1606,7 @@ export const postAuthRevokeSession = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthRevokeSessionResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1481,7 +1631,8 @@ export const postAuthRevokeSessions = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).post<
     PostAuthRevokeSessionsResponses,
     PostAuthRevokeSessionsErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthRevokeSessionsData.parseAsync(data);
@@ -1489,6 +1640,7 @@ export const postAuthRevokeSessions = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthRevokeSessionsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1515,7 +1667,8 @@ export const postAuthRevokeOtherSessions = <
   return (options?.client ?? _heyApiClient).post<
     PostAuthRevokeOtherSessionsResponses,
     PostAuthRevokeOtherSessionsErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthRevokeOtherSessionsData.parseAsync(data);
@@ -1523,6 +1676,7 @@ export const postAuthRevokeOtherSessions = <
     responseValidator: async (data) => {
       return await zPostAuthRevokeOtherSessionsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1547,7 +1701,8 @@ export const postAuthLinkSocial = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthLinkSocialResponses,
     PostAuthLinkSocialErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthLinkSocialData.parseAsync(data);
@@ -1555,6 +1710,7 @@ export const postAuthLinkSocial = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthLinkSocialResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1579,7 +1735,8 @@ export const getAuthListAccounts = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetAuthListAccountsResponses,
     GetAuthListAccountsErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthListAccountsData.parseAsync(data);
@@ -1587,6 +1744,7 @@ export const getAuthListAccounts = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthListAccountsResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1607,7 +1765,8 @@ export const getAuthDeleteUserCallback = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetAuthDeleteUserCallbackResponses,
     GetAuthDeleteUserCallbackErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthDeleteUserCallbackData.parseAsync(data);
@@ -1615,6 +1774,7 @@ export const getAuthDeleteUserCallback = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthDeleteUserCallbackResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1635,7 +1795,8 @@ export const postAuthUnlinkAccount = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthUnlinkAccountResponses,
     PostAuthUnlinkAccountErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthUnlinkAccountData.parseAsync(data);
@@ -1643,6 +1804,7 @@ export const postAuthUnlinkAccount = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthUnlinkAccountResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1667,7 +1829,8 @@ export const postAuthRefreshToken = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthRefreshTokenResponses,
     PostAuthRefreshTokenErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthRefreshTokenData.parseAsync(data);
@@ -1675,6 +1838,7 @@ export const postAuthRefreshToken = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthRefreshTokenResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1699,7 +1863,8 @@ export const postAuthGetAccessToken = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthGetAccessTokenResponses,
     PostAuthGetAccessTokenErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthGetAccessTokenData.parseAsync(data);
@@ -1707,6 +1872,7 @@ export const postAuthGetAccessToken = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthGetAccessTokenResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1731,7 +1897,8 @@ export const postAuthAccountInfo = <ThrowOnError extends boolean = false>(
   return (options.client ?? _heyApiClient).post<
     PostAuthAccountInfoResponses,
     PostAuthAccountInfoErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zPostAuthAccountInfoData.parseAsync(data);
@@ -1739,6 +1906,7 @@ export const postAuthAccountInfo = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zPostAuthAccountInfoResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1763,7 +1931,8 @@ export const getAuthOk = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetAuthOkResponses,
     GetAuthOkErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthOkData.parseAsync(data);
@@ -1771,6 +1940,7 @@ export const getAuthOk = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthOkResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
@@ -1791,7 +1961,8 @@ export const getAuthError = <ThrowOnError extends boolean = false>(
   return (options?.client ?? _heyApiClient).get<
     GetAuthErrorResponses,
     GetAuthErrorErrors,
-    ThrowOnError
+    ThrowOnError,
+    "data"
   >({
     requestValidator: async (data) => {
       return await zGetAuthErrorData.parseAsync(data);
@@ -1799,6 +1970,7 @@ export const getAuthError = <ThrowOnError extends boolean = false>(
     responseValidator: async (data) => {
       return await zGetAuthErrorResponse.parseAsync(data);
     },
+    responseStyle: "data",
     security: [
       {
         scheme: "bearer",
