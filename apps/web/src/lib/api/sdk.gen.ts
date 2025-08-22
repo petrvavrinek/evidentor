@@ -61,6 +61,10 @@ import type {
   GetTimeEntriesAnalyzeDurationByDateResponses,
   GetCalendarsData,
   GetCalendarsResponses,
+  GetUserBillingData,
+  GetUserBillingResponses,
+  PutUserBillingData,
+  PutUserBillingResponses,
   GetStatusData,
   GetStatusResponses,
   HeadStatusData,
@@ -201,6 +205,10 @@ import {
   zGetTimeEntriesAnalyzeDurationByDateData,
   zGetTimeEntriesAnalyzeDurationByDateResponse,
   zGetCalendarsData,
+  zGetUserBillingData,
+  zGetUserBillingResponse,
+  zPutUserBillingData,
+  zPutUserBillingResponse,
   zGetStatusData,
   zHeadStatusData,
   zSocialSignInData,
@@ -964,6 +972,52 @@ export const getCalendars = <ThrowOnError extends boolean = false>(
     responseStyle: "data",
     url: "/calendars",
     ...options,
+  });
+};
+
+export const getUserBilling = <ThrowOnError extends boolean = false>(
+  options?: Options<GetUserBillingData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetUserBillingResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zGetUserBillingData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetUserBillingResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/user-billing",
+    ...options,
+  });
+};
+
+export const putUserBilling = <ThrowOnError extends boolean = false>(
+  options: Options<PutUserBillingData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).put<
+    PutUserBillingResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zPutUserBillingData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPutUserBillingResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/user-billing",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 

@@ -31,6 +31,8 @@ import {
   postTimeEntries,
   getTimeEntriesAnalyzeDurationByDate,
   getCalendars,
+  getUserBilling,
+  putUserBilling,
   getStatus,
   socialSignIn,
   getAuthGetSession,
@@ -104,6 +106,9 @@ import type {
   PostTimeEntriesResponse,
   GetTimeEntriesAnalyzeDurationByDateData,
   GetCalendarsData,
+  GetUserBillingData,
+  PutUserBillingData,
+  PutUserBillingResponse,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
@@ -983,6 +988,48 @@ export const getCalendarsOptions = (options?: Options<GetCalendarsData>) => {
     },
     queryKey: getCalendarsQueryKey(options),
   });
+};
+
+export const getUserBillingQueryKey = (options?: Options<GetUserBillingData>) =>
+  createQueryKey("getUserBilling", options);
+
+export const getUserBillingOptions = (
+  options?: Options<GetUserBillingData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      return await getUserBilling({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+    },
+    queryKey: getUserBillingQueryKey(options),
+  });
+};
+
+export const putUserBillingMutation = (
+  options?: Partial<Options<PutUserBillingData>>,
+): UseMutationOptions<
+  PutUserBillingResponse,
+  DefaultError,
+  Options<PutUserBillingData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PutUserBillingResponse,
+    DefaultError,
+    Options<PutUserBillingData>
+  > = {
+    mutationFn: async (localOptions) => {
+      return await putUserBilling({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+    },
+  };
+  return mutationOptions;
 };
 
 export const getStatusQueryKey = (options?: Options<GetStatusData>) =>

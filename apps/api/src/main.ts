@@ -11,6 +11,8 @@ import ProjectTaskRouter from "./modules/project-tasks";
 import ProjectsRouter from "./modules/projects";
 import TimeEntryRouter from "./modules/time-entries";
 import CalendarRouter from "./modules/calendar";
+import UserBillingRouter from "./modules/user-billing";
+
 import { AddressResponse } from "./modules/addresses/addresses.schema";
 import { pagination } from "./macros/pagination.macro";
 
@@ -38,6 +40,7 @@ const app = new Elysia()
 	.use(ProjectsRouter)
 	.use(TimeEntryRouter)
 	.use(CalendarRouter)
+	.use(UserBillingRouter)
 	.head("/status", () => "ok")
 	.get("/status", () => "ok");
 

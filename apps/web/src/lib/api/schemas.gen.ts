@@ -185,83 +185,8 @@ export const ClientSchema = {
             },
           ],
         },
-        billing: {
-          anyOf: [
-            {
-              type: "object",
-              properties: {
-                id: {
-                  minimum: -2147483648,
-                  maximum: 2147483647,
-                  type: "integer",
-                },
-                clientId: {
-                  minimum: -2147483648,
-                  maximum: 2147483647,
-                  type: "integer",
-                },
-                accountNumber: {
-                  maxLength: 255,
-                  type: "string",
-                },
-                iban: {
-                  anyOf: [
-                    {
-                      maxLength: 34,
-                      type: "string",
-                    },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                swiftCode: {
-                  anyOf: [
-                    {
-                      maxLength: 11,
-                      type: "string",
-                    },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                variableSymbol: {
-                  anyOf: [
-                    {
-                      maxLength: 10,
-                      type: "string",
-                    },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                createdAt: {
-                  type: "Date",
-                },
-                updatedAt: {
-                  type: "Date",
-                },
-              },
-              required: [
-                "id",
-                "clientId",
-                "accountNumber",
-                "iban",
-                "swiftCode",
-                "variableSymbol",
-                "createdAt",
-                "updatedAt",
-              ],
-            },
-            {
-              type: "null",
-            },
-          ],
-        },
       },
-      required: ["address", "billing"],
+      required: ["address"],
     },
   ],
   $id: "#/components/schemas/Client",
@@ -381,83 +306,8 @@ export const Client__Schema = {
               },
             ],
           },
-          billing: {
-            anyOf: [
-              {
-                type: "object",
-                properties: {
-                  id: {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  clientId: {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  accountNumber: {
-                    maxLength: 255,
-                    type: "string",
-                  },
-                  iban: {
-                    anyOf: [
-                      {
-                        maxLength: 34,
-                        type: "string",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  swiftCode: {
-                    anyOf: [
-                      {
-                        maxLength: 11,
-                        type: "string",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  variableSymbol: {
-                    anyOf: [
-                      {
-                        maxLength: 10,
-                        type: "string",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  createdAt: {
-                    type: "Date",
-                  },
-                  updatedAt: {
-                    type: "Date",
-                  },
-                },
-                required: [
-                  "id",
-                  "clientId",
-                  "accountNumber",
-                  "iban",
-                  "swiftCode",
-                  "variableSymbol",
-                  "createdAt",
-                  "updatedAt",
-                ],
-              },
-              {
-                type: "null",
-              },
-            ],
-          },
         },
-        required: ["address", "billing"],
+        required: ["address"],
       },
     ],
     $id: "#/components/schemas/Client",
@@ -664,6 +514,36 @@ export const InvoiceSchema = {
                     },
                   ],
                 },
+                companyId: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                vatNumber: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                vatPayer: {
+                  anyOf: [
+                    {
+                      type: "boolean",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
                 createdAt: {
                   type: "Date",
                 },
@@ -675,6 +555,9 @@ export const InvoiceSchema = {
                 "email",
                 "ownerId",
                 "addressId",
+                "companyId",
+                "vatNumber",
+                "vatPayer",
                 "createdAt",
               ],
             },
@@ -1103,6 +986,36 @@ export const Invoice__Schema = {
                       },
                     ],
                   },
+                  companyId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  vatNumber: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  vatPayer: {
+                    anyOf: [
+                      {
+                        type: "boolean",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
                   createdAt: {
                     type: "Date",
                   },
@@ -1114,6 +1027,9 @@ export const Invoice__Schema = {
                   "email",
                   "ownerId",
                   "addressId",
+                  "companyId",
+                  "vatNumber",
+                  "vatPayer",
                   "createdAt",
                 ],
               },
@@ -1435,6 +1351,36 @@ export const ProjectTaskSchema = {
                     },
                   ],
                 },
+                companyId: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                vatNumber: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                vatPayer: {
+                  anyOf: [
+                    {
+                      type: "boolean",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
                 createdAt: {
                   type: "Date",
                 },
@@ -1446,6 +1392,9 @@ export const ProjectTaskSchema = {
                 "email",
                 "ownerId",
                 "addressId",
+                "companyId",
+                "vatNumber",
+                "vatPayer",
                 "createdAt",
               ],
             },
@@ -1558,6 +1507,36 @@ export const ProjectTask__Schema = {
                       },
                     ],
                   },
+                  companyId: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  vatNumber: {
+                    anyOf: [
+                      {
+                        type: "string",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
+                  vatPayer: {
+                    anyOf: [
+                      {
+                        type: "boolean",
+                      },
+                      {
+                        type: "null",
+                      },
+                    ],
+                  },
                   createdAt: {
                     type: "Date",
                   },
@@ -1569,6 +1548,9 @@ export const ProjectTask__Schema = {
                   "email",
                   "ownerId",
                   "addressId",
+                  "companyId",
+                  "vatNumber",
+                  "vatPayer",
                   "createdAt",
                 ],
               },
@@ -1668,6 +1650,36 @@ export const ProjectSchema = {
                 },
               ],
             },
+            companyId: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            vatNumber: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            vatPayer: {
+              anyOf: [
+                {
+                  type: "boolean",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
             createdAt: {
               type: "Date",
             },
@@ -1679,6 +1691,9 @@ export const ProjectSchema = {
             "email",
             "ownerId",
             "addressId",
+            "companyId",
+            "vatNumber",
+            "vatPayer",
             "createdAt",
           ],
         },
@@ -1763,6 +1778,36 @@ export const Project__Schema = {
                   },
                 ],
               },
+              companyId: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              vatNumber: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              vatPayer: {
+                anyOf: [
+                  {
+                    type: "boolean",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
               createdAt: {
                 type: "Date",
               },
@@ -1774,6 +1819,9 @@ export const Project__Schema = {
               "email",
               "ownerId",
               "addressId",
+              "companyId",
+              "vatNumber",
+              "vatPayer",
               "createdAt",
             ],
           },
@@ -1924,6 +1972,36 @@ export const TimeEntrySchema = {
                         },
                       ],
                     },
+                    companyId: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    vatNumber: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    vatPayer: {
+                      anyOf: [
+                        {
+                          type: "boolean",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
                     createdAt: {
                       type: "Date",
                     },
@@ -1935,6 +2013,9 @@ export const TimeEntrySchema = {
                     "email",
                     "ownerId",
                     "addressId",
+                    "companyId",
+                    "vatNumber",
+                    "vatPayer",
                     "createdAt",
                   ],
                 },
@@ -2126,6 +2207,36 @@ export const TimeEntry__Schema = {
                           },
                         ],
                       },
+                      companyId: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      vatNumber: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      vatPayer: {
+                        anyOf: [
+                          {
+                            type: "boolean",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
                       createdAt: {
                         type: "Date",
                       },
@@ -2137,6 +2248,9 @@ export const TimeEntry__Schema = {
                       "email",
                       "ownerId",
                       "addressId",
+                      "companyId",
+                      "vatNumber",
+                      "vatPayer",
                       "createdAt",
                     ],
                   },
@@ -2234,6 +2348,142 @@ export const TimeEntryDurationByDateSchema = {
     required: ["date", "duration"],
   },
   $id: "#/components/schemas/TimeEntryDurationByDate",
+} as const;
+
+export const UserBillingSchema = {
+  type: "object",
+  allOf: [
+    {
+      type: "object",
+      properties: {
+        userId: {
+          type: "string",
+        },
+        addressId: {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        bankAccount: {
+          type: "string",
+        },
+        companyName: {
+          type: "string",
+        },
+        companyId: {
+          type: "string",
+        },
+        vatNumber: {
+          anyOf: [
+            {
+              type: "string",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        vatPayer: {
+          anyOf: [
+            {
+              type: "boolean",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+      },
+      required: [
+        "userId",
+        "addressId",
+        "bankAccount",
+        "companyName",
+        "companyId",
+        "vatNumber",
+        "vatPayer",
+      ],
+    },
+    {
+      type: "object",
+      properties: {
+        address: {
+          type: "object",
+          properties: {
+            id: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            streetLine1: {
+              maxLength: 255,
+              type: "string",
+            },
+            streetLine2: {
+              anyOf: [
+                {
+                  maxLength: 255,
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            city: {
+              maxLength: 100,
+              type: "string",
+            },
+            state: {
+              anyOf: [
+                {
+                  maxLength: 100,
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            postalCode: {
+              anyOf: [
+                {
+                  maxLength: 20,
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            country: {
+              maxLength: 100,
+              type: "string",
+            },
+            createdAt: {
+              type: "Date",
+            },
+            updatedAt: {
+              type: "Date",
+            },
+          },
+          required: [
+            "id",
+            "streetLine1",
+            "streetLine2",
+            "city",
+            "state",
+            "postalCode",
+            "country",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      },
+      required: ["address"],
+    },
+  ],
+  $id: "#/components/schemas/UserBilling",
 } as const;
 
 export const UserSchema = {

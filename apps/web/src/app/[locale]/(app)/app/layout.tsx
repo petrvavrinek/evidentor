@@ -4,6 +4,7 @@ import { client } from "@/lib/api/client.gen";
 import Providers from "./providers";
 
 import "../../globals.css";
+import EnsureUserBillingSetModal from "@/components/user-billing/ensure-user-billing-set-dialog";
 
 // Must be set manually
 client.setConfig({
@@ -16,6 +17,9 @@ export default function AppLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<Providers>{children}</Providers>
+		<Providers>
+			{children}
+			<EnsureUserBillingSetModal />
+		</Providers>
 	);
 }

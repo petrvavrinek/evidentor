@@ -6,3 +6,4 @@ export * from "./project-tasks.schema";
 export * from "./time-entries.schema";
 export * from "./calendars.schema";
 export * from "./address.schema";
+export * from "./user-billing.schema";

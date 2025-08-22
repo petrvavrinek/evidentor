@@ -4,7 +4,7 @@ import { db } from "../../database";
 import type { CreateClient, UpdateClient } from "./clients.types";
 
 import { addresses } from "@/db/address.schema";
-import { clients, clientsBilling } from "@/db/clients.schema";
+import { clients } from "@/db/clients.schema";
 
 type Client = typeof clients.$inferSelect;
 
@@ -14,7 +14,6 @@ export const ClientsService = {
       where: and(eq(clients.ownerId, userId), eq(clients.id, id)),
       with: {
         address: true,
-        billing: true
       }
     });
   },
@@ -24,7 +23,6 @@ export const ClientsService = {
       where: eq(clients.ownerId, userId),
       with: {
         address: true,
-        billing: true
       }
     });
   },
@@ -46,7 +44,6 @@ export const ClientsService = {
         if (newAddress) addressId = newAddress.id;
       }
 
-
       const [newClient] = await tx.insert(clients).values({
         companyName: data.companyName,
         contactName: data.contactName,
@@ -58,22 +55,10 @@ export const ClientsService = {
 
       if (!newClient) return null;
 
-      if (data.billing) {
-        const { billing } = data;
-        await tx.insert(clientsBilling).values({
-          accountNumber: billing.accountNumber,
-          clientId: newClient.id,
-          iban: billing.iban,
-          swiftCode: billing.swiftCode,
-          variableSymbol: billing.variableSymbol
-        });
-      }
-
       return tx.query.clients.findFirst({
         where: eq(clients.id, newClient!.id),
         with: {
           address: true,
-          billing: true
         }
       });
     });
@@ -123,27 +108,6 @@ export const ClientsService = {
         contactName: data.contactName,
         email: data.email
       }).returning();
-
-      if (!updatedClient) return;
-
-      if (data.billing && client.billing) {
-        const { billing } = data;
-        await tx.update(clientsBilling).set({
-          accountNumber: billing.accountNumber,
-          iban: billing.iban,
-          swiftCode: billing.swiftCode,
-          variableSymbol: billing.variableSymbol
-        }).where(eq(clientsBilling.id, client.billing.id));
-      } else if (data.billing) {
-        const { billing } = data;
-        await tx.insert(clientsBilling).values({
-          accountNumber: billing.accountNumber,
-          iban: billing.iban,
-          swiftCode: billing.swiftCode,
-          variableSymbol: billing.variableSymbol,
-          clientId: updatedClient.id,
-        });
-      }
 
       return updatedClient ?? null;
     });
