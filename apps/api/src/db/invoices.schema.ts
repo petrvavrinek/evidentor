@@ -1,28 +1,25 @@
 import { relations } from "drizzle-orm";
 import {
 	integer,
-	pgEnum,
 	pgTable,
 	text,
 	timestamp,
-	varchar,
+	varchar
 } from "drizzle-orm/pg-core";
 
 import { user } from "./auth.schema";
-import { timeEntries } from "./time-entries.schema";
 import { clients } from "./clients.schema";
+import { CurrencyEnum } from "./currency.schema";
+import { LanguageEnum } from "./languages.schema";
 import { projects } from "./projects.schema";
-import { Currencies, Languages } from "../constants";
-
-export const CurrencyEnum = pgEnum("currency", Currencies);
-export const LanguageEnum = pgEnum("language", Languages);
+import { timeEntries } from "./time-entries.schema";
 
 // Invoice table
 export const invoices = pgTable("invoice", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
 	amount: integer().notNull(),
 	currency: CurrencyEnum().notNull(),
-	dueDate: timestamp(),
+	dueDate: timestamp().notNull(),
 	paidAt: timestamp(),
 	sentAt: timestamp(),
 	issuedAt: timestamp()

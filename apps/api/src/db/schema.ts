@@ -7,3 +7,4 @@ export * from "./time-entries.schema";
 export * from "./calendars.schema";
 export * from "./address.schema";
 export * from "./user-billing.schema";
+export * from "./invoice-automation.schema";
