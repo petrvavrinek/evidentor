@@ -5,7 +5,7 @@ import LocaleInput from "@/components/locale-input";
 import PageHeader from "@/components/page-header";
 import { ProjectSelect } from "@/components/project-select";
 import { Language } from "@/i18n/routing";
-import { Project, TimeEntry } from "@/lib/api";
+import { getTimeEntries, Project, TimeEntry } from "@/lib/api";
 import { zPostInvoicesData } from "@/lib/api/zod.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@evidentor/ui/components/ui/form";
@@ -22,12 +22,14 @@ import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useNumberFormatter } from "@/hooks/use-number-formatter";
 import useTitle from "@/hooks/use-title";
 import { useRouter } from "@/i18n/navigation";
-import { postInvoicesMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { getTimeEntriesQueryKey, postInvoicesMutation } from "@/lib/api/@tanstack/react-query.gen";
 import { Card, CardContent } from "@evidentor/ui/components/ui/card";
 import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
 import DatePicker from "@evidentor/ui/components/ui/date-picker";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@evidentor/ui/components/ui/tooltip";
 import { useMutation } from "@tanstack/react-query";
+import QueryDataTable from "@/components/query-data-table";
+import { ColumnDef } from "@tanstack/react-table";
 
 const InvoiceCreateSchema = zPostInvoicesData.shape.body;
 type InvoiceCreate = z.infer<typeof InvoiceCreateSchema>;
@@ -125,6 +127,17 @@ export default function NewInvoicePage() {
     setSelectedTimeEntries(selectedTimeEntries.filter(e => e.id !== entry.id));
   }
 
+  const timeEntryColumns: ColumnDef<TimeEntry>[] = [
+    {
+      accessorKey: "title",
+      header: "Title"
+    },
+    {
+      accessorKey: "projectTask.title",
+      header: "Project task"
+    },
+  ]
+
   return (
     <>
       <PageHeader title="New invoice" subtitle="Create new invoice" />
@@ -208,10 +221,10 @@ export default function NewInvoicePage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <InvoiceCreateTimeEntries project={project} onSelect={addSelectedTask} onUnselect={removeSelectedTask} selectedIds={selectedTimeEntries.map(e => e.id)} />
-                <Tooltip>
+                {/* <Tooltip>
                   <TooltipTrigger asChild>
                     <FormItem className="border rounded-md p-2 flex w-fit">
                       <FormLabel>Group by task</FormLabel>
@@ -226,7 +239,7 @@ export default function NewInvoicePage() {
                   <TooltipContent>
                     Invoice will contain only task title with time instead of each time entry.
                   </TooltipContent>
-                </Tooltip>
+                </Tooltip> */}
               </div>
               <div>
                 <InvoiceCreateManualEntries control={form.control} name="items" />

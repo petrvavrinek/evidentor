@@ -36,6 +36,7 @@ export const TimeEntriesService = {
 	 * @returns Array of entries
 	 */
 	findByUserId(userId: string, filter?: TimeEntryFilterType, pagination?: Pagination) {
+		console.log(filter, pagination)
 		return db.query.timeEntries.findMany({
 			where: (entry, { eq, gte, lte, isNotNull, isNull }) => {
 				const filters = [eq(entry.userId, userId)];
@@ -45,9 +46,7 @@ export const TimeEntriesService = {
 				if (filter.to) filters.push(lte(timeEntries.createdAt, filter.to));
 				if (filter.projectId) filters.push(eq(timeEntries.projectId, filter.projectId));
 				if ("billed" in filter) filters.push(filter.billed ? isNotNull(timeEntries.invoiceId) : isNull(timeEntries.invoiceId))
-
 				return and(...filters, isNotNull(timeEntries.endAt));
-
 			},
 			with: {
 				project: {

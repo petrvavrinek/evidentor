@@ -10,8 +10,9 @@ import {
 	UpdateClientSchema,
 } from "./clients.schema";
 
+import { pagination } from "../../macros/pagination.macro";
+import { PaginationSchema } from "../../schemas/pagination.schema";
 import { ClientsService } from "./clients.service";
-import { pagination, withPagination } from "../../macros/pagination.macro";
 
 const router = new Elysia({
 	prefix: "/clients",
@@ -30,7 +31,7 @@ const router = new Elysia({
 				description: "Get all user-defined clients",
 			},
 			response: "Client[]",
-			query: withPagination()
+			query: PaginationSchema
 		},
 	)
 	.post(

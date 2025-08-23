@@ -1,13 +1,12 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { ArrowDown, Calendar, Clock, DollarSign, Link, Loader } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { ArrowDown, Calendar, Clock, DollarSign, Link } from "lucide-react";
+import { useState } from "react";
 
 import PageHeader from "@/components/page-header";
 import QueryDataTable, { QueryDataTableMeta } from "@/components/query-data-table";
 import TableItemDetailMenu from "@/components/table-item-detail-menu";
-import TimeEntriesTable from "@/components/time-entries/time-entries-table";
 import ManualTimeEntry from "@/components/time-tracker/manual-time-entry";
 import Stopwatch from "@/components/time-tracker/stopwatch";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
@@ -15,10 +14,11 @@ import useTitle from "@/hooks/use-title";
 import { getTimeEntries, type TimeEntry } from "@/lib/api";
 import {
 	deleteTimeEntriesByIdMutation,
-	getProjectTasksQueryKey,
-	getTimeEntriesQueryKey,
+	getTimeEntriesQueryKey
 } from "@/lib/api/@tanstack/react-query.gen";
-import { groupBy } from "@/lib/utils";
+import { isDateSame } from "@/lib/dates";
+import { formatTime } from "@/lib/format-time";
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -32,12 +32,8 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@evidentor/ui/components/ui/tabs";
-import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
-import { formatTime } from "@/lib/format-time";
-import { Button } from "@evidentor/ui/components/ui/button";
-import { isDateSame } from "@/lib/dates";
 import { useRouter } from "next/navigation";
 
 // TODO: Rework

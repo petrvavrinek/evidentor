@@ -60,15 +60,15 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		async ({ user, query, pagination }) => {
-			return await TimeEntriesService.findByUserId(user.id, query, pagination);
+		({ user, query, pagination }) => {
+			return TimeEntriesService.findByUserId(user.id, query, pagination);
 		},
 		{
 			auth: true,
 			paginate: { defaultPageSize: 10 },
 			response: "TimeEntry[]",
 			query: withPagination(TimeEntryFilter),
-			
+
 		},
 	)
 	.post(
