@@ -13,6 +13,7 @@ import { CurrencyEnum } from "./currency.schema";
 import { LanguageEnum } from "./languages.schema";
 import { projects } from "./projects.schema";
 import { timeEntries } from "./time-entries.schema";
+import { invoiceAutomationRules } from "./invoice-automation.schema";
 
 // Invoice table
 export const invoices = pgTable("invoice", {
@@ -35,6 +36,7 @@ export const invoices = pgTable("invoice", {
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
 	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	generatedFileId: text(),
+	automationRuleId: integer().references(() => invoiceAutomationRules.id, { onDelete: "set null" }),
 	language: LanguageEnum().notNull()
 });
 

@@ -9,6 +9,7 @@ import { BetterAuthMacro } from "../auth";
 import { ProjectsService } from "../projects/projects.service";
 import {
 	InvoiceCreateSchema,
+	InvoiceFilterSchema,
 	InvoiceIdParamSchema,
 	InvoiceResponseSchema,
 	InvoicesResponseSchema,
@@ -26,10 +27,11 @@ const router = new Elysia({
 	.use(BetterAuthMacro)
 	.model("Invoice", InvoiceResponseSchema)
 	.model("Invoice[]", InvoicesResponseSchema)
-	.get("", async ({ user }) => InvoicesService.findManyByUserId(user.id), {
+	.get("", async ({ user, query }) => InvoicesService.findManyByUserId(user.id, query), {
 		auth: true,
 		detail: { description: "Get all user invoices" },
 		response: "Invoice[]",
+		query: InvoiceFilterSchema
 	})
 	.get(
 		":id",

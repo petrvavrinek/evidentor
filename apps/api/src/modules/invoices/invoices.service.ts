@@ -3,17 +3,24 @@ import { and, eq, type SQL, inArray, isNull } from "drizzle-orm";
 import { db } from "../../database";
 import { invoices, invoiceItems, timeEntries, projects } from "@/db/schema";
 
-import type { InvoiceCreateType } from "./invoice.schemas";
+import type { InvoiceCreateType, InvoiceFilter } from "./invoice.schemas";
 
 interface CreateInvoiceQueryOptions {
-	filters?: SQL[];
+	where?: SQL[];
 }
 
 export const InvoicesService = {
 	/**
 	 * Find many invoice with options
 	 */
-	findByOptions(options?: CreateInvoiceQueryOptions) {
+	findByOptions(options?: CreateInvoiceQueryOptions, filter?: InvoiceFilter) {
+		const filters: SQL[] = [];
+		if (filter) {
+			if (filter.automationRuleId) {
+				filters.push(eq(invoices.automationRuleId, filter.automationRuleId));
+			}
+		}
+
 		return db.query.invoices.findMany({
 			with: {
 				items: {
@@ -24,7 +31,7 @@ export const InvoicesService = {
 				client: true,
 				project: true
 			},
-			where: options?.filters ? and(...options.filters) : undefined,
+			where: options?.where ? and(...options.where, ...filters) : undefined,
 		});
 	},
 
@@ -34,10 +41,10 @@ export const InvoicesService = {
 	 * @param options Options
 	 * @returns
 	 */
-	async findOneByOptions(id: number, options?: CreateInvoiceQueryOptions) {
+	async findOneByOptions(id: number, options?: CreateInvoiceQueryOptions, filter?: InvoiceFilter) {
 		const result = await this.findByOptions({
-			filters: [eq(invoices.id, id), ...(options?.filters ?? [])],
-		});
+			where: [eq(invoices.id, id), ...(options?.where ?? [])],
+		}, filter);
 		return result?.[0] ?? null;
 	},
 
@@ -46,8 +53,8 @@ export const InvoicesService = {
 	 * @param userId User ID
 	 * @returns Array of invoices
 	 */
-	findManyByUserId(userId: string) {
-		return this.findByOptions({ filters: [eq(invoices.ownerId, userId)] });
+	findManyByUserId(userId: string, filter?: InvoiceFilter) {
+		return this.findByOptions({ where: [eq(invoices.ownerId, userId)] }, filter);
 	},
 
 	/**
@@ -58,7 +65,7 @@ export const InvoicesService = {
 	 */
 	async findById(userId: string, id: number) {
 		const results = await this.findByOptions({
-			filters: [eq(invoices.id, id), eq(invoices.ownerId, userId)],
+			where: [eq(invoices.id, id), eq(invoices.ownerId, userId)],
 		});
 
 		return results?.[0] ?? null;
@@ -98,7 +105,7 @@ export const InvoicesService = {
 			await tx.update(timeEntries).set({
 				invoiceId: createdInvoice?.id,
 			})
-			.where(inArray(timeEntries.id, timeEntryItems.map(e => e.id)))
+				.where(inArray(timeEntries.id, timeEntryItems.map(e => e.id)))
 
 			// Create invoice items
 			await tx.insert(invoiceItems).values(
@@ -146,6 +153,6 @@ export const InvoicesService = {
 	},
 
 	findInvoicesWithoutGeneratedFile() {
-		return this.findByOptions({ filters: [isNull(invoices.generatedFileId)] })
+		return this.findByOptions({ where: [isNull(invoices.generatedFileId)] })
 	}
 };

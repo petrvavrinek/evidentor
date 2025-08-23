@@ -169,6 +169,13 @@
       "when": 1755905065112,
       "tag": "0023_create_invoice_automation_table",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1755951625922,
+      "tag": "0024_update_invoice_add_automation_rule_id",
+      "breakpoints": true
     }
   ]
 }

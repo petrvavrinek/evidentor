@@ -190,7 +190,7 @@ export default function QueryDataTable<
                 </>
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center p-2.5">
+                  <TableCell colSpan={columns.length + (props.selectable ? 1 : 0)} className="h-24 text-center p-2.5">
                     No results.
                   </TableCell>
                 </TableRow>

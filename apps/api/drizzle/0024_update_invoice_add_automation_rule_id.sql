@@ -1,0 +1,2 @@
+ALTER TABLE "invoice" ADD COLUMN "automation_rule_id" integer;--> statement-breakpoint
+ALTER TABLE "invoice" ADD CONSTRAINT "invoice_automation_rule_id_invoice_automation_rules_id_fk" FOREIGN KEY ("automation_rule_id") REFERENCES "public"."invoice_automation_rules"("id") ON DELETE set null ON UPDATE no action;

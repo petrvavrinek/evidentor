@@ -423,6 +423,18 @@ export const InvoiceSchema = {
             },
           ],
         },
+        automationRuleId: {
+          anyOf: [
+            {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
         language: {
           anyOf: [
             {
@@ -450,6 +462,7 @@ export const InvoiceSchema = {
         "clientId",
         "projectId",
         "generatedFileId",
+        "automationRuleId",
         "language",
       ],
     },
@@ -888,6 +901,18 @@ export const Invoice__Schema = {
               },
             ],
           },
+          automationRuleId: {
+            anyOf: [
+              {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
           language: {
             anyOf: [
               {
@@ -915,6 +940,7 @@ export const Invoice__Schema = {
           "clientId",
           "projectId",
           "generatedFileId",
+          "automationRuleId",
           "language",
         ],
       },
