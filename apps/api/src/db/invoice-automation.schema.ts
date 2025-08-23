@@ -6,8 +6,6 @@ import { LanguageEnum } from "./languages.schema";
 import { projectTasks } from "./project-tasks.schema";
 import { projects } from "./projects.schema";
 
-// console.log(projectTasks);
-
 export const RecurrenceTypeEnum = pgEnum("recurrence_type", [
   "monthly",
   "weekly",

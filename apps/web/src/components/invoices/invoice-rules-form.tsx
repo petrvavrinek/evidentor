@@ -1,5 +1,11 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import z from "zod";
+
 import CurrencyInput from "@/components/currency-input";
 import LocaleInput from "@/components/locale-input";
 import { ProjectSelect } from "@/components/project-select";
@@ -14,11 +20,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@evidentor/ui/components/ui/input";
 import { Select, SelectTrigger, SelectValue } from "@evidentor/ui/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@evidentor/ui/components/ui/toggle-group";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import z from "zod";
 
 const CreateRuleSchema = zPostInvoiceAutomationsData.shape.body;
 export type CreateRuleData = z.infer<typeof CreateRuleSchema>;
@@ -48,11 +49,25 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
     },
   })
 
-  const [includeAllTasks, projectId, recurrenceType] = useWatch({
+  const [
+    includeAllTasks,
+    projectId,
+    recurrenceType,
+    interval,
+    dayOfMonth
+  ] = useWatch({
     control: form.control,
-    name: ["allTasks", "projectId", "recurrenceType"]
+    name: ["allTasks", "projectId", "recurrenceType", "interval", "dayOfMonth"]
   });
 
+  const formatTrigger = useMemo(() => {
+    if (recurrenceType === "daily")
+      return `Every ${interval} day(s)`;
+    if (recurrenceType === "weekly")
+      return `Every ${interval} week(s)`;
+
+    return `Every ${dayOfMonth} day of each ${interval} month(s)`
+  }, [recurrenceType, interval, dayOfMonth]);
 
   const columns: ColumnDef<Omit<ProjectTask, "project">>[] = [
     {
@@ -118,6 +133,7 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
               )}
             />
 
+
             <FormField
               control={form.control}
               name="currency"
@@ -134,30 +150,33 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
           </div>
 
           <div className="flex flex-col gap-4">
+            <div className="flex gap-4">
+              <FormField
+                control={form.control}
+                name="recurrenceType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reccurence</FormLabel>
+                    <FormControl>
+                      <ToggleGroup type="single" variant="outline" onValueChange={e => field.onChange(e)} value={field.value}>
+                        <ToggleGroupItem value="daily" className="px-2">
+                          Daily
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="weekly" className="px-4">
+                          Weekly
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="monthly" className="px-4">
+                          Monthly
+                        </ToggleGroupItem>
+                      </ToggleGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="recurrenceType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Reccurence</FormLabel>
-                  <FormControl>
-                    <ToggleGroup type="single" variant="outline" onValueChange={e => field.onChange(e)} value={field.value}>
-                      <ToggleGroupItem value="daily" className="px-2">
-                        Daily
-                      </ToggleGroupItem>
-                      <ToggleGroupItem value="weekly" className="px-4">
-                        Weekly
-                      </ToggleGroupItem>
-                      <ToggleGroupItem value="monthly" className="px-4">
-                        Monthly
-                      </ToggleGroupItem>
-                    </ToggleGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <div className="flex items-center">  {formatTrigger}</div>
+            </div>
             <FormField
               control={form.control}
               name="interval"
@@ -257,7 +276,7 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
                       }
                       defaultSelectedRows={field.value?.map(e => e.toString())}
                       columns={columns}
-                      pagination={{ pageSize: 16 }}
+                      pagination={{ pageSize: 10 }}
                       queryFn={getProjectTasks}
                       queryKey={getProjectTasksQueryKey({ query: { project: projectId } })}
                       queryOptions={{ query: { project: projectId } } as never}

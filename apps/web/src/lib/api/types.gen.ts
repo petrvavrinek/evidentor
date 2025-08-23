@@ -940,7 +940,7 @@ export type GetTimeEntriesData = {
   query?: {
     take?: number;
     skip?: number;
-    projectId?: number | null;
+    projectId?: number;
     from?: unknown | Date | number;
     to?: unknown | Date | number;
     billed?: boolean;
@@ -980,7 +980,7 @@ export type GetTimeEntriesAnalyzeDurationByDateData = {
   body?: never;
   path?: never;
   query?: {
-    projectId?: number | null;
+    projectId?: number;
     from?: unknown | Date | number;
     to?: unknown | Date | number;
     billed?: boolean;

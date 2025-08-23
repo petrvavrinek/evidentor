@@ -64,7 +64,7 @@ export default function QueryDataTable<
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(convertDefaultSelectedRows());
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: props.pagination.pageSize,
   });
 
   const paginationLimitOffset = useMemo(() => {
@@ -93,7 +93,7 @@ export default function QueryDataTable<
       };
       return queryFn(options as never);
     },
-    queryKey: Array.isArray(queryKey) ? queryKey : [queryKey]
+    queryKey: Array.isArray(queryKey) ? queryKey : [queryKey, pagination],
   }, client);
 
 
@@ -127,13 +127,16 @@ export default function QueryDataTable<
     } satisfies QueryDataTableMeta<TDataSingle>
   });
 
+  // If pagination changes, refetch it
+  useEffect(() => {
+    refetch();
+  }, [pagination]);
+
   const setNextPage = () => {
-    setPagination(p => {
-      return p;
-    });
+    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 });
   }
   const setPrevPage = () => {
-    setPagination(p => p);
+    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 });
   }
 
   if (!isLoading && !!data && !Array.isArray(data)) {
@@ -145,6 +148,7 @@ export default function QueryDataTable<
     )
   };
 
+  console.log(pagination);
 
   return (
     <div className="overflow-hidden rounded-md border">
@@ -228,18 +232,20 @@ export default function QueryDataTable<
         }
         <div className="space-x-2 mr-4">
           <Button
+            type="button"
             variant="outline"
             size="sm"
             onClick={setPrevPage}
-            disabled={!table.getCanPreviousPage()}
+            disabled={!data || pagination.pageIndex <= 0}
           >
             Previous
           </Button>
           <Button
+            type="button"
             variant="outline"
             size="sm"
             onClick={setNextPage}
-            disabled={!table.getCanNextPage()}
+            disabled={!data || data.length < pagination.pageSize}
           >
             Next
           </Button>

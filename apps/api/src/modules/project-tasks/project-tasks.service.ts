@@ -1,4 +1,4 @@
-import { and, count, eq, getTableColumns, gte, lte } from "drizzle-orm";
+import { and, count, eq, getTableColumns, gte, lte, SQL } from "drizzle-orm";
 
 import { clients, projects, projectTasks } from "@/db/schema";
 import { db } from "../../database";
@@ -8,15 +8,16 @@ import type {
 	ProjectTaskFilter,
 	ProjectTaskResponseType,
 } from "./project-tasks.dto";
-import type { Pagination } from "../../schemas/pagination.schema";
+import type { Pagination, PaginationInput } from "../../schemas/pagination.schema";
 
 export const ProjectTasksService = {
-	/**
-	 * Select query builder to include all necessary columns
-	 * @returns
-	 */
-	getSelectQueryBuilder(userId: string) {
-		return db
+	async findByOptions(userId: string, filter?: ProjectTaskFilter & { where?: SQL[] }, pagination?: PaginationInput): Promise<ProjectTaskResponseType[]> {
+		const filters: SQL[] = [eq(projects.ownerId, userId)]
+
+		if (filter?.project)
+			filters.push(eq(projects.id, filter.project));
+
+		const query = db
 			.select({
 				...getTableColumns(projectTasks),
 				project: {
@@ -30,8 +31,13 @@ export const ProjectTasksService = {
 			.from(projectTasks)
 			.leftJoin(projects, eq(projectTasks.projectId, projects.id))
 			.innerJoin(clients, eq(clients.id, projects.clientId))
-			.$dynamic()
-			.where(eq(projects.ownerId, userId));
+			.where(and(...filters, ...(filter?.where ?? [])))
+			.$dynamic();
+
+		if (pagination?.skip) query.offset(pagination.skip);
+		if (pagination?.take) query.limit(pagination.take);
+
+		return (await query.execute()) as ProjectTaskResponseType[];
 	},
 
 	/**
@@ -39,33 +45,12 @@ export const ProjectTasksService = {
 	 * @param userId
 	 * @returns
 	 */
-	async findAllByUserId(
+	findAllByUserId(
 		userId: string,
-		filter?: ProjectTaskFilter
+		filter?: ProjectTaskFilter,
+		pagination?: PaginationInput
 	): Promise<ProjectTaskResponseType[]> {
-		let query = this.getSelectQueryBuilder(userId);
-
-		if (filter?.project)
-			query = query.where(eq(projectTasks.projectId, filter.project));
-
-		return (await query) as ProjectTaskResponseType[];
-	},
-
-	/**
-	 * Find all user project tasks
-	 * @param userId User ID
-	 * @returns Array of tasks
-	 */
-
-	async findByUserAndProjectId(
-		userId: string,
-		projectId: number,
-	): Promise<ProjectTaskResponseType[]> {
-		const tasks = await this.getSelectQueryBuilder(userId).where(
-			eq(projects.id, projectId),
-		);
-
-		return tasks as ProjectTaskResponseType[];
+		return this.findByOptions(userId, filter, pagination);
 	},
 
 	/**
@@ -108,11 +93,8 @@ export const ProjectTasksService = {
 		id: number,
 		userId: string,
 	): Promise<ProjectTaskResponseType | null> {
-		const task = await this.getSelectQueryBuilder(userId).where(
-			eq(projectTasks.id, id),
-		);
-		if (!task[0]) return null;
-		return task[0] as never as ProjectTaskResponseType;
+		const task = await this.findByOptions(userId, { where: [eq(projectTasks.id, id)] })
+		return task[0] ?? null;
 	},
 
 	/**
