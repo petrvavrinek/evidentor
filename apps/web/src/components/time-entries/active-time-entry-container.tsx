@@ -4,18 +4,17 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 import useActiveTimeEntry from "@/hooks/use-active-time-entry";
-import { getTimeEntriesActive } from "@/lib/api";
 import {
-	getTimeEntriesActiveQueryKey,
-	patchTimeEntriesByIdMutation,
+	getTimeEntriesActiveOptions,
+	patchTimeEntriesByIdMutation
 } from "@/lib/api/@tanstack/react-query.gen";
 import { ActiveTimeEntryCard } from "./active-time-entry-card";
 
 export default function ActiveTimeEntryContainer() {
 	const { active, setActive } = useActiveTimeEntry();
 	const { data: timeEntry, isLoading } = useQuery({
-		queryKey: getTimeEntriesActiveQueryKey(),
-		queryFn: () => getTimeEntriesActive(),
+		...getTimeEntriesActiveOptions(),
+		retry: false
 	});
 
 	const updateTimeEntryMutation = useMutation({

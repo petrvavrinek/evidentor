@@ -65,6 +65,16 @@ import type {
   GetUserBillingResponses,
   PutUserBillingData,
   PutUserBillingResponses,
+  GetInvoiceAutomationsData,
+  GetInvoiceAutomationsResponses,
+  PostInvoiceAutomationsData,
+  PostInvoiceAutomationsResponses,
+  DeleteInvoiceAutomationsByIdData,
+  DeleteInvoiceAutomationsByIdResponses,
+  GetInvoiceAutomationsByIdData,
+  GetInvoiceAutomationsByIdResponses,
+  PatchInvoiceAutomationsByIdData,
+  PatchInvoiceAutomationsByIdResponses,
   GetStatusData,
   GetStatusResponses,
   HeadStatusData,
@@ -209,6 +219,15 @@ import {
   zGetUserBillingResponse,
   zPutUserBillingData,
   zPutUserBillingResponse,
+  zGetInvoiceAutomationsData,
+  zGetInvoiceAutomationsResponse,
+  zPostInvoiceAutomationsData,
+  zPostInvoiceAutomationsResponse,
+  zDeleteInvoiceAutomationsByIdData,
+  zGetInvoiceAutomationsByIdData,
+  zGetInvoiceAutomationsByIdResponse,
+  zPatchInvoiceAutomationsByIdData,
+  zPatchInvoiceAutomationsByIdResponse,
   zGetStatusData,
   zHeadStatusData,
   zSocialSignInData,
@@ -1013,6 +1032,120 @@ export const putUserBilling = <ThrowOnError extends boolean = false>(
     },
     responseStyle: "data",
     url: "/user-billing",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const getInvoiceAutomations = <ThrowOnError extends boolean = false>(
+  options?: Options<GetInvoiceAutomationsData, ThrowOnError>,
+) => {
+  return (options?.client ?? _heyApiClient).get<
+    GetInvoiceAutomationsResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoiceAutomationsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetInvoiceAutomationsResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/invoice-automations",
+    ...options,
+  });
+};
+
+export const postInvoiceAutomations = <ThrowOnError extends boolean = false>(
+  options: Options<PostInvoiceAutomationsData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).post<
+    PostInvoiceAutomationsResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zPostInvoiceAutomationsData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPostInvoiceAutomationsResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/invoice-automations",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+export const deleteInvoiceAutomationsById = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<DeleteInvoiceAutomationsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).delete<
+    DeleteInvoiceAutomationsByIdResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zDeleteInvoiceAutomationsByIdData.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/invoice-automations/{id}",
+    ...options,
+  });
+};
+
+export const getInvoiceAutomationsById = <ThrowOnError extends boolean = false>(
+  options: Options<GetInvoiceAutomationsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).get<
+    GetInvoiceAutomationsByIdResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zGetInvoiceAutomationsByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zGetInvoiceAutomationsByIdResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/invoice-automations/{id}",
+    ...options,
+  });
+};
+
+export const patchInvoiceAutomationsById = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<PatchInvoiceAutomationsByIdData, ThrowOnError>,
+) => {
+  return (options.client ?? _heyApiClient).patch<
+    PatchInvoiceAutomationsByIdResponses,
+    unknown,
+    ThrowOnError,
+    "data"
+  >({
+    requestValidator: async (data) => {
+      return await zPatchInvoiceAutomationsByIdData.parseAsync(data);
+    },
+    responseValidator: async (data) => {
+      return await zPatchInvoiceAutomationsByIdResponse.parseAsync(data);
+    },
+    responseStyle: "data",
+    url: "/invoice-automations/{id}",
     ...options,
     headers: {
       "Content-Type": "application/json",

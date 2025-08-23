@@ -15,7 +15,7 @@ const BillingSchema = zPutUserBillingData.shape.body;
 interface UpdateUserBillingDialogProps {
   onUpdate?: (value: z.infer<typeof BillingSchema>) => void;
   initialData?: z.infer<typeof BillingSchema>
-  
+
 }
 
 export default function UpdateUserBillingForm({ onUpdate, initialData }: UpdateUserBillingDialogProps) {

@@ -15,9 +15,9 @@ export const projectTasks = pgTable("project_task", {
 		.notNull(),
 });
 
-export const projectTasksRelations = relations(projectTasks, ({ one }) => ({
+export const projectTasksRelations = relations(projectTasks, ({ one, many }) => ({
 	project: one(projects, {
 		fields: [projectTasks.projectId],
 		references: [projects.id],
-	}),
+	})
 }));

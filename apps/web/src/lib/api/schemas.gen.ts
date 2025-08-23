@@ -348,14 +348,7 @@ export const InvoiceSchema = {
           ],
         },
         dueDate: {
-          anyOf: [
-            {
-              type: "Date",
-            },
-            {
-              type: "null",
-            },
-          ],
+          type: "Date",
         },
         paidAt: {
           anyOf: [
@@ -820,14 +813,7 @@ export const Invoice__Schema = {
             ],
           },
           dueDate: {
-            anyOf: [
-              {
-                type: "Date",
-              },
-              {
-                type: "null",
-              },
-            ],
+            type: "Date",
           },
           paidAt: {
             anyOf: [
@@ -2484,6 +2470,620 @@ export const UserBillingSchema = {
     },
   ],
   $id: "#/components/schemas/UserBilling",
+} as const;
+
+export const InvoiceAutomationSchema = {
+  type: "object",
+  allOf: [
+    {
+      type: "object",
+      properties: {
+        id: {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        userId: {
+          anyOf: [
+            {
+              type: "string",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        isActive: {
+          type: "boolean",
+        },
+        projectId: {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        allTasks: {
+          type: "boolean",
+        },
+        recurrenceType: {
+          anyOf: [
+            {
+              const: "monthly",
+              type: "string",
+            },
+            {
+              const: "weekly",
+              type: "string",
+            },
+            {
+              const: "daily",
+              type: "string",
+            },
+          ],
+        },
+        interval: {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        dayOfMonth: {
+          anyOf: [
+            {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        language: {
+          anyOf: [
+            {
+              const: "cs",
+              type: "string",
+            },
+            {
+              const: "en",
+              type: "string",
+            },
+          ],
+        },
+        dueDays: {
+          minimum: -2147483648,
+          maximum: 2147483647,
+          type: "integer",
+        },
+        currency: {
+          anyOf: [
+            {
+              const: "czk",
+              type: "string",
+            },
+            {
+              const: "eur",
+              type: "string",
+            },
+            {
+              const: "usd",
+              type: "string",
+            },
+          ],
+        },
+        nextRunDate: {
+          type: "Date",
+        },
+        lastRunDate: {
+          anyOf: [
+            {
+              type: "Date",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
+        createdAt: {
+          type: "Date",
+        },
+      },
+      required: [
+        "id",
+        "userId",
+        "isActive",
+        "projectId",
+        "allTasks",
+        "recurrenceType",
+        "interval",
+        "dayOfMonth",
+        "language",
+        "dueDays",
+        "currency",
+        "nextRunDate",
+        "lastRunDate",
+        "createdAt",
+      ],
+    },
+    {
+      type: "object",
+      properties: {
+        projectTasks: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              title: {
+                type: "string",
+              },
+              projectId: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              description: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              createdAt: {
+                type: "Date",
+              },
+            },
+            required: ["id", "title", "projectId", "description", "createdAt"],
+          },
+        },
+        project: {
+          type: "object",
+          properties: {
+            id: {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            title: {
+              anyOf: [
+                {
+                  type: "string",
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+            createdAt: {
+              type: "Date",
+            },
+            client: {
+              anyOf: [
+                {
+                  type: "object",
+                  properties: {
+                    id: {
+                      minimum: -2147483648,
+                      maximum: 2147483647,
+                      type: "integer",
+                    },
+                    companyName: {
+                      type: "string",
+                    },
+                    contactName: {
+                      type: "string",
+                    },
+                    email: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    ownerId: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    addressId: {
+                      anyOf: [
+                        {
+                          minimum: -2147483648,
+                          maximum: 2147483647,
+                          type: "integer",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    companyId: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    vatNumber: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    vatPayer: {
+                      anyOf: [
+                        {
+                          type: "boolean",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    createdAt: {
+                      type: "Date",
+                    },
+                  },
+                  required: [
+                    "id",
+                    "companyName",
+                    "contactName",
+                    "email",
+                    "ownerId",
+                    "addressId",
+                    "companyId",
+                    "vatNumber",
+                    "vatPayer",
+                    "createdAt",
+                  ],
+                },
+                {
+                  type: "null",
+                },
+              ],
+            },
+          },
+          required: ["id", "title", "createdAt", "client"],
+          $id: "#/components/schemas/Project",
+        },
+      },
+      required: ["projectTasks", "project"],
+    },
+  ],
+  $id: "#/components/schemas/InvoiceAutomation",
+} as const;
+
+export const InvoiceAutomation__Schema = {
+  type: "array",
+  items: {
+    type: "object",
+    allOf: [
+      {
+        type: "object",
+        properties: {
+          id: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          userId: {
+            anyOf: [
+              {
+                type: "string",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          isActive: {
+            type: "boolean",
+          },
+          projectId: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          allTasks: {
+            type: "boolean",
+          },
+          recurrenceType: {
+            anyOf: [
+              {
+                const: "monthly",
+                type: "string",
+              },
+              {
+                const: "weekly",
+                type: "string",
+              },
+              {
+                const: "daily",
+                type: "string",
+              },
+            ],
+          },
+          interval: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          dayOfMonth: {
+            anyOf: [
+              {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          language: {
+            anyOf: [
+              {
+                const: "cs",
+                type: "string",
+              },
+              {
+                const: "en",
+                type: "string",
+              },
+            ],
+          },
+          dueDays: {
+            minimum: -2147483648,
+            maximum: 2147483647,
+            type: "integer",
+          },
+          currency: {
+            anyOf: [
+              {
+                const: "czk",
+                type: "string",
+              },
+              {
+                const: "eur",
+                type: "string",
+              },
+              {
+                const: "usd",
+                type: "string",
+              },
+            ],
+          },
+          nextRunDate: {
+            type: "Date",
+          },
+          lastRunDate: {
+            anyOf: [
+              {
+                type: "Date",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
+          createdAt: {
+            type: "Date",
+          },
+        },
+        required: [
+          "id",
+          "userId",
+          "isActive",
+          "projectId",
+          "allTasks",
+          "recurrenceType",
+          "interval",
+          "dayOfMonth",
+          "language",
+          "dueDays",
+          "currency",
+          "nextRunDate",
+          "lastRunDate",
+          "createdAt",
+        ],
+      },
+      {
+        type: "object",
+        properties: {
+          projectTasks: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                id: {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                title: {
+                  type: "string",
+                },
+                projectId: {
+                  minimum: -2147483648,
+                  maximum: 2147483647,
+                  type: "integer",
+                },
+                description: {
+                  anyOf: [
+                    {
+                      type: "string",
+                    },
+                    {
+                      type: "null",
+                    },
+                  ],
+                },
+                createdAt: {
+                  type: "Date",
+                },
+              },
+              required: [
+                "id",
+                "title",
+                "projectId",
+                "description",
+                "createdAt",
+              ],
+            },
+          },
+          project: {
+            type: "object",
+            properties: {
+              id: {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              title: {
+                anyOf: [
+                  {
+                    type: "string",
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+              createdAt: {
+                type: "Date",
+              },
+              client: {
+                anyOf: [
+                  {
+                    type: "object",
+                    properties: {
+                      id: {
+                        minimum: -2147483648,
+                        maximum: 2147483647,
+                        type: "integer",
+                      },
+                      companyName: {
+                        type: "string",
+                      },
+                      contactName: {
+                        type: "string",
+                      },
+                      email: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      ownerId: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      addressId: {
+                        anyOf: [
+                          {
+                            minimum: -2147483648,
+                            maximum: 2147483647,
+                            type: "integer",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      companyId: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      vatNumber: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      vatPayer: {
+                        anyOf: [
+                          {
+                            type: "boolean",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      createdAt: {
+                        type: "Date",
+                      },
+                    },
+                    required: [
+                      "id",
+                      "companyName",
+                      "contactName",
+                      "email",
+                      "ownerId",
+                      "addressId",
+                      "companyId",
+                      "vatNumber",
+                      "vatPayer",
+                      "createdAt",
+                    ],
+                  },
+                  {
+                    type: "null",
+                  },
+                ],
+              },
+            },
+            required: ["id", "title", "createdAt", "client"],
+            $id: "#/components/schemas/Project",
+          },
+        },
+        required: ["projectTasks", "project"],
+      },
+    ],
+    $id: "#/components/schemas/InvoiceAutomation",
+  },
+  $id: "#/components/schemas/InvoiceAutomation[]",
 } as const;
 
 export const UserSchema = {

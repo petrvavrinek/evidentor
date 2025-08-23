@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, RowSelectionState, useReactTable } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 
 import { Options, RequestOptions, TDataShape } from "@/lib/api/client";
 import { Alert, AlertDescription, AlertTitle } from "@evidentor/ui/components/ui/alert";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
+import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
+import { Check, CheckSquare } from "lucide-react";
 
 type UnwrapArray<T> = T extends (infer U)[] ? U : T;
 type EnsureArray<T> = T extends any[] ? T : T[];
@@ -18,14 +20,13 @@ type ExtractQueryResponse<T> = T extends (...args: any[]) => Promise<{ data: inf
 
 type QueryResponse<TData> = Promise<TData>
 
-interface QueryDataTableProps<
+type QueryDataTableProps<
   TQueryFn extends (options?: RequestOptions<any, false>) => QueryResponse<any>,
   TValue,
   TData = ExtractQueryResponse<TQueryFn>,
   TDataSingle = UnwrapArray<TData>,
   TQueryData extends TDataShape = ExtractQueryData<TQueryFn>
-> {
-  selectable?: boolean;
+> = {
   columns: ColumnDef<TDataSingle, TValue>[],
   pagination: {
     pageSize: number;
@@ -33,7 +34,13 @@ interface QueryDataTableProps<
   queryFn: TQueryFn,
   queryKey: any,
   queryOptions?: Options<TQueryData>
-}
+} & ({
+  selectable: true,
+  multiRow?: boolean,
+  getRowId: (row: TDataSingle) => string,
+  onSelectionChange?: (state: RowSelectionState) => void;
+  defaultSelectedRows?: string[]
+} | { selectable?: false })
 
 export default function QueryDataTable<
   TQueryFn extends (options?: Options<any, false>) => QueryResponse<any>,
@@ -41,8 +48,14 @@ export default function QueryDataTable<
   TValue = any,
   TDataSingle = UnwrapArray<TData>,
   TQueryData extends TDataShape = ExtractQueryData<TQueryFn>
->({ columns, selectable, queryFn, queryKey, queryOptions }: QueryDataTableProps<TQueryFn, TData, TValue, TDataSingle, TQueryData>) {
+>({ columns, queryFn, queryKey, queryOptions, ...props }: QueryDataTableProps<TQueryFn, TData, TValue, TDataSingle, TQueryData>) {
 
+  const convertDefaultSelectedRows = () => {
+    if (!props.selectable || !props.defaultSelectedRows) return {};
+    return props.defaultSelectedRows.reduce((prev, current) => ({ ...prev, [current]: true }), {});
+  }
+
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(convertDefaultSelectedRows());
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -56,6 +69,11 @@ export default function QueryDataTable<
 
     return { limit, offset };
   }, [pagination]);
+
+  useEffect(() => {
+    if (props.selectable && props.onSelectionChange)
+      props.onSelectionChange?.(rowSelection);
+  }, [rowSelection]);
 
   const { data, error, isLoading } = useQuery({
     queryFn: () => {
@@ -72,6 +90,8 @@ export default function QueryDataTable<
     queryKey: Array.isArray(queryKey) ? queryKey : [queryKey]
   });
 
+  const getRowId = props.selectable ? ((e: TDataSingle) => props.getRowId(e)) : undefined
+
   const table = useReactTable<TDataSingle>({
     columns: columns as never,
     data: (!isLoading && Array.isArray(data)) ? data : [],
@@ -79,10 +99,14 @@ export default function QueryDataTable<
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
     onPaginationChange: setPagination,
+    onRowSelectionChange: setRowSelection,
     state: {
-      pagination
+      pagination,
+      rowSelection
     },
-    enableRowSelection: selectable,
+    enableRowSelection: props.selectable,
+    enableMultiRowSelection: props.selectable && props.multiRow,
+    getRowId: getRowId
   });
 
   const setNextPage = () => {
@@ -108,22 +132,31 @@ export default function QueryDataTable<
     <div className="overflow-hidden rounded-md border">
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id} className="p-2.5">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+          <>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {props.selectable && (
+                  <TableHead>
+                    <Checkbox onCheckedChange={e => table.toggleAllRowsSelected(Boolean(e))} checked={table.getIsAllRowsSelected()} />
                   </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
+                )}
+                {headerGroup.headers.map((header) => {
+                  return (
+
+                    <TableHead key={header.id} className="p-2.5">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    </TableHead>
+
+                  )
+                })}
+              </TableRow>
+            ))}
+          </>
         </TableHeader>
         <TableBody>
           {
@@ -134,18 +167,27 @@ export default function QueryDataTable<
           {
             !isLoading && (
               table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="p-2.5">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
+                <>
+                  {
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {props.selectable && (
+                          <TableCell>
+                            <Checkbox checked={row.getIsSelected()} onCheckedChange={e => row.toggleSelected(Boolean(e))} />
+                          </TableCell>
+                        )}
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id} className="p-2.5">
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  }
+                </>
               ) : (
                 <TableRow>
                   <TableCell colSpan={columns.length} className="h-24 text-center p-2.5">
@@ -160,8 +202,8 @@ export default function QueryDataTable<
 
       <div className="flex items-center justify-end space-x-2 py-4">
         {
-          selectable && (
-            <div className="text-muted-foreground flex-1 text-sm">
+          props.selectable && (
+            <div className="text-muted-foreground flex-1 text-sm px-2">
               {table.getFilteredSelectedRowModel().rows.length} of{" "}
               {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>

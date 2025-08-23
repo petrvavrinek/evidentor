@@ -56,7 +56,7 @@ export type Invoice = {
   id: number;
   amount: number;
   currency: "czk" | "eur" | "usd";
-  dueDate: unknown | null;
+  dueDate: unknown;
   paidAt: unknown | null;
   sentAt: unknown | null;
   issuedAt: unknown;
@@ -114,7 +114,7 @@ export type Invoice2 = Array<
     id: number;
     amount: number;
     currency: "czk" | "eur" | "usd";
-    dueDate: unknown | null;
+    dueDate: unknown;
     paidAt: unknown | null;
     sentAt: unknown | null;
     issuedAt: unknown;
@@ -350,6 +350,92 @@ export type UserBilling = {
     updatedAt: unknown;
   };
 };
+
+export type InvoiceAutomation = {
+  id: number;
+  userId: string | null;
+  isActive: boolean;
+  projectId: number;
+  allTasks: boolean;
+  recurrenceType: "monthly" | "weekly" | "daily";
+  interval: number;
+  dayOfMonth: number | null;
+  language: "cs" | "en";
+  dueDays: number;
+  currency: "czk" | "eur" | "usd";
+  nextRunDate: unknown;
+  lastRunDate: unknown | null;
+  createdAt: unknown;
+} & {
+  projectTasks: Array<{
+    id: number;
+    title: string;
+    projectId: number;
+    description: string | null;
+    createdAt: unknown;
+  }>;
+  project: {
+    id: number;
+    title: string | null;
+    createdAt: unknown;
+    client: {
+      id: number;
+      companyName: string;
+      contactName: string;
+      email: string | null;
+      ownerId: string | null;
+      addressId: number | null;
+      companyId: string | null;
+      vatNumber: string | null;
+      vatPayer: boolean | null;
+      createdAt: unknown;
+    } | null;
+  };
+};
+
+export type InvoiceAutomation2 = Array<
+  {
+    id: number;
+    userId: string | null;
+    isActive: boolean;
+    projectId: number;
+    allTasks: boolean;
+    recurrenceType: "monthly" | "weekly" | "daily";
+    interval: number;
+    dayOfMonth: number | null;
+    language: "cs" | "en";
+    dueDays: number;
+    currency: "czk" | "eur" | "usd";
+    nextRunDate: unknown;
+    lastRunDate: unknown | null;
+    createdAt: unknown;
+  } & {
+    projectTasks: Array<{
+      id: number;
+      title: string;
+      projectId: number;
+      description: string | null;
+      createdAt: unknown;
+    }>;
+    project: {
+      id: number;
+      title: string | null;
+      createdAt: unknown;
+      client: {
+        id: number;
+        companyName: string;
+        contactName: string;
+        email: string | null;
+        ownerId: string | null;
+        addressId: number | null;
+        companyId: string | null;
+        vatNumber: string | null;
+        vatPayer: boolean | null;
+        createdAt: unknown;
+      } | null;
+    };
+  }
+>;
 
 export type User = {
   id?: string;
@@ -953,6 +1039,106 @@ export type PutUserBillingResponses = {
 
 export type PutUserBillingResponse =
   PutUserBillingResponses[keyof PutUserBillingResponses];
+
+export type GetInvoiceAutomationsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    take?: number;
+    skip?: number;
+  };
+  url: "/invoice-automations";
+};
+
+export type GetInvoiceAutomationsResponses = {
+  200: InvoiceAutomation2;
+};
+
+export type GetInvoiceAutomationsResponse =
+  GetInvoiceAutomationsResponses[keyof GetInvoiceAutomationsResponses];
+
+export type PostInvoiceAutomationsData = {
+  body: {
+    isActive?: boolean;
+    projectId: number;
+    allTasks: boolean;
+    recurrenceType: "monthly" | "weekly" | "daily";
+    interval?: number;
+    dayOfMonth?: number | null;
+    language: "cs" | "en";
+    dueDays?: number;
+    currency: "czk" | "eur" | "usd";
+  } & {
+    projectTaskIds?: Array<number>;
+  };
+  path?: never;
+  query?: never;
+  url: "/invoice-automations";
+};
+
+export type PostInvoiceAutomationsResponses = {
+  200: InvoiceAutomation;
+};
+
+export type PostInvoiceAutomationsResponse =
+  PostInvoiceAutomationsResponses[keyof PostInvoiceAutomationsResponses];
+
+export type DeleteInvoiceAutomationsByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice-automations/{id}";
+};
+
+export type DeleteInvoiceAutomationsByIdResponses = {
+  200: unknown;
+};
+
+export type GetInvoiceAutomationsByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice-automations/{id}";
+};
+
+export type GetInvoiceAutomationsByIdResponses = {
+  200: InvoiceAutomation;
+};
+
+export type GetInvoiceAutomationsByIdResponse =
+  GetInvoiceAutomationsByIdResponses[keyof GetInvoiceAutomationsByIdResponses];
+
+export type PatchInvoiceAutomationsByIdData = {
+  body: {
+    isActive?: boolean;
+    projectId: number;
+    allTasks: boolean;
+    recurrenceType: "monthly" | "weekly" | "daily";
+    interval?: number;
+    dayOfMonth?: number | null;
+    language: "cs" | "en";
+    dueDays?: number;
+    currency: "czk" | "eur" | "usd";
+  } & {
+    projectTaskIds?: Array<number>;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice-automations/{id}";
+};
+
+export type PatchInvoiceAutomationsByIdResponses = {
+  200: InvoiceAutomation;
+};
+
+export type PatchInvoiceAutomationsByIdResponse =
+  PatchInvoiceAutomationsByIdResponses[keyof PatchInvoiceAutomationsByIdResponses];
 
 export type GetStatusData = {
   body?: never;

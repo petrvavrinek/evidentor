@@ -62,10 +62,6 @@ export default function Profile() {
 					</CardContent>
 				</Card>
 			</div>
-
-			<div className="w-full py-4 flex justify-between">
-				<Button>Save</Button>
-			</div>
 		</>
 	);
 }

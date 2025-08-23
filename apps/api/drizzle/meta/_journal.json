@@ -162,6 +162,13 @@
       "when": 1755894995732,
       "tag": "0022_update_user_billing_table_add_company_id_vat",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1755905065112,
+      "tag": "0023_create_invoice_automation_table",
+      "breakpoints": true
     }
   ]
 }
