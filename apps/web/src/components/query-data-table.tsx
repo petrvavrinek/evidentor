@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@evidentor/ui/components/ui
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
+import { Separator } from "@evidentor/ui/components/ui/separator";
 
 type UnwrapArray<T> = T extends (infer U)[] ? U : T;
 type EnsureArray<T> = T extends any[] ? T : T[];
@@ -221,6 +222,7 @@ export default function QueryDataTable<
         </TableBody>
       </Table>
 
+      <Separator />
       <div className="flex items-center justify-end space-x-2 py-4">
         {
           props.selectable && (
@@ -230,7 +232,7 @@ export default function QueryDataTable<
             </div>
           )
         }
-        <div className="space-x-2 mr-4">
+        <div className="space-x-2 mr-4 bt-1">
           <Button
             type="button"
             variant="outline"

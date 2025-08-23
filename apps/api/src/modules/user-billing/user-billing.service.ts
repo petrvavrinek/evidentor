@@ -55,12 +55,9 @@ const UserBillingService = {
           })
           .where(eq(userBilling.userId, existingBilling.userId));
 
-
         return this.findByUserId(userId, { tx });
       }
-
       const [address] = await tx.insert(addresses).values(data.address).returning();
-
 
       await tx.insert(userBilling).values({
         addressId: address!.id!,
