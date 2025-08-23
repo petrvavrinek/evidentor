@@ -1,11 +1,11 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 import { invoiceAutomationRuleProjectTasks, invoiceAutomationRules } from "@/db/invoice-automation.schema";
 import { projectTasks } from "@/db/project-tasks.schema";
 import { projects } from "@/db/projects.schema";
 import { db } from "../../database";
 import type { WithTransaction } from "../../types/db";
-import type { CreateInvoiceAutomation, SelectInvoiceAutomationRule } from "./invoice-automations.schema";
+import type { CreateInvoiceAutomation, SelectInvoiceAutomationRule, UpdateInvoiceAutomationRule } from "./invoice-automations.schema";
 
 export const InvoiceAutomationsService = {
   async findByUserId(userId: string): Promise<SelectInvoiceAutomationRule[]> {
@@ -71,13 +71,14 @@ export const InvoiceAutomationsService = {
     return db.transaction(async tx => {
       const projectTaskIds: number[] = [];
 
-      if (!data.allTasks) {
+      if (!data.allTasks && data.projectTaskIds) {
         const selectedProjectTasks = await tx
           .selectDistinct({ id: projectTasks.id })
           .from(projectTasks)
           .innerJoin(projects, eq(projects.ownerId, userId))
           .where(and(
             eq(projectTasks.projectId, data.projectId),
+            inArray(projectTasks.id, data.projectTaskIds)
           ));
 
         projectTaskIds.push(...selectedProjectTasks.map(e => e.id));
@@ -112,6 +113,65 @@ export const InvoiceAutomationsService = {
 
       return this.findById(userId, rule.id, { tx });
     });
+  },
+
+  async updateById(userId: string, id: number, data: UpdateInvoiceAutomationRule): Promise<SelectInvoiceAutomationRule | null> {
+    const rule = await this.findById(userId, id);
+    if (!rule) return null;
+
+    return db.transaction(async tx => {
+      await tx
+        .update(invoiceAutomationRules)
+        .set({
+          allTasks: data.allTasks,
+          currency: data.currency,
+          language: data.language,
+          lastRunDate: null,
+          projectId: data.projectId,
+          recurrenceType: data.recurrenceType,
+          dayOfMonth: data.dayOfMonth,
+          dueDays: data.dueDays,
+          isActive: data.isActive,
+          userId,
+          interval: data.interval,
+        }).where(eq(invoiceAutomationRules.id, id))
+
+      if (data.allTasks) {
+        await tx.delete(invoiceAutomationRuleProjectTasks).where(eq(invoiceAutomationRuleProjectTasks.ruleId, rule.id));
+      } else if (data.projectTaskIds) {
+        const selectedProjectTasks = await tx
+          .selectDistinct({ id: projectTasks.id })
+          .from(projectTasks)
+          .innerJoin(projects, eq(projects.ownerId, userId))
+          .where(and(
+            eq(projectTasks.projectId, data.projectId),
+            inArray(projectTasks.id, data.projectTaskIds)
+          ));
+
+        await tx.delete(invoiceAutomationRuleProjectTasks).where(eq(invoiceAutomationRuleProjectTasks.ruleId, rule.id));
+
+        const projectTaskIds: number[] = selectedProjectTasks.map(e => e.id);
+        await tx.insert(invoiceAutomationRuleProjectTasks).values(
+          projectTaskIds.map(taskId => ({
+            projectTaskId: taskId,
+            ruleId: rule.id
+          }))
+        );
+      }
+
+      return this.findById(userId, id, { tx })
+    });
+  },
+
+  async deleteById(userId: string, id: number) {
+    await db
+      .delete(invoiceAutomationRules)
+      .where(
+        and(
+          eq(invoiceAutomationRules.userId, userId),
+          eq(invoiceAutomationRules.id, id)
+        )
+      );
   },
 
   calculateNextRunDate(rule: Pick<typeof invoiceAutomationRules.$inferSelect, "recurrenceType" | "nextRunDate" | "interval" | "dayOfMonth">): Date {

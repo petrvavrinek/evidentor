@@ -1083,6 +1083,19 @@ export type PostInvoiceAutomationsResponses = {
 export type PostInvoiceAutomationsResponse =
   PostInvoiceAutomationsResponses[keyof PostInvoiceAutomationsResponses];
 
+export type DeleteInvoiceAutomationsByIdData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice-automations/{id}";
+};
+
+export type DeleteInvoiceAutomationsByIdResponses = {
+  200: unknown;
+};
+
 export type GetInvoiceAutomationsByIdData = {
   body?: never;
   path: {
@@ -1098,6 +1111,34 @@ export type GetInvoiceAutomationsByIdResponses = {
 
 export type GetInvoiceAutomationsByIdResponse =
   GetInvoiceAutomationsByIdResponses[keyof GetInvoiceAutomationsByIdResponses];
+
+export type PatchInvoiceAutomationsByIdData = {
+  body: {
+    isActive?: boolean;
+    projectId: number;
+    allTasks: boolean;
+    recurrenceType: "monthly" | "weekly" | "daily";
+    interval?: number;
+    dayOfMonth?: number | null;
+    language: "cs" | "en";
+    dueDays?: number;
+    currency: "czk" | "eur" | "usd";
+  } & {
+    projectTaskIds?: Array<number>;
+  };
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/invoice-automations/{id}";
+};
+
+export type PatchInvoiceAutomationsByIdResponses = {
+  200: InvoiceAutomation;
+};
+
+export type PatchInvoiceAutomationsByIdResponse =
+  PatchInvoiceAutomationsByIdResponses[keyof PatchInvoiceAutomationsByIdResponses];
 
 export type GetStatusData = {
   body?: never;

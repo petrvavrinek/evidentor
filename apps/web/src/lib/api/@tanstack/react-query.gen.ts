@@ -35,7 +35,9 @@ import {
   putUserBilling,
   getInvoiceAutomations,
   postInvoiceAutomations,
+  deleteInvoiceAutomationsById,
   getInvoiceAutomationsById,
+  patchInvoiceAutomationsById,
   getStatus,
   socialSignIn,
   getAuthGetSession,
@@ -115,7 +117,10 @@ import type {
   GetInvoiceAutomationsData,
   PostInvoiceAutomationsData,
   PostInvoiceAutomationsResponse,
+  DeleteInvoiceAutomationsByIdData,
   GetInvoiceAutomationsByIdData,
+  PatchInvoiceAutomationsByIdData,
+  PatchInvoiceAutomationsByIdResponse,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
@@ -1102,6 +1107,29 @@ export const postInvoiceAutomationsMutation = (
   return mutationOptions;
 };
 
+export const deleteInvoiceAutomationsByIdMutation = (
+  options?: Partial<Options<DeleteInvoiceAutomationsByIdData>>,
+): UseMutationOptions<
+  unknown,
+  DefaultError,
+  Options<DeleteInvoiceAutomationsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    unknown,
+    DefaultError,
+    Options<DeleteInvoiceAutomationsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      return await deleteInvoiceAutomationsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+    },
+  };
+  return mutationOptions;
+};
+
 export const getInvoiceAutomationsByIdQueryKey = (
   options: Options<GetInvoiceAutomationsByIdData>,
 ) => createQueryKey("getInvoiceAutomationsById", options);
@@ -1120,6 +1148,29 @@ export const getInvoiceAutomationsByIdOptions = (
     },
     queryKey: getInvoiceAutomationsByIdQueryKey(options),
   });
+};
+
+export const patchInvoiceAutomationsByIdMutation = (
+  options?: Partial<Options<PatchInvoiceAutomationsByIdData>>,
+): UseMutationOptions<
+  PatchInvoiceAutomationsByIdResponse,
+  DefaultError,
+  Options<PatchInvoiceAutomationsByIdData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PatchInvoiceAutomationsByIdResponse,
+    DefaultError,
+    Options<PatchInvoiceAutomationsByIdData>
+  > = {
+    mutationFn: async (localOptions) => {
+      return await patchInvoiceAutomationsById({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+    },
+  };
+  return mutationOptions;
 };
 
 export const getStatusQueryKey = (options?: Options<GetStatusData>) =>

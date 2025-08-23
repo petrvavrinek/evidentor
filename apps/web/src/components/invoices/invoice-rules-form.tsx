@@ -51,7 +51,7 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
     control: form.control,
     name: ["allTasks", "projectId"]
   });
-  console.log("PROJECT ID", projectId);
+
 
   const columns: ColumnDef<Omit<ProjectTask, "project">>[] = [
     {
@@ -180,7 +180,7 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
             <FormItem>
               <FormLabel>Due days</FormLabel>
               <FormControl>
-                <Input {...field} type="number" />
+                <Input {...field} onChange={e => field.onChange(Number.parseInt(e.target.value))} type="number" />
               </FormControl>
               <FormMessage />
             </FormItem>

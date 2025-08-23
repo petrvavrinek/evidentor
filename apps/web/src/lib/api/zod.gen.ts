@@ -1241,6 +1241,14 @@ export const zPostInvoiceAutomationsData = z.object({
 
 export const zPostInvoiceAutomationsResponse = zInvoiceAutomation;
 
+export const zDeleteInvoiceAutomationsByIdData = z.object({
+  body: z.never().optional(),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
+
 export const zGetInvoiceAutomationsByIdData = z.object({
   body: z.never().optional(),
   path: z.object({
@@ -1250,6 +1258,38 @@ export const zGetInvoiceAutomationsByIdData = z.object({
 });
 
 export const zGetInvoiceAutomationsByIdResponse = zInvoiceAutomation;
+
+export const zPatchInvoiceAutomationsByIdData = z.object({
+  body: z
+    .object({
+      isActive: z.boolean().optional(),
+      projectId: z.number().int().gte(-2147483648).lte(2147483647),
+      allTasks: z.boolean(),
+      recurrenceType: z.union([
+        z.literal("monthly"),
+        z.literal("weekly"),
+        z.literal("daily"),
+      ]),
+      interval: z.number().int().gte(-2147483648).lte(2147483647).optional(),
+      dayOfMonth: z
+        .union([z.number().int().gte(-2147483648).lte(2147483647), z.null()])
+        .optional(),
+      language: z.union([z.literal("cs"), z.literal("en")]),
+      dueDays: z.number().int().gte(-2147483648).lte(2147483647).optional(),
+      currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
+    })
+    .and(
+      z.object({
+        projectTaskIds: z.array(z.number()).optional(),
+      }),
+    ),
+  path: z.object({
+    id: z.number(),
+  }),
+  query: z.never().optional(),
+});
+
+export const zPatchInvoiceAutomationsByIdResponse = zInvoiceAutomation;
 
 export const zGetStatusData = z.object({
   body: z.never().optional(),

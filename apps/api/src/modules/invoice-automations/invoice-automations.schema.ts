@@ -40,3 +40,6 @@ export type SelectInvoiceAutomationRule = Static<typeof SelectInvoiceAutomationR
 export const InvoiceAutomationRuleIdParam = t.Object({
   id: t.Number()
 })
+
+export const UpdateInvoiceAutomationRuleSchema = CreateInvoiceAutomationRuleSchema;
+export type UpdateInvoiceAutomationRule = Static<typeof UpdateInvoiceAutomationRuleSchema>;

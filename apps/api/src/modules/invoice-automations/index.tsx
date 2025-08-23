@@ -1,7 +1,7 @@
 import Elysia, { status, t } from "elysia";
 
 import { BetterAuthMacro } from "../auth";
-import { CreateInvoiceAutomationRuleSchema, InvoiceAutomationRuleIdParam, SelectInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
+import { CreateInvoiceAutomationRuleSchema, InvoiceAutomationRuleIdParam, SelectInvoiceAutomationRuleSchema, UpdateInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
 import { InvoiceAutomationsService } from "./invoice-automations.service";
 import { ProjectsService } from "../projects/projects.service";
 import { pagination, withPagination } from "../../macros/pagination.macro";
@@ -47,5 +47,28 @@ const router = new Elysia({
     response: "InvoiceAutomation",
     params: InvoiceAutomationRuleIdParam
   })
+  .patch(":id", async ({ user, body, params }) => {
+    if (body.projectId) {
+      const project = await ProjectsService.findById(user.id, body.projectId);
+      if (!project) throw status(400, "Invalid project");
+    }
+
+    const rule = await InvoiceAutomationsService.updateById(user.id, params.id, body);
+    if (!rule) throw status(500, "Could not update invoice automation rule");
+    return rule;
+  }, {
+    auth: true,
+    response: "InvoiceAutomation",
+    body: UpdateInvoiceAutomationRuleSchema,
+    params: InvoiceAutomationRuleIdParam
+  })
+  .delete(":id", async ({ user, params }) => {
+    await InvoiceAutomationsService.deleteById(user.id, params.id);
+  },
+    {
+      auth: true,
+      params: InvoiceAutomationRuleIdParam
+    })
+
 
 export default router;

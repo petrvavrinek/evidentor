@@ -1,15 +1,13 @@
 "use client";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import InvoiceRulesForm, { CreateRuleData } from "@/components/invoices/invoice-rules-form";
 import PageHeader from "@/components/page-header";
-import { getInvoiceAutomationsByIdOptions } from "@/lib/api/@tanstack/react-query.gen";
+import { getInvoiceAutomationsByIdOptions, patchInvoiceAutomationsByIdMutation } from "@/lib/api/@tanstack/react-query.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-
-
 
 export default function UpdateInvoiceRule() {
   const router = useRouter();
@@ -17,14 +15,24 @@ export default function UpdateInvoiceRule() {
 
   if (!id) return notFound();
 
+  const invoiceAutomationMutation = useMutation({
+    ...patchInvoiceAutomationsByIdMutation(),
+    onSuccess: () => {
+      toast.info("Invoice rule set");
+      router.push("..");
+    }
+  });
   const { data, isLoading } = useQuery(getInvoiceAutomationsByIdOptions({ path: { id: Number.parseInt(id as string) } }));
   if (isLoading) return <>Loading...</>;
   if (!data) return notFound();
 
   const handleSubmit = (values: CreateRuleData) => {
-    toast.info("Invoice rule set");
-    // Back to detail
-    router.push("..");
+    invoiceAutomationMutation.mutate({
+      body: values,
+      path: {
+        id: data.id
+      }
+    });
   }
 
   return (
