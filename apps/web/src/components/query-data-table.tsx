@@ -44,6 +44,7 @@ type QueryDataTableProps<
 export interface QueryDataTableMeta<TData> extends TableMeta<TData> {
   removeRow: (row: TData) => void;
   addRow: (row: TData) => void;
+  refetch: () => void;
 }
 
 export default function QueryDataTable<
@@ -80,7 +81,7 @@ export default function QueryDataTable<
       props.onSelectionChange?.(rowSelection);
   }, [rowSelection]);
 
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryFn: () => {
       const options: Options = {
         ...queryOptions,
@@ -121,7 +122,8 @@ export default function QueryDataTable<
       },
       addRow: (data: TDataSingle) => {
         client.setQueryData(queryKey, (old: TDataSingle[]) => [...old, data])
-      }
+      },
+      refetch
     } satisfies QueryDataTableMeta<TDataSingle>
   });
 
