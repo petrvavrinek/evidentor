@@ -36,7 +36,11 @@ export const InvoicesService = {
 						timeEntry: true
 					},
 				},
-				client: true,
+				client: {
+					with: {
+						address: true
+					}
+				},
 				project: true
 			},
 			where: options?.where ? and(...options.where, ...filters) : undefined,
@@ -207,7 +211,7 @@ export const InvoicesService = {
 		if (!invoiceQueueData) return null;
 
 		logger.info(`requested invoice pdf generation for invoice ${invoice.id}`);
-		
+
 		await InvoiceQueue.add("", {
 			type: "generate-invoice",
 			data: invoiceQueueData,
