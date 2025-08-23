@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
@@ -8,12 +8,13 @@ import { PropsWithChildren } from "react";
 import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/page-header";
 import { ProjectTask } from "@/lib/api";
-import { getInvoiceAutomationsByIdOptions } from "@/lib/api/@tanstack/react-query.gen";
+import { deleteInvoiceAutomationsByIdMutation, getInvoiceAutomationsByIdOptions } from "@/lib/api/@tanstack/react-query.gen";
 import { Badge } from "@evidentor/ui/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@evidentor/ui/components/ui/tabs";
+import { toast } from "sonner";
 
 const DescriptionRow = ({ text, children }: PropsWithChildren<{ text: string }>) => (
   <p><span className="font-semibold">{text}:</span> {children}</p>
@@ -26,6 +27,13 @@ export default function InvoiceRuleDetail() {
   if (!id) return notFound();
 
   const { data: rule, isLoading } = useQuery(getInvoiceAutomationsByIdOptions({ path: { id: Number.parseInt(id as string) } }))
+  const deleteRuleMutation = useMutation({
+    ...deleteInvoiceAutomationsByIdMutation(),
+    onSuccess: () => {
+      toast.info("Invoice rule deleted");
+      router.push("..");
+    }
+  });
 
   if (isLoading) return <>Loading...</>;
   if (!rule) return notFound();
@@ -46,7 +54,10 @@ export default function InvoiceRuleDetail() {
     <>
       <div className="flex flex-col gap-4">
         <PageHeader title="Invoice automation rule detail" controls={
-          <Button onClick={() => router.push(`/app/invoices/rules/${id}/settings`)}>Settings</Button>
+          <>
+            <Button onClick={() => router.push(`/app/invoices/rules/${id}/settings`)}>Settings</Button>
+            <Button variant="destructive" onClick={() => deleteRuleMutation.mutate({ path: { id: rule.id } })}>Delete</Button>
+          </>
         } />
         <div className="grid grid-cols-3 gap-4">
           <Card>
