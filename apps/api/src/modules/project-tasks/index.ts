@@ -38,8 +38,8 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		async ({ user, query }) => {
-			const task = await ProjectTasksService.findAllByUserId(user.id, query);
+		async ({ user, query, pagination }) => {
+			const task = await ProjectTasksService.findAllByUserId(user.id, query, pagination);
 			return task;
 		},
 		{

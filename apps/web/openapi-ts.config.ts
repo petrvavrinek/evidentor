@@ -1,5 +1,4 @@
 import { defineConfig } from "@hey-api/openapi-ts";
-import { datePlugin } from "./openapi/date-plugin";
 
 export default defineConfig({
 	input: "http://localhost:3000/swagger/json",
@@ -27,7 +26,6 @@ export default defineConfig({
 			validator: true,
 			exportFromIndex: true,
 			responseStyle: "data"
-
 		},
 		{
 			enums: "javascript",
@@ -36,6 +34,5 @@ export default defineConfig({
 		{
 			name: "@tanstack/react-query",
 		},
-		datePlugin(),
 	]
 });

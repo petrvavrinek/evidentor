@@ -15,8 +15,6 @@ import {
 	InvoicesResponseSchema,
 } from "./invoice.schemas";
 import { InvoicesService } from "./invoices.service";
-import { convertInvoiceToQueueType } from "./utils/convert-queue";
-
 
 const logger = new LoggerService("invoices");
 
@@ -55,19 +53,9 @@ const router = new Elysia({
 			if (!project.client) throw status(400, "Project does not have client assigned");
 
 			const invoice = await InvoicesService.create(user.id, { ...body, clientId: project.client.id });
-			const newInvoice = (await InvoicesService.findById(
-				user.id,
-				invoice!.id,
-			))!;
-
-			// Generate invoice in the background
-			const invoiceQueueData = convertInvoiceToQueueType(newInvoice);
-			await InvoiceQueue.add("", {
-				type: "generate-invoice",
-				data: invoiceQueueData,
-			});
-
-			return newInvoice;
+			if (!invoice) throw status(500, "Could not create invoice");
+			await InvoicesService.requestGenerate(invoice);
+			return invoice;
 		},
 		{
 			auth: true,
@@ -142,14 +130,10 @@ router.on("start", async () => {
 
 	const invoices = await InvoicesService.findInvoicesWithoutGeneratedFile();
 	logger.info(`Found ${invoices.length} invoices without generated file`);
-	const convertedInvoices = invoices.map(e => convertInvoiceToQueueType(e));
 
-	for (const convertedInvoice of convertedInvoices) {
-		InvoiceQueue.add("", {
-			type: "generate-invoice",
-			data: convertedInvoice,
-		});
-	}
+	for (const invoice of invoices)
+		InvoicesService.requestGenerate(invoice);
+
 });
 
 

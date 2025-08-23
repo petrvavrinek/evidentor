@@ -52,7 +52,7 @@ export type ProjectTaskResponseType = Static<typeof ProjectTaskResponse>;
 
 export const ProjectTaskQueryFilter = t.Partial(
 	t.Object({
-		project: t.Number(),
+		project: t.Optional(t.Number()),
 	}),
 );
 

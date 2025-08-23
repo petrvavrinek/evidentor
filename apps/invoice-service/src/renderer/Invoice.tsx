@@ -84,7 +84,7 @@ export const InvoiceDocument = ({
 				<View style={styles.header}>
 					<Text style={styles.title}>{translations.invoice}</Text>
 					<Text style={styles.id}>
-						{translations.invoice_id}: {id}
+						{translations.invoiceId}: {id}
 					</Text>
 				</View>
 				{/* Supplier & Subscriber */}
@@ -98,16 +98,11 @@ export const InvoiceDocument = ({
 				</View>
 				{/* Payment Info */}
 				<View style={styles.payment}>
-					<Text style={styles.paymentTitle}>{translations.payment_information}</Text>
-					<Text>
-						{translations.iban}: {payment.iban}
-					</Text>
-					<Text>
-						{translations.swift}: {payment.swift}
-					</Text>
-					<Text>
-						{translations.variable_symbol}: {payment.variableSymbol}
-					</Text>
+					<Text style={styles.paymentTitle}>{translations.paymentInformation}</Text>
+					{payment.bankAccount && <Text>{translations.bankAccount}: {payment.bankAccount}</Text>}
+					{payment.iban && <Text>{translations.iban}: {payment.iban}</Text>}
+					{payment.swift && <Text>{translations.swift}: {payment.swift}</Text>}
+					{payment.variableSymbol && <Text>{translations.variableSymbol}: {payment.variableSymbol}</Text>}
 				</View>
 				{/* Items Table */}
 				<InvoiceItemsTable items={updatedItems} currency={currency} language={language as Language} translations={translations} />

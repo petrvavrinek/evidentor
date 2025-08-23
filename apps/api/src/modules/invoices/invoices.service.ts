@@ -1,27 +1,35 @@
-import { and, eq, type SQL, inArray, isNull, count, sql } from "drizzle-orm";
+import { and, count, eq, inArray, isNull, sql, type SQL } from "drizzle-orm";
+
+import { InvoiceQueue } from "@evidentor/queues";
 
 import { db } from "../../database";
-import { invoices, invoiceItems, timeEntries, projects } from "@/db/schema";
+import type { WithTransaction } from "../../types/db";
+import type { InvoiceCreateType, InvoiceFilter, InvoiceSelectSchemaType } from "./invoice.schemas";
+import { convertInvoiceToQueueType } from "./utils/convert-queue";
 
-import type { InvoiceCreateType, InvoiceFilter } from "./invoice.schemas";
+import { invoiceItems, invoices, projects, timeEntries, userBilling } from "@/db/schema";
+import { LoggerService } from "@evidentor/logging";
+
 
 interface CreateInvoiceQueryOptions {
 	where?: SQL[];
 }
 
+const logger = new LoggerService("invoices");
+
 export const InvoicesService = {
 	/**
 	 * Find many invoice with options
 	 */
-	findByOptions(options?: CreateInvoiceQueryOptions, filter?: InvoiceFilter) {
+	findByOptions(options?: CreateInvoiceQueryOptions, filter?: InvoiceFilter, dbOptions?: WithTransaction): Promise<InvoiceSelectSchemaType[]> {
 		const filters: SQL[] = [];
 		if (filter) {
 			if (filter.automationRuleId) {
 				filters.push(eq(invoices.automationRuleId, filter.automationRuleId));
 			}
 		}
-
-		return db.query.invoices.findMany({
+		const connection = dbOptions?.tx ?? db;
+		return connection.query.invoices.findMany({
 			with: {
 				items: {
 					with: {
@@ -41,10 +49,10 @@ export const InvoicesService = {
 	 * @param options Options
 	 * @returns
 	 */
-	async findOneByOptions(id: number, options?: CreateInvoiceQueryOptions, filter?: InvoiceFilter) {
+	async findOneByOptions(id: number, options?: CreateInvoiceQueryOptions, filter?: InvoiceFilter, dbOptions?: WithTransaction): Promise<InvoiceSelectSchemaType | null> {
 		const result = await this.findByOptions({
 			where: [eq(invoices.id, id), ...(options?.where ?? [])],
-		}, filter);
+		}, filter, dbOptions);
 		return result?.[0] ?? null;
 	},
 
@@ -70,9 +78,8 @@ export const InvoicesService = {
 
 		return results?.[0] ?? null;
 	},
-
 	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
-		return db.transaction(async (tx) => {
+		const invoice = await  db.transaction(async (tx) => {
 			const now = new Date();
 			const invoicesToday = await tx
 				.select({ count: count() })
@@ -136,10 +143,15 @@ export const InvoicesService = {
 				}))
 			);
 
-			return createdInvoice;
-		});
-	},
+			if (!createdInvoice) return null;
 
+			return this.findOneByOptions(createdInvoice.id, { where: [eq(invoices.id, createdInvoice.id)] }, undefined, { tx })
+		});
+
+		if(invoice) logger.info(`created invoice ${invoice.id}`);
+
+		return invoice;
+	},
 	async updateById(
 		userId: string,
 		id: number,
@@ -179,5 +191,26 @@ export const InvoicesService = {
 		const d = date.getDate().toString().padStart(2, "0");
 		const i = idx.toString().padStart(3, "0");
 		return `${y}${m}${d}${i}`;
+	},
+
+	async requestGenerate(invoice: InvoiceSelectSchemaType) {
+		const invoiceUserBilling = await db.query.userBilling.findFirst({
+			where: eq(userBilling.userId, invoice.userId),
+			with: {
+				address: true
+			}
+		});
+		if (!invoiceUserBilling) return null;
+
+		// Generate invoice in the background
+		const invoiceQueueData = convertInvoiceToQueueType(invoice, invoiceUserBilling);
+		if (!invoiceQueueData) return null;
+
+		logger.info(`requested invoice pdf generation for invoice ${invoice.id}`);
+		
+		await InvoiceQueue.add("", {
+			type: "generate-invoice",
+			data: invoiceQueueData,
+		});
 	}
 };

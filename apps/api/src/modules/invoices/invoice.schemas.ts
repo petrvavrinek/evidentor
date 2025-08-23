@@ -7,6 +7,7 @@ import {
 	timeEntries,
 	projects,
 } from "@/db/schema";
+import { AddressResponse } from "../addresses/addresses.schema";
 
 const CreateInvoiceSchema = createInsertSchema(invoices, {
 	projectId: t.Number(),
@@ -45,7 +46,10 @@ export const InvoiceSelectSchema = t.Intersect([
 	InvoiceSchema,
 	t.Object({
 		id: t.Number(),
-		client: t.Nullable(ClientSelectSchema),
+		client: t.Nullable(t.Intersect([
+			ClientSelectSchema,
+			t.Object({ address: t.Nullable(AddressResponse) })
+		])),
 		project: t.Nullable(ProjectSelectSchema),
 		items: t.Array(
 			t.Object({

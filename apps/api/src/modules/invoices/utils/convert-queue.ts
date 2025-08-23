@@ -1,5 +1,7 @@
 import type { InvoiceQueueDataType } from "@evidentor/queues";
+
 import type { InvoiceSelectSchemaType } from "../invoice.schemas";
+import type { UserBillingResponse } from "../../user-billing/user-billing.schema";
 
 type GenerateInvoiceData = InvoiceQueueDataType["data"];
 
@@ -10,7 +12,11 @@ type GenerateInvoiceData = InvoiceQueueDataType["data"];
  */
 export const convertInvoiceToQueueType = (
 	invoice: InvoiceSelectSchemaType,
-): GenerateInvoiceData => {
+	userBilling: UserBillingResponse
+): GenerateInvoiceData | null => {
+	if (!invoice.client) return null;
+	if (!invoice.client.address) return null;
+
 	return {
 		currency: invoice.currency,
 		id: invoice.id.toString(),
@@ -21,30 +27,29 @@ export const convertInvoiceToQueueType = (
 		})),
 		payment: {
 			amount: invoice.amount,
-			iban: "IBAN",
-			swift: "SWIFT",
-			variableSymbol: 1,
+			bankAccount: userBilling.bankAccount,
+			variableSymbol: invoice.textId,
 		},
 		subscriber: {
-			name: invoice.client?.companyName ?? "",
+			name: invoice.client.companyName,
 			address: {
-				city: "city",
-				country: "country",
-				houseNumber: "hn",
-				street: "street",
-				zip: "zip",
+				city: invoice.client.address.city,
+				country: invoice.client.address.country,
+				houseNumber: "HOUSE NUMBER",
+				street: invoice.client.address.streetLine1,
+				zip: invoice.client.address.postalCode ?? "",
 			},
 			cin: "cin",
 			vatId: "vatId",
 		},
 		supplier: {
-			name: "supplier",
+			name: userBilling.companyName,
 			address: {
-				city: "city",
-				country: "country",
-				houseNumber: "hn",
-				street: "street",
-				zip: "zip",
+				city: userBilling.address.city,
+				country: userBilling.address.country,
+				houseNumber: "HOUSE NUMBER",
+				street: userBilling.address.streetLine1,
+				zip: userBilling.address.postalCode ?? "",
 			},
 			cin: "cin",
 			vatId: "vatId",

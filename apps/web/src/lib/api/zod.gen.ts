@@ -1090,7 +1090,7 @@ export const zGetTimeEntriesData = z.object({
     .object({
       take: z.number().optional(),
       skip: z.number().optional(),
-      projectId: z.union([z.number(), z.null()]).optional(),
+      projectId: z.number().optional(),
       from: z
         .union([
           z.unknown(),
@@ -1151,7 +1151,7 @@ export const zGetTimeEntriesAnalyzeDurationByDateData = z.object({
   path: z.never().optional(),
   query: z
     .object({
-      projectId: z.union([z.number(), z.null()]).optional(),
+      projectId: z.number().optional(),
       from: z
         .union([
           z.unknown(),

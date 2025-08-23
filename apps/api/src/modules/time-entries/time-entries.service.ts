@@ -36,7 +36,6 @@ export const TimeEntriesService = {
 	 * @returns Array of entries
 	 */
 	findByUserId(userId: string, filter?: TimeEntryFilterType, pagination?: Pagination) {
-		console.log(filter, pagination)
 		return db.query.timeEntries.findMany({
 			where: (entry, { eq, gte, lte, isNotNull, isNull }) => {
 				const filters = [eq(entry.userId, userId)];
