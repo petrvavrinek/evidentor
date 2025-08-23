@@ -13,6 +13,7 @@ import { Badge } from "@evidentor/ui/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { Button } from "@evidentor/ui/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@evidentor/ui/components/ui/tabs";
 
 const DescriptionRow = ({ text, children }: PropsWithChildren<{ text: string }>) => (
   <p><span className="font-semibold">{text}:</span> {children}</p>
@@ -47,13 +48,10 @@ export default function InvoiceRuleDetail() {
         <PageHeader title="Invoice automation rule detail" controls={
           <Button onClick={() => router.push(`/app/invoices/rules/${id}/settings`)}>Settings</Button>
         } />
-
         <div className="grid grid-cols-3 gap-4">
           <Card>
             <CardHeader>
-              <CardTitle>
-                Rules
-              </CardTitle>
+              <CardTitle>Rule</CardTitle>
             </CardHeader>
             <CardContent>
               <DescriptionRow text="ID">{rule.id}</DescriptionRow>
@@ -85,23 +83,34 @@ export default function InvoiceRuleDetail() {
           </Card>
         </div>
         <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Project tasks</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Tabs defaultValue="tasks" searchParam="tab">
+            <TabsList>
+              <TabsTrigger value="tasks">Tasks</TabsTrigger>
+              <TabsTrigger value="invoices">Generated invoices</TabsTrigger>
+            </TabsList>
+            <TabsContent value="tasks">
+              <Card>
+                <CardContent>
+                  {
+                    rule.allTasks && <>Includes all tasks</>
+                  }
+                  {
+                    !rule.allTasks && (
+                      <DataTable data={rule.projectTasks} columns={columns} />
+                    )
+                  }
+                </CardContent>
+              </Card>
 
-              {
-                rule.allTasks && <>Includes all tasks</>
-              }
-              {
-                !rule.allTasks && (
-                  <DataTable data={rule.projectTasks} columns={columns} />
-                )
-              }
-            </CardContent>
-          </Card>
-
+            </TabsContent>
+            <TabsContent value="invoices">
+              <Card>
+                <CardContent>
+                  Invoices
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </>

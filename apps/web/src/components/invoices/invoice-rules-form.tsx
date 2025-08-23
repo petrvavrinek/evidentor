@@ -43,13 +43,14 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
       allTasks: true,
       currency: "czk",
       projectId: project?.id,
+      dayOfMonth: 1,
       ...initialData
     },
   })
 
-  const [includeAllTasks, projectId] = useWatch({
+  const [includeAllTasks, projectId, recurrenceType] = useWatch({
     control: form.control,
-    name: ["allTasks", "projectId"]
+    name: ["allTasks", "projectId", "recurrenceType"]
   });
 
 
@@ -170,6 +171,23 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
                 </FormItem>
               )}
             />
+            {
+              recurrenceType === "monthly" && (
+                <FormField
+                  control={form.control}
+                  name="dayOfMonth"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Day of month</FormLabel>
+                      <FormControl>
+                        <Input {...field} onChange={e => field.onChange(Number.parseInt(e.target.value))} value={field.value ?? 1} type="number" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )
+            }
           </div>
         </div>
 
