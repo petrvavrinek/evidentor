@@ -74,6 +74,7 @@ export default function ClientsPage() {
 						const meta = table.options.meta as QueryDataTableMeta<Client>;
 						meta.removeRow(row.original);
 					}}
+					onDetail={() => setClientDetail(row.original)}
 				/>
 			)
 		}

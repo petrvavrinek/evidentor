@@ -35,10 +35,11 @@ export interface GenerateInvoice {
 	subscriber: PaymentSubject;
 
 	payment: {
-		iban: string;
-		swift: string;
-		variableSymbol: number;
+		iban?: string;
+		swift?: string;
+		variableSymbol: string;
 		amount: number;
+		bankAccount?: string;
 	};
 
 	items: GenerateInvoiceItem[];

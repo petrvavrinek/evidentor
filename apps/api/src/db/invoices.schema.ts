@@ -33,7 +33,7 @@ export const invoices = pgTable("invoice", {
 	updatedAt: timestamp()
 		.$defaultFn(() => new Date())
 		.notNull(),
-	userId: text().references(() => user.id, { onDelete: "cascade" }),
+	userId: text().references(() => user.id, { onDelete: "cascade" }).notNull(),
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
 	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	generatedFileId: text(),

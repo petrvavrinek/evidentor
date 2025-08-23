@@ -55,7 +55,7 @@ export const InvoiceItemsTable = ({
 				<Text style={[styles.headerCell, styles.name]}>{translations.name}</Text>
 				<Text style={[styles.headerCell, styles.amount]}>{translations.amount}</Text>
 				<Text style={[styles.headerCell, styles.price]}>{translations.price}</Text>
-				<Text style={[styles.headerCell, styles.total]}>{translations.items_total}</Text>
+				<Text style={[styles.headerCell, styles.total]}>{translations.itemsTotal}</Text>
 			</View>
 			{items.map((item) => (
 				<View key={`${item.name}_${item.amount}`} style={styles.row}>

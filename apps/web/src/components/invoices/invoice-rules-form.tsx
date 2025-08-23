@@ -73,7 +73,7 @@ export default function InvoiceRulesForm({ initialData, onSubmit }: InvoiceRules
     {
       accessorKey: "id",
       header: "ID",
-      size: 80
+      size: 45
     },
     {
       accessorKey: "title",

@@ -2,19 +2,20 @@ import type cs from "./cs";
 
 export default {
   invoice: "Invoice",
-  invoice_id: "Invoice ID",
+  invoiceId: "Invoice ID",
   supplier: "Supplier",
   subscriber: "Subscriber",
-  payment_information: "Payment Information",
+  paymentInformation: "Payment Information",
   iban: "IBAN",
   swift: "SWIFT",
-  variable_symbol: "Variable Symbol",
+  variableSymbol: "Variable Symbol",
   total: "Total",
   name: "Name",
   amount: "Amount",
   price: "Price",
-  items_total: "Total",
+  itemsTotal: "Total",
   cin: "CIN",
   vat: "VAT",
   address: "Address",
+  bankAccount: "Bank account"
 } satisfies typeof cs;
