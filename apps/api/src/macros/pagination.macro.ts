@@ -25,9 +25,9 @@ export const pagination = new Elysia()
     })
   });
 
-export const withPagination = <T extends TProperties = TProperties>(type: TObject<T>) => {
+export const withPagination = <T extends TProperties = TProperties>(type?: TObject<T>) => {
   return t.Object({
     ...PaginationSchema.properties,
-    ...type.properties
+    ...type?.properties
   })
 }

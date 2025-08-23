@@ -36,3 +36,7 @@ export const SelectInvoiceAutomationRuleSchema = t.Intersect([
 ]);
 
 export type SelectInvoiceAutomationRule = Static<typeof SelectInvoiceAutomationRuleSchema>;
+
+export const InvoiceAutomationRuleIdParam = t.Object({
+  id: t.Number()
+})

@@ -33,6 +33,9 @@ import {
   getCalendars,
   getUserBilling,
   putUserBilling,
+  getInvoiceAutomations,
+  postInvoiceAutomations,
+  getInvoiceAutomationsById,
   getStatus,
   socialSignIn,
   getAuthGetSession,
@@ -109,6 +112,10 @@ import type {
   GetUserBillingData,
   PutUserBillingData,
   PutUserBillingResponse,
+  GetInvoiceAutomationsData,
+  PostInvoiceAutomationsData,
+  PostInvoiceAutomationsResponse,
+  GetInvoiceAutomationsByIdData,
   GetStatusData,
   SocialSignInData,
   SocialSignInError,
@@ -1030,6 +1037,89 @@ export const putUserBillingMutation = (
     },
   };
   return mutationOptions;
+};
+
+export const getInvoiceAutomationsQueryKey = (
+  options?: Options<GetInvoiceAutomationsData>,
+) => createQueryKey("getInvoiceAutomations", options);
+
+export const getInvoiceAutomationsOptions = (
+  options?: Options<GetInvoiceAutomationsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      return await getInvoiceAutomations({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+    },
+    queryKey: getInvoiceAutomationsQueryKey(options),
+  });
+};
+
+export const postInvoiceAutomationsQueryKey = (
+  options: Options<PostInvoiceAutomationsData>,
+) => createQueryKey("postInvoiceAutomations", options);
+
+export const postInvoiceAutomationsOptions = (
+  options: Options<PostInvoiceAutomationsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      return await postInvoiceAutomations({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+    },
+    queryKey: postInvoiceAutomationsQueryKey(options),
+  });
+};
+
+export const postInvoiceAutomationsMutation = (
+  options?: Partial<Options<PostInvoiceAutomationsData>>,
+): UseMutationOptions<
+  PostInvoiceAutomationsResponse,
+  DefaultError,
+  Options<PostInvoiceAutomationsData>
+> => {
+  const mutationOptions: UseMutationOptions<
+    PostInvoiceAutomationsResponse,
+    DefaultError,
+    Options<PostInvoiceAutomationsData>
+  > = {
+    mutationFn: async (localOptions) => {
+      return await postInvoiceAutomations({
+        ...options,
+        ...localOptions,
+        throwOnError: true,
+      });
+    },
+  };
+  return mutationOptions;
+};
+
+export const getInvoiceAutomationsByIdQueryKey = (
+  options: Options<GetInvoiceAutomationsByIdData>,
+) => createQueryKey("getInvoiceAutomationsById", options);
+
+export const getInvoiceAutomationsByIdOptions = (
+  options: Options<GetInvoiceAutomationsByIdData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      return await getInvoiceAutomationsById({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+    },
+    queryKey: getInvoiceAutomationsByIdQueryKey(options),
+  });
 };
 
 export const getStatusQueryKey = (options?: Options<GetStatusData>) =>

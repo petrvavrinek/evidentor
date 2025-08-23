@@ -73,7 +73,7 @@ export const InvoiceAutomationsService = {
 
       if (!data.allTasks) {
         const selectedProjectTasks = await tx
-          .select({ id: projectTasks.id })
+          .selectDistinct({ id: projectTasks.id })
           .from(projectTasks)
           .innerJoin(projects, eq(projects.ownerId, userId))
           .where(and(

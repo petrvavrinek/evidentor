@@ -1,14 +1,17 @@
 import Elysia, { status, t } from "elysia";
+
 import { BetterAuthMacro } from "../auth";
-import { CreateInvoiceAutomationRuleSchema, SelectInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
+import { CreateInvoiceAutomationRuleSchema, InvoiceAutomationRuleIdParam, SelectInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
 import { InvoiceAutomationsService } from "./invoice-automations.service";
 import { ProjectsService } from "../projects/projects.service";
+import { pagination, withPagination } from "../../macros/pagination.macro";
 
 const router = new Elysia({
   prefix: "/invoice-automations",
   detail: { tags: ["Invoice automations"] },
 })
   .use(BetterAuthMacro)
+  .use(pagination)
   .model("InvoiceAutomation", SelectInvoiceAutomationRuleSchema)
   .model("InvoiceAutomation[]", t.Array(SelectInvoiceAutomationRuleSchema))
   .post("", async ({ user, body }) => {
@@ -22,7 +25,7 @@ const router = new Elysia({
   }, {
     auth: true,
     body: CreateInvoiceAutomationRuleSchema,
-    response: "InvoiceAutomation"
+    response: "InvoiceAutomation",
   }
   )
   .get("", async ({ user }) => {
@@ -30,8 +33,19 @@ const router = new Elysia({
   },
     {
       auth: true,
-      response: "InvoiceAutomation[]"
+      response: "InvoiceAutomation[]",
+      paginate: { defaultPageSize: 16 },
+      query: withPagination()
     }
   )
+  .get(":id", async ({ user, params }) => {
+    const rule = await InvoiceAutomationsService.findById(user.id, params.id);
+    if (!rule) throw status(404, "Invoice automation rule not found");
+    return rule;
+  }, {
+    auth: true,
+    response: "InvoiceAutomation",
+    params: InvoiceAutomationRuleIdParam
+  })
 
 export default router;

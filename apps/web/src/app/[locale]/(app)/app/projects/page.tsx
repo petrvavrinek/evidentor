@@ -140,6 +140,7 @@ export default function ProjectsPage() {
 					</CardHeader>
 					<CardContent className="px-6">
 						<QueryDataTable
+							
 							queryFn={getProjects}
 							queryKey={getProjectsQueryKey()}
 							columns={columns}
