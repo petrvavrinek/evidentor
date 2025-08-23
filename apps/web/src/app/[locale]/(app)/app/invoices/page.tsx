@@ -1,57 +1,78 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { ColumnDef } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
+import PageHeader from "@/components/page-header";
+import QueryDataTable, { QueryDataTableMeta } from "@/components/query-data-table";
+import SearchInput from "@/components/search-input";
+import TableItemDetailMenu from "@/components/table-item-detail-menu";
+import useTitle from "@/hooks/use-title";
+import { Invoice } from "@/lib/api";
+import { deleteInvoicesByIdMutation, getInvoicesQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getInvoices } from "@/lib/api/sdk.gen";
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardHeader,
-	CardTitle,
+	CardTitle
 } from "@evidentor/ui/components/ui/card";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@evidentor/ui/components/ui/table";
-
-import { InvoiceTableRow } from "@/components/invoices/invoice-table-row";
-import PageHeader from "@/components/page-header";
-import SearchInput from "@/components/search-input";
-
-import useTitle from "@/hooks/use-title";
-import { getInvoicesQueryKey } from "@/lib/api/@tanstack/react-query.gen";
-import { deleteInvoicesById, getInvoices } from "@/lib/api/sdk.gen";
-import { Button } from "@evidentor/ui/components/ui/button";
-import { Plus } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 
 export default function InvoicesPage() {
 	const t = useTranslations("app.pages.invoices");
 	useTitle(t("title"));
 	const router = useRouter();
+	const locale = useLocale();
 
-	const {
-		data: invoices,
-		isLoading,
-		error,
-		refetch,
-	} = useQuery({
-		initialData: null,
-		queryKey: getInvoicesQueryKey(),
-		queryFn: () => getInvoices(),
-	});
+	const deleteInvoiceMutation = useMutation(deleteInvoicesByIdMutation());
 
-
-	const [createOpen, setCreateOpen] = useState(false);
 	const handleDelete = (id: number) => {
-		deleteInvoicesById({ path: { id } }).then(() => refetch());
+		deleteInvoiceMutation.mutate({ path: { id } });
 	};
+
+	const invoiceColumns: ColumnDef<Invoice>[] = [
+		{
+			accessorKey: "textId",
+			header: "ID",
+			size: 80
+		},
+		{
+			accessorKey: "project.title",
+			header: "Project title"
+		},
+		{
+			accessorKey: "client.companyName",
+			header: "Client"
+		},
+		{
+			accessorKey: "amount",
+			header: "Amount",
+			size: 120,
+			cell: ({ row }) => {
+				const intl = new Intl.NumberFormat(locale, {
+					currency: row.original.currency, style: "currency"
+				});
+				return intl.format(row.original.amount);
+			}
+		},
+		{
+			id: "options",
+			cell: ({ row, table }) => (
+				<TableItemDetailMenu
+					onDetail={() => router.push(`detail/${row.original.id}`)}
+					onDelete={async () => {
+						const meta = table.options.meta as QueryDataTableMeta<Invoice>;
+						await deleteInvoiceMutation.mutateAsync({ path: { id: row.original.id } });
+						meta.removeRow(row.original);
+					}}
+				/>
+			)
+		}
+	]
 
 	return (
 		<>
@@ -76,70 +97,14 @@ export default function InvoicesPage() {
 			<Card>
 				<CardHeader className="px-6">
 					<CardTitle>Invoice List</CardTitle>
-					<CardDescription>
-						{isLoading
-							? "Loading..."
-							: error
-								? "Failed to load invoices"
-								: `${invoices?.length ?? 0} invoice${invoices?.length !== 1 ? "s" : ""} found`}
-					</CardDescription>
 				</CardHeader>
 				<CardContent className="px-6">
-					<div className="rounded-md border">
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>Invoice #</TableHead>
-									<TableHead>Client</TableHead>
-									<TableHead className="hidden md:table-cell">
-										Project
-									</TableHead>
-									<TableHead className="hidden md:table-cell">
-										Issue date
-									</TableHead>
-									<TableHead className="hidden md:table-cell">
-										Due date
-									</TableHead>
-									<TableHead>Amount</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead className="w-[100px]"></TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{isLoading ? (
-									<TableRow>
-										<TableCell colSpan={8} className="text-center">
-											Loading...
-										</TableCell>
-									</TableRow>
-								) : error ? (
-									<TableRow>
-										<TableCell
-											colSpan={8}
-											className="text-center text-destructive"
-										>
-											{error instanceof Error ? error.message : String(error)}
-										</TableCell>
-									</TableRow>
-								) : invoices?.length === 0 ? (
-									<TableRow>
-										<TableCell colSpan={8} className="text-center">
-											No invoices found
-										</TableCell>
-									</TableRow>
-								) : (
-									invoices?.map((invoice) => (
-										<InvoiceTableRow
-											key={invoice.id}
-											invoice={invoice}
-											onDelete={() => handleDelete(invoice.id)}
-											onViewDetails={() => router.push(`detail/${invoice.id}`)}
-										/>
-									))
-								)}
-							</TableBody>
-						</Table>
-					</div>
+					<QueryDataTable
+						queryFn={getInvoices}
+						columns={invoiceColumns}
+						queryKey={getInvoicesQueryKey()}
+						pagination={{ pageSize: 16 }}
+					/>
 				</CardContent>
 			</Card>
 		</>

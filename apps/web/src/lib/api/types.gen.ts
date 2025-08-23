@@ -54,6 +54,7 @@ export type Client2 = Array<
 
 export type Invoice = {
   id: number;
+  textId: string;
   amount: number;
   currency: "czk" | "eur" | "usd";
   dueDate: unknown;
@@ -62,10 +63,11 @@ export type Invoice = {
   issuedAt: unknown;
   createdAt: unknown;
   updatedAt: unknown;
-  ownerId: string | null;
+  userId: string | null;
   clientId: number | null;
   projectId: number | null;
   generatedFileId: string | null;
+  automationRuleId: number | null;
   language: "cs" | "en";
 } & {
   id: number;
@@ -112,6 +114,7 @@ export type Invoice = {
 export type Invoice2 = Array<
   {
     id: number;
+    textId: string;
     amount: number;
     currency: "czk" | "eur" | "usd";
     dueDate: unknown;
@@ -120,10 +123,11 @@ export type Invoice2 = Array<
     issuedAt: unknown;
     createdAt: unknown;
     updatedAt: unknown;
-    ownerId: string | null;
+    userId: string | null;
     clientId: number | null;
     projectId: number | null;
     generatedFileId: string | null;
+    automationRuleId: number | null;
     language: "cs" | "en";
   } & {
     id: number;
@@ -486,7 +490,10 @@ export type Verification = {
 export type GetClientsData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    take?: number;
+    skip?: number;
+  };
   url: "/clients";
 };
 
@@ -584,7 +591,9 @@ export type PatchClientsByIdResponse =
 export type GetInvoicesData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    automationRuleId?: number;
+  };
   url: "/invoices";
 };
 

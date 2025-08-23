@@ -138,8 +138,6 @@ export default function InvoiceCreateManualEntries<T extends FieldValues>({ cont
                     )}
                   />
                 </div>
-
-                {/* Total (calculated) */}
                 <div className="md:col-span-2">
                   <FormField
                     control={control}
@@ -161,7 +159,6 @@ export default function InvoiceCreateManualEntries<T extends FieldValues>({ cont
                   />
                 </div>
 
-                {/* Actions */}
                 <div className="md:col-span-2 h-full">
                   <FormLabel className="md:hidden">Actions</FormLabel>
                   <Button
@@ -170,7 +167,6 @@ export default function InvoiceCreateManualEntries<T extends FieldValues>({ cont
                     size="sm"
                     onClick={() => remove(index)}
                     className="w-full h-full md:w-auto"
-                    disabled={fields.length === 1}
                   >
                     <Trash className="h-6 w-6" />
                   </Button>

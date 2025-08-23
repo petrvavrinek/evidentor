@@ -13,10 +13,12 @@ import { CurrencyEnum } from "./currency.schema";
 import { LanguageEnum } from "./languages.schema";
 import { projects } from "./projects.schema";
 import { timeEntries } from "./time-entries.schema";
+import { invoiceAutomationRules } from "./invoice-automation.schema";
 
 // Invoice table
 export const invoices = pgTable("invoice", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
+	textId: text().notNull().unique(),
 	amount: integer().notNull(),
 	currency: CurrencyEnum().notNull(),
 	dueDate: timestamp().notNull(),
@@ -31,16 +33,17 @@ export const invoices = pgTable("invoice", {
 	updatedAt: timestamp()
 		.$defaultFn(() => new Date())
 		.notNull(),
-	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
+	userId: text().references(() => user.id, { onDelete: "cascade" }),
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
 	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	generatedFileId: text(),
+	automationRuleId: integer().references(() => invoiceAutomationRules.id, { onDelete: "set null" }),
 	language: LanguageEnum().notNull()
 });
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({
 	owner: one(user, {
-		fields: [invoices.ownerId],
+		fields: [invoices.userId],
 		references: [user.id],
 	}),
 	items: many(invoiceItems),

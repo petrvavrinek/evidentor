@@ -1,10 +1,11 @@
 import Elysia, { status, t } from "elysia";
 
+import { pagination } from "../../macros/pagination.macro";
+import { PaginationSchema } from "../../schemas/pagination.schema";
 import { BetterAuthMacro } from "../auth";
+import { ProjectsService } from "../projects/projects.service";
 import { CreateInvoiceAutomationRuleSchema, InvoiceAutomationRuleIdParam, SelectInvoiceAutomationRuleSchema, UpdateInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
 import { InvoiceAutomationsService } from "./invoice-automations.service";
-import { ProjectsService } from "../projects/projects.service";
-import { pagination, withPagination } from "../../macros/pagination.macro";
 
 const router = new Elysia({
   prefix: "/invoice-automations",
@@ -35,7 +36,7 @@ const router = new Elysia({
       auth: true,
       response: "InvoiceAutomation[]",
       paginate: { defaultPageSize: 16 },
-      query: withPagination()
+      query: PaginationSchema
     }
   )
   .get(":id", async ({ user, params }) => {

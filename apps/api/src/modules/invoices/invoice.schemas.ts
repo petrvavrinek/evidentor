@@ -56,7 +56,10 @@ export const InvoiceSelectSchema = t.Intersect([
 	})
 ]);
 
-
+export const InvoiceFilterSchema = t.Object({
+	automationRuleId: t.Optional(t.Number())
+});
+export type InvoiceFilter = Static<typeof InvoiceFilterSchema>;
 
 export const InvoiceResponseSchema = t.Omit(InvoiceSelectSchema, []);
 export const InvoicesResponseSchema = t.Array(InvoiceSelectSchema);

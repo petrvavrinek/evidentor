@@ -17,17 +17,17 @@ export const pagination = new Elysia()
         const value = validator.Decode(query);
         return {
           pagination: <Pagination>{
-            take: value.take,
-            skip: value.skip ?? props.defaultPageSize
+            take: value.take ?? props.defaultPageSize,
+            skip: value.skip
           }
         }
       },
     })
   });
 
-export const withPagination = <T extends TProperties = TProperties>(type?: TObject<T>) => {
+export const withPagination = <T extends TProperties = TProperties>(type: TObject<T>) => {
   return t.Object({
     ...PaginationSchema.properties,
-    ...type?.properties
+    ...type.properties
   })
 }

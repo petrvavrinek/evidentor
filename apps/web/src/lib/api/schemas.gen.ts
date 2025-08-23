@@ -326,6 +326,9 @@ export const InvoiceSchema = {
           maximum: 2147483647,
           type: "integer",
         },
+        textId: {
+          type: "string",
+        },
         amount: {
           minimum: -2147483648,
           maximum: 2147483647,
@@ -379,7 +382,7 @@ export const InvoiceSchema = {
         updatedAt: {
           type: "Date",
         },
-        ownerId: {
+        userId: {
           anyOf: [
             {
               type: "string",
@@ -423,6 +426,18 @@ export const InvoiceSchema = {
             },
           ],
         },
+        automationRuleId: {
+          anyOf: [
+            {
+              minimum: -2147483648,
+              maximum: 2147483647,
+              type: "integer",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
         language: {
           anyOf: [
             {
@@ -438,6 +453,7 @@ export const InvoiceSchema = {
       },
       required: [
         "id",
+        "textId",
         "amount",
         "currency",
         "dueDate",
@@ -446,10 +462,11 @@ export const InvoiceSchema = {
         "issuedAt",
         "createdAt",
         "updatedAt",
-        "ownerId",
+        "userId",
         "clientId",
         "projectId",
         "generatedFileId",
+        "automationRuleId",
         "language",
       ],
     },
@@ -791,6 +808,9 @@ export const Invoice__Schema = {
             maximum: 2147483647,
             type: "integer",
           },
+          textId: {
+            type: "string",
+          },
           amount: {
             minimum: -2147483648,
             maximum: 2147483647,
@@ -844,7 +864,7 @@ export const Invoice__Schema = {
           updatedAt: {
             type: "Date",
           },
-          ownerId: {
+          userId: {
             anyOf: [
               {
                 type: "string",
@@ -888,6 +908,18 @@ export const Invoice__Schema = {
               },
             ],
           },
+          automationRuleId: {
+            anyOf: [
+              {
+                minimum: -2147483648,
+                maximum: 2147483647,
+                type: "integer",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
           language: {
             anyOf: [
               {
@@ -903,6 +935,7 @@ export const Invoice__Schema = {
         },
         required: [
           "id",
+          "textId",
           "amount",
           "currency",
           "dueDate",
@@ -911,10 +944,11 @@ export const Invoice__Schema = {
           "issuedAt",
           "createdAt",
           "updatedAt",
-          "ownerId",
+          "userId",
           "clientId",
           "projectId",
           "generatedFileId",
+          "automationRuleId",
           "language",
         ],
       },

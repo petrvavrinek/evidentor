@@ -10,6 +10,8 @@ import {
 	UpdateClientSchema,
 } from "./clients.schema";
 
+import { pagination } from "../../macros/pagination.macro";
+import { PaginationSchema } from "../../schemas/pagination.schema";
 import { ClientsService } from "./clients.service";
 
 const router = new Elysia({
@@ -17,6 +19,7 @@ const router = new Elysia({
 	detail: { tags: ["Clients"] },
 })
 	.use(BetterAuthMacro)
+	.use(pagination)
 	.model("Client", ClientResponseSchema)
 	.model("Client[]", ClientsResponseSchema)
 	.get(
@@ -28,6 +31,7 @@ const router = new Elysia({
 				description: "Get all user-defined clients",
 			},
 			response: "Client[]",
+			query: PaginationSchema
 		},
 	)
 	.post(

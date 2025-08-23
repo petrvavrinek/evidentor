@@ -1,21 +1,26 @@
 "use client";
 
-import InvoiceItemTableRow from "@/components/invoices/invoice-item-table-row";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ColumnDef } from "@tanstack/react-table";
+import { X } from "lucide-react";
+import { notFound, useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { DataTable } from "@/components/data-table";
 import InvoicePdfModal from "@/components/invoices/invoice-pdf-modal";
 import PageHeader from "@/components/page-header";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { useNumberFormatter } from "@/hooks/use-number-formatter";
 import useTitle from "@/hooks/use-title";
 import { getInvoicesById, Invoice } from "@/lib/api";
-import { getInvoicesByIdQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { deleteInvoicesByIdMutation, getInvoicesByIdQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { Alert, AlertDescription } from "@evidentor/ui/components/ui/alert";
+import { Badge } from "@evidentor/ui/components/ui/badge";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
-import { Dialog } from "@evidentor/ui/components/ui/dialog";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
-import { useQuery } from "@tanstack/react-query";
-import { notFound, useParams } from "next/navigation";
-import { useState } from "react";
+
+type InvoiceItem = Invoice["items"][number]
 
 const ProjectNotFoundAlert = () => (
   <Alert variant="destructive">
@@ -59,7 +64,6 @@ const InvoiceDetails = (invoice: Invoice) => {
   const status = invoice.paidAt ? "Paid" : "Unpaid";
   return (
     <>
-      <p><span className="font-semibold">Invoice ID:</span> {invoice.id}</p>
       <p><span className="font-semibold">Issued at:</span> {dateFormatter.format(new Date(invoice.issuedAt as string))}</p>
       <p><span className="font-semibold">Created at:</span> {dateFormatter.format(new Date(invoice.createdAt as string))}</p>
       <p><span className="font-semibold">Paid at:</span> {invoice.paidAt ? dateFormatter.format(new Date(invoice.createdAt as string)) : "-"}</p>
@@ -72,6 +76,7 @@ const InvoiceDetails = (invoice: Invoice) => {
 }
 
 export default function InvoiceDetailPage() {
+  const router = useRouter();
   const params = useParams();
   const id = Number(params.id);
 
@@ -85,20 +90,60 @@ export default function InvoiceDetailPage() {
     queryKey: getInvoicesByIdQueryKey({ path: { id } }),
     queryFn: () => getInvoicesById({ path: { id } })
   });
+  const deleteInvoiceMutation = useMutation({
+    ...deleteInvoicesByIdMutation(),
+    onSuccess: () => router.push("..")
+  });
 
   useTitle(invoice?.id ? "Loading" : `Invoice: ${invoice?.id}`, [isLoading]);
 
   if (!invoice || isLoading) return <>Loading..</>;
 
   const { client, project, items, currency } = invoice;
+  const currencyFormatter = useNumberFormatter({ currency: invoice.currency, style: "currency" })
+
+  const itemsColumns: ColumnDef<InvoiceItem>[] = [
+    {
+      accessorKey: "name",
+      header: "Title"
+    },
+    {
+      id: "timeEntry",
+      header: "Time entry",
+      cell: ({ row: { original: item } }) => (
+        <>
+          {item.timeEntry ? <Badge>{item.timeEntry.title}</Badge> : <X />}
+        </>
+      )
+    },
+    {
+      accessorKey: "qty",
+      header: "Qty"
+    },
+    {
+      accessorKey: "unitPrice",
+      header: "Unit price",
+      cell: ({ row: { original: item } }) => currencyFormatter.format(item.unitPrice)
+    },
+    {
+      id: "total",
+      header: "Total",
+      cell: ({ row: { original: item } }) => currencyFormatter.format(item.qty * item.unitPrice)
+    }
+  ]
 
   return (
     <>
       <PageHeader
         title="Invoice detail"
-        subtitle={`Invoice: ${invoice.id}`}
+        subtitle={`Invoice: ${invoice.textId}`}
         controls={
-          invoice.generatedFileId && <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>
+          <>
+            {invoice.generatedFileId && <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>}
+            <Button variant="destructive" onClick={() => deleteInvoiceMutation.mutate({ path: { id: invoice.id } })}>
+              Delete
+            </Button>
+          </>
         }
       />
 
@@ -132,25 +177,11 @@ export default function InvoiceDetailPage() {
       </div>
 
       <TypographyH3 className="my-2">Invoice items</TypographyH3>
-      <div className="grid grid-cols-3 mt-4">
-        <div className="rounded-md border col-span-2">
-          <Table className="w-full">
-            <TableHeader>
-              <TableRow className="">
-                <TableHead>Title</TableHead>
-                <TableHead className="w-[120px]">Time entry</TableHead>
-                <TableHead>Qty</TableHead>
-                <TableHead>Unit price</TableHead>
-                <TableHead>Total</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {
-                items.map(e => <InvoiceItemTableRow item={e} key={e.id} currency={currency} />)
-              }
-            </TableBody>
-          </Table>
-        </div>
+
+
+
+      <div className="grid xl:grid-cols-2 grid-cols-1 mt-4">
+        <DataTable data={invoice.items} columns={itemsColumns} />
       </div>
       <InvoicePdfModal invoice={invoice} open={openPdf} onOpenChange={setOpenPdf} />
     </>

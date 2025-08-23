@@ -2,19 +2,21 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import { Link } from "lucide-react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
+import { toast } from "sonner";
 
 import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/page-header";
-import { ProjectTask } from "@/lib/api";
-import { deleteInvoiceAutomationsByIdMutation, getInvoiceAutomationsByIdOptions } from "@/lib/api/@tanstack/react-query.gen";
+import QueryDataTable from "@/components/query-data-table";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { getInvoices, Invoice, ProjectTask } from "@/lib/api";
+import { deleteInvoiceAutomationsByIdMutation, getInvoiceAutomationsByIdOptions, getInvoicesQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { Badge } from "@evidentor/ui/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
-import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { Button } from "@evidentor/ui/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@evidentor/ui/components/ui/tabs";
-import { toast } from "sonner";
 
 const DescriptionRow = ({ text, children }: PropsWithChildren<{ text: string }>) => (
   <p><span className="font-semibold">{text}:</span> {children}</p>
@@ -25,7 +27,8 @@ export default function InvoiceRuleDetail() {
   const { id } = useParams();
 
   if (!id) return notFound();
-
+  
+  const dateFormatter = useDateFormatter({ day: "numeric", month: "numeric", year: "numeric" });
   const { data: rule, isLoading } = useQuery(getInvoiceAutomationsByIdOptions({ path: { id: Number.parseInt(id as string) } }))
   const deleteRuleMutation = useMutation({
     ...deleteInvoiceAutomationsByIdMutation(),
@@ -38,7 +41,7 @@ export default function InvoiceRuleDetail() {
   if (isLoading) return <>Loading...</>;
   if (!rule) return notFound();
 
-  const columns: ColumnDef<Omit<ProjectTask, "project">>[] = [
+  const projectTaskColumns: ColumnDef<Omit<ProjectTask, "project">>[] = [
     {
       accessorKey: "id",
       header: "ID",
@@ -47,6 +50,30 @@ export default function InvoiceRuleDetail() {
     {
       accessorKey: "title",
       header: "Title"
+    }
+  ]
+  const invoiceColumns: ColumnDef<Invoice>[] = [
+    {
+      accessorKey: "textId",
+      header: "ID",
+      size: 120
+    },
+    {
+      accessorKey: "project.title",
+      header: "Project title"
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Created at",
+      cell: ({ row }) => dateFormatter.format(new Date(row.original.createdAt as string))
+    },
+    {
+      id: "options",
+      cell: ({ row }) => (
+        <Button className="p-0" onClick={() => router.push(`/app/invoices/detail/${row.original.id}`)}>
+          <Link className="h-6 w-6" />
+        </Button>
+      )
     }
   ]
 
@@ -107,7 +134,7 @@ export default function InvoiceRuleDetail() {
                   }
                   {
                     !rule.allTasks && (
-                      <DataTable data={rule.projectTasks} columns={columns} />
+                      <DataTable data={rule.projectTasks} columns={projectTaskColumns} />
                     )
                   }
                 </CardContent>
@@ -117,7 +144,13 @@ export default function InvoiceRuleDetail() {
             <TabsContent value="invoices">
               <Card>
                 <CardContent>
-                  Invoices
+                  <QueryDataTable
+                    columns={invoiceColumns}
+                    queryFn={getInvoices}
+                    queryOptions={{ query: { automationRuleId: rule.id } as never }}
+                    queryKey={getInvoicesQueryKey({ query: { automationRuleId: rule.id } })}
+                    pagination={{ pageSize: 16 }}
+                  />
                 </CardContent>
               </Card>
             </TabsContent>

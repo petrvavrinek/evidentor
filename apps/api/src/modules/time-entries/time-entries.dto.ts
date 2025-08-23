@@ -60,7 +60,7 @@ export const TimeEntriesResponse = t.Array(TimeEntryResponse);
 
 // Filter from date/to-date
 export const TimeEntryFilter = t.Object({
-	...t.Pick(t.Partial(InsertTimeEntry), ["projectId"]).properties,
+	projectId: t.Optional(t.Number()),
 	from: t.Optional(t.Date()),
 	to: t.Optional(t.Date()),
 	billed: t.Optional(t.Boolean())

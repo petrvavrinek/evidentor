@@ -1,19 +1,24 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Calendar, Clock, Loader } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { ArrowDown, Calendar, Clock, DollarSign, Link } from "lucide-react";
+import { useState } from "react";
 
 import PageHeader from "@/components/page-header";
-import TimeEntriesTable from "@/components/time-entries/time-entries-table";
+import QueryDataTable, { QueryDataTableMeta } from "@/components/query-data-table";
+import TableItemDetailMenu from "@/components/table-item-detail-menu";
 import ManualTimeEntry from "@/components/time-tracker/manual-time-entry";
 import Stopwatch from "@/components/time-tracker/stopwatch";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import useTitle from "@/hooks/use-title";
 import { getTimeEntries, type TimeEntry } from "@/lib/api";
 import {
 	deleteTimeEntriesByIdMutation,
-	getProjectTasksQueryKey,
+	getTimeEntriesQueryKey
 } from "@/lib/api/@tanstack/react-query.gen";
-import { groupBy } from "@/lib/utils";
+import { isDateSame } from "@/lib/dates";
+import { formatTime } from "@/lib/format-time";
+import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -27,76 +32,104 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@evidentor/ui/components/ui/tabs";
-import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
-import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
-import useTitle from "@/hooks/use-title";
+import { useRouter } from "next/navigation";
 
 // TODO: Rework
 
 export default function TimeTrackerPage() {
+	const router = useRouter();
 	const t = useTranslations("app.pages.timeTracker");
 	const [currentTab, setCurrentTab] = useState("stopwatch");
-	const dateFormatter = useDateFormatter();
-	const [createdTimeEntries, setCreatedTimeEntries] = useState<TimeEntry[]>([]);
-	const [fetchedTimeEntreis, setFetchedTimeEntries] = useState<TimeEntry[]>([]);
 
 	useTitle(t("title"));
 
-	const { data: projectTasks, isLoading } = useQuery({
-		queryKey: getProjectTasksQueryKey(),
-		queryFn: () => getTimeEntries(),
-	});
-
-	const deleteTimeEntry = useMutation({
-		...deleteTimeEntriesByIdMutation(),
-	});
+	const deleteTimeEntryMutation = useMutation(deleteTimeEntriesByIdMutation());
 
 	const onCreateTimeEntry = (timeEntry: TimeEntry) => {
-		setCreatedTimeEntries([timeEntry, ...createdTimeEntries]);
+
 	};
 
-	const getDateKey = (date: Date) => {
-		const n = new Date(date);
-		n.setMilliseconds(0);
-		n.setHours(0);
-		n.setSeconds(0);
-		n.setMinutes(0);
-		return n.toISOString();
-	};
+	const formatDuration = (timeEntry: TimeEntry): string => {
+		const start = new Date(timeEntry.startAt as string);
+		const end = new Date(timeEntry.endAt as string);
 
-	useEffect(() => {
-		setFetchedTimeEntries(projectTasks ?? []);
-	}, [projectTasks]);
+		return formatTime(end.getTime() - start.getTime());
+	}
+	const dateFormatter = useDateFormatter({ day: "numeric", month: "2-digit", year: "numeric" });
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: getDateKey is static
-	const grouppedTimeEntries = useMemo(() => {
-		const allTimeEntries = [...createdTimeEntries, ...(projectTasks ?? [])];
-		return groupBy(allTimeEntries, (e) =>
-			getDateKey(new Date(e.startAt as string)),
-		);
-	}, [createdTimeEntries, fetchedTimeEntreis]);
+	const columns: ColumnDef<TimeEntry>[] = [
+		{
+			accessorKey: "title",
+			header: "Title"
+		},
+		{
+			id: "project-task",
+			cell: ({ row: { original: item } }) => (
+				<>
+					<div className="font-medium">{item.project?.title ?? "-"}</div>
+					<div className="text-sm text-muted-foreground">
+						{item.projectTask?.title ?? "-"}
+					</div>
+				</>
+			),
+			header: "Project / Task"
+		},
+		{
+			accessorKey: "project.client.companyName",
+			header: "Client"
+		},
+		{
+			id: "duration",
+			cell: ({ row }) => formatDuration(row.original),
+			header: "Duration"
+		},
+		{
+			id: "date",
+			cell: ({ row: { original: item } }) => {
+				const start = new Date(item.startAt as string);
+				const end = new Date(item.endAt as string);
+				const isSame = isDateSame(start, end);
+				if (isSame) return dateFormatter.format(start);
 
-	const getGrouppedTimeEntriesSorted = () => {
-		const keys = Object.keys(grouppedTimeEntries);
-		return keys.toSorted(
-			(a, b) => new Date(b).getTime() - new Date(a).getTime(),
-		);
-	};
+				return (
+					<div className="flex flex-col w-fit items-center">
+						<div>{dateFormatter.format(start)}</div>
+						<div>
+							<ArrowDown size={14} />
+						</div>
+						<div>{dateFormatter.format(end)}</div>
+					</div>
+				)
+			},
+			header: "Date"
+		},
+		{
+			id: "invoice",
+			cell: ({ row: { original: item } }) => (
+				item.invoiceId ? (
+					<Button onClick={() => router.push(`/app/invoices/details/${item.invoiceId}`)}>
+						<Link size={16} className="p-0" />
+					</Button>
+				) : undefined
+			),
+			header: () => <DollarSign size={16} />
+		},
+		{
+			id: "options",
+			cell: ({ row: { original: item }, table }) => (
+				<TableItemDetailMenu
+					onDelete={async () => {
+						const meta = table.options.meta as QueryDataTableMeta<TimeEntry>;
+						await deleteTimeEntryMutation.mutateAsync({ path: { id: item.id } });
+						meta.removeRow(item);
+					}}
+				/>
+			)
 
-	const onTimeEntryDelete = async (timeEntry: TimeEntry) => {
-		// delete and re-render
-		await deleteTimeEntry.mutateAsync({
-			path: { id: timeEntry.id },
-		});
-
-		setCreatedTimeEntries(
-			createdTimeEntries.filter((e) => e.id !== timeEntry.id),
-		);
-		setFetchedTimeEntries(
-			fetchedTimeEntreis.filter((e) => e.id !== timeEntry.id),
-		);
-	};
+		}
+	]
 
 	return (
 		<>
@@ -138,23 +171,12 @@ export default function TimeTrackerPage() {
 						<CardDescription>Your recent tracked time</CardDescription>
 					</CardHeader>
 					<CardContent>
-						{(!projectTasks || isLoading) && <Loader />}
-
-						{getGrouppedTimeEntriesSorted().map((d) => (
-							<div key={d} className="space-y-2 py-2">
-								<div className="flex items-center gap-2">
-									<Calendar className="w-4 h-4 text-muted-foreground" />
-									<TypographyH3 className="text-sm font-medium">
-										{dateFormatter.format(new Date(d))}
-									</TypographyH3>
-								</div>
-
-								<TimeEntriesTable
-									timeEntries={grouppedTimeEntries[d]}
-									onDelete={onTimeEntryDelete}
-								/>
-							</div>
-						))}
+						<QueryDataTable
+							columns={columns}
+							queryFn={getTimeEntries}
+							queryKey={getTimeEntriesQueryKey()}
+							pagination={{ pageSize: 20 }}
+						/>
 					</CardContent>
 				</Card>
 			</div>

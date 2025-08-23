@@ -71,6 +71,7 @@ export const zClient2 = z.array(
 export const zInvoice = z
   .object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
+    textId: z.string(),
     amount: z.number().int().gte(-2147483648).lte(2147483647),
     currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
     dueDate: z.unknown(),
@@ -79,7 +80,7 @@ export const zInvoice = z
     issuedAt: z.unknown(),
     createdAt: z.unknown(),
     updatedAt: z.unknown(),
-    ownerId: z.union([z.string(), z.null()]),
+    userId: z.union([z.string(), z.null()]),
     clientId: z.union([
       z.number().int().gte(-2147483648).lte(2147483647),
       z.null(),
@@ -89,6 +90,10 @@ export const zInvoice = z
       z.null(),
     ]),
     generatedFileId: z.union([z.string(), z.null()]),
+    automationRuleId: z.union([
+      z.number().int().gte(-2147483648).lte(2147483647),
+      z.null(),
+    ]),
     language: z.union([z.literal("cs"), z.literal("en")]),
   })
   .and(
@@ -171,6 +176,7 @@ export const zInvoice2 = z.array(
   z.union([
     z.object({
       id: z.number().int().gte(-2147483648).lte(2147483647),
+      textId: z.string(),
       amount: z.number().int().gte(-2147483648).lte(2147483647),
       currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
       dueDate: z.unknown(),
@@ -179,7 +185,7 @@ export const zInvoice2 = z.array(
       issuedAt: z.unknown(),
       createdAt: z.unknown(),
       updatedAt: z.unknown(),
-      ownerId: z.union([z.string(), z.null()]),
+      userId: z.union([z.string(), z.null()]),
       clientId: z.union([
         z.number().int().gte(-2147483648).lte(2147483647),
         z.null(),
@@ -189,6 +195,10 @@ export const zInvoice2 = z.array(
         z.null(),
       ]),
       generatedFileId: z.union([z.string(), z.null()]),
+      automationRuleId: z.union([
+        z.number().int().gte(-2147483648).lte(2147483647),
+        z.null(),
+      ]),
       language: z.union([z.literal("cs"), z.literal("en")]),
     }),
     z.object({
@@ -693,7 +703,12 @@ export const zVerification = z.object({
 export const zGetClientsData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
-  query: z.never().optional(),
+  query: z
+    .object({
+      take: z.number().optional(),
+      skip: z.number().optional(),
+    })
+    .optional(),
 });
 
 export const zGetClientsResponse = zClient2;
@@ -775,7 +790,11 @@ export const zPatchClientsByIdResponse = zClient;
 export const zGetInvoicesData = z.object({
   body: z.never().optional(),
   path: z.never().optional(),
-  query: z.never().optional(),
+  query: z
+    .object({
+      automationRuleId: z.number().optional(),
+    })
+    .optional(),
 });
 
 export const zGetInvoicesResponse = zInvoice2;
