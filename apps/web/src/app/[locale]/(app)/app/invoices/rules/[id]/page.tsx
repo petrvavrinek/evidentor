@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { notFound, useParams } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 import { DataTable } from "@/components/data-table";
@@ -12,12 +12,14 @@ import { getInvoiceAutomationsByIdOptions } from "@/lib/api/@tanstack/react-quer
 import { Badge } from "@evidentor/ui/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
+import { Button } from "@evidentor/ui/components/ui/button";
 
 const DescriptionRow = ({ text, children }: PropsWithChildren<{ text: string }>) => (
   <p><span className="font-semibold">{text}:</span> {children}</p>
 )
 
 export default function InvoiceRuleDetail() {
+  const router = useRouter();
   const { id } = useParams();
 
   if (!id) return notFound();
@@ -42,7 +44,9 @@ export default function InvoiceRuleDetail() {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <PageHeader title="Invoice automation rule detail" />
+        <PageHeader title="Invoice automation rule detail" controls={
+          <Button onClick={() => router.push(`/app/invoices/rules/${id}/settings`)}>Settings</Button>
+        } />
 
         <div className="grid grid-cols-3 gap-4">
           <Card>

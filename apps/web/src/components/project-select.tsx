@@ -1,10 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { type Key, useCallback, useEffect, useState, useRef } from "react";
+import { type Key, useCallback, useEffect, useRef, useState } from "react";
 
-import { getProjects, type Project } from "@/lib/api";
-import { getProjectsOptions, getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { type Project } from "@/lib/api";
+import { getProjectsOptions } from "@/lib/api/@tanstack/react-query.gen";
 
 import {
 	Select,
@@ -98,10 +98,13 @@ export const ProjectSelect = (props: ProjectSelectProps) => {
 	}, [selectedProjectIdx, projects, props.onSelect]);
 
 	const handleValueChange = useCallback((value: string) => {
-		setSelectedProjectIdx(Number.parseInt(value, 10));
+		if (value.trim().length) {
+			setSelectedProjectIdx(Number.parseInt(value, 10));
+		}
 	}, []);
 
 	if (isLoading) return <Skeleton className="rounded-md w-full h-[36px]" />;
+
 
 	return (
 		<Select
