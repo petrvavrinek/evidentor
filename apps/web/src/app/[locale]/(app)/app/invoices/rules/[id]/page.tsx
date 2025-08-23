@@ -2,22 +2,21 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import { Link } from "lucide-react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
+import { toast } from "sonner";
 
 import { DataTable } from "@/components/data-table";
 import PageHeader from "@/components/page-header";
+import QueryDataTable from "@/components/query-data-table";
+import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { getInvoices, Invoice, ProjectTask } from "@/lib/api";
 import { deleteInvoiceAutomationsByIdMutation, getInvoiceAutomationsByIdOptions, getInvoicesQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { Badge } from "@evidentor/ui/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
-import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
 import { Button } from "@evidentor/ui/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@evidentor/ui/components/ui/tabs";
-import { toast } from "sonner";
-import QueryDataTable from "@/components/query-data-table";
-import { Link } from "lucide-react";
-import { useDateFormatter } from "@/hooks/use-date-formatter";
 
 const DescriptionRow = ({ text, children }: PropsWithChildren<{ text: string }>) => (
   <p><span className="font-semibold">{text}:</span> {children}</p>
@@ -55,9 +54,9 @@ export default function InvoiceRuleDetail() {
   ]
   const invoiceColumns: ColumnDef<Invoice>[] = [
     {
-      accessorKey: "id",
+      accessorKey: "textId",
       header: "ID",
-      size: 80
+      size: 120
     },
     {
       accessorKey: "project.title",
@@ -77,8 +76,6 @@ export default function InvoiceRuleDetail() {
       )
     }
   ]
-
-
 
   return (
     <>

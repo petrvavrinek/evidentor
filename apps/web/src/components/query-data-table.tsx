@@ -1,13 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, RowSelectionState, useReactTable } from "@tanstack/react-table";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, RowSelectionState, TableMeta, useReactTable } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 
 import { Options, RequestOptions, TDataShape } from "@/lib/api/client";
 import { Alert, AlertDescription, AlertTitle } from "@evidentor/ui/components/ui/alert";
 import { Button } from "@evidentor/ui/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
 import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
-import { Check, CheckSquare } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@evidentor/ui/components/ui/table";
 
 type UnwrapArray<T> = T extends (infer U)[] ? U : T;
 type EnsureArray<T> = T extends any[] ? T : T[];
@@ -18,7 +17,7 @@ type ExtractQueryData<T> = T extends (options?: Options<infer TData, any> | unde
 // Extract the response data type from a query function  
 type ExtractQueryResponse<T> = T extends (...args: any[]) => Promise<{ data: infer TResponse } | any> ? TResponse : never;
 
-type QueryResponse<TData> = Promise<TData>
+type QueryResponse<TData> = Promise<TData>;
 
 type QueryDataTableProps<
   TQueryFn extends (options?: RequestOptions<any, false>) => QueryResponse<any>,
@@ -42,6 +41,11 @@ type QueryDataTableProps<
   defaultSelectedRows?: string[]
 } | { selectable?: false })
 
+export interface QueryDataTableMeta<TData> extends TableMeta<TData> {
+  removeRow: (row: TData) => void;
+  addRow: (row: TData) => void;
+}
+
 export default function QueryDataTable<
   TQueryFn extends (options?: Options<any, false>) => QueryResponse<any>,
   TData,
@@ -50,6 +54,7 @@ export default function QueryDataTable<
   TQueryData extends TDataShape = ExtractQueryData<TQueryFn>
 >({ columns, queryFn, queryKey, queryOptions, ...props }: QueryDataTableProps<TQueryFn, TData, TValue, TDataSingle, TQueryData>) {
 
+  const client = useQueryClient()
   const convertDefaultSelectedRows = () => {
     if (!props.selectable || !props.defaultSelectedRows) return {};
     return props.defaultSelectedRows.reduce((prev, current) => ({ ...prev, [current]: true }), {});
@@ -88,7 +93,8 @@ export default function QueryDataTable<
       return queryFn(options as never);
     },
     queryKey: Array.isArray(queryKey) ? queryKey : [queryKey]
-  });
+  }, client);
+
 
   const getRowId = props.selectable ? ((e: TDataSingle) => props.getRowId(e)) : undefined
 
@@ -106,7 +112,17 @@ export default function QueryDataTable<
     },
     enableRowSelection: props.selectable,
     enableMultiRowSelection: props.selectable && props.multiRow,
-    getRowId: getRowId
+    getRowId: getRowId,
+    meta: {
+      removeRow: (data: TDataSingle) => {
+        client.setQueryData(queryKey, (old: TDataSingle[]) => {
+          return old.filter(e => e !== data);
+        });
+      },
+      addRow: (data: TDataSingle) => {
+        client.setQueryData(queryKey, (old: TDataSingle[]) => [...old, data])
+      }
+    } satisfies QueryDataTableMeta<TDataSingle>
   });
 
   const setNextPage = () => {
@@ -142,7 +158,6 @@ export default function QueryDataTable<
                 )}
                 {headerGroup.headers.map((header) => {
                   return (
-
                     <TableHead key={header.id} className="p-2.5">
                       {header.isPlaceholder
                         ? null

@@ -54,6 +54,7 @@ export type Client2 = Array<
 
 export type Invoice = {
   id: number;
+  textId: string;
   amount: number;
   currency: "czk" | "eur" | "usd";
   dueDate: unknown;
@@ -62,7 +63,7 @@ export type Invoice = {
   issuedAt: unknown;
   createdAt: unknown;
   updatedAt: unknown;
-  ownerId: string | null;
+  userId: string | null;
   clientId: number | null;
   projectId: number | null;
   generatedFileId: string | null;
@@ -113,6 +114,7 @@ export type Invoice = {
 export type Invoice2 = Array<
   {
     id: number;
+    textId: string;
     amount: number;
     currency: "czk" | "eur" | "usd";
     dueDate: unknown;
@@ -121,7 +123,7 @@ export type Invoice2 = Array<
     issuedAt: unknown;
     createdAt: unknown;
     updatedAt: unknown;
-    ownerId: string | null;
+    userId: string | null;
     clientId: number | null;
     projectId: number | null;
     generatedFileId: string | null;
@@ -488,7 +490,10 @@ export type Verification = {
 export type GetClientsData = {
   body?: never;
   path?: never;
-  query?: never;
+  query?: {
+    take?: number;
+    skip?: number;
+  };
   url: "/clients";
 };
 

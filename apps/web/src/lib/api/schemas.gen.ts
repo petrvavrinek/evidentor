@@ -326,6 +326,9 @@ export const InvoiceSchema = {
           maximum: 2147483647,
           type: "integer",
         },
+        textId: {
+          type: "string",
+        },
         amount: {
           minimum: -2147483648,
           maximum: 2147483647,
@@ -379,7 +382,7 @@ export const InvoiceSchema = {
         updatedAt: {
           type: "Date",
         },
-        ownerId: {
+        userId: {
           anyOf: [
             {
               type: "string",
@@ -450,6 +453,7 @@ export const InvoiceSchema = {
       },
       required: [
         "id",
+        "textId",
         "amount",
         "currency",
         "dueDate",
@@ -458,7 +462,7 @@ export const InvoiceSchema = {
         "issuedAt",
         "createdAt",
         "updatedAt",
-        "ownerId",
+        "userId",
         "clientId",
         "projectId",
         "generatedFileId",
@@ -804,6 +808,9 @@ export const Invoice__Schema = {
             maximum: 2147483647,
             type: "integer",
           },
+          textId: {
+            type: "string",
+          },
           amount: {
             minimum: -2147483648,
             maximum: 2147483647,
@@ -857,7 +864,7 @@ export const Invoice__Schema = {
           updatedAt: {
             type: "Date",
           },
-          ownerId: {
+          userId: {
             anyOf: [
               {
                 type: "string",
@@ -928,6 +935,7 @@ export const Invoice__Schema = {
         },
         required: [
           "id",
+          "textId",
           "amount",
           "currency",
           "dueDate",
@@ -936,7 +944,7 @@ export const Invoice__Schema = {
           "issuedAt",
           "createdAt",
           "updatedAt",
-          "ownerId",
+          "userId",
           "clientId",
           "projectId",
           "generatedFileId",

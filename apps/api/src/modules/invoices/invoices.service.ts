@@ -1,4 +1,4 @@
-import { and, eq, type SQL, inArray, isNull } from "drizzle-orm";
+import { and, eq, type SQL, inArray, isNull, count, sql } from "drizzle-orm";
 
 import { db } from "../../database";
 import { invoices, invoiceItems, timeEntries, projects } from "@/db/schema";
@@ -54,7 +54,7 @@ export const InvoicesService = {
 	 * @returns Array of invoices
 	 */
 	findManyByUserId(userId: string, filter?: InvoiceFilter) {
-		return this.findByOptions({ where: [eq(invoices.ownerId, userId)] }, filter);
+		return this.findByOptions({ where: [eq(invoices.userId, userId)] }, filter);
 	},
 
 	/**
@@ -65,7 +65,7 @@ export const InvoicesService = {
 	 */
 	async findById(userId: string, id: number) {
 		const results = await this.findByOptions({
-			where: [eq(invoices.id, id), eq(invoices.ownerId, userId)],
+			where: [eq(invoices.id, id), eq(invoices.userId, userId)],
 		});
 
 		return results?.[0] ?? null;
@@ -73,6 +73,19 @@ export const InvoicesService = {
 
 	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
 		return db.transaction(async (tx) => {
+			const now = new Date();
+			const invoicesToday = await tx
+				.select({ count: count() })
+				.from(invoices)
+				.where(
+					and(
+						eq(invoices.userId, userId),
+						sql`DATE(${invoices.issuedAt}) = CURRENT_DATE`
+					)
+				);
+			const invoicesCount = invoicesToday[0]?.count ?? 0;
+			const invoiceTextId = this.getInvoiceTextId(now, invoicesCount + 1);
+
 			const timeEntryIds = data.items.filter(e => !!e.timeEntryId).map(e => e.timeEntryId as number);
 
 			const timeEntryItems = await tx
@@ -98,7 +111,12 @@ export const InvoicesService = {
 			// Create invoice
 			const [createdInvoice] = await tx
 				.insert(invoices)
-				.values({ ...data, ownerId: userId, amount })
+				.values({
+					...data,
+					userId,
+					amount,
+					textId: invoiceTextId
+				})
 				.returning();
 
 			// Set invoice into time entries
@@ -132,7 +150,7 @@ export const InvoicesService = {
 		const [updated] = await db
 			.update(invoices)
 			.set(data)
-			.where(and(eq(invoices.ownerId, userId), eq(invoices.id, id)))
+			.where(and(eq(invoices.userId, userId), eq(invoices.id, id)))
 			.returning();
 		return updated;
 	},
@@ -145,7 +163,7 @@ export const InvoicesService = {
 	async deleteById(userId: string, id: number) {
 		await db
 			.delete(invoices)
-			.where(and(eq(invoices.ownerId, userId), eq(invoices.id, id)));
+			.where(and(eq(invoices.userId, userId), eq(invoices.id, id)));
 	},
 
 	async updateInvoiceGeneratedFilePath(id: number, fileId: string) {
@@ -154,5 +172,12 @@ export const InvoicesService = {
 
 	findInvoicesWithoutGeneratedFile() {
 		return this.findByOptions({ where: [isNull(invoices.generatedFileId)] })
+	},
+	getInvoiceTextId(date: Date, idx: number) {
+		const y = date.getFullYear().toString();
+		const m = date.getMonth().toString().padStart(2, "0");
+		const d = date.getDate().toString().padStart(2, "0");
+		const i = idx.toString().padStart(3, "0");
+		return `${y}${m}${d}${i}`;
 	}
 };

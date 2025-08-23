@@ -1,41 +1,28 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@evidentor/ui/components/ui/alert-dialog";
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardHeader,
-	CardTitle,
+	CardTitle
 } from "@evidentor/ui/components/ui/card";
 
 import PageHeader from "@/components/page-header";
 import NewProjectModal from "@/components/projects/new-project-modal";
-import ProjectsOverviewError from "@/components/projects/projects-overview-error";
-import ProjectsOverviewLoading from "@/components/projects/projects-overview-loading";
 import SearchInput from "@/components/search-input";
 
 import ProjectDetailModal from "@/components/projects/project-detail-modal";
-import QueryDataTable from "@/components/query-data-table";
+import QueryDataTable, { QueryDataTableMeta } from "@/components/query-data-table";
 import TableItemDetailMenu from "@/components/table-item-detail-menu";
 import useTitle from "@/hooks/use-title";
-import { deleteProjectsById, getProjects, type Project } from "@/lib/api";
-import { getProjectsOptions, getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
+import { getProjects, type Project } from "@/lib/api";
+import { deleteProjectsByIdMutation, getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
 
@@ -44,15 +31,8 @@ export default function ProjectsPage() {
 	const t = useTranslations("app.pages.projects");
 	useTitle(t("title"));
 
-	const { data: projects, isLoading, error } = useQuery({
-		initialData: null,
-		queryKey: getProjectsQueryKey(),
-		queryFn: () => getProjects(),
-	});
-
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 	const [showProjectDetail, setShowProjectDetail] = useState<Project | null>(
 		null,
 	);
@@ -60,7 +40,7 @@ export default function ProjectsPage() {
 	const queryClient = useQueryClient();
 
 	const deleteMutation = useMutation({
-		mutationFn: (id: number) => deleteProjectsById({ path: { id } }),
+		...deleteProjectsByIdMutation(),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: getProjectsQueryKey() });
 			toast.info("Project deleted");
@@ -69,13 +49,6 @@ export default function ProjectsPage() {
 			toast.error("Failed to delete project");
 		},
 	});
-
-	const handleDelete = (id: number) => {
-		const project = projects?.find((p) => p.id === id);
-		if (project) {
-			setProjectToDelete(project);
-		}
-	};
 
 	const handleDetailShow = (project: Project) => {
 		setShowProjectDetail(project);
@@ -92,18 +65,21 @@ export default function ProjectsPage() {
 		},
 		{
 			id: "actions",
-			cell: ({ row }) => {
+			cell: ({ row, table }) => {
 				return (
 					<TableItemDetailMenu
-						onDelete={() => handleDelete(row.original.id)}
+						onDelete={async () => {
+							const meta = table.options.meta as QueryDataTableMeta<Project>;
+							await deleteMutation.mutateAsync({ path: { id: row.original.id }});
+							meta.removeRow(row.original);
+						}}
 						onDetail={() => handleDetailShow(row.original)}
 					/>
 				);
 			},
 			size: 80
 		}
-	]
-
+	];
 
 	return (
 		<>
@@ -128,33 +104,26 @@ export default function ProjectsPage() {
 				/>
 			</div>
 
-			{isLoading && <ProjectsOverviewLoading />}
-			{error && <ProjectsOverviewError error={error} />}
-			{!isLoading && !error && (
-				<Card>
-					<CardHeader className="px-6">
-						<CardTitle>Project List</CardTitle>
-						<CardDescription>
-							{projects?.length} project{projects?.length !== 1 ? "s" : ""} found
-						</CardDescription>
-					</CardHeader>
-					<CardContent className="px-6">
-						<QueryDataTable
-							
-							queryFn={getProjects}
-							queryKey={getProjectsQueryKey()}
-							columns={columns}
-							pagination={{ pageSize: 10 }}
-						/>
-					</CardContent>
-				</Card>
-			)}
+			<Card>
+				<CardHeader className="px-6">
+					<CardTitle>Project List</CardTitle>
+				</CardHeader>
+				<CardContent className="px-6">
+					<QueryDataTable
+						queryFn={getProjects}
+						queryKey={getProjectsQueryKey()}
+						columns={columns}
+						pagination={{ pageSize: 10 }}
+					/>
+				</CardContent>
+			</Card>
+
 			<NewProjectModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 			/>
 
-			<AlertDialog
+			{/* <AlertDialog
 				open={!!projectToDelete}
 				onOpenChange={(isOpen: boolean) => !isOpen && setProjectToDelete(null)}
 			>
@@ -171,7 +140,7 @@ export default function ProjectsPage() {
 						<AlertDialogAction
 							onClick={() => {
 								if (projectToDelete) {
-									deleteMutation.mutate(projectToDelete.id);
+									deleteMutation.mutate();
 								}
 							}}
 						>
@@ -179,7 +148,7 @@ export default function ProjectsPage() {
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
-			</AlertDialog>
+			</AlertDialog> */}
 			<ProjectDetailModal
 				project={showProjectDetail ?? undefined}
 				isOpen={!!showProjectDetail}
