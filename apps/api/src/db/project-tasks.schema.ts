@@ -10,9 +10,7 @@ export const projectTasks = pgTable("project_task", {
 		.references(() => projects.id, { onDelete: "cascade" })
 		.notNull(),
 	description: text(),
-	createdAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
+	createdAt: timestamp({ withTimezone: true}).defaultNow().notNull()
 });
 
 export const projectTasksRelations = relations(projectTasks, ({ one, many }) => ({

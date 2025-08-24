@@ -16,26 +16,24 @@ import {
 import PageHeader from "@/components/page-header";
 import NewProjectModal from "@/components/projects/new-project-modal";
 import SearchInput from "@/components/search-input";
+import { ColumnDef } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 
-import ProjectDetailModal from "@/components/projects/project-detail-modal";
 import QueryDataTable, { QueryDataTableMeta } from "@/components/query-data-table";
 import TableItemDetailMenu from "@/components/table-item-detail-menu";
 import useTitle from "@/hooks/use-title";
 import { getProjects, type Project } from "@/lib/api";
 import { deleteProjectsByIdMutation, getProjectsQueryKey } from "@/lib/api/@tanstack/react-query.gen";
-import { ColumnDef } from "@tanstack/react-table";
-import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 
 export default function ProjectsPage() {
+	const router = useRouter();
 	const t = useTranslations("app.pages.projects");
 	useTitle(t("title"));
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [showProjectDetail, setShowProjectDetail] = useState<Project | null>(
-		null,
-	);
 
 	const queryClient = useQueryClient();
 
@@ -49,10 +47,6 @@ export default function ProjectsPage() {
 			toast.error("Failed to delete project");
 		},
 	});
-
-	const handleDetailShow = (project: Project) => {
-		setShowProjectDetail(project);
-	};
 
 	const columns: ColumnDef<Project>[] = [
 		{
@@ -73,7 +67,7 @@ export default function ProjectsPage() {
 							await deleteMutation.mutateAsync({ path: { id: row.original.id }});
 							meta.removeRow(row.original);
 						}}
-						onDetail={() => handleDetailShow(row.original)}
+						onDetail={() => router.push(row.original.id.toString())}
 					/>
 				);
 			},
@@ -149,11 +143,7 @@ export default function ProjectsPage() {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog> */}
-			<ProjectDetailModal
-				project={showProjectDetail ?? undefined}
-				isOpen={!!showProjectDetail}
-				onClose={() => setShowProjectDetail(null)}
-			/>
+
 		</>
 	);
 }

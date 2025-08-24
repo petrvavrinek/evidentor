@@ -118,7 +118,7 @@ export const InvoicesService = {
 				(prev, current) => prev + current.unitPrice * current.qty,
 				0,
 			);
-
+			
 			// Create invoice
 			const [createdInvoice] = await tx
 				.insert(invoices)
@@ -126,9 +126,13 @@ export const InvoicesService = {
 					...data,
 					userId,
 					amount,
-					textId: invoiceTextId
+					textId: invoiceTextId,
 				})
-				.returning();
+				.returning().catch(e => {
+					console.error(e);
+					throw e;
+				});
+				
 
 			// Set invoice into time entries
 			await tx.update(timeEntries).set({

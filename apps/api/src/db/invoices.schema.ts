@@ -5,6 +5,7 @@ import {
 	pgTable,
 	text,
 	timestamp,
+	unique,
 	varchar
 } from "drizzle-orm/pg-core";
 
@@ -27,23 +28,25 @@ export const invoiceStatusEnum = pgEnum("invoice_status", [
 // Invoice table
 export const invoices = pgTable("invoice", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	textId: text().notNull().unique(),
+	textId: text().notNull(),
 	amount: integer().notNull(),
 	currency: CurrencyEnum().notNull(),
-	dueDate: timestamp().notNull(),
-	sentAt: timestamp(),
-	paidAt: timestamp(),
+	dueDate: timestamp({ withTimezone: true }).notNull(),
+	sentAt: timestamp({ withTimezone: true }),
+	paidAt: timestamp({ withTimezone: true }),
 	status: invoiceStatusEnum().default("DRAFT").notNull(),
-	issuedAt: timestamp().defaultNow().notNull(),
-	createdAt: timestamp().defaultNow().notNull(),
-	updatedAt: timestamp().defaultNow().notNull(),
+	issuedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 	userId: text().references(() => user.id, { onDelete: "cascade" }).notNull(),
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
 	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	generatedFileId: text(),
 	automationRuleId: integer().references(() => invoiceAutomationRules.id, { onDelete: "set null" }),
 	language: LanguageEnum().notNull()
-});
+}, t => [
+	unique().on(t.userId, t.textId)
+]);
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({
 	owner: one(user, {

@@ -9,5 +9,5 @@ export const db = drizzle(
   {
     schema,
     casing: "snake_case",
-  }
+  },
 );

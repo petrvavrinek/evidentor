@@ -9,9 +9,7 @@ export const projects = pgTable("project", {
 	title: text(),
 	ownerId: text().references(() => user.id, { onDelete: "cascade" }),
 	clientId: integer().references(() => clients.id, { onDelete: "cascade" }),
-	createdAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
+	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull()
 });
 
 export const projectsRelations = relations(projects, ({ one }) => ({

@@ -197,6 +197,20 @@
       "when": 1755987114117,
       "tag": "0027_update_invoice_add_status",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1755995097787,
+      "tag": "0028_update_invoice_unique_user_text_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1755995512805,
+      "tag": "0029_update_tables_update_timezone_with_timezone",
+      "breakpoints": true
     }
   ]
 }

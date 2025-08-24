@@ -23,6 +23,7 @@ import { getProjectsById, getProjectTasks, type ProjectTask } from "@/lib/api";
 import {
 	deleteProjectTasksByIdMutation,
 	getProjectsByIdQueryKey,
+	getProjectTasksCountOptions,
 	getProjectTasksQueryKey
 } from "@/lib/api/@tanstack/react-query.gen";
 import { ColumnDef } from "@tanstack/react-table";
@@ -43,6 +44,11 @@ export default function ProjectOverviewPage() {
 		queryKey: getProjectsByIdQueryKey({ path: { id: projectId } }),
 		queryFn: () => getProjectsById({ path: { id: projectId } }),
 	});
+	const { data: taskCount } = useQuery({
+		...getProjectTasksCountOptions({ query: { project: project?.id } }),
+		enabled: !!project
+	});
+
 	const deleteProjectTaskMutation = useMutation(deleteProjectTasksByIdMutation());
 
 	if (isProjectLoading) return <Loader />;
@@ -81,6 +87,20 @@ export default function ProjectOverviewPage() {
 				subtitle={project.title ?? ""}
 			/>
 			<div className="space-y-6">
+				<div className="grid grid-cols-3">
+					<Card>
+						<CardHeader>
+							<CardTitle>Project details</CardTitle>
+						</CardHeader>
+						<CardContent>
+							Project tasks: {taskCount?.count ?? 0}
+						</CardContent>
+					</Card>
+
+
+
+				</div>
+
 				<Card>
 					<CardHeader className="w-full">
 						<CardTitle className="w-full flex items-center">
