@@ -36,15 +36,12 @@ export const InvoicesService = {
 						timeEntry: true
 					},
 				},
-				project: {
+				client: {
 					with: {
-						client: {
-							with: {
-								address: true
-							}
-						}
+						address: true
 					}
 				},
+				project: true
 			},
 			where: options?.where ? and(...options.where, ...filters) : undefined,
 		});
