@@ -58,12 +58,13 @@ export type Invoice = {
   amount: number;
   currency: "czk" | "eur" | "usd";
   dueDate: unknown;
-  paidAt: unknown | null;
   sentAt: unknown | null;
+  paidAt: unknown | null;
+  status: "DRAFT" | "SENT" | "PAID" | "OVERDUE" | "CANCELLED";
   issuedAt: unknown;
   createdAt: unknown;
   updatedAt: unknown;
-  userId: string | null;
+  userId: string;
   clientId: number | null;
   projectId: number | null;
   generatedFileId: string | null;
@@ -71,18 +72,32 @@ export type Invoice = {
   language: "cs" | "en";
 } & {
   id: number;
-  client: {
-    id: number;
-    companyName: string;
-    contactName: string;
-    email: string | null;
-    ownerId: string | null;
-    addressId: number | null;
-    companyId: string | null;
-    vatNumber: string | null;
-    vatPayer: boolean | null;
-    createdAt: unknown;
-  } | null;
+  client:
+    | ({
+        id: number;
+        companyName: string;
+        contactName: string;
+        email: string | null;
+        ownerId: string | null;
+        addressId: number | null;
+        companyId: string | null;
+        vatNumber: string | null;
+        vatPayer: boolean | null;
+        createdAt: unknown;
+      } & {
+        address: {
+          id: number;
+          streetLine1: string;
+          streetLine2: string | null;
+          city: string;
+          state: string | null;
+          postalCode: string | null;
+          country: string;
+          createdAt: unknown;
+          updatedAt: unknown;
+        } | null;
+      })
+    | null;
   project: {
     id: number;
     title: string | null;
@@ -118,12 +133,13 @@ export type Invoice2 = Array<
     amount: number;
     currency: "czk" | "eur" | "usd";
     dueDate: unknown;
-    paidAt: unknown | null;
     sentAt: unknown | null;
+    paidAt: unknown | null;
+    status: "DRAFT" | "SENT" | "PAID" | "OVERDUE" | "CANCELLED";
     issuedAt: unknown;
     createdAt: unknown;
     updatedAt: unknown;
-    userId: string | null;
+    userId: string;
     clientId: number | null;
     projectId: number | null;
     generatedFileId: string | null;
@@ -131,18 +147,32 @@ export type Invoice2 = Array<
     language: "cs" | "en";
   } & {
     id: number;
-    client: {
-      id: number;
-      companyName: string;
-      contactName: string;
-      email: string | null;
-      ownerId: string | null;
-      addressId: number | null;
-      companyId: string | null;
-      vatNumber: string | null;
-      vatPayer: boolean | null;
-      createdAt: unknown;
-    } | null;
+    client:
+      | ({
+          id: number;
+          companyName: string;
+          contactName: string;
+          email: string | null;
+          ownerId: string | null;
+          addressId: number | null;
+          companyId: string | null;
+          vatNumber: string | null;
+          vatPayer: boolean | null;
+          createdAt: unknown;
+        } & {
+          address: {
+            id: number;
+            streetLine1: string;
+            streetLine2: string | null;
+            city: string;
+            state: string | null;
+            postalCode: string | null;
+            country: string;
+            createdAt: unknown;
+            updatedAt: unknown;
+          } | null;
+        })
+      | null;
     project: {
       id: number;
       title: string | null;

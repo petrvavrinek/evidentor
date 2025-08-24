@@ -75,12 +75,19 @@ export const zInvoice = z
     amount: z.number().int().gte(-2147483648).lte(2147483647),
     currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
     dueDate: z.unknown(),
-    paidAt: z.union([z.unknown(), z.null()]),
     sentAt: z.union([z.unknown(), z.null()]),
+    paidAt: z.union([z.unknown(), z.null()]),
+    status: z.union([
+      z.literal("DRAFT"),
+      z.literal("SENT"),
+      z.literal("PAID"),
+      z.literal("OVERDUE"),
+      z.literal("CANCELLED"),
+    ]),
     issuedAt: z.unknown(),
     createdAt: z.unknown(),
     updatedAt: z.unknown(),
-    userId: z.union([z.string(), z.null()]),
+    userId: z.string(),
     clientId: z.union([
       z.number().int().gte(-2147483648).lte(2147483647),
       z.null(),
@@ -100,21 +107,40 @@ export const zInvoice = z
     z.object({
       id: z.number(),
       client: z.union([
-        z.object({
-          id: z.number().int().gte(-2147483648).lte(2147483647),
-          companyName: z.string(),
-          contactName: z.string(),
-          email: z.union([z.string(), z.null()]),
-          ownerId: z.union([z.string(), z.null()]),
-          addressId: z.union([
-            z.number().int().gte(-2147483648).lte(2147483647),
-            z.null(),
-          ]),
-          companyId: z.union([z.string(), z.null()]),
-          vatNumber: z.union([z.string(), z.null()]),
-          vatPayer: z.union([z.boolean(), z.null()]),
-          createdAt: z.unknown(),
-        }),
+        z
+          .object({
+            id: z.number().int().gte(-2147483648).lte(2147483647),
+            companyName: z.string(),
+            contactName: z.string(),
+            email: z.union([z.string(), z.null()]),
+            ownerId: z.union([z.string(), z.null()]),
+            addressId: z.union([
+              z.number().int().gte(-2147483648).lte(2147483647),
+              z.null(),
+            ]),
+            companyId: z.union([z.string(), z.null()]),
+            vatNumber: z.union([z.string(), z.null()]),
+            vatPayer: z.union([z.boolean(), z.null()]),
+            createdAt: z.unknown(),
+          })
+          .and(
+            z.object({
+              address: z.union([
+                z.object({
+                  id: z.number().int().gte(-2147483648).lte(2147483647),
+                  streetLine1: z.string().max(255),
+                  streetLine2: z.union([z.string().max(255), z.null()]),
+                  city: z.string().max(100),
+                  state: z.union([z.string().max(100), z.null()]),
+                  postalCode: z.union([z.string().max(20), z.null()]),
+                  country: z.string().max(100),
+                  createdAt: z.unknown(),
+                  updatedAt: z.unknown(),
+                }),
+                z.null(),
+              ]),
+            }),
+          ),
         z.null(),
       ]),
       project: z.union([
@@ -180,12 +206,19 @@ export const zInvoice2 = z.array(
       amount: z.number().int().gte(-2147483648).lte(2147483647),
       currency: z.union([z.literal("czk"), z.literal("eur"), z.literal("usd")]),
       dueDate: z.unknown(),
-      paidAt: z.union([z.unknown(), z.null()]),
       sentAt: z.union([z.unknown(), z.null()]),
+      paidAt: z.union([z.unknown(), z.null()]),
+      status: z.union([
+        z.literal("DRAFT"),
+        z.literal("SENT"),
+        z.literal("PAID"),
+        z.literal("OVERDUE"),
+        z.literal("CANCELLED"),
+      ]),
       issuedAt: z.unknown(),
       createdAt: z.unknown(),
       updatedAt: z.unknown(),
-      userId: z.union([z.string(), z.null()]),
+      userId: z.string(),
       clientId: z.union([
         z.number().int().gte(-2147483648).lte(2147483647),
         z.null(),
@@ -204,21 +237,40 @@ export const zInvoice2 = z.array(
     z.object({
       id: z.number(),
       client: z.union([
-        z.object({
-          id: z.number().int().gte(-2147483648).lte(2147483647),
-          companyName: z.string(),
-          contactName: z.string(),
-          email: z.union([z.string(), z.null()]),
-          ownerId: z.union([z.string(), z.null()]),
-          addressId: z.union([
-            z.number().int().gte(-2147483648).lte(2147483647),
-            z.null(),
-          ]),
-          companyId: z.union([z.string(), z.null()]),
-          vatNumber: z.union([z.string(), z.null()]),
-          vatPayer: z.union([z.boolean(), z.null()]),
-          createdAt: z.unknown(),
-        }),
+        z
+          .object({
+            id: z.number().int().gte(-2147483648).lte(2147483647),
+            companyName: z.string(),
+            contactName: z.string(),
+            email: z.union([z.string(), z.null()]),
+            ownerId: z.union([z.string(), z.null()]),
+            addressId: z.union([
+              z.number().int().gte(-2147483648).lte(2147483647),
+              z.null(),
+            ]),
+            companyId: z.union([z.string(), z.null()]),
+            vatNumber: z.union([z.string(), z.null()]),
+            vatPayer: z.union([z.boolean(), z.null()]),
+            createdAt: z.unknown(),
+          })
+          .and(
+            z.object({
+              address: z.union([
+                z.object({
+                  id: z.number().int().gte(-2147483648).lte(2147483647),
+                  streetLine1: z.string().max(255),
+                  streetLine2: z.union([z.string().max(255), z.null()]),
+                  city: z.string().max(100),
+                  state: z.union([z.string().max(100), z.null()]),
+                  postalCode: z.union([z.string().max(20), z.null()]),
+                  country: z.string().max(100),
+                  createdAt: z.unknown(),
+                  updatedAt: z.unknown(),
+                }),
+                z.null(),
+              ]),
+            }),
+          ),
         z.null(),
       ]),
       project: z.union([

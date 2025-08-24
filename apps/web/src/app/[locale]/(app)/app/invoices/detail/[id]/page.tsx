@@ -7,7 +7,8 @@ import { notFound, useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { DataTable } from "@/components/data-table";
-import InvoicePdfModal from "@/components/invoices/invoice-pdf-modal";
+import InvoicePdfDialog from "@/components/invoices/invoice-pdf-dialog";
+import InvoiceStatusBadge from "@/components/invoices/invoice-status-badge";
 import PageHeader from "@/components/page-header";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useNumberFormatter } from "@/hooks/use-number-formatter";
@@ -18,7 +19,7 @@ import { Alert, AlertDescription } from "@evidentor/ui/components/ui/alert";
 import { Badge } from "@evidentor/ui/components/ui/badge";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@evidentor/ui/components/ui/card";
-import { TypographyH3 } from "@evidentor/ui/components/ui/typography";
+import InvoiceSendDialog from "@/components/invoices/invoice-send-dialog";
 
 type InvoiceItem = Invoice["items"][number]
 
@@ -71,6 +72,7 @@ const InvoiceDetails = (invoice: Invoice) => {
       <p><span className="font-semibold">Currency:</span> {invoice.currency}</p>
       <p><span className="font-semibold">Number of items:</span> {invoice.items.length}</p>
       <p><span className="font-semibold">Language:</span> {invoice.language}</p>
+      <p><span className="font-semibold">Status:</span> <InvoiceStatusBadge status={invoice.status} /></p>
     </>
   )
 }
@@ -84,6 +86,7 @@ export default function InvoiceDetailPage() {
     return notFound();
 
   const [openPdf, setOpenPdf] = useState(false);
+  const [openSend, setOpenSend] = useState(false);
 
   const { data: invoice, isLoading } = useQuery({
     initialData: null,
@@ -97,9 +100,9 @@ export default function InvoiceDetailPage() {
 
   useTitle(invoice?.id ? "Loading" : `Invoice: ${invoice?.id}`, [isLoading]);
 
-  if (!invoice || isLoading) return <>Loading..</>;
+  if (!invoice || isLoading) return <>Loading...</>;
 
-  const { client, project, items, currency } = invoice;
+  const { client, project } = invoice;
   const currencyFormatter = useNumberFormatter({ currency: invoice.currency, style: "currency" })
 
   const itemsColumns: ColumnDef<InvoiceItem>[] = [
@@ -139,51 +142,65 @@ export default function InvoiceDetailPage() {
         subtitle={`Invoice: ${invoice.textId}`}
         controls={
           <>
-            {invoice.generatedFileId && <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>}
+            {invoice.generatedFileId &&
+              (
+                <>
+                  <Button onClick={() => {}}>Send preview</Button>
+                  <Button onClick={() => setOpenSend(true)}>Send to client</Button>
+                  <Button onClick={() => setOpenPdf(true)}>Open PDF</Button>
+                </>
+              )
+            }
             <Button variant="destructive" onClick={() => deleteInvoiceMutation.mutate({ path: { id: invoice.id } })}>
               Delete
             </Button>
           </>
         }
       />
+      <div className="flex flex-col gap-4">
 
-      <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Invoice details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <InvoiceDetails {...invoice} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Project details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!project && <ProjectNotFoundAlert />}
+              {project && <ProjectDetail {...project} />}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Client details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {!client && <ClientNotFoundAlert />}
+              {client && <ClientDetail {...client} />}
+            </CardContent>
+          </Card>
+        </div>
+
         <Card>
           <CardHeader>
-            <CardTitle>Invoice details</CardTitle>
+            <CardTitle>Invoice items</CardTitle>
           </CardHeader>
           <CardContent>
-            <InvoiceDetails {...invoice} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Project details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {!project && <ProjectNotFoundAlert />}
-            {project && <ProjectDetail {...project} />}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Client details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {!client && <ClientNotFoundAlert />}
-            {client && <ClientDetail {...client} />}
+            <div className="grid xl:grid-cols-2 grid-cols-1">
+              <DataTable data={invoice.items} columns={itemsColumns} />
+            </div>
           </CardContent>
         </Card>
       </div>
-
-      <TypographyH3 className="my-2">Invoice items</TypographyH3>
-
-
-
-      <div className="grid xl:grid-cols-2 grid-cols-1 mt-4">
-        <DataTable data={invoice.items} columns={itemsColumns} />
-      </div>
-      <InvoicePdfModal invoice={invoice} open={openPdf} onOpenChange={setOpenPdf} />
+      <InvoicePdfDialog invoice={invoice} open={openPdf} onOpenChange={setOpenPdf} />
+      <InvoiceSendDialog invoice={invoice} open={openSend} onOpenChange={setOpenSend} />
     </>
 
   )

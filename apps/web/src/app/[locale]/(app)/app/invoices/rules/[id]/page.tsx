@@ -8,6 +8,7 @@ import { PropsWithChildren } from "react";
 import { toast } from "sonner";
 
 import { DataTable } from "@/components/data-table";
+import InvoiceStatusBadge from "@/components/invoices/invoice-status-badge";
 import PageHeader from "@/components/page-header";
 import QueryDataTable from "@/components/query-data-table";
 import { useDateFormatter } from "@/hooks/use-date-formatter";
@@ -61,6 +62,11 @@ export default function InvoiceRuleDetail() {
     {
       accessorKey: "project.title",
       header: "Project title"
+    },
+    {
+      id: "status",
+      cell: ({ row }) => <InvoiceStatusBadge status={row.original.status} />,
+      header: "Status"
     },
     {
       accessorKey: "createdAt",

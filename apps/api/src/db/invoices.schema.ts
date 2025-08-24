@@ -1,9 +1,11 @@
 import { relations } from "drizzle-orm";
 import {
 	integer,
+	pgEnum,
 	pgTable,
 	text,
 	timestamp,
+	unique,
 	varchar
 } from "drizzle-orm/pg-core";
 
@@ -15,31 +17,36 @@ import { projects } from "./projects.schema";
 import { timeEntries } from "./time-entries.schema";
 import { invoiceAutomationRules } from "./invoice-automation.schema";
 
+export const invoiceStatusEnum = pgEnum("invoice_status", [
+	"DRAFT",
+	"SENT",
+	"PAID",
+	"OVERDUE",
+	"CANCELLED",
+]);
+
 // Invoice table
 export const invoices = pgTable("invoice", {
 	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	textId: text().notNull().unique(),
+	textId: text().notNull(),
 	amount: integer().notNull(),
 	currency: CurrencyEnum().notNull(),
-	dueDate: timestamp().notNull(),
-	paidAt: timestamp(),
-	sentAt: timestamp(),
-	issuedAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
-	createdAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
-	updatedAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
+	dueDate: timestamp({ withTimezone: true }).notNull(),
+	sentAt: timestamp({ withTimezone: true }),
+	paidAt: timestamp({ withTimezone: true }),
+	status: invoiceStatusEnum().default("DRAFT").notNull(),
+	issuedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	updatedAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 	userId: text().references(() => user.id, { onDelete: "cascade" }).notNull(),
 	clientId: integer().references(() => clients.id, { onDelete: "set null" }),
 	projectId: integer().references(() => projects.id, { onDelete: "set null" }),
 	generatedFileId: text(),
 	automationRuleId: integer().references(() => invoiceAutomationRules.id, { onDelete: "set null" }),
 	language: LanguageEnum().notNull()
-});
+}, t => [
+	unique().on(t.userId, t.textId)
+]);
 
 export const invoicesRelations = relations(invoices, ({ one, many }) => ({
 	owner: one(user, {

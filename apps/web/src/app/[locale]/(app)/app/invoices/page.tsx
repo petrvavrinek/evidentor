@@ -21,6 +21,7 @@ import {
 	CardHeader,
 	CardTitle
 } from "@evidentor/ui/components/ui/card";
+import InvoiceStatusBadge from "@/components/invoices/invoice-status-badge";
 
 export default function InvoicesPage() {
 	const t = useTranslations("app.pages.invoices");
@@ -29,10 +30,6 @@ export default function InvoicesPage() {
 	const locale = useLocale();
 
 	const deleteInvoiceMutation = useMutation(deleteInvoicesByIdMutation());
-
-	const handleDelete = (id: number) => {
-		deleteInvoiceMutation.mutate({ path: { id } });
-	};
 
 	const invoiceColumns: ColumnDef<Invoice>[] = [
 		{
@@ -47,6 +44,11 @@ export default function InvoicesPage() {
 		{
 			accessorKey: "client.companyName",
 			header: "Client"
+		},
+		{
+			id: "status",
+			cell: ({ row }) => <InvoiceStatusBadge status={row.original.status} />,
+			header: "Status"
 		},
 		{
 			accessorKey: "amount",

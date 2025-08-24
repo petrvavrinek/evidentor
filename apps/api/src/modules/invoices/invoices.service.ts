@@ -83,7 +83,7 @@ export const InvoicesService = {
 		return results?.[0] ?? null;
 	},
 	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
-		const invoice = await  db.transaction(async (tx) => {
+		const invoice = await db.transaction(async (tx) => {
 			const now = new Date();
 			const invoicesToday = await tx
 				.select({ count: count() })
@@ -118,7 +118,7 @@ export const InvoicesService = {
 				(prev, current) => prev + current.unitPrice * current.qty,
 				0,
 			);
-
+			
 			// Create invoice
 			const [createdInvoice] = await tx
 				.insert(invoices)
@@ -126,9 +126,13 @@ export const InvoicesService = {
 					...data,
 					userId,
 					amount,
-					textId: invoiceTextId
+					textId: invoiceTextId,
 				})
-				.returning();
+				.returning().catch(e => {
+					console.error(e);
+					throw e;
+				});
+				
 
 			// Set invoice into time entries
 			await tx.update(timeEntries).set({
@@ -152,7 +156,7 @@ export const InvoicesService = {
 			return this.findOneByOptions(createdInvoice.id, { where: [eq(invoices.id, createdInvoice.id)] }, undefined, { tx })
 		});
 
-		if(invoice) logger.info(`created invoice ${invoice.id}`);
+		if (invoice) logger.info(`created invoice ${invoice.id}`);
 
 		return invoice;
 	},
@@ -204,11 +208,17 @@ export const InvoicesService = {
 				address: true
 			}
 		});
-		if (!invoiceUserBilling) return null;
+		if (!invoiceUserBilling) {
+			logger.warn(`could not create invoice pdf for ${invoice.id}, owning user does not have billing set`);
+			return null;
+		}
 
 		// Generate invoice in the background
 		const invoiceQueueData = convertInvoiceToQueueType(invoice, invoiceUserBilling);
-		if (!invoiceQueueData) return null;
+		if (!invoiceQueueData) {
+			logger.warn(`could not create invoice for pdf ${invoice.id}, could not convert to queue type`);
+			return null;
+		}
 
 		logger.info(`requested invoice pdf generation for invoice ${invoice.id}`);
 

@@ -29,10 +29,9 @@ export const invoiceAutomationRules = pgTable("invoice_automation_rules", {
   dueDays: integer().default(30).notNull(),
   currency: CurrencyEnum().notNull(),
 
-  nextRunDate: timestamp().notNull(),
-  lastRunDate: timestamp(),
-
-  createdAt: timestamp().defaultNow().notNull(),
+  nextRunDate: timestamp({ withTimezone: true }).notNull(),
+  lastRunDate: timestamp({ withTimezone: true }),
+  createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
 });
 
 export const invoiceAutomationRuleProjectTasks = pgTable("invoice_automation_rule_project_tasks", {

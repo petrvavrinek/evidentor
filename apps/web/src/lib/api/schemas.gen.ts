@@ -353,6 +353,16 @@ export const InvoiceSchema = {
         dueDate: {
           type: "Date",
         },
+        sentAt: {
+          anyOf: [
+            {
+              type: "Date",
+            },
+            {
+              type: "null",
+            },
+          ],
+        },
         paidAt: {
           anyOf: [
             {
@@ -363,13 +373,27 @@ export const InvoiceSchema = {
             },
           ],
         },
-        sentAt: {
+        status: {
           anyOf: [
             {
-              type: "Date",
+              const: "DRAFT",
+              type: "string",
             },
             {
-              type: "null",
+              const: "SENT",
+              type: "string",
+            },
+            {
+              const: "PAID",
+              type: "string",
+            },
+            {
+              const: "OVERDUE",
+              type: "string",
+            },
+            {
+              const: "CANCELLED",
+              type: "string",
             },
           ],
         },
@@ -383,14 +407,7 @@ export const InvoiceSchema = {
           type: "Date",
         },
         userId: {
-          anyOf: [
-            {
-              type: "string",
-            },
-            {
-              type: "null",
-            },
-          ],
+          type: "string",
         },
         clientId: {
           anyOf: [
@@ -457,8 +474,9 @@ export const InvoiceSchema = {
         "amount",
         "currency",
         "dueDate",
-        "paidAt",
         "sentAt",
+        "paidAt",
+        "status",
         "issuedAt",
         "createdAt",
         "updatedAt",
@@ -480,95 +498,185 @@ export const InvoiceSchema = {
           anyOf: [
             {
               type: "object",
-              properties: {
-                id: {
-                  minimum: -2147483648,
-                  maximum: 2147483647,
-                  type: "integer",
-                },
-                companyName: {
-                  type: "string",
-                },
-                contactName: {
-                  type: "string",
-                },
-                email: {
-                  anyOf: [
-                    {
-                      type: "string",
-                    },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                ownerId: {
-                  anyOf: [
-                    {
-                      type: "string",
-                    },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                addressId: {
-                  anyOf: [
-                    {
+              allOf: [
+                {
+                  type: "object",
+                  properties: {
+                    id: {
                       minimum: -2147483648,
                       maximum: 2147483647,
                       type: "integer",
                     },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                companyId: {
-                  anyOf: [
-                    {
+                    companyName: {
                       type: "string",
                     },
-                    {
-                      type: "null",
-                    },
-                  ],
-                },
-                vatNumber: {
-                  anyOf: [
-                    {
+                    contactName: {
                       type: "string",
                     },
-                    {
-                      type: "null",
+                    email: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
                     },
+                    ownerId: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    addressId: {
+                      anyOf: [
+                        {
+                          minimum: -2147483648,
+                          maximum: 2147483647,
+                          type: "integer",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    companyId: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    vatNumber: {
+                      anyOf: [
+                        {
+                          type: "string",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    vatPayer: {
+                      anyOf: [
+                        {
+                          type: "boolean",
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
+                    },
+                    createdAt: {
+                      type: "Date",
+                    },
+                  },
+                  required: [
+                    "id",
+                    "companyName",
+                    "contactName",
+                    "email",
+                    "ownerId",
+                    "addressId",
+                    "companyId",
+                    "vatNumber",
+                    "vatPayer",
+                    "createdAt",
                   ],
                 },
-                vatPayer: {
-                  anyOf: [
-                    {
-                      type: "boolean",
+                {
+                  type: "object",
+                  properties: {
+                    address: {
+                      anyOf: [
+                        {
+                          type: "object",
+                          properties: {
+                            id: {
+                              minimum: -2147483648,
+                              maximum: 2147483647,
+                              type: "integer",
+                            },
+                            streetLine1: {
+                              maxLength: 255,
+                              type: "string",
+                            },
+                            streetLine2: {
+                              anyOf: [
+                                {
+                                  maxLength: 255,
+                                  type: "string",
+                                },
+                                {
+                                  type: "null",
+                                },
+                              ],
+                            },
+                            city: {
+                              maxLength: 100,
+                              type: "string",
+                            },
+                            state: {
+                              anyOf: [
+                                {
+                                  maxLength: 100,
+                                  type: "string",
+                                },
+                                {
+                                  type: "null",
+                                },
+                              ],
+                            },
+                            postalCode: {
+                              anyOf: [
+                                {
+                                  maxLength: 20,
+                                  type: "string",
+                                },
+                                {
+                                  type: "null",
+                                },
+                              ],
+                            },
+                            country: {
+                              maxLength: 100,
+                              type: "string",
+                            },
+                            createdAt: {
+                              type: "Date",
+                            },
+                            updatedAt: {
+                              type: "Date",
+                            },
+                          },
+                          required: [
+                            "id",
+                            "streetLine1",
+                            "streetLine2",
+                            "city",
+                            "state",
+                            "postalCode",
+                            "country",
+                            "createdAt",
+                            "updatedAt",
+                          ],
+                        },
+                        {
+                          type: "null",
+                        },
+                      ],
                     },
-                    {
-                      type: "null",
-                    },
-                  ],
+                  },
+                  required: ["address"],
                 },
-                createdAt: {
-                  type: "Date",
-                },
-              },
-              required: [
-                "id",
-                "companyName",
-                "contactName",
-                "email",
-                "ownerId",
-                "addressId",
-                "companyId",
-                "vatNumber",
-                "vatPayer",
-                "createdAt",
               ],
             },
             {
@@ -835,6 +943,16 @@ export const Invoice__Schema = {
           dueDate: {
             type: "Date",
           },
+          sentAt: {
+            anyOf: [
+              {
+                type: "Date",
+              },
+              {
+                type: "null",
+              },
+            ],
+          },
           paidAt: {
             anyOf: [
               {
@@ -845,13 +963,27 @@ export const Invoice__Schema = {
               },
             ],
           },
-          sentAt: {
+          status: {
             anyOf: [
               {
-                type: "Date",
+                const: "DRAFT",
+                type: "string",
               },
               {
-                type: "null",
+                const: "SENT",
+                type: "string",
+              },
+              {
+                const: "PAID",
+                type: "string",
+              },
+              {
+                const: "OVERDUE",
+                type: "string",
+              },
+              {
+                const: "CANCELLED",
+                type: "string",
               },
             ],
           },
@@ -865,14 +997,7 @@ export const Invoice__Schema = {
             type: "Date",
           },
           userId: {
-            anyOf: [
-              {
-                type: "string",
-              },
-              {
-                type: "null",
-              },
-            ],
+            type: "string",
           },
           clientId: {
             anyOf: [
@@ -939,8 +1064,9 @@ export const Invoice__Schema = {
           "amount",
           "currency",
           "dueDate",
-          "paidAt",
           "sentAt",
+          "paidAt",
+          "status",
           "issuedAt",
           "createdAt",
           "updatedAt",
@@ -962,95 +1088,185 @@ export const Invoice__Schema = {
             anyOf: [
               {
                 type: "object",
-                properties: {
-                  id: {
-                    minimum: -2147483648,
-                    maximum: 2147483647,
-                    type: "integer",
-                  },
-                  companyName: {
-                    type: "string",
-                  },
-                  contactName: {
-                    type: "string",
-                  },
-                  email: {
-                    anyOf: [
-                      {
-                        type: "string",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  ownerId: {
-                    anyOf: [
-                      {
-                        type: "string",
-                      },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  addressId: {
-                    anyOf: [
-                      {
+                allOf: [
+                  {
+                    type: "object",
+                    properties: {
+                      id: {
                         minimum: -2147483648,
                         maximum: 2147483647,
                         type: "integer",
                       },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  companyId: {
-                    anyOf: [
-                      {
+                      companyName: {
                         type: "string",
                       },
-                      {
-                        type: "null",
-                      },
-                    ],
-                  },
-                  vatNumber: {
-                    anyOf: [
-                      {
+                      contactName: {
                         type: "string",
                       },
-                      {
-                        type: "null",
+                      email: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
                       },
+                      ownerId: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      addressId: {
+                        anyOf: [
+                          {
+                            minimum: -2147483648,
+                            maximum: 2147483647,
+                            type: "integer",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      companyId: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      vatNumber: {
+                        anyOf: [
+                          {
+                            type: "string",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      vatPayer: {
+                        anyOf: [
+                          {
+                            type: "boolean",
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
+                      },
+                      createdAt: {
+                        type: "Date",
+                      },
+                    },
+                    required: [
+                      "id",
+                      "companyName",
+                      "contactName",
+                      "email",
+                      "ownerId",
+                      "addressId",
+                      "companyId",
+                      "vatNumber",
+                      "vatPayer",
+                      "createdAt",
                     ],
                   },
-                  vatPayer: {
-                    anyOf: [
-                      {
-                        type: "boolean",
+                  {
+                    type: "object",
+                    properties: {
+                      address: {
+                        anyOf: [
+                          {
+                            type: "object",
+                            properties: {
+                              id: {
+                                minimum: -2147483648,
+                                maximum: 2147483647,
+                                type: "integer",
+                              },
+                              streetLine1: {
+                                maxLength: 255,
+                                type: "string",
+                              },
+                              streetLine2: {
+                                anyOf: [
+                                  {
+                                    maxLength: 255,
+                                    type: "string",
+                                  },
+                                  {
+                                    type: "null",
+                                  },
+                                ],
+                              },
+                              city: {
+                                maxLength: 100,
+                                type: "string",
+                              },
+                              state: {
+                                anyOf: [
+                                  {
+                                    maxLength: 100,
+                                    type: "string",
+                                  },
+                                  {
+                                    type: "null",
+                                  },
+                                ],
+                              },
+                              postalCode: {
+                                anyOf: [
+                                  {
+                                    maxLength: 20,
+                                    type: "string",
+                                  },
+                                  {
+                                    type: "null",
+                                  },
+                                ],
+                              },
+                              country: {
+                                maxLength: 100,
+                                type: "string",
+                              },
+                              createdAt: {
+                                type: "Date",
+                              },
+                              updatedAt: {
+                                type: "Date",
+                              },
+                            },
+                            required: [
+                              "id",
+                              "streetLine1",
+                              "streetLine2",
+                              "city",
+                              "state",
+                              "postalCode",
+                              "country",
+                              "createdAt",
+                              "updatedAt",
+                            ],
+                          },
+                          {
+                            type: "null",
+                          },
+                        ],
                       },
-                      {
-                        type: "null",
-                      },
-                    ],
+                    },
+                    required: ["address"],
                   },
-                  createdAt: {
-                    type: "Date",
-                  },
-                },
-                required: [
-                  "id",
-                  "companyName",
-                  "contactName",
-                  "email",
-                  "ownerId",
-                  "addressId",
-                  "companyId",
-                  "vatNumber",
-                  "vatPayer",
-                  "createdAt",
                 ],
               },
               {

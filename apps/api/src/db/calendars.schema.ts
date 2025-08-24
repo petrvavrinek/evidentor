@@ -16,9 +16,7 @@ export const calendars = pgTable("calendar", {
 		.references(() => user.id, { onDelete: "cascade" })
 		.notNull(),
 	name: varchar().notNull(),
-	createdAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
+	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull()
 });
 
 /**
@@ -31,9 +29,7 @@ export const calendarEvents = pgTable("calendar_event", {
 	calendarId: integer()
 		.references(() => calendars.id, { onDelete: "cascade" })
 		.notNull(),
-	createdAt: timestamp()
-		.$defaultFn(() => new Date())
-		.notNull(),
-	startAt: timestamp().notNull(),
-	endAt: timestamp(),
+	createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
+	startAt: timestamp({ withTimezone: true }).notNull(),
+	endAt: timestamp({ withTimezone: true }),
 });

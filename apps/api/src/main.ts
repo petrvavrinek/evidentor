@@ -54,6 +54,9 @@ for (const route of app.routes) {
 	logger.info(`\t${method} ${route.path}`);
 }
 
+app.on("error", e => {
+	logger.error(e.code, e.error);
+});
 app.listen(env.PORT);
 
 logger.info(`Server running at :${env.PORT}`);
