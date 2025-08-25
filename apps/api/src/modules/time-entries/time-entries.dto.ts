@@ -47,11 +47,17 @@ const SelectTimeEntry = t.Object({
 /**
  * Time entry response with project data
  */
-export const TimeEntryResponse = t.Omit(SelectTimeEntry, [
-	"projectId",
-	"userId",
-	"projectTaskId",
-]);
+export const TimeEntryResponse = t.Intersect(
+	[
+		t.Omit(SelectTimeEntry, [
+			"projectId",
+			"userId",
+			"projectTaskId",
+		]),
+		t.Object({ id: t.Number() })
+	]);
+
+export type TimeEntryResponseType = Static<typeof TimeEntryResponse>;
 
 /**
  * Time entries response with project data
@@ -63,7 +69,8 @@ export const TimeEntryFilter = t.Object({
 	projectId: t.Optional(t.Number()),
 	from: t.Optional(t.Date()),
 	to: t.Optional(t.Date()),
-	billed: t.Optional(t.Boolean())
+	billed: t.Optional(t.Boolean()),
+	projectTaskId: t.Optional(t.Number())
 });
 
 export type TimeEntryFilterType = Static<typeof TimeEntryFilter>;

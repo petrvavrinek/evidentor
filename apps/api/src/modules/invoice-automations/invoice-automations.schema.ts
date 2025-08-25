@@ -1,9 +1,8 @@
 import { invoiceAutomationRules } from "@/db/invoice-automation.schema";
+import { projectTasks } from "@/db/project-tasks.schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t, type Static } from "elysia";
-import { ProjectTaskResponse } from "../project-tasks/project-tasks.dto";
 import { ProjectResponse } from "../projects/projects.dto";
-import { projectTasks } from "@/db/project-tasks.schema";
 
 const InsertInvoiceAutomationRuleSchema = createInsertSchema(invoiceAutomationRules);
 export const CreateInvoiceAutomationRuleSchema = t.Intersect([
@@ -30,7 +29,12 @@ const SelectProjectTaskSchema = createSelectSchema(projectTasks);
 export const SelectInvoiceAutomationRuleSchema = t.Intersect([
   t.Omit(CreateSelectInvoiceAutomationRuleSchema, ["invoiceAutomationRuleProjectTasks"]),
   t.Object({
-    projectTasks: t.Array(SelectProjectTaskSchema),
+    projectTasks: t.Array(
+      t.Intersect([
+        SelectProjectTaskSchema,
+        t.Object({ id: t.Number() })
+      ])
+    ),
     project: ProjectResponse
   })
 ]);

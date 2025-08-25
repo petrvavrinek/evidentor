@@ -14,7 +14,7 @@ export const RecurrenceTypeEnum = pgEnum("recurrence_type", [
 
 export const invoiceAutomationRules = pgTable("invoice_automation_rules", {
   id: serial().primaryKey(),
-  userId: text().references(() => user.id),
+  userId: text().references(() => user.id, { onDelete: "cascade"}).notNull(),
   isActive: boolean().default(true).notNull(),
   projectId: integer().references(() => projects.id, { onDelete: "cascade" }).notNull(),
 

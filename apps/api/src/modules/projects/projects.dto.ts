@@ -35,7 +35,7 @@ const SelectProject = t.Object({
 /**
  * Project response
  */
-export const ProjectResponse = t.Omit(SelectProject, ["ownerId", "clientId"]);
+export const ProjectResponse = t.Omit(SelectProject, ["ownerId"]);
 
 /**
  * Project response
