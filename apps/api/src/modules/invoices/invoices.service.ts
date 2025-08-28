@@ -150,6 +150,7 @@ export const InvoicesService = {
 					timeEntryId: e.timeEntryId && invoiceTimeEntryIds.includes(e.timeEntryId) ? e.timeEntryId : null
 				}))
 			);
+			
 
 			if (!createdInvoice) return null;
 

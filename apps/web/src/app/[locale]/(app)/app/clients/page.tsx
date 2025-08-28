@@ -34,6 +34,7 @@ import {
 	getClientsQueryKey,
 	postClientsMutation,
 } from "@/lib/api/@tanstack/react-query.gen";
+import ClientUpdateDialog from "@/components/clients/client-update-dialog";
 
 export default function ClientsPage() {
 	const t = useTranslations("app.pages.clients");
@@ -41,6 +42,7 @@ export default function ClientsPage() {
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
 	const [clientDetail, setClientDetail] = useState<Client>();
+	const [clientUpdate, setClientUpdate] = useState<Client>();
 
 	useTitle(t("title"));
 
@@ -75,6 +77,7 @@ export default function ClientsPage() {
 						meta.removeRow(row.original);
 					}}
 					onDetail={() => setClientDetail(row.original)}
+					onEdit={() => setClientUpdate(row.original)}
 				/>
 			)
 		}
@@ -137,6 +140,7 @@ export default function ClientsPage() {
 				</DialogContent>
 			</Dialog>
 			<ClientDetailDialog client={clientDetail} onClose={() => setClientDetail(undefined)} />
+			<ClientUpdateDialog client={clientUpdate} onClose={() => setClientUpdate(undefined)} onUpdate={() => setClientUpdate(undefined)} />
 		</>
 	);
 }

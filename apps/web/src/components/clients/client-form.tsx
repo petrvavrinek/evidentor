@@ -21,7 +21,7 @@ import { zPostClientsData } from "@/lib/api/zod.gen";
 
 
 const CreateClientSchema = zPostClientsData.shape.body;
-type CreateClient = z.infer<typeof CreateClientSchema>;
+export type CreateClient = z.infer<typeof CreateClientSchema>;
 
 interface ClientFormProps {
 	onCancel?: () => void;

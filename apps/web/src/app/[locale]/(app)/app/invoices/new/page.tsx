@@ -1,20 +1,22 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
+import { useEffect, useMemo, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import z from "zod";
+
 import CurrencyInput from "@/components/currency-input";
 import LocaleInput from "@/components/locale-input";
 import PageHeader from "@/components/page-header";
 import { ProjectSelect } from "@/components/project-select";
 import { Language } from "@/i18n/routing";
-import { getTimeEntries, Project, TimeEntry } from "@/lib/api";
+import { Project, TimeEntry } from "@/lib/api";
 import { zPostInvoicesData } from "@/lib/api/zod.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@evidentor/ui/components/ui/form";
 import { Select, SelectTrigger, SelectValue } from "@evidentor/ui/components/ui/select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocale } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import z from "zod";
 
 import InvoiceCreateManualEntries from "@/components/invoices/new/invoice-create-manual-entries";
 import InvoiceCreateTimeEntries from "@/components/invoices/new/invoice-create-time-entries";
@@ -22,14 +24,9 @@ import { useDateFormatter } from "@/hooks/use-date-formatter";
 import { useNumberFormatter } from "@/hooks/use-number-formatter";
 import useTitle from "@/hooks/use-title";
 import { useRouter } from "@/i18n/navigation";
-import { getTimeEntriesQueryKey, postInvoicesMutation } from "@/lib/api/@tanstack/react-query.gen";
+import { postInvoicesMutation } from "@/lib/api/@tanstack/react-query.gen";
 import { Card, CardContent } from "@evidentor/ui/components/ui/card";
-import { Checkbox } from "@evidentor/ui/components/ui/checkbox";
 import DatePicker from "@evidentor/ui/components/ui/date-picker";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@evidentor/ui/components/ui/tooltip";
-import { useMutation } from "@tanstack/react-query";
-import QueryDataTable from "@/components/query-data-table";
-import { ColumnDef } from "@tanstack/react-table";
 
 const InvoiceCreateSchema = zPostInvoicesData.shape.body;
 type InvoiceCreate = z.infer<typeof InvoiceCreateSchema>;
@@ -52,13 +49,11 @@ export default function NewInvoicePage() {
 
   const [project, setProject] = useState<Project>();
   const [selectedTimeEntries, setSelectedTimeEntries] = useState<TimeEntry[]>([]);
-  const [groupByTask, setGroupByTask] = useState(false);
 
   useTitle("Create new invoice");
 
   useEffect(() => {
     setSelectedTimeEntries([]);
-
   }, [project]);
 
   const form = useForm<InvoiceCreate>({
@@ -78,15 +73,12 @@ export default function NewInvoicePage() {
     },
   });
 
-  const [formItemWatch] = useWatch({
-    name: ["items"],
+  const [formItemWatch, currencyWatch] = useWatch({
+    name: ["items", "currency"],
     control: form.control
   });
-  const [currencyWatch] = useWatch({
-    name: ["currency"],
-    control: form.control
-  });
-  const numberFormatter = useNumberFormatter({ currency: currencyWatch, style: "currency" })
+
+  const numberFormatter = useNumberFormatter({ currency: currencyWatch, style: "currency" });
 
   const items = useMemo<InvoiceItem[]>(() => {
     const newItems: InvoiceItem[] = [...formItemWatch];
@@ -127,17 +119,6 @@ export default function NewInvoicePage() {
     setSelectedTimeEntries(selectedTimeEntries.filter(e => e.id !== entry.id));
   }
 
-  const timeEntryColumns: ColumnDef<TimeEntry>[] = [
-    {
-      accessorKey: "title",
-      header: "Title"
-    },
-    {
-      accessorKey: "projectTask.title",
-      header: "Project task"
-    },
-  ]
-
   return (
     <>
       <PageHeader title="New invoice" subtitle="Create new invoice" />
@@ -171,6 +152,7 @@ export default function NewInvoicePage() {
                     <SelectValue placeholder={project?.client?.companyName ?? "Select project"} />
                   </SelectTrigger>
                 </Select>
+                {(project?.client && !project.client.addressId) && (<FormMessage>Client must have address set</FormMessage>)}
               </FormItem>
             </div>
 
@@ -224,22 +206,6 @@ export default function NewInvoicePage() {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <InvoiceCreateTimeEntries project={project} onSelect={addSelectedTask} onUnselect={removeSelectedTask} selectedIds={selectedTimeEntries.map(e => e.id)} />
-                {/* <Tooltip>
-                  <TooltipTrigger asChild>
-                    <FormItem className="border rounded-md p-2 flex w-fit">
-                      <FormLabel>Group by task</FormLabel>
-                      <FormControl>
-                        <Checkbox
-                          checked={groupByTask}
-                          onCheckedChange={e => setGroupByTask(e as boolean)}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Invoice will contain only task title with time instead of each time entry.
-                  </TooltipContent>
-                </Tooltip> */}
               </div>
               <div>
                 <InvoiceCreateManualEntries control={form.control} name="items" />
@@ -250,7 +216,7 @@ export default function NewInvoicePage() {
                 Total: {numberFormatter.format(total)}
               </CardContent>
             </Card>
-            <Button type="submit" disabled={(!form.formState.isValid || items.length === 0) || isPending}>
+            <Button type="submit" disabled={(!form.formState.isValid || items.length === 0 || !project?.client?.addressId) || isPending}>
               Create invoice
             </Button>
           </div>
