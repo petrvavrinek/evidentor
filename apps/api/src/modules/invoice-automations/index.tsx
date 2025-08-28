@@ -4,6 +4,7 @@ import { pagination } from "../../macros/pagination.macro";
 import { PaginationSchema } from "../../schemas/pagination.schema";
 import { BetterAuthMacro } from "../auth";
 import { ProjectsService } from "../projects/projects.service";
+import { InvoiceAutomationsTriggerService } from "./invoice-automations-trigger.service";
 import { CreateInvoiceAutomationRuleSchema, InvoiceAutomationRuleIdParam, SelectInvoiceAutomationRuleSchema, UpdateInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
 import { InvoiceAutomationsService } from "./invoice-automations.service";
 
@@ -71,5 +72,9 @@ const router = new Elysia({
       params: InvoiceAutomationRuleIdParam
     })
 
+router.on("start", () => {
+  // Start triggering invoice generation
+  InvoiceAutomationsTriggerService.start();
+});
 
 export default router;

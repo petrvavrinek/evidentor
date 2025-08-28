@@ -9,9 +9,10 @@ interface PaymentSubject {
 	address: {
 		city: string;
 		country: string;
-		houseNumber: string;
-		street: string;
-		zip: string;
+		streetLine1: string,
+		streetLine2?: string;
+		postalCode: string;
+		state?: string;
 	};
 }
 

@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, SQL } from "drizzle-orm";
 
 import { invoiceAutomationRuleProjectTasks, invoiceAutomationRules } from "@/db/invoice-automation.schema";
 import { projectTasks } from "@/db/project-tasks.schema";
@@ -29,7 +29,7 @@ export const InvoiceAutomationsService = {
       ...e,
       projectTasks: e.invoiceAutomationRuleProjectTasks.map(e => e.projectTask),
       invoiceAutomationRuleProjectTasks: undefined
-    }))
+    }));
 
   },
 
@@ -175,7 +175,6 @@ export const InvoiceAutomationsService = {
   },
 
   calculateNextRunDate(rule: Pick<typeof invoiceAutomationRules.$inferSelect, "recurrenceType" | "nextRunDate" | "interval" | "dayOfMonth">): Date {
-    const now = new Date();
     let nextDate = new Date(rule.nextRunDate);
 
     switch (rule.recurrenceType) {
@@ -209,6 +208,45 @@ export const InvoiceAutomationsService = {
         throw new Error(`Unknown recurrence type: ${rule.recurrenceType}`);
     }
     return nextDate;
+  },
 
-  }
+  /**
+   * Fetch due rules 
+   * @param cursor Cursor (last ID)
+   * @param take Offset, number of items returned
+   * @returns Array of InvoiceAutomationRule
+   */
+  async fetchDueRules(cursor?: number, take?: number): Promise<SelectInvoiceAutomationRule[]> {
+    const now = new Date();
+    const filter: SQL[] = [
+      eq(invoiceAutomationRules.isActive, true),
+      eq(invoiceAutomationRules.nextRunDate, now)
+    ];
+
+    if (cursor) filter.push(gt(invoiceAutomationRules.id, cursor));
+
+    const results = await db.query.invoiceAutomationRules.findMany({
+      where: and(...filter),
+      orderBy: asc(invoiceAutomationRules.createdAt),
+      limit: take,
+      with: {
+        project: {
+          with: {
+            client: true
+          }
+        },
+        invoiceAutomationRuleProjectTasks: {
+          with: {
+            projectTask: true
+          }
+        }
+      }
+    });
+
+    return results.map(e => ({
+      ...e,
+      projectTasks: e.invoiceAutomationRuleProjectTasks.map(e => e.projectTask),
+      invoiceAutomationRuleProjectTasks: undefined
+    }));
+  },
 }

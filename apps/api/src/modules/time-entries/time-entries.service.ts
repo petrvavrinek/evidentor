@@ -4,7 +4,7 @@ import { timeEntries } from "@/db/schema";
 
 import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
-import type { TimeEntryFilterType } from "./time-entries.dto";
+import type { TimeEntryFilterType, TimeEntryResponseType } from "./time-entries.dto";
 import type { Pagination } from "../../schemas/pagination.schema";
 
 type TimeEntry = typeof timeEntries.$inferSelect;
@@ -35,7 +35,7 @@ export const TimeEntriesService = {
 	 * @param userId User ID
 	 * @returns Array of entries
 	 */
-	findByUserId(userId: string, filter?: TimeEntryFilterType, pagination?: Pagination) {
+	findByUserId(userId: string, filter?: TimeEntryFilterType, pagination?: Pagination): Promise<TimeEntryResponseType[]> {
 		return db.query.timeEntries.findMany({
 			where: (entry, { eq, gte, lte, isNotNull, isNull }) => {
 				const filters = [eq(entry.userId, userId)];

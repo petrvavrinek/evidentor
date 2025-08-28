@@ -36,15 +36,12 @@ export const InvoicesService = {
 						timeEntry: true
 					},
 				},
-				project: {
+				client: {
 					with: {
-						client: {
-							with: {
-								address: true
-							}
-						}
+						address: true
 					}
 				},
+				project: true
 			},
 			where: options?.where ? and(...options.where, ...filters) : undefined,
 		});
@@ -85,7 +82,7 @@ export const InvoicesService = {
 
 		return results?.[0] ?? null;
 	},
-	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
+	async create(userId: string, data: InvoiceCreateType & { clientId: number, automationRuleId?: number }) {
 		const invoice = await db.transaction(async (tx) => {
 			const now = new Date();
 			const invoicesToday = await tx
