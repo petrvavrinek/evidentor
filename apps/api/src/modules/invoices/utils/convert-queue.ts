@@ -40,8 +40,8 @@ export const convertInvoiceToQueueType = (
 				streetLine2: invoice.client.address.streetLine2 ?? undefined,
 				postalCode: invoice.client.address.postalCode ?? "",
 			},
-			cin: "cin",
-			vatId: "vatId",
+			companyId: invoice.client.companyId ?? undefined,
+			vatId: invoice.client.vatNumber ?? undefined,
 		},
 		supplier: {
 			name: userBilling.companyName,
@@ -52,8 +52,8 @@ export const convertInvoiceToQueueType = (
 				streetLine2: userBilling.address.streetLine2 ?? undefined,
 				postalCode: userBilling.address.postalCode ?? "",
 			},
-			cin: "cin",
-			vatId: "vatId",
+			companyId: userBilling.vatNumber ?? undefined,
+			vatId: userBilling.vatNumber ?? undefined,
 		},
 		language: invoice.language
 	};

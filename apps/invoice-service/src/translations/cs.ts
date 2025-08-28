@@ -1,6 +1,6 @@
 export default {
   invoice: "Faktura",
-  invoiceId: "Č.",
+  invoiceId: "Číslo faktury",
   supplier: "Dodavatel",
   subscriber: "Odběratel",
   paymentInformation: "Platební informace",

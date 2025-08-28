@@ -34,7 +34,8 @@ export const PaymentSubjectBlock = ({
 			{subject.address.postalCode} {subject.address.city}, {subject.address.country}
 		</Text>
 		<Text style={styles.info}>
-			{translations.cin}: {subject.cin} {translations.vat}: {subject.vatId}
+			{ subject.companyId && <>{translations.cin}: {subject.companyId}</> }
+			{ subject.vatId && <>{translations.vat}: {subject.vatId}</> }
 		</Text>
 	</View>
 );

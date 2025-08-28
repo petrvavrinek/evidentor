@@ -9,7 +9,7 @@ export const zAddress = z.object({
   streetLine2: z.union([z.string().max(255), z.null()]),
   city: z.string().max(100),
   state: z.union([z.string().max(100), z.null()]),
-  postalCode: z.union([z.string().max(20), z.null()]),
+  postalCode: z.string().max(20),
   country: z.string().max(100),
   createdAt: z.unknown(),
   updatedAt: z.unknown(),
@@ -31,7 +31,7 @@ export const zClient = z
           streetLine2: z.union([z.string().max(255), z.null()]),
           city: z.string().max(100),
           state: z.union([z.string().max(100), z.null()]),
-          postalCode: z.union([z.string().max(20), z.null()]),
+          postalCode: z.string().max(20),
           country: z.string().max(100),
           createdAt: z.unknown(),
           updatedAt: z.unknown(),
@@ -57,7 +57,7 @@ export const zClient2 = z.array(
           streetLine2: z.union([z.string().max(255), z.null()]),
           city: z.string().max(100),
           state: z.union([z.string().max(100), z.null()]),
-          postalCode: z.union([z.string().max(20), z.null()]),
+          postalCode: z.string().max(20),
           country: z.string().max(100),
           createdAt: z.unknown(),
           updatedAt: z.unknown(),
@@ -132,7 +132,7 @@ export const zInvoice = z
                   streetLine2: z.union([z.string().max(255), z.null()]),
                   city: z.string().max(100),
                   state: z.union([z.string().max(100), z.null()]),
-                  postalCode: z.union([z.string().max(20), z.null()]),
+                  postalCode: z.string().max(20),
                   country: z.string().max(100),
                   createdAt: z.unknown(),
                   updatedAt: z.unknown(),
@@ -262,7 +262,7 @@ export const zInvoice2 = z.array(
                   streetLine2: z.union([z.string().max(255), z.null()]),
                   city: z.string().max(100),
                   state: z.union([z.string().max(100), z.null()]),
-                  postalCode: z.union([z.string().max(20), z.null()]),
+                  postalCode: z.string().max(20),
                   country: z.string().max(100),
                   createdAt: z.unknown(),
                   updatedAt: z.unknown(),
@@ -337,6 +337,10 @@ export const zProjectTask = z.object({
   project: z.object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
     title: z.union([z.string(), z.null()]),
+    clientId: z.union([
+      z.number().int().gte(-2147483648).lte(2147483647),
+      z.null(),
+    ]),
     createdAt: z.unknown(),
     client: z.union([
       z.object({
@@ -368,6 +372,10 @@ export const zProjectTask2 = z.array(
     project: z.object({
       id: z.number().int().gte(-2147483648).lte(2147483647),
       title: z.union([z.string(), z.null()]),
+      clientId: z.union([
+        z.number().int().gte(-2147483648).lte(2147483647),
+        z.null(),
+      ]),
       createdAt: z.unknown(),
       client: z.union([
         z.object({
@@ -398,6 +406,10 @@ export const zProjectTaskCount = z.object({
 export const zProject = z.object({
   id: z.number().int().gte(-2147483648).lte(2147483647),
   title: z.union([z.string(), z.null()]),
+  clientId: z.union([
+    z.number().int().gte(-2147483648).lte(2147483647),
+    z.null(),
+  ]),
   createdAt: z.unknown(),
   client: z.union([
     z.object({
@@ -423,6 +435,10 @@ export const zProject2 = z.array(
   z.object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
     title: z.union([z.string(), z.null()]),
+    clientId: z.union([
+      z.number().int().gte(-2147483648).lte(2147483647),
+      z.null(),
+    ]),
     createdAt: z.unknown(),
     client: z.union([
       z.object({
@@ -449,55 +465,8 @@ export const zProjectCount = z.object({
   count: z.number(),
 });
 
-export const zTimeEntry = z.object({
-  id: z.number().int().gte(-2147483648).lte(2147483647),
-  title: z.union([z.string(), z.null()]),
-  invoiceId: z.union([
-    z.number().int().gte(-2147483648).lte(2147483647),
-    z.null(),
-  ]),
-  startAt: z.union([z.unknown(), z.null()]),
-  endAt: z.union([z.unknown(), z.null()]),
-  createdAt: z.unknown(),
-  project: z.union([
-    z.object({
-      id: z.number().int().gte(-2147483648).lte(2147483647),
-      title: z.union([z.string(), z.null()]),
-      createdAt: z.unknown(),
-      client: z.union([
-        z.object({
-          id: z.number().int().gte(-2147483648).lte(2147483647),
-          companyName: z.string(),
-          contactName: z.string(),
-          email: z.union([z.string(), z.null()]),
-          ownerId: z.union([z.string(), z.null()]),
-          addressId: z.union([
-            z.number().int().gte(-2147483648).lte(2147483647),
-            z.null(),
-          ]),
-          companyId: z.union([z.string(), z.null()]),
-          vatNumber: z.union([z.string(), z.null()]),
-          vatPayer: z.union([z.boolean(), z.null()]),
-          createdAt: z.unknown(),
-        }),
-        z.null(),
-      ]),
-    }),
-    z.null(),
-  ]),
-  projectTask: z.union([
-    z.object({
-      id: z.number().int().gte(-2147483648).lte(2147483647),
-      title: z.string(),
-      description: z.union([z.string(), z.null()]),
-      createdAt: z.unknown(),
-    }),
-    z.null(),
-  ]),
-});
-
-export const zTimeEntry2 = z.array(
-  z.object({
+export const zTimeEntry = z
+  .object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
     title: z.union([z.string(), z.null()]),
     invoiceId: z.union([
@@ -511,6 +480,10 @@ export const zTimeEntry2 = z.array(
       z.object({
         id: z.number().int().gte(-2147483648).lte(2147483647),
         title: z.union([z.string(), z.null()]),
+        clientId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
         createdAt: z.unknown(),
         client: z.union([
           z.object({
@@ -542,7 +515,69 @@ export const zTimeEntry2 = z.array(
       }),
       z.null(),
     ]),
-  }),
+  })
+  .and(
+    z.object({
+      id: z.number(),
+    }),
+  );
+
+export const zTimeEntry2 = z.array(
+  z.union([
+    z.object({
+      id: z.number().int().gte(-2147483648).lte(2147483647),
+      title: z.union([z.string(), z.null()]),
+      invoiceId: z.union([
+        z.number().int().gte(-2147483648).lte(2147483647),
+        z.null(),
+      ]),
+      startAt: z.union([z.unknown(), z.null()]),
+      endAt: z.union([z.unknown(), z.null()]),
+      createdAt: z.unknown(),
+      project: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          title: z.union([z.string(), z.null()]),
+          clientId: z.union([
+            z.number().int().gte(-2147483648).lte(2147483647),
+            z.null(),
+          ]),
+          createdAt: z.unknown(),
+          client: z.union([
+            z.object({
+              id: z.number().int().gte(-2147483648).lte(2147483647),
+              companyName: z.string(),
+              contactName: z.string(),
+              email: z.union([z.string(), z.null()]),
+              ownerId: z.union([z.string(), z.null()]),
+              addressId: z.union([
+                z.number().int().gte(-2147483648).lte(2147483647),
+                z.null(),
+              ]),
+              companyId: z.union([z.string(), z.null()]),
+              vatNumber: z.union([z.string(), z.null()]),
+              vatPayer: z.union([z.boolean(), z.null()]),
+              createdAt: z.unknown(),
+            }),
+            z.null(),
+          ]),
+        }),
+        z.null(),
+      ]),
+      projectTask: z.union([
+        z.object({
+          id: z.number().int().gte(-2147483648).lte(2147483647),
+          title: z.string(),
+          description: z.union([z.string(), z.null()]),
+          createdAt: z.unknown(),
+        }),
+        z.null(),
+      ]),
+    }),
+    z.object({
+      id: z.number(),
+    }),
+  ]),
 );
 
 export const zTimeEntryDurationByDate = z.array(
@@ -575,7 +610,7 @@ export const zUserBilling = z
         streetLine2: z.union([z.string().max(255), z.null()]),
         city: z.string().max(100),
         state: z.union([z.string().max(100), z.null()]),
-        postalCode: z.union([z.string().max(20), z.null()]),
+        postalCode: z.string().max(20),
         country: z.string().max(100),
         createdAt: z.unknown(),
         updatedAt: z.unknown(),
@@ -586,7 +621,7 @@ export const zUserBilling = z
 export const zInvoiceAutomation = z
   .object({
     id: z.number().int().gte(-2147483648).lte(2147483647),
-    userId: z.union([z.string(), z.null()]),
+    userId: z.string(),
     isActive: z.boolean(),
     projectId: z.number().int().gte(-2147483648).lte(2147483647),
     allTasks: z.boolean(),
@@ -610,17 +645,26 @@ export const zInvoiceAutomation = z
   .and(
     z.object({
       projectTasks: z.array(
-        z.object({
-          id: z.number().int().gte(-2147483648).lte(2147483647),
-          title: z.string(),
-          projectId: z.number().int().gte(-2147483648).lte(2147483647),
-          description: z.union([z.string(), z.null()]),
-          createdAt: z.unknown(),
-        }),
+        z.union([
+          z.object({
+            id: z.number().int().gte(-2147483648).lte(2147483647),
+            title: z.string(),
+            projectId: z.number().int().gte(-2147483648).lte(2147483647),
+            description: z.union([z.string(), z.null()]),
+            createdAt: z.unknown(),
+          }),
+          z.object({
+            id: z.number(),
+          }),
+        ]),
       ),
       project: z.object({
         id: z.number().int().gte(-2147483648).lte(2147483647),
         title: z.union([z.string(), z.null()]),
+        clientId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
         createdAt: z.unknown(),
         client: z.union([
           z.object({
@@ -648,7 +692,7 @@ export const zInvoiceAutomation2 = z.array(
   z.union([
     z.object({
       id: z.number().int().gte(-2147483648).lte(2147483647),
-      userId: z.union([z.string(), z.null()]),
+      userId: z.string(),
       isActive: z.boolean(),
       projectId: z.number().int().gte(-2147483648).lte(2147483647),
       allTasks: z.boolean(),
@@ -671,17 +715,26 @@ export const zInvoiceAutomation2 = z.array(
     }),
     z.object({
       projectTasks: z.array(
-        z.object({
-          id: z.number().int().gte(-2147483648).lte(2147483647),
-          title: z.string(),
-          projectId: z.number().int().gte(-2147483648).lte(2147483647),
-          description: z.union([z.string(), z.null()]),
-          createdAt: z.unknown(),
-        }),
+        z.union([
+          z.object({
+            id: z.number().int().gte(-2147483648).lte(2147483647),
+            title: z.string(),
+            projectId: z.number().int().gte(-2147483648).lte(2147483647),
+            description: z.union([z.string(), z.null()]),
+            createdAt: z.unknown(),
+          }),
+          z.object({
+            id: z.number(),
+          }),
+        ]),
       ),
       project: z.object({
         id: z.number().int().gte(-2147483648).lte(2147483647),
         title: z.union([z.string(), z.null()]),
+        clientId: z.union([
+          z.number().int().gte(-2147483648).lte(2147483647),
+          z.null(),
+        ]),
         createdAt: z.unknown(),
         client: z.union([
           z.object({
@@ -780,7 +833,7 @@ export const zPostClientsData = z.object({
             streetLine2: z.union([z.string().max(255), z.null()]).optional(),
             city: z.string().max(100),
             state: z.union([z.string().max(100), z.null()]).optional(),
-            postalCode: z.union([z.string().max(20), z.null()]).optional(),
+            postalCode: z.string().max(20),
             country: z.string().max(100),
           })
           .optional(),
@@ -825,7 +878,7 @@ export const zPatchClientsByIdData = z.object({
             streetLine2: z.union([z.string().max(255), z.null()]).optional(),
             city: z.string().max(100),
             state: z.union([z.string().max(100), z.null()]).optional(),
-            postalCode: z.union([z.string().max(20), z.null()]).optional(),
+            postalCode: z.string().max(20),
             country: z.string().max(100),
           })
           .optional(),
@@ -1160,6 +1213,7 @@ export const zGetTimeEntriesData = z.object({
         ])
         .optional(),
       billed: z.boolean().optional(),
+      projectTaskId: z.number().optional(),
     })
     .optional(),
 });
@@ -1221,6 +1275,7 @@ export const zGetTimeEntriesAnalyzeDurationByDateData = z.object({
         ])
         .optional(),
       billed: z.boolean().optional(),
+      projectTaskId: z.number().optional(),
     })
     .optional(),
 });
@@ -1258,7 +1313,7 @@ export const zPutUserBillingData = z.object({
           streetLine2: z.union([z.string().max(255), z.null()]).optional(),
           city: z.string().max(100),
           state: z.union([z.string().max(100), z.null()]).optional(),
-          postalCode: z.union([z.string().max(20), z.null()]).optional(),
+          postalCode: z.string().max(20),
           country: z.string().max(100),
         }),
       }),

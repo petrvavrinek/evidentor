@@ -6,7 +6,7 @@ export type Address = {
   streetLine2: string | null;
   city: string;
   state: string | null;
-  postalCode: string | null;
+  postalCode: string;
   country: string;
   createdAt: unknown;
   updatedAt: unknown;
@@ -24,7 +24,7 @@ export type Client = {
     streetLine2: string | null;
     city: string;
     state: string | null;
-    postalCode: string | null;
+    postalCode: string;
     country: string;
     createdAt: unknown;
     updatedAt: unknown;
@@ -44,7 +44,7 @@ export type Client2 = Array<
       streetLine2: string | null;
       city: string;
       state: string | null;
-      postalCode: string | null;
+      postalCode: string;
       country: string;
       createdAt: unknown;
       updatedAt: unknown;
@@ -91,7 +91,7 @@ export type Invoice = {
           streetLine2: string | null;
           city: string;
           state: string | null;
-          postalCode: string | null;
+          postalCode: string;
           country: string;
           createdAt: unknown;
           updatedAt: unknown;
@@ -166,7 +166,7 @@ export type Invoice2 = Array<
             streetLine2: string | null;
             city: string;
             state: string | null;
-            postalCode: string | null;
+            postalCode: string;
             country: string;
             createdAt: unknown;
             updatedAt: unknown;
@@ -210,6 +210,7 @@ export type ProjectTask = {
   project: {
     id: number;
     title: string | null;
+    clientId: number | null;
     createdAt: unknown;
     client: {
       id: number;
@@ -234,6 +235,7 @@ export type ProjectTask2 = Array<{
   project: {
     id: number;
     title: string | null;
+    clientId: number | null;
     createdAt: unknown;
     client: {
       id: number;
@@ -257,6 +259,7 @@ export type ProjectTaskCount = {
 export type Project = {
   id: number;
   title: string | null;
+  clientId: number | null;
   createdAt: unknown;
   client: {
     id: number;
@@ -275,6 +278,7 @@ export type Project = {
 export type Project2 = Array<{
   id: number;
   title: string | null;
+  clientId: number | null;
   createdAt: unknown;
   client: {
     id: number;
@@ -304,6 +308,7 @@ export type TimeEntry = {
   project: {
     id: number;
     title: string | null;
+    clientId: number | null;
     createdAt: unknown;
     client: {
       id: number;
@@ -324,39 +329,46 @@ export type TimeEntry = {
     description: string | null;
     createdAt: unknown;
   } | null;
+} & {
+  id: number;
 };
 
-export type TimeEntry2 = Array<{
-  id: number;
-  title: string | null;
-  invoiceId: number | null;
-  startAt: unknown | null;
-  endAt: unknown | null;
-  createdAt: unknown;
-  project: {
+export type TimeEntry2 = Array<
+  {
     id: number;
     title: string | null;
+    invoiceId: number | null;
+    startAt: unknown | null;
+    endAt: unknown | null;
     createdAt: unknown;
-    client: {
+    project: {
       id: number;
-      companyName: string;
-      contactName: string;
-      email: string | null;
-      ownerId: string | null;
-      addressId: number | null;
-      companyId: string | null;
-      vatNumber: string | null;
-      vatPayer: boolean | null;
+      title: string | null;
+      clientId: number | null;
+      createdAt: unknown;
+      client: {
+        id: number;
+        companyName: string;
+        contactName: string;
+        email: string | null;
+        ownerId: string | null;
+        addressId: number | null;
+        companyId: string | null;
+        vatNumber: string | null;
+        vatPayer: boolean | null;
+        createdAt: unknown;
+      } | null;
+    } | null;
+    projectTask: {
+      id: number;
+      title: string;
+      description: string | null;
       createdAt: unknown;
     } | null;
-  } | null;
-  projectTask: {
+  } & {
     id: number;
-    title: string;
-    description: string | null;
-    createdAt: unknown;
-  } | null;
-}>;
+  }
+>;
 
 export type TimeEntryDurationByDate = Array<{
   date: unknown | Date | number;
@@ -378,7 +390,7 @@ export type UserBilling = {
     streetLine2: string | null;
     city: string;
     state: string | null;
-    postalCode: string | null;
+    postalCode: string;
     country: string;
     createdAt: unknown;
     updatedAt: unknown;
@@ -387,7 +399,7 @@ export type UserBilling = {
 
 export type InvoiceAutomation = {
   id: number;
-  userId: string | null;
+  userId: string;
   isActive: boolean;
   projectId: number;
   allTasks: boolean;
@@ -401,16 +413,21 @@ export type InvoiceAutomation = {
   lastRunDate: unknown | null;
   createdAt: unknown;
 } & {
-  projectTasks: Array<{
-    id: number;
-    title: string;
-    projectId: number;
-    description: string | null;
-    createdAt: unknown;
-  }>;
+  projectTasks: Array<
+    {
+      id: number;
+      title: string;
+      projectId: number;
+      description: string | null;
+      createdAt: unknown;
+    } & {
+      id: number;
+    }
+  >;
   project: {
     id: number;
     title: string | null;
+    clientId: number | null;
     createdAt: unknown;
     client: {
       id: number;
@@ -430,7 +447,7 @@ export type InvoiceAutomation = {
 export type InvoiceAutomation2 = Array<
   {
     id: number;
-    userId: string | null;
+    userId: string;
     isActive: boolean;
     projectId: number;
     allTasks: boolean;
@@ -444,16 +461,21 @@ export type InvoiceAutomation2 = Array<
     lastRunDate: unknown | null;
     createdAt: unknown;
   } & {
-    projectTasks: Array<{
-      id: number;
-      title: string;
-      projectId: number;
-      description: string | null;
-      createdAt: unknown;
-    }>;
+    projectTasks: Array<
+      {
+        id: number;
+        title: string;
+        projectId: number;
+        description: string | null;
+        createdAt: unknown;
+      } & {
+        id: number;
+      }
+    >;
     project: {
       id: number;
       title: string | null;
+      clientId: number | null;
       createdAt: unknown;
       client: {
         id: number;
@@ -544,7 +566,7 @@ export type PostClientsData = {
       streetLine2?: string | null;
       city: string;
       state?: string | null;
-      postalCode?: string | null;
+      postalCode: string;
       country: string;
     };
   };
@@ -600,7 +622,7 @@ export type PatchClientsByIdData = {
       streetLine2?: string | null;
       city: string;
       state?: string | null;
-      postalCode?: string | null;
+      postalCode: string;
       country: string;
     };
   };
@@ -974,6 +996,7 @@ export type GetTimeEntriesData = {
     from?: unknown | Date | number;
     to?: unknown | Date | number;
     billed?: boolean;
+    projectTaskId?: number;
   };
   url: "/time-entries";
 };
@@ -1014,6 +1037,7 @@ export type GetTimeEntriesAnalyzeDurationByDateData = {
     from?: unknown | Date | number;
     to?: unknown | Date | number;
     billed?: boolean;
+    projectTaskId?: number;
   };
   url: "/time-entries/analyze/duration-by-date";
 };
@@ -1063,7 +1087,7 @@ export type PutUserBillingData = {
       streetLine2?: string | null;
       city: string;
       state?: string | null;
-      postalCode?: string | null;
+      postalCode: string;
       country: string;
     };
   };
