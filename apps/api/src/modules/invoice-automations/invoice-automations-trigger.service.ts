@@ -96,7 +96,8 @@ export const InvoiceAutomationsTriggerService = {
           language: rule.language,
           dueDate: dueDate,
           items,
-          projectId: rule.projectId
+          projectId: rule.projectId,
+          automationRuleId: rule.id,
         });
 
       } finally {

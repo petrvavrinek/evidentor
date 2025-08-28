@@ -25,10 +25,13 @@ export const PaymentSubjectBlock = ({
 		<Text style={styles.title}>{title}</Text>
 		<Text style={styles.line}>{subject.name}</Text>
 		<Text style={styles.address}>
-			{subject.address.street} {subject.address.houseNumber}
+			{subject.address.streetLine1}
 		</Text>
+		{
+			subject.address.streetLine2 && <Text style={styles.address}>{subject.address.streetLine2}</Text>
+		}
 		<Text style={styles.address}>
-			{subject.address.zip} {subject.address.city}, {subject.address.country}
+			{subject.address.postalCode} {subject.address.city}, {subject.address.country}
 		</Text>
 		<Text style={styles.info}>
 			{translations.cin}: {subject.cin} {translations.vat}: {subject.vatId}

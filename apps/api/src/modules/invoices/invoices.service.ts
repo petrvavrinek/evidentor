@@ -82,7 +82,7 @@ export const InvoicesService = {
 
 		return results?.[0] ?? null;
 	},
-	async create(userId: string, data: InvoiceCreateType & { clientId: number }) {
+	async create(userId: string, data: InvoiceCreateType & { clientId: number, automationRuleId?: number }) {
 		const invoice = await db.transaction(async (tx) => {
 			const now = new Date();
 			const invoicesToday = await tx
