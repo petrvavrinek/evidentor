@@ -6,8 +6,6 @@ import type { CreateClient, UpdateClient } from "./clients.types";
 import { addresses } from "@/db/address.schema";
 import { clients } from "@/db/clients.schema";
 
-type Client = typeof clients.$inferSelect;
-
 export const ClientsService = {
   findById(userId: string, id: number) {
     return db.query.clients.findFirst({
@@ -107,7 +105,9 @@ export const ClientsService = {
         companyName: data.companyName,
         contactName: data.contactName,
         email: data.email
-      }).returning();
+      })
+      .where(eq(clients.id, id))
+      .returning();
 
       return updatedClient ?? null;
     });
