@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 
 export const InvoiceDocument = ({
 	currency,
-	id,
+	textId,
 	items,
 	payment,
 	subscriber,
@@ -84,7 +84,7 @@ export const InvoiceDocument = ({
 				<View style={styles.header}>
 					<Text style={styles.title}>{translations.invoice}</Text>
 					<Text style={styles.id}>
-						{translations.invoiceId}: {id}
+						{translations.invoiceId}: {textId}
 					</Text>
 				</View>
 				{/* Supplier & Subscriber */}

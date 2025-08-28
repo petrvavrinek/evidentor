@@ -19,7 +19,8 @@ export const convertInvoiceToQueueType = (
 
 	return {
 		currency: invoice.currency,
-		id: invoice.textId,
+		id: invoice.id,
+		textId: invoice.textId,
 		items: invoice.items.map((e) => ({
 			amount: e.qty,
 			name: e.name,

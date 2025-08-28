@@ -30,7 +30,8 @@ export interface GenerateInvoice {
 	/**
 	 * Invoice data
 	 */
-	id: string;
+	id: number;
+	textId: string;
 
 	supplier: PaymentSubject;
 	subscriber: PaymentSubject;
@@ -76,7 +77,7 @@ export type InvoiceQueueResultType =
 	| {
 		ok: false;
 	}
-	| { ok: true; filePath: string, fileId: string, id: string };
+	| { ok: true; filePath: string, fileId: string, id: number };
 
 // Define queues here at the moment
 export const InvoiceQueue = createQueue<

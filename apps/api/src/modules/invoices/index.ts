@@ -123,7 +123,8 @@ router.on("start", async () => {
 			logger.warn(`Could not generate invoice for job: ${jobId}`)
 			return;
 		}
-		const id = Number.parseInt(result.id);
+		
+		const id = result.id;
 		await InvoicesService.updateInvoiceGeneratedFilePath(id, result.fileId);
 		logger.info(`Invoice ${id} generated to file ${result.fileId}`);
 	});
