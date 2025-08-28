@@ -57,12 +57,11 @@ export default function AddressForm<T extends FieldValues>({ control, name }: Ad
       <FormField
         control={control}
         name={`${name}.postalCode` as FieldPath<T>}
-        rules={{ required: false }}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Postal code</FormLabel>
             <FormControl>
-              <Input {...field} value={field.value ?? undefined} />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

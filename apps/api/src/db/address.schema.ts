@@ -6,7 +6,7 @@ export const addresses = pgTable("address", {
   streetLine2: varchar("street_line_2", { length: 255 }),
   city: varchar("city", { length: 100 }).notNull(),
   state: varchar("state", { length: 100 }),
-  postalCode: varchar("postal_code", { length: 20 }),
+  postalCode: varchar("postal_code", { length: 20 }).notNull(),
   country: varchar("country", { length: 100 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()

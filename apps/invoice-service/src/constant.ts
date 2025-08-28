@@ -35,7 +35,7 @@ export const ExampleInvoice: InvoiceQueueDataType["data"] = {
       street: "Masarykova",
       zip: "60200"
     },
-    cin: "12345678",
+    companyId: "12345678",
     name: "ABC Software s.r.o.",
     vatId: "CZ12345678"
   },
@@ -47,7 +47,7 @@ export const ExampleInvoice: InvoiceQueueDataType["data"] = {
       street: "Václavské náměstí",
       zip: "11000"
     },
-    cin: "87654321",
+    companyId: "87654321",
     name: "Tech Supplies a.s.",
     vatId: "CZ87654321"
   }

@@ -4,8 +4,8 @@ import { createConnection } from "../create-connection";
 
 interface PaymentSubject {
 	name: string;
-	cin: string;
-	vatId: string;
+	companyId?: string;
+	vatId?: string;
 	address: {
 		city: string;
 		country: string;
