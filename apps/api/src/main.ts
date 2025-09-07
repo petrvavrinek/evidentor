@@ -20,7 +20,6 @@ import { pagination } from "./macros/pagination.macro";
 const logger = new LoggerService("main");
 
 const app = new Elysia()
-
 	.use(
 		cors({
 			origin: env.CORS_ORIGINS ?? "*",
