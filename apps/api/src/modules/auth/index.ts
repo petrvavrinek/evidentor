@@ -12,7 +12,7 @@ export const AuthRouter = new Elysia()
 		if (["POST", "GET"].includes(ctx.request.method))
 			return auth.handler(ctx.request);
 		ctx.status(405);
-	})
+	}, { parse: "none" })
 	.use(
 		swagger({
 			documentation: {

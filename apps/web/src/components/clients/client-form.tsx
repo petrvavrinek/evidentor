@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { zPostClientsData } from "@/lib/api/zod.gen";
 import { Button } from "@evidentor/ui/components/ui/button";
 import {
 	Form,
@@ -15,9 +16,8 @@ import {
 } from "@evidentor/ui/components/ui/form";
 import { Input } from "@evidentor/ui/components/ui/input";
 import LoadableButton from "@evidentor/ui/components/ui/loadable-button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@evidentor/ui/components/ui/collapsible";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@evidentor/ui/components/ui/tabs";
 import AddressForm from "../address/address-form";
-import { zPostClientsData } from "@/lib/api/zod.gen";
 
 
 const CreateClientSchema = zPostClientsData.shape.body;
@@ -53,68 +53,65 @@ export function ClientForm({
 				onSubmit={form.handleSubmit(onSubmitComponent)}
 				className="space-y-2"
 			>
-				<div className="grid grid-cols-1 md:grid-cols-2 space-x-2">
+				<Tabs>
+					<TabsList className="w-full">
+						<TabsTrigger value="general">General</TabsTrigger>
+						<TabsTrigger value="address">Address</TabsTrigger>
+					</TabsList>
 
-					<FormField
-						control={form.control}
-						name="companyName"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Company Name</FormLabel>
-								<FormControl>
-									<Input {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="contactName"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Contact Name</FormLabel>
-								<FormControl>
-									<Input {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-
-				<FormField
-					control={form.control}
-					rules={{ required: false }}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									{...field}
-									type="email"
-									value={field.value ?? ""}
-									required={false}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<div className="w-full">
-					<Collapsible>
-						<CollapsibleTrigger asChild>
-							<Button variant="ghost" size="icon" className="w-full">
-								Address
-							</Button>
-						</CollapsibleTrigger>
-						<CollapsibleContent className="my-2">
-							<AddressForm control={form.control} name="address" />
-						</CollapsibleContent>
-					</Collapsible>
-				</div>
+					<TabsContent value="general">
+						<div className="grid grid-cols-1 md:grid-cols-2 space-x-2">
+							<FormField
+								control={form.control}
+								name="companyName"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Company Name</FormLabel>
+										<FormControl>
+											<Input {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="contactName"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Contact Name</FormLabel>
+										<FormControl>
+											<Input {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<FormField
+							control={form.control}
+							rules={{ required: false }}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											type="email"
+											value={field.value ?? ""}
+											required={false}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</TabsContent>
+					<TabsContent value="address">
+						<AddressForm control={form.control} name="address" />
+					</TabsContent>
+				</Tabs>
 				<div className="flex justify-end gap-2 pt-4">
 					<Button type="button" variant="outline" onClick={onCancel}>
 						Cancel

@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
 import { CalendarIcon, Clock } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -20,6 +19,8 @@ import { TimeInput } from "@evidentor/ui/components/ui/time-input";
 import type { Project, ProjectTask, TimeEntry } from "@/lib/api";
 import { postTimeEntriesMutation } from "@/lib/api/@tanstack/react-query.gen";
 
+import { useDateFormatter } from "@/hooks/use-date-formatter";
+import { isDateSame } from "@/lib/dates";
 import ProjectTaskSelect from "./project-task-select";
 
 interface ManualTimeEntryProps {
@@ -36,6 +37,7 @@ const defaultEnd = new Date(defaultStart);
 defaultEnd.setHours(16);
 
 export default function ManualTimeEntry(props: ManualTimeEntryProps) {
+	const dateFormatter = useDateFormatter({ day: "numeric", month: "numeric", year: "numeric" });
 	const [title, setTitle] = useState("");
 	const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 	const [selectedTask, setSelectedTask] = useState<ProjectTask | undefined>();
@@ -46,7 +48,13 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	const today = new Date();
 	today.setSeconds(0, 0); // Reset seconds and milliseconds
 
-	const [date, setDate] = useState<Date>(today);
+	const [fromDate, setFromDate] = useState<Date>(today);
+	const [toDate, setToDate] = useState<Date>();
+
+	const isSameDate = useMemo(() => {
+		if (!toDate) return false;
+		return isDateSame(fromDate, toDate);
+	}, [fromDate, toDate]);
 
 	const canAddTimeEntry = useMemo(() => title.length > 0, [title]);
 
@@ -68,15 +76,17 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 	const handleCreate = () => {
 		if (!startTime || !endTime) return;
 
-		const startAt = new Date(date);
+		const startAt = new Date(fromDate);
 		startAt.setHours(startTime.getHours());
 		startAt.setMinutes(startTime.getMinutes());
 		startAt.setSeconds(startTime.getSeconds());
+		startAt.setMilliseconds(0);
 
-		const endAt = new Date(date);
+		const endAt = new Date(toDate ?? startAt);
 		endAt.setHours(endTime.getHours());
 		endAt.setMinutes(endTime.getMinutes());
 		endAt.setSeconds(endTime.getSeconds());
+		endAt.setMilliseconds(0);
 
 		createTimeEntry.mutateAsync({
 			body: {
@@ -100,16 +110,20 @@ export default function ManualTimeEntry(props: ManualTimeEntryProps) {
 							className={cn("w-full justify-start text-left font-normal")}
 						>
 							<CalendarIcon className="mr-2 h-4 w-4" />
-							{date ? format(date, "PPP") : <span>Pick a date</span>}
+							{!fromDate && !toDate && <span>Pick a date</span>}
+							{isSameDate && dateFormatter.format(fromDate)}
+							{!isSameDate && fromDate && dateFormatter.format(fromDate) + (toDate ? ` - ${dateFormatter.format(toDate)}` : "")}
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-auto p-0">
 						<Calendar
-							mode="single"
-							selected={date}
+							mode="range"
+							selected={{ from: fromDate, to: toDate }}
 							autoFocus
 							onSelect={(e) => {
-								if (e) setDate(e);
+								if (!e?.from) return;
+								setFromDate(e.from);
+								setToDate(e.to);
 							}}
 						/>
 					</PopoverContent>

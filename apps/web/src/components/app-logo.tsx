@@ -9,7 +9,7 @@ interface AppLogoProps {
 
 const AppLogo = ({ className }: AppLogoProps) => {
   const theme = useTheme();
-  const mode = theme.theme ?? "light";
+  const mode = theme.resolvedTheme ?? "light";
   const src = mode === "dark" ? "/logo-white.svg" : "/logo-black.svg";
   return <img src={src} className={className}/>
 }
