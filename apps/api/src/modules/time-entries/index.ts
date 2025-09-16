@@ -11,6 +11,7 @@ import {
 } from "./time-entries.dto";
 import { TimeEntriesService } from "./time-entries.service";
 import { pagination, withPagination } from '../../macros/pagination.macro';
+import { injectService } from "../../macros/inject-service.macro";
 
 
 const router = new Elysia({
@@ -19,13 +20,14 @@ const router = new Elysia({
 })
 	.use(BetterAuthMacro)
 	.use(pagination)
+	.use(injectService("timeEntriesService", TimeEntriesService))
 	.model("TimeEntry", TimeEntryResponse)
 	.model("TimeEntry[]", TimeEntriesResponse)
 	.model("TimeEntryDurationByDate", TimeEntryDurationByDate)
 	.get(
 		"/active",
-		async ({ user }) => {
-			const entry = await TimeEntriesService.getActiveByUserId(user.id);
+		async ({ user, timeEntriesService }) => {
+			const entry = await timeEntriesService.getActiveByUserId(user.id);
 			if (!entry) throw status(404);
 
 			return entry;
@@ -40,8 +42,8 @@ const router = new Elysia({
 	)
 	.get(
 		":id",
-		async ({ user, params: { id } }) => {
-			const entry = await TimeEntriesService.findById(user.id, id);
+		async ({ user, params: { id }, timeEntriesService }) => {
+			const entry = await timeEntriesService.findById(user.id, id);
 
 			if (!entry) throw status(404, "Time entry not found");
 
@@ -60,8 +62,8 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		({ user, query, pagination }) => {
-			return TimeEntriesService.findByUserId(user.id, query, pagination);
+		({ user, query, pagination, timeEntriesService }) => {
+			return timeEntriesService.findByUserId(user.id, query, pagination);
 		},
 		{
 			auth: true,
@@ -73,10 +75,10 @@ const router = new Elysia({
 	)
 	.post(
 		"",
-		async ({ user, body }) => {
-			const createdTimeEntry = await TimeEntriesService.create(user.id, body);
+		async ({ user, body, timeEntriesService }) => {
+			const createdTimeEntry = await timeEntriesService.create(user.id, body);
 			if (!createdTimeEntry) throw status(500, "Could not create time entry");
-			return (await TimeEntriesService.findById(user.id, createdTimeEntry.id))!;
+			return (await timeEntriesService.findById(user.id, createdTimeEntry.id))!;
 		},
 		{
 			body: CreateTimeEntry,
@@ -97,10 +99,10 @@ const router = new Elysia({
 	)
 	.patch(
 		":id",
-		async ({ user, params: { id }, body }) => {
-			const entry = await TimeEntriesService.updateById(user.id, id, body);
+		async ({ user, params: { id }, body, timeEntriesService }) => {
+			const entry = await timeEntriesService.updateById(user.id, id, body);
 			if (!entry) throw status(404, "Time entry not found");
-			return (await TimeEntriesService.findById(user.id, entry.id))!;
+			return (await timeEntriesService.findById(user.id, entry.id))!;
 		},
 		{
 			params: TimeEntryIdParam,
@@ -114,11 +116,11 @@ const router = new Elysia({
 	)
 	.delete(
 		":id",
-		async ({ user, params: { id } }) => {
-			const entry = await TimeEntriesService.findById(user.id, id);
+		async ({ user, params: { id }, timeEntriesService }) => {
+			const entry = await timeEntriesService.findById(user.id, id);
 			if (!entry) throw status(404, "Time entry not found");
 
-			await TimeEntriesService.deleteById(user.id, entry.id);
+			await timeEntriesService.deleteById(user.id, entry.id);
 		},
 		{
 			params: TimeEntryIdParam,
@@ -136,8 +138,8 @@ const router = new Elysia({
 	)
 	.get(
 		"analyze/duration-by-date",
-		async ({ user, query }) => {
-			return TimeEntriesService.getDurationEachDate(user.id, query);
+		async ({ user, query, timeEntriesService }) => {
+			return timeEntriesService.getDurationEachDate(user.id, query);
 		},
 		{ auth: true, query: TimeEntryFilter, response: "TimeEntryDurationByDate" },
 	);

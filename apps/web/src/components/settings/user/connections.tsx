@@ -8,6 +8,7 @@ import { Button } from "@evidentor/ui/components/ui/button";
 import { Card, CardContent, CardTitle } from "@evidentor/ui/components/ui/card";
 
 import { authClient } from "@/lib/auth-client";
+import { Account } from "@/lib/api";
 
 interface ConnectionItemProps {
 	icon?: string;
@@ -45,17 +46,10 @@ const ConnectionItem = (props: ConnectionItemProps) => {
 	);
 };
 
-type Account = {
-	id: string;
-	provider: string;
-	createdAt: Date;
-	updatedAt: Date;
-	accountId: string;
-	scopes: string[];
-};
+type AccountWithoutUser = Pick<Account, "id" | "providerId">;
 
 export default function ConnectionsPage() {
-	const [accounts, setAccounts] = useState<Account[] | undefined>();
+	const [accounts, setAccounts] = useState<AccountWithoutUser[] | undefined>();
 
 	useEffect(() => {
 		if (!authClient) return;
@@ -67,7 +61,7 @@ export default function ConnectionsPage() {
 
 	const hasConnectedAccount = (name: string) => {
 		if (!accounts) return false;
-		return !!accounts.find((e) => e.provider === name);
+		return !!accounts.find((e) => e.providerId === name);
 	};
 
 	return (
@@ -80,12 +74,12 @@ export default function ConnectionsPage() {
 						connected={hasConnectedAccount("google")}
 						icon="/icons/google.webp"
 					/>
-					<ConnectionItem
+					{/* <ConnectionItem
 						title="Trello"
 						description="Allows you to synchronize tasks"
 						connected={hasConnectedAccount("trello")}
 						icon="/icons/trello.svg"
-					/>
+					/> */}
 				</div>
 			) : (
 				<Loader />

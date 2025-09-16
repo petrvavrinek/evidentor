@@ -9,8 +9,15 @@ import type {
 	ProjectTaskResponseType,
 } from "./project-tasks.dto";
 import type { Pagination, PaginationInput } from "../../schemas/pagination.schema";
+import { Inject, Service } from "typedi";
 
-export const ProjectTasksService = {
+@Service()
+export class ProjectTasksService {
+
+	constructor(@Inject() private readonly projectsService: ProjectsService) {
+
+	}
+
 	async findByOptions(userId: string, filter?: ProjectTaskFilter & { where?: SQL[] }, pagination?: PaginationInput): Promise<ProjectTaskResponseType[]> {
 		const filters: SQL[] = [eq(projects.ownerId, userId)]
 
@@ -38,7 +45,7 @@ export const ProjectTasksService = {
 		if (pagination?.take) query.limit(pagination.take);
 
 		return (await query.execute()) as ProjectTaskResponseType[];
-	},
+	}
 
 	/**
 	 * Find all user tasks
@@ -51,7 +58,7 @@ export const ProjectTasksService = {
 		pagination?: PaginationInput
 	): Promise<ProjectTaskResponseType[]> {
 		return this.findByOptions(userId, filter, pagination);
-	},
+	}
 
 	/**
 	 * Create new task for project
@@ -67,7 +74,7 @@ export const ProjectTasksService = {
 		title: string,
 		description?: string | null,
 	) {
-		const project = await ProjectsService.findById(userId, projectId);
+		const project = await this.projectsService.findById(userId, projectId);
 
 		if (!project) throw `Project not found`;
 
@@ -81,7 +88,7 @@ export const ProjectTasksService = {
 			.returning();
 
 		return task;
-	},
+	}
 
 	/**
 	 * Find task by ID
@@ -95,7 +102,7 @@ export const ProjectTasksService = {
 	): Promise<ProjectTaskResponseType | null> {
 		const task = await this.findByOptions(userId, { where: [eq(projectTasks.id, id)] })
 		return task[0] ?? null;
-	},
+	}
 
 	/**
 	 * Delete project task by ID
@@ -103,7 +110,7 @@ export const ProjectTasksService = {
 	 */
 	async deleteTaskById(id: number) {
 		await db.delete(projectTasks).where(eq(projectTasks.id, id));
-	},
+	}
 
 	/**
 	 * Count user tasks by filter
@@ -129,5 +136,5 @@ export const ProjectTasksService = {
 
 		const r = await query;
 		return r[0]?.count ?? 0;
-	},
+	}
 };

@@ -7,6 +7,8 @@ import { ProjectsService } from "../projects/projects.service";
 import { InvoiceAutomationsTriggerService } from "./invoice-automations-trigger.service";
 import { CreateInvoiceAutomationRuleSchema, InvoiceAutomationRuleIdParam, SelectInvoiceAutomationRuleSchema, UpdateInvoiceAutomationRuleSchema } from "./invoice-automations.schema";
 import { InvoiceAutomationsService } from "./invoice-automations.service";
+import { injectService } from "../../macros/inject-service.macro";
+import Container from "typedi";
 
 const router = new Elysia({
   prefix: "/invoice-automations",
@@ -14,13 +16,15 @@ const router = new Elysia({
 })
   .use(BetterAuthMacro)
   .use(pagination)
+  .use(injectService("automationService", InvoiceAutomationsService))
+  .use(injectService("projectsService", ProjectsService))
   .model("InvoiceAutomation", SelectInvoiceAutomationRuleSchema)
   .model("InvoiceAutomation[]", t.Array(SelectInvoiceAutomationRuleSchema))
-  .post("", async ({ user, body }) => {
-    const project = await ProjectsService.findById(user.id, body.projectId);
+  .post("", async ({ user, body, automationService }) => {
+    const project = await automationService.findById(user.id, body.projectId);
     if (!project) throw status(400, "Invalid project");
 
-    const rule = await InvoiceAutomationsService.create(user.id, body);
+    const rule = await automationService.create(user.id, body);
     if (!rule) throw status(500, "Could not create invoice automation");
 
     return rule;
@@ -30,8 +34,8 @@ const router = new Elysia({
     response: "InvoiceAutomation",
   }
   )
-  .get("", async ({ user }) => {
-    return InvoiceAutomationsService.findByUserId(user.id);
+  .get("", async ({ user, automationService }) => {
+    return automationService.findByUserId(user.id);
   },
     {
       auth: true,
@@ -40,8 +44,8 @@ const router = new Elysia({
       query: PaginationSchema
     }
   )
-  .get(":id", async ({ user, params }) => {
-    const rule = await InvoiceAutomationsService.findById(user.id, params.id);
+  .get(":id", async ({ user, params, automationService }) => {
+    const rule = await automationService.findById(user.id, params.id);;
     if (!rule) throw status(404, "Invoice automation rule not found");
     return rule;
   }, {
@@ -49,13 +53,13 @@ const router = new Elysia({
     response: "InvoiceAutomation",
     params: InvoiceAutomationRuleIdParam
   })
-  .patch(":id", async ({ user, body, params }) => {
+  .patch(":id", async ({ user, body, params, projectsService, automationService }) => {
     if (body.projectId) {
-      const project = await ProjectsService.findById(user.id, body.projectId);
+      const project = await projectsService.findById(user.id, body.projectId);
       if (!project) throw status(400, "Invalid project");
     }
 
-    const rule = await InvoiceAutomationsService.updateById(user.id, params.id, body);
+    const rule = await automationService.updateById(user.id, params.id, body);
     if (!rule) throw status(500, "Could not update invoice automation rule");
     return rule;
   }, {
@@ -64,8 +68,8 @@ const router = new Elysia({
     body: UpdateInvoiceAutomationRuleSchema,
     params: InvoiceAutomationRuleIdParam
   })
-  .delete(":id", async ({ user, params }) => {
-    await InvoiceAutomationsService.deleteById(user.id, params.id);
+  .delete(":id", async ({ user, params, automationService }) => {
+    await automationService.deleteById(user.id, params.id);
   },
     {
       auth: true,
@@ -73,8 +77,7 @@ const router = new Elysia({
     })
 
 router.on("start", () => {
-  // Start triggering invoice generation
-  InvoiceAutomationsTriggerService.start();
+  Container.get(InvoiceAutomationsTriggerService).start();
 });
 
 export default router;

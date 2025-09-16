@@ -1,23 +1,28 @@
+import "reflect-metadata";
+
 import { cors } from "@elysiajs/cors";
 import { LoggerService } from "@evidentor/logging";
 import { Elysia } from "elysia";
 
-import { db } from "./database";
+import { DATABASE_TOKEN, db } from "./database";
 import env from "./env";
 import { AuthRouter } from "./modules/auth";
+import CalendarRouter from "./modules/calendar";
 import ClientsRouter from "./modules/clients";
+import InvoiceAutomationsRouter from "./modules/invoice-automations";
 import InvoicesRouter from "./modules/invoices";
 import ProjectTaskRouter from "./modules/project-tasks";
 import ProjectsRouter from "./modules/projects";
 import TimeEntryRouter from "./modules/time-entries";
-import CalendarRouter from "./modules/calendar";
 import UserBillingRouter from "./modules/user-billing";
-import InvoiceAutomationsRouter from "./modules/invoice-automations";
 
-import { AddressResponse } from "./modules/addresses/addresses.schema";
 import { pagination } from "./macros/pagination.macro";
+import { AddressResponse } from "./modules/addresses/addresses.schema";
+import Container from "typedi";
 
 const logger = new LoggerService("main");
+
+Container.set(DATABASE_TOKEN, db)
 
 const app = new Elysia()
 	.use(

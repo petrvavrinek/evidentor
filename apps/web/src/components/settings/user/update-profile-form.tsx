@@ -1,11 +1,12 @@
+import { Upload } from "lucide-react";
+import { useForm } from "react-hook-form";
+import z from "zod";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@evidentor/ui/components/ui/avatar";
 import { Button } from "@evidentor/ui/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@evidentor/ui/components/ui/form";
 import { Input } from "@evidentor/ui/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Upload } from "lucide-react";
-import { useForm } from "react-hook-form";
-import z from "zod";
 
 const FormSchema = z.object({
   name: z.string().optional(),

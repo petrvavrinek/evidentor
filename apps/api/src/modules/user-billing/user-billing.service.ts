@@ -4,8 +4,10 @@ import type { UpdateUserBilling, UserBillingResponse } from "./user-billing.sche
 import { userBilling } from "@/db/user-billing.schema"
 import type { WithTransaction } from "../../types/db"
 import { addresses } from "@/db/address.schema"
+import { Service } from "typedi"
 
-const UserBillingService = {
+@Service()
+class UserBillingService {
 
   async findByUserId(userId: string, options?: WithTransaction): Promise<UserBillingResponse | null> {
     const connection = options?.tx ?? db;
@@ -28,7 +30,7 @@ const UserBillingService = {
       vatNumber: result.vatNumber,
       vatPayer: result.vatPayer
     }
-  },
+  }
 
   /**
    * Update billing data by user
@@ -73,4 +75,5 @@ const UserBillingService = {
     });
   }
 }
+
 export default UserBillingService;

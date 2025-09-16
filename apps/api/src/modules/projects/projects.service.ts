@@ -2,10 +2,12 @@ import { and, count, eq, gte, lte } from "drizzle-orm";
 import { db } from "../../database";
 import { projects } from "../../db/schema";
 import type { ProjectQueryFilterType } from "./projects.dto";
+import { Service } from "typedi";
 
 type Project = typeof projects.$inferInsert;
 
-export const ProjectsService = {
+@Service()
+export class ProjectsService {
 	findManyByUserId(userId: string) {
 		return db.query.projects.findMany({
 			where: eq(projects.ownerId, userId),
@@ -13,7 +15,7 @@ export const ProjectsService = {
 				client: true,
 			},
 		});
-	},
+	}
 
 	findById(userId: string, id: number) {
 		return db.query.projects.findFirst({
@@ -22,7 +24,7 @@ export const ProjectsService = {
 				client: true,
 			},
 		});
-	},
+	}
 
 	async create(userId: string, data: Project) {
 		const [createdProject] = await db
@@ -33,7 +35,7 @@ export const ProjectsService = {
 			})
 			.returning();
 		return createdProject;
-	},
+	}
 
 	async updateById(userId: string, id: number, data: Partial<Project>) {
 		const updatedProject = await db
@@ -43,14 +45,14 @@ export const ProjectsService = {
 			.returning();
 
 		return updatedProject[0] ?? null;
-	},
+	}
 
 	deleteById(userId: string, id: number) {
 		return db
 			.delete(projects)
 			.where(and(eq(projects.id, id), eq(projects.ownerId, userId)))
 			.returning();
-	},
+	}
 
 	async getCount(
 		userId: string,
@@ -70,5 +72,6 @@ export const ProjectsService = {
 
 		const result = await query;
 		return result[0]?.count ?? 0;
-	},
-};
+
+	};
+}

@@ -13,6 +13,7 @@ import {
 import { pagination } from "../../macros/pagination.macro";
 import { PaginationSchema } from "../../schemas/pagination.schema";
 import { ClientsService } from "./clients.service";
+import { injectService } from "../../macros/inject-service.macro";
 
 const router = new Elysia({
 	prefix: "/clients",
@@ -20,11 +21,12 @@ const router = new Elysia({
 })
 	.use(BetterAuthMacro)
 	.use(pagination)
+	.use(injectService("clientsService", ClientsService))
 	.model("Client", ClientResponseSchema)
 	.model("Client[]", ClientsResponseSchema)
 	.get(
 		"",
-		({ user }) => ClientsService.findManyByUserId(user.id),
+		({ user, clientsService }) => clientsService.findManyByUserId(user.id),
 		{
 			auth: true,
 			detail: {
@@ -36,9 +38,8 @@ const router = new Elysia({
 	)
 	.post(
 		"",
-		async (c) => {
-			const { user, body } = c;
-			const client = await ClientsService.create(user.id, body);
+		async ({ user, body, clientsService }) => {
+			const client = await clientsService.create(user.id, body);
 
 			if (!client) throw status(500, "Could not create client");
 			return client as never;
@@ -54,9 +55,9 @@ const router = new Elysia({
 	)
 	.get(
 		":id",
-		async ({ params, user }) => {
+		async ({ params, user, clientsService }) => {
 			const { id } = params;
-			const foundClient = await ClientsService.findById(user.id, id);
+			const foundClient = await clientsService.findById(user.id, id);
 			if (!foundClient) throw status(404, "Client not found");
 			return foundClient;
 		},
@@ -71,11 +72,11 @@ const router = new Elysia({
 	)
 	.patch(
 		":id",
-		async ({ params, body, user }) => {
+		async ({ params, body, user, clientsService }) => {
 			const { id } = params;
 
-			await ClientsService.updateById(user.id, id, body);
-			const updatedClient = await ClientsService.findById(user.id, id)
+			await clientsService.updateById(user.id, id, body);
+			const updatedClient = await clientsService.findById(user.id, id)
 			if (!updatedClient) throw status(404, "Client not found");
 			return updatedClient;
 		},
@@ -91,10 +92,10 @@ const router = new Elysia({
 	)
 	.delete(
 		":id",
-		async ({ params, user }) => {
+		async ({ params, user, clientsService }) => {
 			const { id } = params;
 
-			await ClientsService.deleteById(user.id, id);
+			await clientsService.deleteById(user.id, id);
 		},
 		{
 			auth: true,

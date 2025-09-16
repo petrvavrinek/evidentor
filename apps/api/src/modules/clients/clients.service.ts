@@ -1,32 +1,37 @@
 import { and, eq } from "drizzle-orm";
 
-import { db } from "../../database";
+import { db, InjectDatabase, type Database } from "../../database";
 import type { CreateClient, UpdateClient } from "./clients.types";
 
 import { addresses } from "@/db/address.schema";
 import { clients } from "@/db/clients.schema";
+import { Service } from "typedi";
 
-export const ClientsService = {
+console.log("import")
+@Service()
+export class ClientsService {
+  constructor(@InjectDatabase() private readonly db: Database) { }
+
   findById(userId: string, id: number) {
-    return db.query.clients.findFirst({
+    return this.db.query.clients.findFirst({
       where: and(eq(clients.ownerId, userId), eq(clients.id, id)),
       with: {
         address: true,
       }
     });
-  },
+  }
 
   findManyByUserId(userId: string) {
-    return db.query.clients.findMany({
+    return this.db.query.clients.findMany({
       where: eq(clients.ownerId, userId),
       with: {
         address: true,
       }
     });
-  },
+  }
 
   async create(userId: string, data: CreateClient) {
-    return db.transaction(async tx => {
+    return this.db.transaction(async tx => {
       let addressId: number | undefined = undefined;
 
       if (data.address) {
@@ -60,7 +65,7 @@ export const ClientsService = {
         }
       });
     });
-  },
+  }
 
   async updateById(
     userId: string,
@@ -71,7 +76,7 @@ export const ClientsService = {
     // Client not found
     if (!client) return null;
 
-    return db.transaction(async tx => {
+    return this.db.transaction(async tx => {
       let addressId = client.address?.id;
 
       // Address update
@@ -106,12 +111,12 @@ export const ClientsService = {
         contactName: data.contactName,
         email: data.email
       })
-      .where(eq(clients.id, id))
-      .returning();
+        .where(eq(clients.id, id))
+        .returning();
 
       return updatedClient ?? null;
     });
-  },
+  }
 
   async deleteById(userId: string, id: number) {
     const deletedClient = await db
@@ -119,5 +124,5 @@ export const ClientsService = {
       .where(and(eq(clients.ownerId, userId), eq(clients.id, id)))
       .returning();
     return deletedClient[0] ?? null;
-  },
+  }
 };

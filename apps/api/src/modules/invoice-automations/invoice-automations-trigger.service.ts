@@ -12,9 +12,15 @@ import { InvoiceAutomationsService } from "./invoice-automations.service";
 
 const logger = new LoggerService("InvoiceAutomationsTriggerService");
 
-export const InvoiceAutomationsTriggerService = {
-  isProcessing: false,
-  intervalId: undefined as NodeJS.Timeout | undefined,
+export class InvoiceAutomationsTriggerService {
+  isProcessing = false;
+  intervalId?: NodeJS.Timeout;
+
+  constructor(
+    private readonly invoiceAutomationsService: InvoiceAutomationsService,
+    private readonly invoiceService: InvoicesService,
+    private readonly timeEntriesService: TimeEntriesService
+  ) { }
 
   /**
    * Start trigger
@@ -32,7 +38,7 @@ export const InvoiceAutomationsTriggerService = {
     }, interval);
 
     this.processDueRules();
-  },
+  }
 
   /**
    * Stop triggering
@@ -42,7 +48,7 @@ export const InvoiceAutomationsTriggerService = {
     if (!this.intervalId) return;
     this.isProcessing = false;
     clearInterval(this.intervalId);
-  },
+  }
 
   /**
    * Process all due rules if its not running
@@ -59,7 +65,7 @@ export const InvoiceAutomationsTriggerService = {
       let batchSize = 20;
 
       while (true) {
-        const rules = await InvoiceAutomationsService.fetchDueRules(cursor, batchSize);
+        const rules = await this.invoiceAutomationsService.fetchDueRules(cursor, batchSize);
         if (rules.length === 0) break;
 
         await this.processBatch(rules);
@@ -71,7 +77,7 @@ export const InvoiceAutomationsTriggerService = {
     } finally {
       this.isProcessing = false;
     }
-  },
+  }
   /**
    * Process batch of invoice automation rules
    * It generate invoices
@@ -90,7 +96,7 @@ export const InvoiceAutomationsTriggerService = {
         dueDate.setHours(0, 0, 0, 0);
         dueDate.setDate(dueDate.getDate() + rule.dueDays);
 
-        await InvoicesService.create(rule.userId, {
+        await this.invoiceService.create(rule.userId, {
           clientId: rule.project.clientId,
           currency: rule.currency,
           language: rule.language,
@@ -101,7 +107,7 @@ export const InvoiceAutomationsTriggerService = {
         });
 
       } finally {
-        const nextRunDate = InvoiceAutomationsService.calculateNextRunDate({
+        const nextRunDate = this.invoiceAutomationsService.calculateNextRunDate({
           dayOfMonth: rule.dayOfMonth,
           interval: rule.interval,
           nextRunDate: new Date(),
@@ -112,11 +118,11 @@ export const InvoiceAutomationsTriggerService = {
         await db.update(invoiceAutomationRules).set({ nextRunDate }).where(eq(invoiceAutomationRules.id, rule.id));
       }
     }
-  },
+  }
   async constructInvoiceItems(rule: SelectInvoiceAutomationRule): Promise<InvoiceCreateType["items"]> {
 
     if (rule.allTasks) {
-      const entries = await TimeEntriesService.findByUserId(rule.userId, { projectId: rule.projectId });
+      const entries = await this.timeEntriesService.findByUserId(rule.userId, { projectId: rule.projectId });
 
       return entries.map(e => {
         const { text } = this.getTimeData(rule.language, e.startAt!, e.endAt!);
@@ -147,7 +153,7 @@ export const InvoiceAutomationsTriggerService = {
         timeEntryId: e.id
       }
     });
-  },
+  }
 
   getTimeData(locale: string, start: Date, end: Date) {
     const diff = end.getTime() - start.getTime();

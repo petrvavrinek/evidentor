@@ -14,6 +14,7 @@ import {
 } from "./project-tasks.dto";
 import { ProjectTasksService } from "./project-tasks.service";
 import { pagination, withPagination } from "../../macros/pagination.macro";
+import { injectService } from "../../macros/inject-service.macro";
 
 const router = new Elysia({
 	prefix: "/project-tasks",
@@ -21,13 +22,14 @@ const router = new Elysia({
 })
 	.use(BetterAuthMacro)
 	.use(pagination)
+	.use(injectService("projectTasksService", ProjectTasksService))
 	.model("ProjectTask", ProjectTaskResponse)
 	.model("ProjectTask[]", ProjectTasksResponse)
 	.model("ProjectTaskCount", ProjectTaskCountReponse)
 	.get(
 		"count",
-		async ({ user, query, }) => {
-			const count = await ProjectTasksService.getCount(user.id, query);
+		async ({ user, query, projectTasksService }) => {
+			const count = await projectTasksService.getCount(user.id, query);
 			return { count };
 		},
 		{
@@ -38,8 +40,8 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		async ({ user, query, pagination }) => {
-			const task = await ProjectTasksService.findAllByUserId(user.id, query, pagination);
+		async ({ user, query, pagination, projectTasksService }) => {
+			const task = await projectTasksService.findAllByUserId(user.id, query, pagination);
 			return task;
 		},
 		{
@@ -51,11 +53,11 @@ const router = new Elysia({
 	)
 	.post(
 		":id",
-		async ({ user, body, params }) => {
+		async ({ user, body, params, projectTasksService }) => {
 			const { title, description } = body;
 			const { id } = params;
 
-			const task = await ProjectTasksService.create(
+			const task = await projectTasksService.create(
 				user.id,
 				id,
 				title,
@@ -63,7 +65,7 @@ const router = new Elysia({
 			);
 
 			// This will always be non-nullable
-			const result = (await ProjectTasksService.findByTaskId(
+			const result = (await projectTasksService.findByTaskId(
 				task!.id,
 				user.id,
 			))!;
@@ -93,13 +95,13 @@ const router = new Elysia({
 	)
 	.delete(
 		":id",
-		async ({ user, params }) => {
-			const task = await ProjectTasksService.findByTaskId(params.id, user.id);
+		async ({ user, params, projectTasksService }) => {
+			const task = await projectTasksService.findByTaskId(params.id, user.id);
 			// Not found
 			if (!task) throw status(404);
 
 			// Deleted
-			await ProjectTasksService.deleteTaskById(task.id);
+			await projectTasksService.deleteTaskById(task.id);
 			status(200);
 		},
 		{

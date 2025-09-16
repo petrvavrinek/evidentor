@@ -1,4 +1,5 @@
 import { drizzle } from 'drizzle-orm/bun-sql';
+import { Inject } from 'typedi';
 import * as schema from "./db/schema";
 
 // TODO: Create own validation env schema for this file only (used in migrate dockerfile)
@@ -11,3 +12,7 @@ export const db = drizzle(
     casing: "snake_case",
   },
 );
+
+export const DATABASE_TOKEN = "DATABASE";
+export type Database = typeof db;
+export const InjectDatabase = () => Inject(DATABASE_TOKEN);

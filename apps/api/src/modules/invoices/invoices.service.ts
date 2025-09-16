@@ -2,13 +2,14 @@ import { and, count, eq, inArray, isNull, sql, type SQL } from "drizzle-orm";
 
 import { InvoiceQueue } from "@evidentor/queues";
 
-import { db } from "../../database";
+import { db, type Database } from "../../database";
 import type { WithTransaction } from "../../types/db";
 import type { InvoiceCreateType, InvoiceFilter, InvoiceSelectSchemaType } from "./invoice.schemas";
 import { convertInvoiceToQueueType } from "./utils/convert-queue";
 
 import { invoiceItems, invoices, projects, timeEntries, userBilling } from "@/db/schema";
 import { LoggerService } from "@evidentor/logging";
+import { Inject, Service } from "typedi";
 
 
 interface CreateInvoiceQueryOptions {
@@ -17,7 +18,11 @@ interface CreateInvoiceQueryOptions {
 
 const logger = new LoggerService("invoices");
 
-export const InvoicesService = {
+@Service()
+export class InvoicesService {
+
+	constructor(@Inject() private readonly db: Database) { }
+
 	/**
 	 * Find many invoice with options
 	 */
@@ -45,7 +50,7 @@ export const InvoicesService = {
 			},
 			where: options?.where ? and(...options.where, ...filters) : undefined,
 		});
-	},
+	}
 
 	/**
 	 * Find one invoice with options
@@ -58,7 +63,7 @@ export const InvoicesService = {
 			where: [eq(invoices.id, id), ...(options?.where ?? [])],
 		}, filter, dbOptions);
 		return result?.[0] ?? null;
-	},
+	}
 
 	/**
 	 * Find multiple invoices by user
@@ -67,7 +72,7 @@ export const InvoicesService = {
 	 */
 	findManyByUserId(userId: string, filter?: InvoiceFilter) {
 		return this.findByOptions({ where: [eq(invoices.userId, userId)] }, filter);
-	},
+	}
 
 	/**
 	 * Find invoice by ID
@@ -81,7 +86,8 @@ export const InvoicesService = {
 		});
 
 		return results?.[0] ?? null;
-	},
+	}
+
 	async create(userId: string, data: InvoiceCreateType & { clientId: number, automationRuleId?: number }) {
 		const invoice = await db.transaction(async (tx) => {
 			const now = new Date();
@@ -118,7 +124,7 @@ export const InvoicesService = {
 				(prev, current) => prev + current.unitPrice * current.qty,
 				0,
 			);
-			
+
 			// Create invoice
 			const [createdInvoice] = await tx
 				.insert(invoices)
@@ -132,7 +138,7 @@ export const InvoicesService = {
 					console.error(e);
 					throw e;
 				});
-				
+
 
 			// Set invoice into time entries
 			await tx.update(timeEntries).set({
@@ -150,7 +156,7 @@ export const InvoicesService = {
 					timeEntryId: e.timeEntryId && invoiceTimeEntryIds.includes(e.timeEntryId) ? e.timeEntryId : null
 				}))
 			);
-			
+
 
 			if (!createdInvoice) return null;
 
@@ -160,7 +166,8 @@ export const InvoicesService = {
 		if (invoice) logger.info(`created invoice ${invoice.id}`);
 
 		return invoice;
-	},
+	}
+
 	async updateById(
 		userId: string,
 		id: number,
@@ -174,7 +181,7 @@ export const InvoicesService = {
 			.where(and(eq(invoices.userId, userId), eq(invoices.id, id)))
 			.returning();
 		return updated;
-	},
+	}
 
 	/**
 	 * Delete invoice by ID
@@ -185,22 +192,23 @@ export const InvoicesService = {
 		await db
 			.delete(invoices)
 			.where(and(eq(invoices.userId, userId), eq(invoices.id, id)));
-	},
+	}
 
 	async updateInvoiceGeneratedFilePath(id: number, fileId: string) {
 		await db.update(invoices).set({ generatedFileId: fileId }).where(eq(invoices.id, id));
-	},
+	}
 
 	findInvoicesWithoutGeneratedFile() {
 		return this.findByOptions({ where: [isNull(invoices.generatedFileId)] })
-	},
+	}
+
 	getInvoiceTextId(date: Date, idx: number) {
 		const y = date.getFullYear().toString();
 		const m = date.getMonth().toString().padStart(2, "0");
 		const d = date.getDate().toString().padStart(2, "0");
 		const i = idx.toString().padStart(3, "0");
 		return `${y}${m}${d}${i}`;
-	},
+	}
 
 	async requestGenerate(invoice: InvoiceSelectSchemaType) {
 		const invoiceUserBilling = await db.query.userBilling.findFirst({

@@ -6,10 +6,17 @@ import { db } from "../../database";
 import { ProjectsService } from "../projects/projects.service";
 import type { TimeEntryFilterType, TimeEntryResponseType } from "./time-entries.dto";
 import type { Pagination } from "../../schemas/pagination.schema";
+import { Inject, Service } from "typedi";
 
 type TimeEntry = typeof timeEntries.$inferSelect;
 
-export const TimeEntriesService = {
+@Service()
+export class TimeEntriesService {
+
+
+	constructor(@Inject() private readonly projectsService: ProjectsService) {
+
+	}
 	/**
 	 * Return active time entry for user
 	 * @param userId User ID
@@ -28,7 +35,7 @@ export const TimeEntriesService = {
 				projectTask: true,
 			},
 		});
-	},
+	}
 
 	/**
 	 * Return user time entries
@@ -59,7 +66,7 @@ export const TimeEntriesService = {
 			limit: pagination?.take,
 			offset: pagination?.skip
 		});
-	},
+	}
 	/**
 	 * Find time entry by ID and user ID
 	 * @param userId User ID
@@ -79,7 +86,7 @@ export const TimeEntriesService = {
 				projectTask: true,
 			},
 		});
-	},
+	}
 
 	/**
 	 * Update time entry by ID
@@ -100,7 +107,7 @@ export const TimeEntriesService = {
 			.returning();
 
 		return entry[0] ?? null;
-	},
+	}
 
 	/**
 	 * Delete time entry by ID
@@ -113,7 +120,7 @@ export const TimeEntriesService = {
 			.delete(timeEntries)
 			.where(and(eq(timeEntries.userId, userId), eq(timeEntries.id, id)))
 			.returning();
-	},
+	}
 
 	/**
 	 * Create new time entry
@@ -124,7 +131,7 @@ export const TimeEntriesService = {
 	 */
 	async create(userId: string, data: Partial<TimeEntry>) {
 		if (data.projectId) {
-			const project = await ProjectsService.findById(userId, data.projectId);
+			const project = await this.projectsService.findById(userId, data.projectId);
 			if (!project)
 				throw new Error("Project is not found or not accessible to user");
 		}
@@ -143,7 +150,7 @@ export const TimeEntriesService = {
 			.returning();
 
 		return entry[0] ?? null;
-	},
+	}
 
 	/**
 	 * Outputs dates and ms to each da
@@ -181,5 +188,5 @@ export const TimeEntriesService = {
 
 		const result = await query.groupBy(sql`DATE(${timeEntries.startAt})`);
 		return result.map((e) => ({ date: e.date, duration: Number(e.duration) }));
-	},
+	}
 };

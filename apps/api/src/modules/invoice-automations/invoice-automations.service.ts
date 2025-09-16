@@ -3,13 +3,17 @@ import { and, asc, eq, gt, inArray, SQL } from "drizzle-orm";
 import { invoiceAutomationRuleProjectTasks, invoiceAutomationRules } from "@/db/invoice-automation.schema";
 import { projectTasks } from "@/db/project-tasks.schema";
 import { projects } from "@/db/projects.schema";
-import { db } from "../../database";
+import { Inject, Service } from "typedi";
+import { db, type Database } from "../../database";
 import type { WithTransaction } from "../../types/db";
 import type { CreateInvoiceAutomation, SelectInvoiceAutomationRule, UpdateInvoiceAutomationRule } from "./invoice-automations.schema";
 
-export const InvoiceAutomationsService = {
+@Service()
+export class InvoiceAutomationsService {
+  constructor(@Inject() private readonly db: Database) { }
+
   async findByUserId(userId: string): Promise<SelectInvoiceAutomationRule[]> {
-    const results = await db.query.invoiceAutomationRules.findMany({
+    const results = await this.db.query.invoiceAutomationRules.findMany({
       where: eq(invoiceAutomationRules.userId, userId),
       with: {
         project: {
@@ -31,7 +35,7 @@ export const InvoiceAutomationsService = {
       invoiceAutomationRuleProjectTasks: undefined
     }));
 
-  },
+  }
 
   async findById(userId: string, ruleId: number, options?: WithTransaction): Promise<SelectInvoiceAutomationRule | null> {
     const connection = options?.tx ?? db;
@@ -58,7 +62,7 @@ export const InvoiceAutomationsService = {
       projectTasks: result.invoiceAutomationRuleProjectTasks.map((e: any) => e.projectTask),
       invoiceAutomationRuleProjectTasks: undefined
     }
-  },
+  }
 
   create(userId: string, data: CreateInvoiceAutomation): Promise<SelectInvoiceAutomationRule | null> {
     const nextRunDate = this.calculateNextRunDate({
@@ -68,7 +72,7 @@ export const InvoiceAutomationsService = {
       recurrenceType: data.recurrenceType
     });
 
-    return db.transaction(async tx => {
+    return this.db.transaction(async tx => {
       const projectTaskIds: number[] = [];
 
       if (!data.allTasks && data.projectTaskIds) {
@@ -113,13 +117,13 @@ export const InvoiceAutomationsService = {
 
       return this.findById(userId, rule.id, { tx });
     });
-  },
+  }
 
   async updateById(userId: string, id: number, data: UpdateInvoiceAutomationRule): Promise<SelectInvoiceAutomationRule | null> {
     const rule = await this.findById(userId, id);
     if (!rule) return null;
 
-    return db.transaction(async tx => {
+    return this.db.transaction(async tx => {
       await tx
         .update(invoiceAutomationRules)
         .set({
@@ -161,7 +165,7 @@ export const InvoiceAutomationsService = {
 
       return this.findById(userId, id, { tx })
     });
-  },
+  }
 
   async deleteById(userId: string, id: number) {
     await db
@@ -172,7 +176,7 @@ export const InvoiceAutomationsService = {
           eq(invoiceAutomationRules.id, id)
         )
       );
-  },
+  }
 
   calculateNextRunDate(rule: Pick<typeof invoiceAutomationRules.$inferSelect, "recurrenceType" | "nextRunDate" | "interval" | "dayOfMonth">): Date {
     let nextDate = new Date(rule.nextRunDate);
@@ -208,7 +212,7 @@ export const InvoiceAutomationsService = {
         throw new Error(`Unknown recurrence type: ${rule.recurrenceType}`);
     }
     return nextDate;
-  },
+  }
 
   /**
    * Fetch due rules 
@@ -225,7 +229,7 @@ export const InvoiceAutomationsService = {
 
     if (cursor) filter.push(gt(invoiceAutomationRules.id, cursor));
 
-    const results = await db.query.invoiceAutomationRules.findMany({
+    const results = await this.db.query.invoiceAutomationRules.findMany({
       where: and(...filter),
       orderBy: asc(invoiceAutomationRules.createdAt),
       limit: take,
@@ -248,5 +252,5 @@ export const InvoiceAutomationsService = {
       projectTasks: e.invoiceAutomationRuleProjectTasks.map(e => e.projectTask),
       invoiceAutomationRuleProjectTasks: undefined
     }));
-  },
+  }
 }

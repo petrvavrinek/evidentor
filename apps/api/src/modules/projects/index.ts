@@ -14,6 +14,7 @@ import {
 import { ProjectsService } from "./projects.service";
 import { pagination, withPagination } from "../../macros/pagination.macro";
 import { PaginationSchema } from "../../schemas/pagination.schema";
+import { injectService } from "../../macros/inject-service.macro";
 
 const router = new Elysia({
 	prefix: "/projects",
@@ -21,13 +22,14 @@ const router = new Elysia({
 })
 	.use(BetterAuthMacro)
 	.use(pagination)
+	.use(injectService("projectsService", ProjectsService))
 	.model("Project", ProjectResponse)
 	.model("Project[]", ProjectsResponse)
 	.model("ProjectCount", ProjectCountReponse)
 	.get(
 		"count",
-		async ({ user, query }) => {
-			const count = await ProjectsService.getCount(user.id, query);
+		async ({ user, query, projectsService }) => {
+			const count = await projectsService.getCount(user.id, query);
 			return { count };
 		},
 		{
@@ -38,8 +40,8 @@ const router = new Elysia({
 	)
 	.get(
 		"",
-		async ({ user }) => {
-			return ProjectsService.findManyByUserId(user.id);
+		async ({ user, projectsService }) => {
+			return projectsService.findManyByUserId(user.id);
 		},
 		{
 			auth: true,
@@ -57,20 +59,20 @@ const router = new Elysia({
 		"",
 		async (c) => {
 			const { title, clientId } = c.body;
-			const { user } = c;
+			const { user, projectsService } = c;
 
 			// Check if client is user-defined client
 			if (clientId) {
-				const client = await ClientsService.findById(user.id, clientId);
+				const client = await projectsService.findById(user.id, clientId);
 				if (!client) throw status(400, "Client not found");
 			}
 
-			const createdProject = await ProjectsService.create(user.id, {
+			const createdProject = await projectsService.create(user.id, {
 				title,
 				clientId,
 			});
 
-			const project = await ProjectsService.findById(
+			const project = await projectsService.findById(
 				user.id,
 				createdProject!.id,
 			);
@@ -90,10 +92,10 @@ const router = new Elysia({
 	)
 	.get(
 		":id",
-		async ({ params, user }) => {
+		async ({ params, user, projectsService }) => {
 			const { id } = params;
 
-			const foundProject = await ProjectsService.findById(user.id, id);
+			const foundProject = await projectsService.findById(user.id, id);
 
 			if (!foundProject) throw status(404, "Project not found");
 			return foundProject;
@@ -109,10 +111,10 @@ const router = new Elysia({
 	)
 	.patch(
 		":id",
-		async ({ params, body, user }) => {
+		async ({ params, body, user, projectsService }) => {
 			const { id } = params;
 
-			const updatedProject = await ProjectsService.updateById(
+			const updatedProject = await projectsService.updateById(
 				user.id,
 				id,
 				body,
@@ -132,10 +134,10 @@ const router = new Elysia({
 	)
 	.delete(
 		":id",
-		async ({ params, user }) => {
+		async ({ params, user, projectsService }) => {
 			const { id } = params;
 
-			await ProjectsService.deleteById(user.id, id);
+			await projectsService.deleteById(user.id, id);
 		},
 		{
 			auth: true,
